@@ -502,7 +502,7 @@ window.addEventListener("keydown", function (e) {
               goToShot();
         			break;
         		case 'à':
-              //Free
+                    activeGlo.invBrake = !activeGlo.invBrake;
         			break;
         		case ',':
               activeGlo.spiralOnlyInvrot = !activeGlo.spiralOnlyInvrot;

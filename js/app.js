@@ -2043,7 +2043,8 @@ function makeModifierFunction(modifierType){
 
           if(angleToMod >= this.params.minAngleMod && angleToMod <= this.params.maxAngleMod){
             let att   = this.attract * this.dblForce * (this.glo.forceByCenter ? av.coeffSizeCenter() : 1);
-            let brake = activeGlo.params.breakAdd + pow(dist, this.brake);
+            let b = !this.glo.invBrake ? this.brake : 1/this.brake;
+            let brake = activeGlo.params.breakAdd + pow(dist, b);
             let addX  = att * (this.x - av.x) / brake;
             let addY  = att * (this.y - av.y) / brake;
 
@@ -2099,7 +2100,8 @@ function makeModifierFunction(modifierType){
 
           if(angleToMod >= this.params.minAngleMod && angleToMod <= this.params.maxAngleMod){
             let att    = this.attract * (this.glo.forceByCenter ? av.coeffSizeCenter() : 1);
-            let brake  = activeGlo.params.breakAdd + pow(dist, this.brake);
+            let b = !this.glo.invBrake ? this.brake : 1/this.brake;
+            let brake  = activeGlo.params.breakAdd + pow(dist, b);
             let attRot = att / brake;
 
             if(this.rotMax > 0){ attRot = abs(attRot) > this.rotMax ? Math.sign(attRot) * this.rotMax : attRot; }
