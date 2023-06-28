@@ -1003,6 +1003,38 @@ function createItemMenu(menu, p, keyType){
     canvas_menu_button.appendChild(newButton);
   }
 }
+function createCanvasBoolMenu(){
+  while (canvas_menu_button.firstChild) { canvas_menu_button.removeChild(canvas_menu_button.firstChild); }
+  for (var prop in activeGlo){ if(typeof activeGlo[prop] === 'boolean'){createBoolItemMenu(prop, activeGlo[prop]);} }
+}
+function createBoolItemMenu(propName, propState){
+  var newButton  = document.createElement("button");
+
+  var div_txt = document.createElement("div");
+  var div_chk = document.createElement("div");
+  var txt     = document.createTextNode(propName);
+  var chk     = document.createTextNode('✓');
+
+  div_txt.appendChild(txt);
+  div_chk.appendChild(chk);
+
+  div_chk.className     = 'check_bool_button';
+  div_chk.id            = 'check_bool_button_' + propName;
+  div_chk.style.opacity = propState ? '1' : '0';
+
+  var buttonBoolGrid = document.createElement("div");
+  buttonBoolGrid.className = "buttonBoolGrid";
+  buttonBoolGrid.appendChild(div_txt);
+  buttonBoolGrid.appendChild(div_chk);
+
+  newButton.style.paddingBottom = '4px';
+  newButton.appendChild(buttonBoolGrid);
+
+  newButton.setAttribute("onclick", "button_bool_check('" + propName + "'); ");
+  newButton.setAttribute("oncontextmenu", "event.preventDefault(); ");
+
+  canvas_menu_button.appendChild(newButton);
+}
 
 function addCanvas(start = false, duplicate = false, toImport = false){
   let arenaCanvas      = [...document.getElementsByClassName('arenaCanvas')];
@@ -1184,6 +1216,14 @@ function button_check(mode_prop, menu = activeGlo.mode){
     if(typeof(menu[mode_prop].callback_args) != 'undefined'){ menu[mode_prop].callback(menu[mode_prop].callback_args); }
     else{menu[mode_prop].callback(); }
   }
+}
+function button_bool_check(prop){
+  activeGlo[prop] = !activeGlo[prop];
+  getSelectedModifiers().forEach(mod => { mod.glo[prop] = activeGlo[prop]; } );
+
+  var div_chk = getById('check_bool_button_' + prop);
+
+  if(div_chk != null){ div_chk.style.opacity = div_chk.style.opacity == '0' ? '1' : '0'; }
 }
 
 /**

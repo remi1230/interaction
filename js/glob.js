@@ -374,6 +374,7 @@ var cancelAnimationFrame = window.cancelAnimationFrame || window.mozCancelAnimat
 
 var avatars     = [];
 var crossPoints = [];
+var tuchs       = [];
 
 avatars.apply = function(func){ this.forEach(avatar => { avatar[func](); }); };
 
@@ -395,6 +396,10 @@ var export_json           = getById('export_json_container');
 var import_json           = getById('import_json_container');
 var import_image          = getById('import_image_container');
 var interfaces            = [...document.getElementsByClassName('interface')];
+var helpDialog            = getById('helpDialog');
+var helpDialogGrid        = getById('helpDialogGrid');
+
+let helpDialogVisible = false;
 
 var mouse =  { click: {x: 0, y: 0} };
 

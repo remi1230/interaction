@@ -1172,6 +1172,7 @@ class Avatar {
     let move          = obj.mode.speed_color.state ? this.speed : this.accel;
     let move_max      = obj.mode.speed_color.state ? obj.speed_max : obj.accel_max;
 
+
     let cd = !this.nearMod.colorDec && this.nearMod.colorDec != 0 ? obj.params.colorDec : this.nearMod.colorDec;
     if(obj == this.glo){ cd += obj.params.colorDec; }
     let cdStroke = !this.nearMod.colorStrokeDec && this.nearMod.colorStrokeDec != 0 ? obj.params.colorStrokeDec : this.nearMod.colorStrokeDec;
@@ -1271,6 +1272,7 @@ class Avatar {
     //let tint_save        = tint;
     //let tint_stroke_save = tint_stroke;
     if(this.nearMod.haveColor){
+      //tint = this.nearMod.color.l;
       if(obj.addWithTint){
         let t         = this.nearMod.color.l * move;
         let ts        = this.nearMod.tint_stroke * move;
@@ -1286,10 +1288,10 @@ class Avatar {
         let mods = activeGlo.modifiers;
 
         mods.forEach(mod => {
-          let dist     = this.dist_av(mod);
+          let dist = this.dist_av(mod);
 
           if(obj.addWithTint){
-            let t        = mod.tint * move;
+            let t        = tint * move;
             let ts       = mod.tint_stroke * move;
             tint         = cpow(t, mod.powColor*0.9);
             tint_stroke  = cpow(ts, mod.powColor*0.9);
@@ -1320,6 +1322,7 @@ class Avatar {
 
         move = color.h;
         sat  = color.s;
+        //tint = color.l;
 
         //tint        = obj.addWithTint ? color.l : tint_save;
         //tint_stroke = obj.addWithTint ? color.ls : tint_stroke_save;

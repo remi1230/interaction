@@ -1,6 +1,7 @@
 //------------------ LANCEMENT DE LA BOUCLE DE DESSIN ----------------- //
 document.addEventListener("DOMContentLoaded", function() {
     params_interface();
+    feedHelp();
     createGoInterface();
     createCanvasMenu();
     createCheckboxesWithRange(activeGlo.colorFunctionLabels, 'colorCumulContainer', 'qMove', {event: 'onchange', func: 'checkColorFunctions()'});
@@ -280,10 +281,12 @@ window.addEventListener("keydown", function (e) {
               avatars.forEach(av => { av.nearMod = {}; av.distMinModifiers = 9999; });
 
               break;
+            /// F1 - Effacement du canvas ///
             case 'F1':
               activeGlo.mode.clear.state = !activeGlo.mode.clear.state;
 
               break;
+            /// F2 - Style dessin ///
             case 'F2':
               /*activeGlo.shortcut.alphaVarSize = !activeGlo.shortcut.alphaVarSize;
               activeGlo.perm_var_size = activeGlo.shortcut.alphaVarSize;
@@ -300,23 +303,28 @@ window.addEventListener("keydown", function (e) {
               if(!activeGlo.shortcut.alphaVarSize){ avatars.forEach(av => { av.size = activeGlo.size; av.grow = 0; }); }
 
               break;
+            /// F3 - Dessélectionner tous les modifiers ///
             case 'F3':
               activeGlo.modifiers.forEach(mod => { mod.select = false; });
 
               break;
+            /// F4 - Sélectionner des modifiers au hazard ///
             case 'F4':
               activeGlo.modifiers.forEach(mod => { mod.select = false; if(round(rnd(), 0)){ mod.select = true; } });
 
               break;
+            /// F5 - Sélection / Déselection de tous les modifiers ///
             case 'F5':
               activeGlo.allModsSelected = !activeGlo.allModsSelected;
               activeGlo.modifiers.forEach(mod => { mod.select = activeGlo.allModsSelected; });
 
               break;
+            /// F6 - Inverser la sélection ///
             case 'F6':
               activeGlo.modifiers.forEach(mod => { mod.select = !mod.select; });
 
               break;
+            /// F7 - Sélection des modifiers positifs puis négatifs ///
             case 'F7':
               activeGlo.selectBySign = !activeGlo.selectBySign;
               let sign = activeGlo.selectBySign ? 1 : -1;
@@ -326,30 +334,38 @@ window.addEventListener("keydown", function (e) {
               });
 
               break;
+            /// F8 - Sélection par groupe ///
             case 'F8':
               activeGlo.modifierSelect.update('byGroup');
 
               break;
+            /// F9 - Poser des modifiers en cercle avec la souris ///
             case 'F9':
               switchObjBools(activeGlo.posOnMouse, 'circleMods', false);
 
               break;
+            /// F10 - Copier le ou les modifiers sélectionnés avec la souris ///
             case 'F10':
               switchObjBools(activeGlo.posOnMouse, 'pasteMods', false);
 
               break;
+            /// F11 - Attribue au hazard une couleur à chaque modifier ///
             case 'F11':
+              let rndColSave = false;
               getSelectedModifiers().forEach(mod => {
                 mod.haveColor = !mod.haveColor;
                 if(mod.haveColor){
-                  mod.color = {h: parseInt(rnd() * 360), s: 20 + parseInt(rnd() * 60), l: 20 + parseInt(rnd() * 60)};
+                  let around = 60;
+                  let rndCol = cyclicNumber(parseInt(rndColSave ? (Math.random() > 0.5 ? getRnd(0, rndColSave - around) : getRnd(rndColSave + around, 360)) : getRnd(0, 360)), 360);
+                  mod.color = {h: rndCol, s: 20 + parseInt(rnd() * 60), l: 20 + parseInt(rnd() * 60)};
+                  rndColSave = rndCol;
                 }
               });
               activeGlo.modifiersHaveColor = !activeGlo.modifiersHaveColor;
 
 
               break;
-            //Free
+            /// * - Attribue les propriété du 1er modifier aux autres ///
         		case '*':
               getSelectedModifiers().forEach(mod => {
                 for(let prop in activeGlo.modifiers[0]){
@@ -360,30 +376,35 @@ window.addEventListener("keydown", function (e) {
               });
 
         			break;
+            /// b - Les modifiers ont la couleur sélectionnée avec l'interface ///
         		case 'b':
               activeGlo.oneColor.state = !activeGlo.oneColor.state;
         			break;
+            /// ù - Switch entre un fond noir et blanc ///
         		case 'ù':
               activeGlo.bg_black = !activeGlo.bg_black;
               canvasContext[activeGlo.params.selectCanvas].canvas.style.backgroundColor = activeGlo.bg_black ? '#000' : '#fff';
         			break;
+            /// & - Mode de croissance hazardeuse des avatars ///
         		case '&':
               activeGlo.growDecrease = !activeGlo.growDecrease;
               if(activeGlo.growDecrease){ activeGlo.sizeLineSave = activeGlo.params.line_size; }
               else{ avatars.forEach(av => { av.size = activeGlo.size; }); activeGlo.params.line_size = activeGlo.sizeLineSave; }
         			break;
+            /// é - L'alpha des avatars change au hazard ///
         		case 'é':
-              //activeGlo.alternatorInv = !activeGlo.alternatorInv;
               activeGlo.alphaRnd = !activeGlo.alphaRnd;
         			break;
+            /// " - Les alternateurs inversent leur attraction suivant une période ///
         		case '"':
               activeGlo.alternatorInvAtt = !activeGlo.alternatorInvAtt;
         			break;
+            //FREE
         		case "'":
               e.preventDefault();
               activeGlo.colorSquare = !activeGlo.colorSquare;
         			break;
-            //Free
+            //FREE
         		case "(":
               getSelectedModifiers().forEach(mod => {
                 mod.haveColor = !mod.haveColor;
@@ -393,21 +414,26 @@ window.addEventListener("keydown", function (e) {
               });
               activeGlo.modifiersHaveColor = !activeGlo.modifiersHaveColor;
         			break;
+            /// A - Déplacer un curseur attribue la valeur réélle de celui-ci ///
         		case 'A':
               activeGlo.updByVal = !activeGlo.updByVal;
         			break;
+            /// Z - Décale de 180° les couleurs ///
         		case 'Z':
               let inputColorDec = getById('colorDec');
 
               inputColorDec.value = inputColorDec.value == '0' ? '180' : '0';
               inputColorDec.dispatchEvent(new Event('input', { bubbles: true, cancelable: true, }));
         			break;
+            /// X - Flouter l'image ///
         		case 'X':
               blur();
         			break;
+            /// C - Rendre l'image plus nette ///
         		case 'C':
               sharp();
         			break;
+            /// I - Les couleurs sont calculées à partir des formules ///
         		case 'I':
               activeGlo.formuleColorMode = !activeGlo.formuleColorMode;
         			break;
@@ -590,9 +616,13 @@ window.addEventListener("keydown", function (e) {
               createCanvasMenu(activeGlo.mode, 'ctrl');
               showMenu();
               break;
+            case 'h':
+              toggleHelpDialog();
+              break;
             //Free
             case 's':
-              activeGlo.modifiers.forEach(mod => { mod.select = !mod.select; });
+              createCanvasBoolMenu();
+              showMenu();
               break;
             case 'i':
               getSelectedModifiers().forEach(mod => { mod.attract = -mod.attract; mod.rot_spi = -mod.rot_spi; });
@@ -966,6 +996,54 @@ function alphaVarSize(obj, buttonCk = true){
 
   if(obj.growDecrease){ obj.sizeLineSave = obj.params.line_size; }
   else{ obj.params.line_size = obj.sizeLineSave; }
+}
+
+function feedHelp(){
+  fetch('./js/event.js').then(res => res.text()).then(text => {
+    const regex = /\/\/\/(.*?)\/\/\//g;
+    tuchs = text.match(regex);
+    tuchs = tuchs.map( tuch => {
+      let infos = tuch.substring(4, tuch.length - 4).split(' - ') ;
+      return {tuch: infos[0], action: infos[1]};
+    });
+  });
+}
+
+function toggleHelpDialog(){
+  helpDialogVisible = !helpDialogVisible;
+
+  if(helpDialogVisible){
+    tuchs.forEach(tuch => {
+      let divContainer = document.createElement("div");
+      let kbdTuch      = document.createElement("kbd");
+      let divAction    = document.createElement("div");
+
+      kbdTuch.className = 'keys';
+
+      let txtTuch   = document.createTextNode(tuch.tuch);
+      let txtAction = document.createTextNode(tuch.action);
+
+      kbdTuch.appendChild(txtTuch);
+      divAction.appendChild(txtAction);
+
+      kbdTuch.style.textAlign      = 'center';
+      divAction.style.paddingRight = '30px';
+
+      divContainer.style.display             = 'grid';
+      divContainer.style.gridTemplateColumns = '30px 100%';
+      divContainer.style.columnGap = '5px';
+
+      divContainer.appendChild(kbdTuch);
+      divContainer.appendChild(divAction);
+
+      helpDialogGrid.appendChild(divContainer);
+    });
+    helpDialog.showModal();
+  }
+  else{
+    helpDialogGrid.replaceChildren();
+    helpDialog.close();
+  }
 }
 
 
