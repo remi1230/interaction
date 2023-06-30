@@ -119,6 +119,11 @@ kbd.keys {
 	white-space: nowrap;
   height: 15px;
 }
+.hidden{
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
 
 #ui{
   font-size: 0.777vw;
@@ -194,6 +199,15 @@ input[type=range].input_params {
   background-repeat: no-repeat;
   background-size: 100% 25%;
 }
+input[type=range].input_help {
+  -webkit-appearance: none;
+  color: #FFF;
+  background: transparent;
+  background-image: linear-gradient(to bottom, #FFF, #999, #FFF);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 100% 25%;
+}
 /*==============================*/
 /* le curseur                   */
 /*==============================*/
@@ -226,6 +240,33 @@ input[type=range].input_params::-ms-thumb {
   box-shadow: 0 0 .5em #FFF inset;
   background: linear-gradient(#888, #FFF) content-box,          /* le centre */
               linear-gradient(-90deg, #888, #DDD) border-box;   /* le bord */
+}
+input[type=range].input_help::-webkit-slider-thumb {
+  width: .77em;
+  height: 0.5em;
+  padding: 0.2em;                                              /* largeur du bord */
+  border: 1px solid #888;
+  border-radius: 50%;
+  box-shadow: 0 0 .5em #FFF inset;
+  background: linear-gradient(#ca4e31, #FF0101) content-box, linear-gradient(-90deg, #4b20e6, #0004FF) border-box; 
+}
+input[type=range].input_help::-moz-range-thumb {
+  width: .77em;
+  height: 0.5em;
+  padding: 0.2em;                                              /* largeur du bord */
+  border: 1px solid #888;
+  border-radius: 50%;
+  box-shadow: 0 0 .5em #FFF inset;
+  background: linear-gradient(#ca4e31, #FF0101) content-box, linear-gradient(-90deg, #4b20e6, #0004FF) border-box;
+}
+input[type=range].input_help::-ms-thumb {
+  width: .77em;
+  height: 0.5em;
+  padding: 0.2em;                                              /* largeur du bord */
+  border: 1px solid #888;
+  border-radius: 50%;
+  box-shadow: 0 0 .5em #FFF inset;
+  background: linear-gradient(#ca4e31, #FF0101) content-box, linear-gradient(-90deg, #4b20e6, #0004FF) border-box;
 }
 /*=========================================================*/
 /*=========================================================*/

@@ -1058,6 +1058,17 @@
             </div>
           </div>
           <dialog id="helpDialog" style="width: 85%; position: absolute; top: 250px; padding: 10px 10px 250px 10px; border: none; border-radius: 5px; overflow-x: hidden">
+            <div style="text-align: center; margin: 10px 0 20px; ">
+              <label for="helpDialogOpacity">Opacité</label>
+              <input type="range" id="helpDialogOpacity" name="helpDialogOpacity" class='input_help'
+                     oninput="helpDialogOpacityChange(event); " onchange="event.stopPropagation(); " onclick="event.stopPropagation(); "
+                     min="0.01" max="1" value="0.67" step=".01">
+              <div>
+                <label for="serachInHelp">Recherche</label>
+                <input style="width: 30%; margin-top: 10px; " type="text" id="serachInHelp" class="stopWindowEvents" name="serachInHelp" value=""
+                       oninput="updHelp(event); " onchange="event.stopPropagation(); " onclick="event.stopPropagation(); ">
+              </div>
+            </div>
             <div id="helpDialogGrid" style="display: grid; grid-template-columns: repeat(3, 33%); column-gap: 10px; row-gap: 10px; "></div>
           </dialog>
           <div id="canvasContainer">
