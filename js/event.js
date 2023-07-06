@@ -586,7 +586,7 @@ window.addEventListener("keydown", function (e) {
         			break;
             /// = -- Interface visible ou pas ///
         		case '=':
-              showHideInterface('showHideInterface');
+              showHideInterface();
         			break;
             /// ; -- Variation de taille des avatars ///
         		case ';':
@@ -1127,6 +1127,8 @@ function toggleHelpDialog(){
 }
 
 function constructHelpDialog(){
+  getById('searchInHelp').value = "";
+
   tuchs.forEach(tuch => {
     let divContainer = document.createElement("div");
     let kbdTuch      = document.createElement("kbd");

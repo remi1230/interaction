@@ -398,6 +398,8 @@ var import_image          = getById('import_image_container');
 var interfaces            = [...document.getElementsByClassName('interface')];
 var helpDialog            = getById('helpDialog');
 var helpDialogGrid        = getById('helpDialogGrid');
+let containerInt          = getById('othersInterfaceContainer');
+let toggleInt             = getById('showHideInterface');
 
 let helpDialogVisible = false;
 

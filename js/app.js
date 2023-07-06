@@ -3446,15 +3446,15 @@ function showCircle(cent = activeGlo.simpleMouseDown && activeGlo.showCircle){
 }
 
 //------------------ SHOW / HIDE INTERFACE ----------------- //
-function showHideInterface(id = false){
-  activeGlo.uiDisplay    = !activeGlo.uiDisplay;
-  ui.style.display = !activeGlo.uiDisplay ? 'none' : '';
+function showHideInterface(cont = containerInt, toggInt = toggleInt){
+  activeGlo.uiDisplay = !activeGlo.uiDisplay;
+  ui.style.display    = !activeGlo.uiDisplay ? 'none' : '';
 
-  let t = !id ? getById(event.target.id) : getById(id);
-  if(!activeGlo.uiDisplay){ document.getElementsByTagName('body')[0].insertBefore(t, null); }
-  else{ ui.insertBefore(t, null); }
-  t.style.top   = !activeGlo.uiDisplay ? "0%" : "90%";
-  t.textContent = !activeGlo.uiDisplay ? "▼" : "▲";
+  if(!activeGlo.uiDisplay){ document.getElementsByTagName('body')[0].insertBefore(cont, null); }
+  else{ ui.insertBefore(cont, null); }
+
+  cont.style.top      = !activeGlo.uiDisplay ? "0%" : "90%";
+  toggInt.textContent = !activeGlo.uiDisplay ? "▼" : "▲";
 }
 
 //------------------ SHOW INFOS ----------------- //

@@ -14,7 +14,12 @@
     </head>
     <body>
       <div id='ui' style="position: relative; ">
-          <div id="showHideInterface">▲</div>
+          <div id="othersInterfaceContainer">
+            <div style="display: grid; grid-template-columns: 50% 50%;">
+              <div id="toggleHelp" onclick="toggleHelpDialog(); ">HELP</div>
+              <div id="showHideInterface">▲</div>
+            </div>
+          </div>
           <div id="goInterFaceContainer"></div>
           <div class='interface' id="interface_modifiers_1">
             <div>
@@ -1057,16 +1062,20 @@
             <div id='canvas_menu_button'>
             </div>
           </div>
-          <dialog id="helpDialog" style="width: 85%; position: absolute; top: 250px; padding: 10px 10px 250px 10px; border: none; border-radius: 5px; overflow-x: hidden">
-            <div style="text-align: center; margin: 10px 0 20px; ">
-              <label for="helpDialogOpacity">Opacité</label>
-              <input type="range" id="helpDialogOpacity" name="helpDialogOpacity" class='input_help'
-                     oninput="helpDialogOpacityChange(event); " onchange="event.stopPropagation(); " onclick="event.stopPropagation(); "
-                     min="0.01" max="1" value="0.67" step=".01">
+          <dialog id="helpDialog" style="width: 85%; height: 1000px; position: absolute; top: 250px; padding: 10px 10px 250px 10px; border: none; border-radius: 5px; overflow-x: hidden"
+                  oninput="event.stopPropagation(); " onchange="event.stopPropagation(); " onclick="event.stopPropagation(); ">
+            <div style="text-align: center; margin: 10px 0 20px; display: grid; grid-template-columns: 210px 210px; justify-content: space-between; "
+                 oninput="event.stopPropagation(); " onchange="event.stopPropagation(); " onclick="event.stopPropagation(); ">
               <div>
-                <label for="serachInHelp">Recherche</label>
-                <input style="width: 30%; margin-top: 10px; " type="text" id="serachInHelp" class="stopWindowEvents" name="serachInHelp" value=""
-                       oninput="updHelp(event); " onchange="event.stopPropagation(); " onclick="event.stopPropagation(); ">
+                <label for="searchInHelp">🔍</label>
+                <input style="margin-top: 10px; " type="text" id="searchInHelp" class="stopWindowEvents" name="searchInHelp" value=""
+                      oninput="updHelp(event); " onchange="event.stopPropagation(); " onclick="event.stopPropagation(); ">
+              </div>
+              <div>
+                <label for="helpDialogOpacity">Opacité</label>
+                <input type="range" id="helpDialogOpacity" name="helpDialogOpacity" class='input_help'
+                      oninput="helpDialogOpacityChange(event); " onchange="event.stopPropagation(); " onclick="event.stopPropagation(); "
+                      min="0.01" max="1" value="0.67" step=".01">
               </div>
             </div>
             <div id="helpDialogGrid" style="display: grid; grid-template-columns: repeat(3, 33%); column-gap: 10px; row-gap: 10px; "></div>
