@@ -16,8 +16,8 @@
       <div id='ui' style="position: relative; ">
           <div id="othersInterfaceContainer">
             <div style="display: grid; grid-template-columns: 50% 50%;">
-              <div id="toggleHelp" onclick="toggleHelpDialog(); ">HELP</div>
-              <div id="showHideInterface">▲</div>
+              <div id="toggleHelp"><div id="toggleHelpTxt" onclick="toggleHelpDialog(); " style="width: 30px; ">HELP</div></div>
+              <div id="showHideInterface"><div id="showHideInterfaceTxt" style="width: 30px; ">▲</div></div>
             </div>
           </div>
           <div id="goInterFaceContainer"></div>
@@ -1062,7 +1062,7 @@
             <div id='canvas_menu_button'>
             </div>
           </div>
-          <dialog id="helpDialog" style="width: 85%; height: 1000px; position: absolute; top: 250px; padding: 10px 10px 250px 10px; border: none; border-radius: 5px; overflow-x: hidden"
+          <dialog id="helpDialog" style="width: 85%; height: 85%; position: absolute; top: -10px; border: none; border-radius: 5px; overflow-x: hidden"
                   oninput="event.stopPropagation(); " onchange="event.stopPropagation(); " onclick="event.stopPropagation(); ">
             <div style="text-align: center; margin: 10px 0 20px; display: grid; grid-template-columns: 210px 210px; justify-content: space-between; "
                  oninput="event.stopPropagation(); " onchange="event.stopPropagation(); " onclick="event.stopPropagation(); ">

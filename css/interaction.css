@@ -148,7 +148,6 @@ kbd.keys {
   font-family: arial;
 }
 #othersInterfaceContainer{
-  cursor: pointer;
   position: absolute;
   text-align: right;
   color: var(--txt-color);
@@ -158,9 +157,14 @@ kbd.keys {
   height: 15px;
   font-family: arial;
 }
-#showHideInterface{
+#showHideInterfaceTxt{
   cursor: nw-resize;
-  text-align: right;
+  float: right;
+  margin-top: 2px;
+}
+#toggleHelpTxt{
+  cursor: pointer;
+  margin-top: 3px;
 }
 #toggleHelp{
   text-align: left;

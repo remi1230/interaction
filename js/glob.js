@@ -399,7 +399,7 @@ var interfaces            = [...document.getElementsByClassName('interface')];
 var helpDialog            = getById('helpDialog');
 var helpDialogGrid        = getById('helpDialogGrid');
 let containerInt          = getById('othersInterfaceContainer');
-let toggleInt             = getById('showHideInterface');
+let toggleInt             = getById('showHideInterfaceTxt');
 
 let helpDialogVisible = false;
 

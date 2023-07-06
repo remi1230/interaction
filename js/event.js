@@ -56,7 +56,7 @@ getById('num_interface').addEventListener('contextmenu', () => {
 });*/
 
 //------------------ ClICK ON SHOW / HIDE INTERFACE ----------------- //
-getById('showHideInterface').addEventListener('click', () => {
+getById('showHideInterfaceTxt').addEventListener('click', () => {
   event.preventDefault();
   showHideInterface();
 });
@@ -984,19 +984,19 @@ window.addEventListener("keydown", function (e) {
                 }
               }
               break;
-            /// Ctrl ← -- Déplace les modifiers vers la gauche ///
+            /// Ctrl ← -- Déplace légèrement les modifiers vers la gauche ///
               case 'ArrowLeft':
                 translateModifiers(-1, 0);
                 break;
-              /// Ctrl → -- Déplace les modifiers vers la droite ///
+              /// Ctrl → -- Déplace légèrement les modifiers vers la droite ///
               case 'ArrowRight':
                 translateModifiers(1, 0);
                 break;
-              /// Ctrl ↑ -- Déplace les modifiers vers le haut ///
+              /// Ctrl ↑ -- Déplace légèrement les modifiers vers le haut ///
               case 'ArrowUp':
                 translateModifiers(0, -1);
                 break;
-              /// Ctrl ↓ -- Déplace les modifiers vers le bas ///
+              /// Ctrl ↓ -- Déplace légèrement les modifiers vers le bas ///
               case 'ArrowDown':
                 translateModifiers(0, 1);
                 break;
@@ -1145,6 +1145,11 @@ function constructHelpDialog(){
 
     let tuchToTrigger = tuch.ctrl || tuch.alt ? tuch.tuch.substr(-1) : tuch.tuch;
 
+    tuchToTrigger = tuchToTrigger.replace('←', 'ArrowLeft');
+    tuchToTrigger = tuchToTrigger.replace('→', 'ArrowRight');
+    tuchToTrigger = tuchToTrigger.replace('↑', 'ArrowUp');
+    tuchToTrigger = tuchToTrigger.replace('↓', 'ArrowDown');
+
     kbdTuch.setAttribute('onclick', `window.dispatchEvent(new KeyboardEvent('keydown',  {'key':'${tuchToTrigger}', 'ctrlKey' : ${tuch.ctrl}, 'altKey' : ${tuch.alt}})); `);
 
     kbdTuch.style.textAlign      = 'center';
@@ -1201,19 +1206,9 @@ function updHelp(event){
       if(divInfos.className.includes('helpTxt')){
         if( divInfos.textContent.toLowerCase().includes(searchTxt.toLowerCase()) ){
           divInfos.parentElement.style.display = 'grid';
-          /*removeClasses(divInfos.parentElement, 'hidden');
-          removeClasses(divInfos, 'hidden');
-          removeClasses(divInfos.previousSibling, 'hidden');
-          addClasses(divInfos, 'keys');
-          addClasses(divInfos.previousSibling, 'helpTxt');*/
         }
         else{
           divInfos.parentElement.style.display = 'none';
-          /*addClasses(divInfos.parentElement, 'hidden');
-          addClasses(divInfos, 'hidden');
-          addClasses(divInfos.previousSibling, 'hidden');
-          removeClasses(divInfos, 'keys');
-          removeClasses(divInfos.previousSibling, 'helpTxt');*/
         }
       }
     });
