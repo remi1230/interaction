@@ -801,3 +801,5 @@ function makeColorInPalette(hue, palette){
   }
   return calculCol([palette[palette.length - 2]], [palette[palette.length - 1]]);
 }
+
+const removeAccents = str => str.normalize('NFD').replace(/[\u0300-\u036f]/g, '');

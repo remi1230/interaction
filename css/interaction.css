@@ -117,12 +117,28 @@ kbd.keys {
 	line-height: 1;
 	padding: 2px 4px;
 	white-space: nowrap;
-  height: 15px;
+    height: 15px;
 }
 .hidden{
   opacity: 0;
   width: 0;
   height: 0;
+}
+.helpTag{
+    background-color: rgb(156, 248, 240);
+    border-radius: 15px;
+    border: 1px rgb(6, 70, 66) solid;
+    padding: 3px;
+    margin-right: 5px;
+    font-size: 14px;
+    cursor: pointer;
+}
+.helpTag:hover{
+    background-color: rgb(51, 78, 76);
+    color: white;
+}
+.helpTagOn{
+    background-color: rgb(212, 65, 29);
 }
 
 #ui{

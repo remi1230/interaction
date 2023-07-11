@@ -286,12 +286,12 @@ window.addEventListener("keydown", function (e) {
               avatars.forEach(av => { av.nearMod = {}; av.distMinModifiers = 9999; });
 
               break;
-            /// F1 -- Effacement du canvas ///
+            /// F1 -- Effacement du canvas -- canvas ///
             case 'F1':
               activeGlo.mode.clear.state = !activeGlo.mode.clear.state;
 
               break;
-            /// F2 -- Style dessin ///
+            /// F2 -- Style dessin -- dessin ///
             case 'F2':
               /*activeGlo.shortcut.alphaVarSize = !activeGlo.shortcut.alphaVarSize;
               activeGlo.perm_var_size = activeGlo.shortcut.alphaVarSize;
@@ -308,28 +308,28 @@ window.addEventListener("keydown", function (e) {
               if(!activeGlo.shortcut.alphaVarSize){ avatars.forEach(av => { av.size = activeGlo.size; av.grow = 0; }); }
 
               break;
-            /// F3 -- Dessélectionner tous les modifiers ///
+            /// F3 -- Dessélectionner tous les modifiers -- selection, modifier ///
             case 'F3':
               activeGlo.modifiers.forEach(mod => { mod.select = false; });
 
               break;
-            /// F4 -- Sélectionner des modifiers au hazard ///
+            /// F4 -- Sélectionner des modifiers au hazard -- selection, modifier ///
             case 'F4':
               activeGlo.modifiers.forEach(mod => { mod.select = false; if(round(rnd(), 0)){ mod.select = true; } });
 
               break;
-            /// F5 -- Sélection / Déselection de tous les modifiers ///
+            /// F5 -- Sélection / Déselection de tous les modifiers -- selection, modifier ///
             case 'F5':
               activeGlo.allModsSelected = !activeGlo.allModsSelected;
               activeGlo.modifiers.forEach(mod => { mod.select = activeGlo.allModsSelected; });
 
               break;
-            /// F6 -- Inverser la sélection ///
+            /// F6 -- Inverser la sélection -- selection, modifier ///
             case 'F6':
               activeGlo.modifiers.forEach(mod => { mod.select = !mod.select; });
 
               break;
-            /// F7 -- Sélection des modifiers positifs puis négatifs ///
+            /// F7 -- Sélection des modifiers positifs puis négatifs -- selection, modifier ///
             case 'F7':
               activeGlo.selectBySign = !activeGlo.selectBySign;
               let sign = activeGlo.selectBySign ? 1 : -1;
@@ -339,22 +339,22 @@ window.addEventListener("keydown", function (e) {
               });
 
               break;
-            /// F8 -- Sélection par groupe ///
+            /// F8 -- Sélection par groupe -- selection, modifier ///
             case 'F8':
               activeGlo.modifierSelect.update('byGroup');
 
               break;
-            /// F9 -- Poser des modifiers en cercle avec la souris ///
+            /// F9 -- Poser des modifiers en cercle avec la souris -- pose, modifier ///
             case 'F9':
               switchObjBools(activeGlo.posOnMouse, 'circleMods', false);
 
               break;
-            /// F10 -- Copier le ou les modifiers sélectionnés avec la souris ///
+            /// F10 -- Copier le ou les modifiers sélectionnés avec la souris -- copie, modifier ///
             case 'F10':
               switchObjBools(activeGlo.posOnMouse, 'pasteMods', false);
 
               break;
-            /// F11 -- Attribue au hazard une couleur à chaque modifier ///
+            /// F11 -- Attribue au hazard une couleur à chaque modifier -- couleur, modifier ///
             case 'F11':
               let rndColSave = false;
               getSelectedModifiers().forEach(mod => {
@@ -370,74 +370,74 @@ window.addEventListener("keydown", function (e) {
 
 
               break;
-            /// b -- Les modifiers ont la couleur sélectionnée avec l'interface ///
+            /// b -- Les modifiers ont la couleur sélectionnée avec l'interface -- couleur, modifier ///
         		case 'b':
-              activeGlo.oneColor.state = !activeGlo.oneColor.state;
+                    activeGlo.oneColor.state = !activeGlo.oneColor.state;
         			break;
-            /// c -- Créer un cercle d'avatars ///
+            /// c -- Créer un cercle d'avatars -- avatar, creation ///
         		case 'c':
-              activeGlo.createMod = 'circle';
-              center = canvas.getCenter();
-              if(activeGlo.mode.clearForm.state){ clear(); }
-              createMenu = createForm({ form: {name: 'circle', size: canvas.width/4}, center: center });
+                    activeGlo.createMod = 'circle';
+                    center = canvas.getCenter();
+                    if(activeGlo.mode.clearForm.state){ clear(); }
+                    createMenu = createForm({ form: {name: 'circle', size: canvas.width/4}, center: center });
         			break;
-            /// j -- Télécharge un png du canvas ///
+            /// j -- Télécharge un png du canvas -- canvas, image ///
         		case 'j':
               downloadCanvas();
         			break;
-            /// n -- Style de ligne ///
+            /// n -- Style de ligne -- ligne, dessin ///
         		case 'n':
               activeGlo.numLineCap++;
               applyToSelectedMods('numLineCap');
         			break;
-            /// q -- Créer un carré d'avatars ///
+            /// q -- Créer un carré d'avatars -- avatar, creation ///
         		case 'q':
               activeGlo.createMod = 'square';
               if(activeGlo.mode.clearForm.state){ clear(); }
               createMenu = createForm({ form: {size: canvas.width/4} });
         			break;
-            // r -- Réinitialise les avatars au hazard ///
+            // r -- Réinitialise les avatars au hazard -- avatar, creation ///
         		case 'r':
               activeGlo.createMod = 'random';
               if(activeGlo.mode.clearForm.state){ clear(); }
               keepBreak(raz_avatars);
         			break;
-            /// t -- Affiche le centre ///
+            /// t -- Affiche le centre -- info, centre ///
         		case 't':
               activeGlo.view_center = !activeGlo.view_center;
         			break;
-            /// u -- Créer un rectangle d'avatars ///
+            /// u -- Créer un rectangle d'avatars -- avatar, creation ///
         		case 'u':
               createMenu = false; activeGlo.createMod = 'rect';
               if(activeGlo.mode.clearForm.state){ clear(); }
               keepBreak(function(){ var nb = activeGlo.params.nb; deleteAvatar('all'); activeGlo.params.nb = nb; createAvatar({form: {name: 'rect'} }); });
         			break;
-            /// z -- Transforme l'image en noir et blanc ///
+            /// z -- Transforme l'image en noir et blanc -- image, couleur ///
         		case 'z':
               grey_color();
         			break;
-            /// A -- Déplacer un curseur attribue la valeur réélle de celui-ci ///
+            /// A -- Déplacer un curseur attribue la valeur réélle de celui-ci -- divers ///
         		case 'A':
               activeGlo.updByVal = !activeGlo.updByVal;
         			break;
-            /// C -- Rendre l'image plus nette ///
+            /// C -- Rendre l'image plus nette -- image, transformation ///
         		case 'C':
               sharp();
         			break;
-            /// F -- Modifiers en mode une couleur ///
+            /// F -- Modifiers en mode une couleur -- modifier, couleur ///
         		case 'F':
               getSelectedModifiers().forEach(mod => { mod.haveColor = !mod.haveColor; });
               activeGlo.modifiersHaveColor = !activeGlo.modifiersHaveColor;
         			break;
-            /// G -- Les modifiers d'une seule couleur varie ou non la teinte ///
+            /// G -- Les modifiers d'une seule couleur varie ou non la teinte -- modifier, couleur ///
         		case 'G':
               activeGlo.addWithTint = !activeGlo.addWithTint;
         			break;
-            /// I -- Les couleurs sont calculées à partir des formules ///
+            /// I -- Les couleurs sont calculées à partir des formules -- formule, couleur ///
         		case 'I':
               activeGlo.formuleColorMode = !activeGlo.formuleColorMode;
         			break;
-            /// J - Les modifiers affectent les avatars tour à tour
+            /// J -- Les modifiers affectent les avatars tour à tour -- modifier, calcul ///
         		case 'J':
               activeGlo.asyncModify = !activeGlo.asyncModify;
               if(activeGlo.asyncModify){ activeGlo.asyncNumModifier = 0; }
@@ -446,52 +446,52 @@ window.addEventListener("keydown", function (e) {
         		case 'L':
               activeGlo.modifiers.forEach(mod => { mod.select = false; if(round(rnd(), 0)){ mod.select = true; } });
         			break;
-            /// V -- Le rayon de pose des avatars à comme centre les modifiers ///
+            /// V -- Le rayon de pose des avatars à comme centre les modifiers -- avatar, pose ///
         		case 'V':
               activeGlo.randomPointByMod = !activeGlo.randomPointByMod;
         			break;
-            /// X -- Flouter l'image ///
+            /// X -- Flouter l'image -- image, transformation ///
         		case 'X':
               blur();
         			break;
-            /// Z -- Décale de 180° les couleurs ///
+            /// Z -- Décale de 180° les couleurs -- dessin, couleur ///
         		case 'Z':
               let inputColorDec = getById('colorDec');
 
               inputColorDec.value = inputColorDec.value == '0' ? '180' : '0';
               inputColorDec.dispatchEvent(new Event('input', { bubbles: true, cancelable: true, }));
         			break;
-            /// à -- Inverse le brake ///
+            /// à -- Inverse le brake -- calcul ///
         		case 'à':
               activeGlo.invBrake = !activeGlo.invBrake;
         			break;
-            /// ç -- Restore les modes et paramètres ///
+            /// ç -- Restore les modes et paramètres -- RAZ ///
         		case 'ç':
               goToShot();
         			break;
-            /// é -- L'alpha des avatars change au hazard ///
+            /// é -- L'alpha des avatars change au hazard -- avatar, dessin ///
         		case 'é':
               activeGlo.alphaRnd = !activeGlo.alphaRnd;
         			break;
-            /// è -- Créer une spirale d'avatars ///
+            /// è -- Créer une spirale d'avatars -- avatar, creation ///
         		case 'è':
               activeGlo.createMod = 'spiral';
               center = canvas.getCenter();
               if(activeGlo.mode.clearForm.state){ clear(); }
               createMenu = createForm({ form: {name: 'spiral', size: canvas.width/4}, center: center });
         			break;
-            /// ù -- Switch entre un fond noir et blanc ///
+            /// ù -- Switch entre un fond noir et blanc -- image, couleur ///
         		case 'ù':
               activeGlo.bg_black = !activeGlo.bg_black;
               canvasContext[activeGlo.params.selectCanvas].canvas.style.backgroundColor = activeGlo.bg_black ? '#000' : '#fff';
         			break;
-            /// & -- Mode de croissance hazardeuse des avatars ///
+            /// & -- Mode de croissance hazardeuse des avatars -- avatar, taille ///
         		case '&':
               activeGlo.growDecrease = !activeGlo.growDecrease;
               if(activeGlo.growDecrease){ activeGlo.sizeLineSave = activeGlo.params.line_size; }
               else{ avatars.forEach(av => { av.size = activeGlo.size; }); activeGlo.params.line_size = activeGlo.sizeLineSave; }
         			break;
-            /// " -- Les alternateurs inversent leur attraction suivant une période ///
+            /// " -- Les alternateurs inversent leur attraction suivant une période -- modifier, calcul ///
         		case '"':
               activeGlo.alternatorInvAtt = !activeGlo.alternatorInvAtt;
         			break;
@@ -510,11 +510,11 @@ window.addEventListener("keydown", function (e) {
               });
               activeGlo.modifiersHaveColor = !activeGlo.modifiersHaveColor;
         			break;
-            /// ) -- Mode de déplacement en courbe ///
+            /// ) -- Mode de déplacement en courbe -- dessin ///
         		case ')':
               activeGlo.curve = !activeGlo.curve;
               break;
-            /// ° -- L'attraction augmente suivant la distance du modifier ///
+            /// ° -- L'attraction augmente suivant la distance du modifier -- attraction, modifier ///
         		case '°':
               activeGlo.forceByCenter = !activeGlo.forceByCenter;
         			break;
@@ -522,14 +522,14 @@ window.addEventListener("keydown", function (e) {
         		case '.':
               activeGlo.oneModToAdd = !activeGlo.oneModToAdd;
         			break;
-            /// £ -- Créer un polygone d'avatars ///
+            /// £ -- Créer un polygone d'avatars -- avatar, creation ///
         		case '£':
               activeGlo.createMod = 'poly';
               center = canvas.getCenter();
               if(activeGlo.mode.clearForm.state){ clear(); }
               createMenu = createForm({ form: {name: 'poly', size: canvas.width/4}, center: center });
         			break;
-            /// * -- Attribue les propriété du 1er modifier aux autres ///
+            /// * -- Attribue les propriété du 1er modifier aux autres -- avatar, copie ///
         		case '*':
               getSelectedModifiers().forEach(mod => {
                 for(let prop in activeGlo.modifiers[0]){
@@ -539,7 +539,7 @@ window.addEventListener("keydown", function (e) {
                 mod.select = true;
               });
         			break;
-            /// % -- La taille des avatars diminue suivant la distance du centre ///
+            /// % -- La taille des avatars diminue suivant la distance du centre -- avatar, taille ///
         		case '%':
               activeGlo.dimSizeCenter = !activeGlo.dimSizeCenter;
         			break;
@@ -553,51 +553,51 @@ window.addEventListener("keydown", function (e) {
               if(activeGlo.dash > 1){ activeGlo.dash--; }
               applyToSelectedMods('dash');
         			break;
-            /// Etr -- Avec gravité, relie les points de rencontre des avatars ///
+            /// Etr -- Avec gravité, relie les points de rencontre des avatars -- avatar, attraction ///
         		case 'Enter':
               activeGlo.lineCrossPoints = !activeGlo.lineCrossPoints;
         			break;
-            /// Esc -- Rechargement de la page ///
+            /// Esc -- Rechargement de la page -- divers ///
         		case 'Escape':
               location.reload();
         			break;
-            /// ▼ -- Exécution pas à pas ///
+            /// ▼ -- Exécution pas à pas -- divers ///
         		case 'PageDown':
               if(!activeGlo.mode.totalBreak.state){ button_check('totalBreak'); }
               keepBreak(function(){});
         			break;
-            /// ² -- RAZ des avatars avec pose au hazard ///
+            /// ² -- RAZ des avatars avec pose au hazard -- avatar, RAZ ///
         		case '²':
               activeGlo.createMod = 'random';
               if(activeGlo.mode.clearForm.state){ clear(); }
               keepBreak(raz_avatars);
         			break;
-            /// + - -- Rapproche ou éloigne les avatars du centre ///
+            /// + - -- Rapproche ou éloigne les avatars du centre -- avatar, position ///
         		case '+': case '-':
               keepBreak(scale_avatars, key);
         			break;
-            /// _ -- Sauvegarde les modes et paramètres ///
+            /// _ -- Sauvegarde les modes et paramètres -- divers ///
         		case '_':
               takeShot();
         			break;
-            /// , -- Une spirale négative tourne dans le sens inverse ///
+            /// , -- Une spirale négative tourne dans le sens inverse -- divers ///
         		case ',':
               activeGlo.spiralOnlyInvrot = !activeGlo.spiralOnlyInvrot;
         			break;
-            /// = -- Interface visible ou pas ///
+            /// = -- Interface visible ou pas -- interface ///
         		case '=':
               showHideInterface();
         			break;
-            /// ; -- Variation de taille des avatars ///
+            /// ; -- Variation de taille des avatars -- avatar, taille ///
         		case ';':
               activeGlo.perm_var_size = !activeGlo.perm_var_size;
               activeGlo.sizeLineSave = activeGlo.params.line_size;
         			break;
-            /// : -- Avec gravité, affiche les points de rencontre des avatars ///
+            /// : -- Avec gravité, affiche les points de rencontre des avatars -- avatar, attraction ///
         		case ':':
               activeGlo.crossPoints = !activeGlo.crossPoints;
         			break;
-            /// < -- Dessine un cercle d'avatars ///
+            /// < -- Dessine un cercle d'avatars -- creation, avatar ///
         		case '<':
               keepBreak(glo_params, 'test');
               activeGlo.createMod = 'circle';
@@ -605,12 +605,12 @@ window.addEventListener("keydown", function (e) {
               if(activeGlo.mode.clearForm.state){ clear(); }
               createMenu = createForm({ form: {name: 'circle', size: canvas.width/4}, center: cent });
         			break;
-            /// > -- Rotation des couleurs de l'image ///
+            /// > -- Rotation des couleurs de l'image -- image, couleur ///
         		case '>':
               createMenu = false;
               rotateColor();
         			break;
-            /// ← -- Déplace les avatars vers la gauche ///
+            /// ← -- Déplace les avatars vers la gauche -- avatar, deplacement ///
             case 'ArrowLeft':
               if(!e.shiftKey){
                 activeGlo.trans.state = true;
@@ -618,7 +618,7 @@ window.addEventListener("keydown", function (e) {
               }
               else{ rotate_modifiers(-rad); }
               break;
-            /// → -- Déplace les avatars vers la droite ///
+            /// → -- Déplace les avatars vers la droite -- avatar, deplacement ///
             case 'ArrowRight':
               if(!e.shiftKey){
                 activeGlo.trans.state = true;
@@ -626,12 +626,12 @@ window.addEventListener("keydown", function (e) {
               }
               else{ rotate_modifiers(rad); }
               break;
-            /// ↑ -- Déplace les avatars vers le haut ///
+            /// ↑ -- Déplace les avatars vers le haut -- avatar, deplacement ///
             case 'ArrowUp':
               activeGlo.trans.state = true;
               activeGlo.trans.dir   = 'up';
               break;
-            /// ↓ -- Déplace les avatars vers le bas ///
+            /// ↓ -- Déplace les avatars vers le bas -- avatar, deplacement ///
             case 'ArrowDown':
               activeGlo.trans.state = true;
               activeGlo.trans.dir   = 'down';
@@ -647,7 +647,7 @@ window.addEventListener("keydown", function (e) {
         else{
           e.preventDefault();
           switch (key) {
-            /// Alt a -- Affiche une grille carrée ///
+            /// Alt a -- Affiche une grille carrée -- interface, grille ///
             case 'a':
               if(activeGlo.grid.type == 'square' || activeGlo.grid.type == 'none'){ activeGlo.grid.draw = !activeGlo.grid.draw; }
               activeGlo.grid.type = activeGlo.grid.draw ? 'square' : 'none';
@@ -656,12 +656,12 @@ window.addEventListener("keydown", function (e) {
             case 'b':
               activeGlo.modifierSelect.update('byGroup');
               break;
-            /// Alt c -- Menu avec CTRL ///
+            /// Alt c -- Menu avec CTRL -- interface, menu ///
             case 'c':
               createCanvasMenu(activeGlo.mode, 'ctrl');
               showMenu();
               break;
-            /// Alt e -- Affiche une grille au tiers ///
+            /// Alt e -- Affiche une grille au tiers -- interface, grille ///
             case 'e':
               if(activeGlo.grid.type == 'third' || activeGlo.grid.type == 'none'){ activeGlo.grid.draw = !activeGlo.grid.draw; }
               activeGlo.grid.type = activeGlo.grid.draw ? 'third' : 'none';
@@ -670,15 +670,15 @@ window.addEventListener("keydown", function (e) {
             case 'f':
               activeGlo.modifiersDrawNear = !activeGlo.modifiersDrawNear;
               break;
-            /// Alt g -- Pose des modifiers sur la grille ///
+            /// Alt g -- Pose des modifiers sur la grille -- modifier, grille ///
             case 'g':
               activeGlo.putOnGrid = !activeGlo.putOnGrid;
               break;
-            /// Alt h -- Affiche ou cache cette liste de touches ///
+            /// Alt h -- Affiche ou cache cette liste de touches -- interface ///
             case 'h':
               toggleHelpDialog();
               break;
-            /// Alt i -- Inverse l'attraction des modifiers ///
+            /// Alt i -- Inverse l'attraction des modifiers -- modifier, attraction ///
             case 'i':
               getSelectedModifiers().forEach(mod => { mod.attract = -mod.attract; mod.rot_spi = -mod.rot_spi; });
               break;
@@ -686,7 +686,7 @@ window.addEventListener("keydown", function (e) {
             case 'n':
               activeGlo.modifierSelect.update('byRectangle');
               break;
-            /// Alt q -- /10 le pas du slider seléctionné ///
+            /// Alt q -- /10 le pas du slider seléctionné -- interface ///
             case 'q':
               inputsSz = input_params.length;
               for(let i = 0; i < inputsSz; i++){
@@ -697,11 +697,11 @@ window.addEventListener("keydown", function (e) {
                 }
               }
               break;
-            /// Alt p -- Déplacement des modifiers sur la grille ///
+            /// Alt p -- Déplacement des modifiers sur la grille -- modifier, deplacement ///
             case 'p':
               putModsOnGrid();
               break;
-            /// Alt r -- Affiche une grille héxagonale ///
+            /// Alt r -- Affiche une grille héxagonale -- interface, grille ///
             case 'r':
               if(activeGlo.grid.type == 'hexagone' || activeGlo.grid.type == 'none'){ activeGlo.grid.draw = !activeGlo.grid.draw; }
               activeGlo.grid.type = activeGlo.grid.draw ? 'hexagone' : 'none';
@@ -711,11 +711,11 @@ window.addEventListener("keydown", function (e) {
               createCanvasBoolMenu();
               showMenu();
               break;
-            /// Alt t -- Affiche des infos ///
+            /// Alt t -- Affiche des infos -- info ///
             case 't':
               activeGlo.showInfos = !activeGlo.showInfos;
               break;
-            /// Alt u -- Pose un rectangle de modifiers ///
+            /// Alt u -- Pose un rectangle de modifiers -- modifier, creation ///
             case 'u':
               posRectModifiers();
               break;
@@ -723,26 +723,26 @@ window.addEventListener("keydown", function (e) {
             case 'v':
               activeGlo.modifierSelect.update('byOne');
               break;
-            /// Alt w -- Menu avec simples touches ///
+            /// Alt w -- Menu avec simples touches -- interface, menu ///
             case 'w':
               createCanvasMenu();
               showMenu();
               break;
-            /// Alt x -- Menu avec MAJ ///
+            /// Alt x -- Menu avec MAJ -- interface, menu ///
             case 'x':
               createCanvasMenu(activeGlo.mode, 'maj');
               showMenu();
               break;
-            /// Alt y -- Pose un carré de modifiers ///
+            /// Alt y -- Pose un carré de modifiers -- modifier, creation ///
             case 'y':
               posSquareModifiers();
               break;
-            /// Alt z -- Affiche une grille ronde ///
+            /// Alt z -- Affiche une grille ronde -- interface, grille ///
             case 'z':
               if(activeGlo.grid.type == 'circle' || activeGlo.grid.type == 'none'){ activeGlo.grid.draw = !activeGlo.grid.draw; }
               activeGlo.grid.type = activeGlo.grid.draw ? 'circle' : 'none';
               break;
-            /// Alt ç -- Rotation polygonale plus précise ///
+            /// Alt ç -- Rotation polygonale plus précise -- calcul ///
             case 'ç':
               activeGlo.polyPrecision = !activeGlo.polyPrecision;
               break;
@@ -759,11 +759,11 @@ window.addEventListener("keydown", function (e) {
             case '&':
               switchObjBools(activeGlo.posOnMouse, 'circleMods', false);
               break;
-            /// Alt + -- Augmente la visibilité de l'interface ///
+            /// Alt + -- Augmente la visibilité de l'interface -- interface ///
             case '+':
               if(ui.style.opacity < 1 && ui.style.opacity != ""){ ui.style.opacity = parseFloat(ui.style.opacity) + 0.02; }
               break;
-            /// Alt - -- Diminue la visibilité de l'interface ///
+            /// Alt - -- Diminue la visibilité de l'interface -- interface ///
             case '-':
               if(ui.style.opacity == ""){ ui.style.opacity = "0.99"; }
               else if(ui.style.opacity > 0){ ui.style.opacity = parseFloat(ui.style.opacity) - 0.02; }
@@ -781,7 +781,7 @@ window.addEventListener("keydown", function (e) {
                 else{ mod.select = false; }
               });
               break;
-            /// Alt < -- x10 le pas du slider seléctionné ///
+            /// Alt < -- x10 le pas du slider seléctionné -- interface ///
             case '<':
               inputsSz = input_params.length;
               for(let i = 0; i < inputsSz; i++){
@@ -792,19 +792,19 @@ window.addEventListener("keydown", function (e) {
                 }
               }
               break;
-            /// Alt ← -- Déplace les modifiers vers la gauche ///
+            /// Alt ← -- Déplace les modifiers vers la gauche -- deplacement, modifier ///
             case 'ArrowLeft':
               translateModifiers(-10, 0);
               break;
-            /// Alt → -- Déplace les modifiers vers la droite ///
+            /// Alt → -- Déplace les modifiers vers la droite -- deplacement, modifier ///
             case 'ArrowRight':
               translateModifiers(10, 0);
               break;
-            /// Alt ↑ -- Déplace les modifiers vers le haut ///
+            /// Alt ↑ -- Déplace les modifiers vers le haut -- deplacement, modifier ///
             case 'ArrowUp':
               translateModifiers(0, -10);
               break;
-            /// Alt ↓ -- Déplace les modifiers vers le bas ///
+            /// Alt ↓ -- Déplace les modifiers vers le bas -- deplacement, modifier ///
             case 'ArrowDown':
               translateModifiers(0, 10);
               break;
@@ -1113,8 +1113,15 @@ async function feedHelp(){
     tuchs = tuchs.map( tuch => {
       let infos = tuch.substring(4, tuch.length - 4).split(' -- ');
 
-      return {ctrl: infos[0].toLowerCase().includes("ctrl"), alt: infos[0].toLowerCase().includes("alt"), tuch: infos[0], action: infos[1]};
+      let tags = infos[2] ? infos[2].replace(/\s/g, '').split(',') : '';
+
+      if(tags){ tags.forEach(tag => { HTags.push(tag); }); }
+
+      return {ctrl: infos[0].toLowerCase().includes("ctrl"), alt: infos[0].toLowerCase().includes("alt"), tuch: infos[0], action: infos[1], tags: tags};
     });
+
+    if(HTags.length){ HTags = [...new Set(HTags)]; HTags.sort(); }
+
     constructHelpDialog();
   });
 }
@@ -1157,13 +1164,30 @@ function constructHelpDialog(){
 
     divContainer.style.display             = 'grid';
     divContainer.style.gridTemplateColumns = '50px 100%';
-    divContainer.style.columnGap = '5px';
+    divContainer.style.columnGap           = '5px';
+    divContainer.dataset.tags              = '';
 
     divContainer.appendChild(kbdTuch);
     divContainer.appendChild(divAction);
 
+    if(Array.isArray(tuch.tags)){ divContainer.dataset.tags = tuch.tags.join(','); }
+
     helpDialogGrid.appendChild(divContainer);
   });
+
+  HTags.forEach(HTag => {
+    let spanTag = document.createElement("span");
+    let txtTag  = document.createTextNode(HTag);
+
+    spanTag.className  = 'helpTag';
+    spanTag.dataset.on = 'false';
+    spanTag.appendChild(txtTag);
+
+    spanTag.setAttribute('onclick', 'updHelpByTags(event); ');
+
+    getById('HelpTags').appendChild(spanTag);
+  });
+
   [...document.getElementsByClassName('keys')].forEach(key => {
     key.addEventListener(
       "mouseenter",
@@ -1204,7 +1228,7 @@ function updHelp(event){
   [...helpDialogGrid.children].forEach(div => {
     [...div.children].forEach(divInfos => {
       if(divInfos.className.includes('helpTxt')){
-        if( divInfos.textContent.toLowerCase().includes(searchTxt.toLowerCase()) ){
+        if( removeAccents(divInfos.textContent).toLowerCase().includes(removeAccents(searchTxt.toLowerCase())) ){
           divInfos.parentElement.style.display = 'grid';
         }
         else{
@@ -1213,6 +1237,36 @@ function updHelp(event){
       }
     });
   }); 
+}
+function updHelpByTags(event){
+  event.stopPropagation();
+
+  let thisTag = event.target;
+
+  thisTag.dataset.on = thisTag.dataset.on === 'false' ? 'true' : 'false';
+  thisTag.classList.toggle("helpTagOn");
+
+  let spanTags = [...document.getElementsByClassName('helpTag')];
+  
+  let onTags = [];
+  spanTags.forEach(spanTag => {
+    if(spanTag.dataset.on === 'true'){ onTags.push(spanTag.textContent); }
+  });
+  
+  if(onTags.length){
+    [...helpDialogGrid.children].forEach(div => {
+        let divTags = removeAccents(div.dataset.tags.toLowerCase()).split(',');
+
+        let on = true;
+        onTags.forEach(onTag => {
+            if( !divTags.includes(removeAccents(onTag.toLowerCase())) ){ on = false; }
+        });
+        div.style.display = on ? 'grid' : 'none';
+    });
+  }
+  else{
+    [...helpDialogGrid.children].forEach(div => { div.style.display = 'grid'; });
+  }
 }
 
 function addClasses(domElem, ...args){

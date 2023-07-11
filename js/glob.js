@@ -375,6 +375,7 @@ var cancelAnimationFrame = window.cancelAnimationFrame || window.mozCancelAnimat
 var avatars     = [];
 var crossPoints = [];
 var tuchs       = [];
+var HTags       = [];
 
 avatars.apply = function(func){ this.forEach(avatar => { avatar[func](); }); };
 

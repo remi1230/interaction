@@ -1064,7 +1064,7 @@
           </div>
           <dialog id="helpDialog" style="width: 85%; height: 85%; position: absolute; top: -10px; border: none; border-radius: 5px; overflow-x: hidden"
                   oninput="event.stopPropagation(); " onchange="event.stopPropagation(); " onclick="event.stopPropagation(); ">
-            <div style="text-align: center; margin: 10px 0 20px; display: grid; grid-template-columns: 210px 210px; justify-content: space-between; "
+            <div style="text-align: center; margin-top: 10px; display: grid; grid-template-columns: 210px 210px; justify-content: space-between; "
                  oninput="event.stopPropagation(); " onchange="event.stopPropagation(); " onclick="event.stopPropagation(); ">
               <div>
                 <label for="searchInHelp">🔍</label>
@@ -1078,7 +1078,8 @@
                       min="0.01" max="1" value="0.67" step=".01">
               </div>
             </div>
-            <div id="helpDialogGrid" style="display: grid; grid-template-columns: repeat(3, 33%); column-gap: 10px; row-gap: 10px; "></div>
+            <div id="HelpTags" style="height: 40px; " onclick="event.stopPropagation(); "></div>
+            <div id="helpDialogGrid" style="display: grid; grid-template-columns: repeat(3, 33%); column-gap: 10px; row-gap: 10px; " onclick="event.stopPropagation(); "></div>
           </dialog>
           <div id="canvasContainer">
             <canvas id='structure' class='canvas'></canvas>
