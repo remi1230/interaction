@@ -697,7 +697,7 @@ window.addEventListener("keydown", function (e) {
                 }
               }
               break;
-            /// Alt p -- Déplacement des modifiers sur la grille -- modifier, deplacement ///
+            /// Alt p -- Déplacement des modifiers sur la grille -- modifier, deplacement, grille ///
             case 'p':
               putModsOnGrid();
               break;
@@ -838,7 +838,7 @@ window.addEventListener("keydown", function (e) {
         }
         else{
           switch (key) {
-            /// Ctrl a -- L'orientation des modifiers se fait depuis le centre ou pas ///
+            /// Ctrl a -- L'orientation des modifiers se fait depuis le centre ou pas -- modifier, orientation ///
             case 'a':
               activeGlo.orientedPoly = !activeGlo.orientedPoly;
               break;
@@ -846,23 +846,23 @@ window.addEventListener("keydown", function (e) {
             case 'b':
               activeGlo.modifiers.forEach(mod => { mod.select = false; });
               break;
-            /// Ctrl c -- Permet de définir le centre d'un click ///
+            /// Ctrl c -- Permet de définir le centre d'un click -- centre ///
             case 'c':
               activeGlo.defineCenter = !activeGlo.defineCenter;
               break;
-            /// Ctrl d -- RAZ du centre ///
+            /// Ctrl d -- RAZ du centre -- centre ///
             case 'd':
               defineCenter(false, false);
               break;
-            /// Ctrl e -- Inverse les couleurs de l'image ///
+            /// Ctrl e -- Inverse les couleurs de l'image -- image, couleur ///
             case 'e':
               invColors();
               break;
-            /// Ctrl j -- Les couleurs se mélangent ///
+            /// Ctrl j -- Les couleurs se mélangent -- couleur ///
             case 'j':
               activeGlo.colorsAdd = !activeGlo.colorsAdd;
               break;
-            /// Ctrl k -- Couleur de fond préférée ///
+            /// Ctrl k -- Couleur de fond préférée -- couleur ///
             case 'k':
               activeGlo.canvasLoveBg.state = !activeGlo.canvasLoveBg.state;
               if(activeGlo.canvasLoveBg.state){
@@ -873,15 +873,15 @@ window.addEventListener("keydown", function (e) {
                 canvas.style.backgroundColor = activeGlo.canvasLoveBg.save;
               }
               break;
-            /// Ctrl l -- Inverse périodiquement les couleurs ///
+            /// Ctrl l -- Inverse périodiquement les couleurs -- couleur ///
             case 'l':
               activeGlo.alternColor = !activeGlo.alternColor;
               break;
-            /// Ctrl m -- Pose des modifiers avec un position au hazard ///
+            /// Ctrl m -- Pose des modifiers avec un position au hazard -- modifier, pose ///
             case 'm':
               posModifiers();
               break;
-            /// Ctrl o -- Import d'un fichier JSON ///
+            /// Ctrl o -- Import d'un fichier JSON -- import ///
             case 'o':
               impt_json();
               break;
@@ -889,11 +889,11 @@ window.addEventListener("keydown", function (e) {
             case 'p':
               activeGlo.noBlankTest = !activeGlo.noBlankTest;
               break;
-            /// Ctrl q -- Avec rayon d'attraction, mode chaos ///
+            /// Ctrl q -- Avec rayon d'attraction, mode chaos -- attraction ///
             case 'q':
               activeGlo.chaos = !activeGlo.chaos;
               break;
-            /// Ctrl r -- Stroke au hazard ///
+            /// Ctrl r -- Stroke au hazard -- dessin ///
             case 'r':
               activeGlo.alea_stroke = !activeGlo.alea_stroke;
               break;
@@ -903,11 +903,11 @@ window.addEventListener("keydown", function (e) {
               updCtrl('wheel_force');
               activeGlo.modifiers.forEach(mod => { if(mod.virtual){ mod.attract = activeGlo.params.wheel_force; } });
               break;
-            /// Ctrl u -- Pose un polygone de modifiers ///
+            /// Ctrl u -- Pose un polygone de modifiers -- modifier, pose ///
             case 'u':
               posPolyModifiers();
               break;
-            /// Ctrl v -- Taille des avatars selon la distance des modifiers ///
+            /// Ctrl v -- Taille des avatars selon la distance des modifiers -- avatar, taille ///
             case 'v':
               activeGlo.sizeDirCoeff = !activeGlo.sizeDirCoeff;
               break;
@@ -925,23 +925,23 @@ window.addEventListener("keydown", function (e) {
               console.log(ctx.globalCompositeOperation);
 
               break;
-            /// Ctrl y -- Pose un cercle de modifiers ///
+            /// Ctrl y -- Pose un cercle de modifiers -- modifier, pose ///
             case 'y':
               posCircleModifiers();
               break;
-            /// Ctrl z -- Affiche les modifiers ///
+            /// Ctrl z -- Affiche les modifiers -- modifier ///
             case 'z':
               activeGlo.view_modifiers = !activeGlo.view_modifiers;
               break;
-            /// Ctrl ) -- Avatar virtuel ///
+            /// Ctrl ) -- Avatar virtuel -- avatar ///
             case ')':
               switchObjBools(activeGlo.virtual, 'avatar', false);
               break;
-            /// Ctrl & -- Infos persistantes ///
+            /// Ctrl & -- Infos persistantes -- info ///
             case '&':
               activeGlo.persistModsInfo = !activeGlo.persistModsInfo;
               break;
-            /// Ctrl ; -- La pose d'un avatar est virtuelle ///
+            /// Ctrl ; -- La pose d'un avatar est virtuelle -- avatar, pose ///
             case ';':
               switchObjBools(activeGlo.virtual, 'modifier', false);
               break;
@@ -949,24 +949,24 @@ window.addEventListener("keydown", function (e) {
             case '*':
               activeGlo.starPoly = !activeGlo.starPoly;
               break;
-            /// Ctrl , -- Pour des tests avec la souris ///
+            /// Ctrl , -- Pour des tests avec la souris -- info ///
             case ',':
               activeGlo.testOnMouse = !activeGlo.testOnMouse;
               break;
-            /// Ctrl ! -- Double les avatars ///
+            /// Ctrl ! -- Double les avatars -- avatar, dessin ///
             case '!':
               activeGlo.doubleAvatar = !activeGlo.doubleAvatar;
               activeGlo.noLimLine    = !activeGlo.noLimLine;
               break;
-            /// Ctrl + -- Augmente la distance au centre des modifiers ///
+            /// Ctrl + -- Augmente la distance au centre des modifiers -- modifier, position ///
             case '+': case '-':
               keepBreak(scale_modifiers, key);
               break;
-            /// Ctrl ² -- La distance ne compte plus pour les modifiers ///
+            /// Ctrl ² -- La distance ne compte plus pour les modifiers -- modifier ///
             case '²':
               modsToZero();
               break;
-            /// Ctrl < -- RAZ du slider seléctionné ///
+            /// Ctrl < -- RAZ du slider seléctionné -- interface, RAZ ///
             case '<':
               inputsSz = input_params.length;
               for(let i = 0; i < inputsSz; i++){
@@ -984,19 +984,19 @@ window.addEventListener("keydown", function (e) {
                 }
               }
               break;
-            /// Ctrl ← -- Déplace légèrement les modifiers vers la gauche ///
+            /// Ctrl ← -- Déplace légèrement les modifiers vers la gauche -- modifier, deplacement ///
               case 'ArrowLeft':
                 translateModifiers(-1, 0);
                 break;
-              /// Ctrl → -- Déplace légèrement les modifiers vers la droite ///
+              /// Ctrl → -- Déplace légèrement les modifiers vers la droite -- modifier, deplacement ///
               case 'ArrowRight':
                 translateModifiers(1, 0);
                 break;
-              /// Ctrl ↑ -- Déplace légèrement les modifiers vers le haut ///
+              /// Ctrl ↑ -- Déplace légèrement les modifiers vers le haut -- modifier, deplacement ///
               case 'ArrowUp':
                 translateModifiers(0, -1);
                 break;
-              /// Ctrl ↓ -- Déplace légèrement les modifiers vers le bas ///
+              /// Ctrl ↓ -- Déplace légèrement les modifiers vers le bas -- modifier, deplacement ///
               case 'ArrowDown':
                 translateModifiers(0, 1);
                 break;
@@ -1021,33 +1021,33 @@ window.addEventListener("keydown", function (e) {
             case '2':
               activeGlo.doubleMods = !activeGlo.doubleMods;
               break;
-            /// 3 -- Doubler les modifiers ///
+            /// 3 -- Doubler les modifiers -- modifier ///
             case '3':
               getSelectedModifiers().forEach(mod => { mod.double = !mod.double; mod.dblForce = mod.double ? 200 : 1; });
               break;
-            /// 4 -- Poser des avatars avec la souris ///
+            /// 4 -- Poser des avatars avec la souris -- avatar, pose ///
             case '4':
               switchObjBools(activeGlo.posOnMouse, 'avatar', false);
               break;
-            /// 5 -- Brake à zéro des modifers ///
+            /// 5 -- Brake à zéro des modifers -- modifier ///
             case '5':
               activeGlo.brakeModstoZero = !activeGlo.brakeModstoZero;
               if(activeGlo.brakeModstoZero){ getSelectedModifiers().forEach(mod => { mod.brakeSave = mod.brake; mod.brake = 0; }); }
               else{ getSelectedModifiers().forEach(mod => { mod.brake = mod.brakeSave; }); }
               break;
-            /// 6 -- Pose des modifiers en quinconce ///
+            /// 6 -- Pose des modifiers en quinconce -- modifier, pose ///
             case '6':
               activeGlo.staggered = !activeGlo.staggered;
               break;
-            /// 7 -- Couleur de fond = couleur moyenne (réactualisée) ///
+            /// 7 -- Couleur de fond = couleur moyenne (réactualisée) -- ///
             case '7':
               activeGlo.updBgToAvColor = !activeGlo.updBgToAvColor;
               break;
-            /// 8 -- Couleur de fond = inverse de couleur moyenne ///
+            /// 8 -- Couleur de fond = inverse de couleur moyenne -- image, couleur ///
             case '8':
               updBgToAvColor(true);
               break;
-            /// 9 -- Couleur de fond = couleur moyenne ///
+            /// 9 -- Couleur de fond = couleur moyenne -- image, couleur ///
             case '9':
               updBgToAvColor();
               break;
@@ -1057,7 +1057,7 @@ window.addEventListener("keydown", function (e) {
       else{
         e.preventDefault();
         switch (key) {
-          /// Ctrl 1 -- Résistance à 1 ///
+          /// Ctrl 1 -- Résistance à 1 -- attraction ///
           case '1':
             let ctrl_resist = getById('resist');
             ctrl_resist.value = 1;
@@ -1120,7 +1120,7 @@ async function feedHelp(){
       return {ctrl: infos[0].toLowerCase().includes("ctrl"), alt: infos[0].toLowerCase().includes("alt"), tuch: infos[0], action: infos[1], tags: tags};
     });
 
-    if(HTags.length){ HTags = [...new Set(HTags)]; HTags.sort(); }
+    if(HTags.length){ HTags = [...new Set(HTags)]; HTags.sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase())); }
 
     constructHelpDialog();
   });
@@ -1166,6 +1166,8 @@ function constructHelpDialog(){
     divContainer.style.gridTemplateColumns = '50px 100%';
     divContainer.style.columnGap           = '5px';
     divContainer.dataset.tags              = '';
+    divContainer.dataset.notInSearch       = 'false';
+    divContainer.dataset.notInTag          = 'false';
 
     divContainer.appendChild(kbdTuch);
     divContainer.appendChild(divAction);
@@ -1229,10 +1231,12 @@ function updHelp(event){
     [...div.children].forEach(divInfos => {
       if(divInfos.className.includes('helpTxt')){
         if( removeAccents(divInfos.textContent).toLowerCase().includes(removeAccents(searchTxt.toLowerCase())) ){
-          divInfos.parentElement.style.display = 'grid';
+          divInfos.parentElement.style.display       = div.dataset.notInTag === 'false' ? 'grid' : 'none';
+          divInfos.parentElement.dataset.notInSearch = 'false';
         }
         else{
-          divInfos.parentElement.style.display = 'none';
+          divInfos.parentElement.style.display       = 'none';
+          divInfos.parentElement.dataset.notInSearch = 'true';
         }
       }
     });
@@ -1261,11 +1265,12 @@ function updHelpByTags(event){
         onTags.forEach(onTag => {
             if( !divTags.includes(removeAccents(onTag.toLowerCase())) ){ on = false; }
         });
-        div.style.display = on ? 'grid' : 'none';
+        div.style.display    = on && div.dataset.notInSearch === 'false' ? 'grid' : 'none';
+        div.dataset.notInTag = on ? 'false' : 'true';
     });
   }
   else{
-    [...helpDialogGrid.children].forEach(div => { div.style.display = 'grid'; });
+    [...helpDialogGrid.children].forEach(div => { div.style.display = div.dataset.notInSearch === 'false' ? 'grid' : 'none'; div.dataset.notInTag = 'false'; });
   }
 }
 
