@@ -803,3 +803,14 @@ function makeColorInPalette(hue, palette){
 }
 
 const removeAccents = str => str.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+
+function digital_root(number)
+{
+  res = array_sum([...number.toString()].map(x => +x));
+  
+  if(res.toString().length > 1){ res = digital_root(res); }
+  
+  return res;
+}
+
+const array_sum = arr => arr.reduce((a,b) => a+b, 0);

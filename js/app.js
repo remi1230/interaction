@@ -418,7 +418,7 @@ function createAvatar(options = {}){
   }
   all_nearsAvatars();
 
-  if(activeGlo.mode.alea_size.state){ alea_size(); }
+  if(activeGlo.alea_size){ alea_size(); }
 
   let avatarsLength = avatars.length;
   getById('nb').value = avatarsLength;
@@ -664,7 +664,7 @@ function animation(){
 }
 
 function positionAvatars(){
-  if(activeGlo.mode.clear.state){ ctx.clearRect(0, 0, canvas.width, canvas.height); }
+  if(activeGlo.clear){ ctx.clearRect(0, 0, canvas.width, canvas.height); }
 
   var speed = 0; var speeds = []; var accel = 0; var accels = []; activeGlo.dist_moy = 0;
   for(let i = 0; i < avatars.length; i++){
@@ -721,7 +721,7 @@ function positionAvatars(){
       avatar.direction = avatar.dirSave;
     }
 
-    //if(!activeGlo.mode.clear.state && activeGlo.curve){dataCanvas[round(avatar.y,0) * canvas.width + round(avatar.x,0)] = 1;}
+    //if(!activeGlo.clear && activeGlo.curve){dataCanvas[round(avatar.y,0) * canvas.width + round(avatar.x,0)] = 1;}
   }
 
   /*for(let i = 0; i < avatars.length; i++){
@@ -3042,7 +3042,7 @@ function glo_params(style = 'gravity'){
       };
       activeGlo.bg_black                 = true;
       activeGlo.numLineCap               = 1;
-      activeGlo.mode.alphaAbs.state      = true;
+      activeGlo.alphaAbs                 = true;
       activeGlo.mode.tail.state          = false;
       activeGlo.mode.collid_bord.state   = false;
       canvas.style.backgroundColor = '#000';
@@ -3548,7 +3548,7 @@ function switchHyperAlea() {
 }
 //------------------ TAILLE ALÉATOIRE DES AVATARS ----------------- //
 function alea_size(){
-  if(activeGlo.mode.alea_size.state){
+  if(activeGlo.alea_size){
     let lvss = activeGlo.params.level_var_s_size;
     avatars.forEach(avatar => {
       avatar.size = rnd() > 0.9 ? activeGlo.size * getRandomIntInclusive(1,3) * lvss : activeGlo.size * rnd() / lvss;
@@ -3898,7 +3898,7 @@ function changeInterface(dir){
 }
 
 function razAvPaths(){
-  if(activeGlo.mode.clear.state){
+  if(activeGlo.clear){
     avatars.forEach(av => {
       av.path     = new Path2D();
       av.selfPath = new Path2D();

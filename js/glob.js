@@ -177,13 +177,13 @@ class Glob {
             satStroke      : true,
         };
         this.mode = {
-            alpha: { name: 'Alpha', state: false, key: 'a', noAlea: true, },
-            alea_attract: { name: 'Alea attract', state: false, key: 'h' },
-            alea_form: { name: 'Alea form', state: false, key: 'l', noAlea: true, },
-            alea_inv_g: { name: 'Alea inv G', state: false, key: 'p' },
-            alea_size: { name: 'Alea size', state: false, key: 's', noAlea: true, callback: function() { alea_size(); } },
-            attract_size: { name: 'Attract size', state: false, key: 'z' },
-            clear: { name: 'Clear', state: true, key: 'e', noAlea: true, callback: function(){ razAvPaths(); } },
+            //alpha: { name: 'Alpha', state: false, key: 'a', noAlea: true, },
+            //alea_attract: { name: 'Alea attract', state: false, key: 'h' },
+            //alea_form: { name: 'Alea form', state: false, key: 'l', noAlea: true, },
+            //alea_inv_g: { name: 'Alea inv G', state: false, key: 'p' },
+            //alea_size: { name: 'Alea size', state: false, key: 's', noAlea: true, callback: function() { alea_size(); } },
+            //attract_size: { name: 'Attract size', state: false, key: 'z' },
+            //clear: { name: 'Clear', state: true, key: 'e', noAlea: true, callback: function(){ razAvPaths(); } },
             collid_bord: { name: 'Collid border', state: false, key: '$', noAlea: true, },
             color_white: { name: 'Color white', state: false, key: 'w', noAlea: true, callback: function() { buttonCheckPropToAnother(_this.mode, this.state, "color_black"); }, },
             color_black: { name: 'Color black', state: false, key: 'n', noAlea: true, callback: function() { buttonCheckPropToAnother(_this.mode, this.state, "color_white"); }, },
@@ -194,13 +194,12 @@ class Glob {
             normalCollid: { name: 'Normal collid', state: false, key: 'x' },
             orbite: { name: 'Orbite', state: false, key: 'o' },
             relative: { name: 'Relative', state: true, key: '!' },
-            colorAdd: { name: 'Color add', state: false, key: 'y', rotate_angle: 0.017, },
             speed_color: { name: 'Speed color', state: true, key: 'v', noAlea: true, },
             stroke: { name: 'Stroke', state: false, key: 'k' },
             var_size: { name: 'Var size', state: false, key: 'm', noAlea: true, },
             break: { name: 'Simple break', state: false, key: ' ', specialKey: 'ctrl', noAlea: true, callback: function() { dealBreakAvatars(); } },
             totalBreak: { name: 'Total break', state: false, key: ' ', noAlea: true, },
-            alphaAbs: { name: 'Alpha absolu', state: false, key: 'Q', noAlea: true, },
+            //alphaAbs: { name: 'Alpha absolu', state: false, key: 'Q', noAlea: true, },
             gSpeed: { name: 'Attract by speed', state: false, key: 'Y' },
             clearForm: { name: 'Clear form', state: true, key: 'R', noAlea: true, },
             color_max: { name: 'Color by max', state: false, key: 'P', noAlea: true, },
@@ -208,7 +207,7 @@ class Glob {
             drawAltern: { name: 'Draw altern', state: false, key: 'N', noAlea: true, },
             attract_center: { name: 'Mouse attract center', state: false, key: 'T', noAlea: true, },
             alphaBySize: { name: 'Alpha by size', state: false, key: 'O', noAlea: true, },
-            spiral: { name: 'Spiral', state: false, key: 'S', noAlea: true, },
+            spiral: { name: 'Spiral', state: false, key: 'S', noAlea: true, }, 
             spiral_cross: { name: 'Spiral cross', state: false, key: 'M', noAlea: true, },
             spiral_cross_rotate: { name: 'Spiral cross rotate', state: false, key: 'H', noAlea: true, },
             inv_spiral: { name: 'Spiral inv', state: false, key: 'D', noAlea: true, },
@@ -310,6 +309,7 @@ class Glob {
         this.colorFunction  = 'distMod';
         this.is_canvas_menu = false;
         this.other_menu = false;
+        this.clear = true;
         this.modifiersDrawNear = true;
         this.orientedPoly = true;
         this.posMods = true;

@@ -523,8 +523,7 @@ class Avatar {
     let chaos_force    = obj.params.chaos_force;
     let follow_force_x = obj.params.follow_force_x;
     let follow_force_y = obj.params.follow_force_y;
-    let alea_attract   = obj.mode.alea_attract.state;
-    let attract_size   = obj.mode.attract_size.state;
+    let alea_attract   = activeGlo.alea_attract;
     let inv_g          = obj.mode.inverse_g.state ? -1 : 1;
     let dist_mean      = obj.mode.dist_mean.state;
     let dist_moy       = activeGlo.dist_moy;
@@ -533,7 +532,7 @@ class Avatar {
     let is_chaos       = obj.chaos;
     let breakAdd       = obj.params.breakAdd;
 
-    if(activeGlo.mode.alea_inv_g.state){ inv_g = activeGlo.nb_moves%dep_dir == 0 ? -activeGlo.params.inv_g_force : 1; }
+    if(activeGlo.alea_inv_g){ inv_g = activeGlo.nb_moves%dep_dir == 0 ? -activeGlo.params.inv_g_force : 1; }
 
     this.ax = 0;
     this.ay = 0;
@@ -573,7 +572,7 @@ class Avatar {
         if(dist >= lim_attract){
           brake = breakAdd + pow(dist, brake_pow);
           att = alea_attract ? getRandomIntInclusive(1, attract*10) : attract;
-          siz = attract_size ? pow(this.size, 2) : this.size;
+          siz = this.size;
 
           vit = !obj.mode.gSpeed.state ? 1 : avatar.vit().v;
 
@@ -986,7 +985,7 @@ class Avatar {
     }
 
     let angle = this.curveAngle;
-    if(activeGlo.nb_moves%activeGlo.params.changeCurve==0 || !this.curveRot){
+    if(this.it%activeGlo.params.changeCurve==0 || !this.curveRot){
       this.curveRot = {x: pos.x + rnd_sign()*rCurve, y: pos.y + rnd_sign()*rCurve};
       this.sw = Math.sign(rnd_sign());
     }
@@ -1170,7 +1169,7 @@ class Avatar {
     let var_cent_col  = obj.params.var_center_col;
     let varMoveCol    = obj.params.varMoveCol;
     let move          = obj.mode.speed_color.state ? this.speed : this.accel;
-    let move_max      = obj.mode.speed_color.state ? obj.speed_max : obj.accel_max;
+    let move_max      = obj.mode.speed_color.state ? activeGlo.speed_max : activeGlo.accel_max;
 
 
     let cd = !this.nearMod.colorDec && this.nearMod.colorDec != 0 ? obj.params.colorDec : this.nearMod.colorDec;
@@ -1368,11 +1367,11 @@ class Avatar {
     }
 
     let a = 1;
-    if(!obj.mode.alphaAbs.state){
-      a = obj.mode.alpha.state ? 1/(1+move) : 1;
+    if(!obj.alphaAbs){
+      a = obj.alpha ? 1/(1+move) : 1;
       a = a < obj.params.alpha_color ? obj.params.alpha_color : a;
     }
-    else{ a = !this.nearMod.alpha ? obj.params.alpha_color : this.nearMod.alpha ; }
+    else{ a = !this.nearMod.alpha ? obj.params.alpha_color : this.nearMod.alpha; }
 
     if(obj.mode.alphaBySize.state){
       let c = this.sizeCalc.s - obj.params.alphaBySize;
@@ -1390,12 +1389,6 @@ class Avatar {
     if(tint_stroke < 0){ tint_stroke = 0; }
     if(satStroke < 0){ satStroke = 0; }
     if(sat < 0){ sat = 0; }
-
-    if(activeGlo.mode.colorAdd.state){
-      let color = hslaSum([{h: this.hsl.h, s: this.hsl.s, l: this.hsl.l, a: this.hsl.a, p: 1}, {h: move, s: sat, l: tint, a: a, p: 1}]);
-
-      move = color.h; sat = color.s; tint = color.l; a = color.a;
-    }
 
     //if(obj.oneColor.state){ move = activeGlo.oneColor.color.h; sat = activeGlo.oneColor.color.s; tint = activeGlo.oneColor.color.l;  }
     if(activeGlo.oneColor.state){ move = activeGlo.oneColor.color.h; sat = activeGlo.oneColor.color.s; tint = activeGlo.oneColor.color.l;  }

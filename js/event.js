@@ -250,7 +250,7 @@ function defineMinOrMax(obj_param){
 }
 //------------------ RESIZE CANVAS WHEN RESIZE WINDOW ----------------- //
 window.addEventListener('resize', function () {
-  if(activeGlo.mode.clear.state){ allCanvas.forEach(canvas => { fix_dpi(canvas); }); }
+  if(activeGlo.clear){ allCanvas.forEach(canvas => { fix_dpi(canvas); }); }
 });
 
 function changeGloAndMods(prop, mode = false){
@@ -288,20 +288,11 @@ window.addEventListener("keydown", function (e) {
               break;
             /// F1 -- Effacement du canvas -- canvas ///
             case 'F1':
-              activeGlo.mode.clear.state = !activeGlo.mode.clear.state;
+              activeGlo.clear = !activeGlo.clear;
 
               break;
             /// F2 -- Style dessin -- dessin ///
             case 'F2':
-              /*activeGlo.shortcut.alphaVarSize = !activeGlo.shortcut.alphaVarSize;
-              activeGlo.perm_var_size = activeGlo.shortcut.alphaVarSize;
-              activeGlo.growDecrease  = activeGlo.shortcut.alphaVarSize;
-              button_check('alphaAbs');
-
-              if(activeGlo.growDecrease){ activeGlo.sizeLineSave = activeGlo.params.line_size; }
-              else{ activeGlo.params.line_size = activeGlo.sizeLineSave; }*/
-
-              //doNotInMods = true;
               alphaVarSize(activeGlo);
               getSelectedModifiers().forEach(mod => { alphaVarSize(mod.glo, false); });
 
@@ -368,8 +359,11 @@ window.addEventListener("keydown", function (e) {
               });
               activeGlo.modifiersHaveColor = !activeGlo.modifiersHaveColor;
 
-
               break;
+            /// a -- L'alpha varie aléatoirement -- avatar, dessin -- alpha ///
+        		case 'a':
+                    activeGlo.alpha = !activeGlo.alpha;
+        			break;
             /// b -- Les modifiers ont la couleur sélectionnée avec l'interface -- couleur, modifier ///
         		case 'b':
                     activeGlo.oneColor.state = !activeGlo.oneColor.state;
@@ -381,6 +375,10 @@ window.addEventListener("keydown", function (e) {
                     if(activeGlo.mode.clearForm.state){ clear(); }
                     createMenu = createForm({ form: {name: 'circle', size: canvas.width/4}, center: center });
         			break;
+            /// h -- L'attraction entre avatars est hazardeuse -- avatar, attraction -- alea_attract ///
+        		case 'h':
+                    activeGlo.alea_attract = !activeGlo.alea_attract;
+        			break;
             /// j -- Télécharge un png du canvas -- canvas, image ///
         		case 'j':
               downloadCanvas();
@@ -389,6 +387,10 @@ window.addEventListener("keydown", function (e) {
         		case 'n':
               activeGlo.numLineCap++;
               applyToSelectedMods('numLineCap');
+        			break;
+            /// p -- Inverse aléatoirement l'attraction entre avatars -- attraction, avatar -- alea_inv_g ///
+        		case 'p':
+              activeGlo.alea_inv_g = !activeGlo.alea_inv_g;
         			break;
             /// q -- Créer un carré d'avatars -- avatar, creation ///
         		case 'q':
@@ -402,7 +404,12 @@ window.addEventListener("keydown", function (e) {
               if(activeGlo.mode.clearForm.state){ clear(); }
               keepBreak(raz_avatars);
         			break;
-            /// t -- Affiche le centre -- info, centre ///
+            /// s -- Taille des avatars aléatoire -- avatars, taille -- alea_size ///
+        		case 's':
+              activeGlo.alea_size = !activeGlo.alea_size;
+              alea_size();
+        			break;
+            /// t -- Affiche le centre -- info, centre -- view_center ///
         		case 't':
               activeGlo.view_center = !activeGlo.view_center;
         			break;
@@ -416,7 +423,7 @@ window.addEventListener("keydown", function (e) {
         		case 'z':
               grey_color();
         			break;
-            /// A -- Déplacer un curseur attribue la valeur réélle de celui-ci -- divers ///
+            /// A -- Déplacer un curseur attribue la valeur réélle de celui-ci -- divers -- updByVal ///
         		case 'A':
               activeGlo.updByVal = !activeGlo.updByVal;
         			break;
@@ -424,20 +431,20 @@ window.addEventListener("keydown", function (e) {
         		case 'C':
               sharp();
         			break;
-            /// F -- Modifiers en mode une couleur -- modifier, couleur ///
+            /// F -- Modifiers en mode une couleur -- modifier, couleur -- modifiersHaveColor ///
         		case 'F':
               getSelectedModifiers().forEach(mod => { mod.haveColor = !mod.haveColor; });
               activeGlo.modifiersHaveColor = !activeGlo.modifiersHaveColor;
         			break;
-            /// G -- Les modifiers d'une seule couleur varie ou non la teinte -- modifier, couleur ///
+            /// G -- Les modifiers d'une seule couleur varie ou non la teinte -- modifier, couleur -- addWithTint ///
         		case 'G':
               activeGlo.addWithTint = !activeGlo.addWithTint;
         			break;
-            /// I -- Les couleurs sont calculées à partir des formules -- formule, couleur ///
+            /// I -- Les couleurs sont calculées à partir des formules -- formule, couleur -- formuleColorMode ///
         		case 'I':
               activeGlo.formuleColorMode = !activeGlo.formuleColorMode;
         			break;
-            /// J -- Les modifiers affectent les avatars tour à tour -- modifier, calcul ///
+            /// J -- Les modifiers affectent les avatars tour à tour -- modifier, calcul -- asyncModify ///
         		case 'J':
               activeGlo.asyncModify = !activeGlo.asyncModify;
               if(activeGlo.asyncModify){ activeGlo.asyncNumModifier = 0; }
@@ -446,7 +453,11 @@ window.addEventListener("keydown", function (e) {
         		case 'L':
               activeGlo.modifiers.forEach(mod => { mod.select = false; if(round(rnd(), 0)){ mod.select = true; } });
         			break;
-            /// V -- Le rayon de pose des avatars à comme centre les modifiers -- avatar, pose ///
+            /// Q -- Alpha absolu ou relatif -- avatar, dessin -- alphaAbs ///
+        		case 'Q':
+              activeGlo.alphaAbs = !activeGlo.alphaAbs;
+        			break;
+            /// V -- Le rayon de pose des avatars à comme centre les modifiers -- avatar, pose -- randomPointByMod ///
         		case 'V':
               activeGlo.randomPointByMod = !activeGlo.randomPointByMod;
         			break;
@@ -461,7 +472,7 @@ window.addEventListener("keydown", function (e) {
               inputColorDec.value = inputColorDec.value == '0' ? '180' : '0';
               inputColorDec.dispatchEvent(new Event('input', { bubbles: true, cancelable: true, }));
         			break;
-            /// à -- Inverse le brake -- calcul ///
+            /// à -- Inverse le brake -- attraction -- invBrake ///
         		case 'à':
               activeGlo.invBrake = !activeGlo.invBrake;
         			break;
@@ -469,7 +480,7 @@ window.addEventListener("keydown", function (e) {
         		case 'ç':
               goToShot();
         			break;
-            /// é -- L'alpha des avatars change au hazard -- avatar, dessin ///
+            /// é -- L'alpha des avatars change au hazard -- avatar, dessin -- alphaRnd ///
         		case 'é':
               activeGlo.alphaRnd = !activeGlo.alphaRnd;
         			break;
@@ -480,18 +491,18 @@ window.addEventListener("keydown", function (e) {
               if(activeGlo.mode.clearForm.state){ clear(); }
               createMenu = createForm({ form: {name: 'spiral', size: canvas.width/4}, center: center });
         			break;
-            /// ù -- Switch entre un fond noir et blanc -- image, couleur ///
+            /// ù -- Switch entre un fond noir et blanc -- image, couleur -- bg_black ///
         		case 'ù':
               activeGlo.bg_black = !activeGlo.bg_black;
               canvasContext[activeGlo.params.selectCanvas].canvas.style.backgroundColor = activeGlo.bg_black ? '#000' : '#fff';
         			break;
-            /// & -- Mode de croissance hazardeuse des avatars -- avatar, taille ///
+            /// & -- Mode de croissance hazardeuse des avatars -- avatar, taille -- growDecrease ///
         		case '&':
               activeGlo.growDecrease = !activeGlo.growDecrease;
               if(activeGlo.growDecrease){ activeGlo.sizeLineSave = activeGlo.params.line_size; }
               else{ avatars.forEach(av => { av.size = activeGlo.size; }); activeGlo.params.line_size = activeGlo.sizeLineSave; }
         			break;
-            /// " -- Les alternateurs inversent leur attraction suivant une période -- modifier, calcul ///
+            /// " -- Les alternateurs inversent leur attraction suivant une période -- modifier -- alternatorInvAtt ///
         		case '"':
               activeGlo.alternatorInvAtt = !activeGlo.alternatorInvAtt;
         			break;
@@ -510,11 +521,11 @@ window.addEventListener("keydown", function (e) {
               });
               activeGlo.modifiersHaveColor = !activeGlo.modifiersHaveColor;
         			break;
-            /// ) -- Mode de déplacement en courbe -- dessin ///
+            /// ) -- Mode de déplacement en courbe -- dessin -- curve ///
         		case ')':
               activeGlo.curve = !activeGlo.curve;
               break;
-            /// ° -- L'attraction augmente suivant la distance du modifier -- attraction, modifier ///
+            /// ° -- L'attraction augmente suivant la distance du modifier -- attraction, modifier -- forceByCenter ///
         		case '°':
               activeGlo.forceByCenter = !activeGlo.forceByCenter;
         			break;
@@ -539,7 +550,7 @@ window.addEventListener("keydown", function (e) {
                 mod.select = true;
               });
         			break;
-            /// % -- La taille des avatars diminue suivant la distance du centre -- avatar, taille ///
+            /// % -- La taille des avatars diminue suivant la distance du centre -- avatar, taille -- dimSizeCenter ///
         		case '%':
               activeGlo.dimSizeCenter = !activeGlo.dimSizeCenter;
         			break;
@@ -553,7 +564,7 @@ window.addEventListener("keydown", function (e) {
               if(activeGlo.dash > 1){ activeGlo.dash--; }
               applyToSelectedMods('dash');
         			break;
-            /// Etr -- Avec gravité, relie les points de rencontre des avatars -- avatar, attraction ///
+            /// ⏎ -- Avec gravité, relie les points de rencontre des avatars -- avatar, attraction -- lineCrossPoints ///
         		case 'Enter':
               activeGlo.lineCrossPoints = !activeGlo.lineCrossPoints;
         			break;
@@ -580,7 +591,7 @@ window.addEventListener("keydown", function (e) {
         		case '_':
               takeShot();
         			break;
-            /// , -- Une spirale négative tourne dans le sens inverse -- divers ///
+            /// , -- Une spirale négative tourne dans le sens inverse -- divers -- spiralOnlyInvrot ///
         		case ',':
               activeGlo.spiralOnlyInvrot = !activeGlo.spiralOnlyInvrot;
         			break;
@@ -588,12 +599,12 @@ window.addEventListener("keydown", function (e) {
         		case '=':
               showHideInterface();
         			break;
-            /// ; -- Variation de taille des avatars -- avatar, taille ///
+            /// ; -- Variation de taille des avatars -- avatar, taille -- perm_var_size ///
         		case ';':
               activeGlo.perm_var_size = !activeGlo.perm_var_size;
               activeGlo.sizeLineSave = activeGlo.params.line_size;
         			break;
-            /// : -- Avec gravité, affiche les points de rencontre des avatars -- avatar, attraction ///
+            /// : -- Avec gravité, affiche les points de rencontre des avatars -- avatar, attraction -- crossPoints ///
         		case ':':
               activeGlo.crossPoints = !activeGlo.crossPoints;
         			break;
@@ -670,7 +681,7 @@ window.addEventListener("keydown", function (e) {
             case 'f':
               activeGlo.modifiersDrawNear = !activeGlo.modifiersDrawNear;
               break;
-            /// Alt g -- Pose des modifiers sur la grille -- modifier, grille ///
+            /// Alt g -- Pose des modifiers sur la grille -- modifier, grille -- putOnGrid ///
             case 'g':
               activeGlo.putOnGrid = !activeGlo.putOnGrid;
               break;
@@ -711,7 +722,7 @@ window.addEventListener("keydown", function (e) {
               createCanvasBoolMenu();
               showMenu();
               break;
-            /// Alt t -- Affiche des infos -- info ///
+            /// Alt t -- Affiche des infos -- info -- showInfos ///
             case 't':
               activeGlo.showInfos = !activeGlo.showInfos;
               break;
@@ -742,7 +753,7 @@ window.addEventListener("keydown", function (e) {
               if(activeGlo.grid.type == 'circle' || activeGlo.grid.type == 'none'){ activeGlo.grid.draw = !activeGlo.grid.draw; }
               activeGlo.grid.type = activeGlo.grid.draw ? 'circle' : 'none';
               break;
-            /// Alt ç -- Rotation polygonale plus précise -- calcul ///
+            /// Alt ç -- Rotation polygonale plus précise -- calcul -- polyPrecision  ///
             case 'ç':
               activeGlo.polyPrecision = !activeGlo.polyPrecision;
               break;
@@ -754,10 +765,6 @@ window.addEventListener("keydown", function (e) {
             case '&':
               if(activeGlo.grid.type == 'spirale' || activeGlo.grid.type == 'none'){ activeGlo.grid.draw = !activeGlo.grid.draw; }
               activeGlo.grid.type = activeGlo.grid.draw ? 'spirale' : 'none';
-              break;
-            //FREE
-            case '&':
-              switchObjBools(activeGlo.posOnMouse, 'circleMods', false);
               break;
             /// Alt + -- Augmente la visibilité de l'interface -- interface ///
             case '+':
@@ -838,7 +845,7 @@ window.addEventListener("keydown", function (e) {
         }
         else{
           switch (key) {
-            /// Ctrl a -- L'orientation des modifiers se fait depuis le centre ou pas -- modifier, orientation ///
+            /// Ctrl a -- L'orientation des modifiers se fait depuis le centre ou pas -- modifier, orientation -- orientedPoly ///
             case 'a':
               activeGlo.orientedPoly = !activeGlo.orientedPoly;
               break;
@@ -846,7 +853,7 @@ window.addEventListener("keydown", function (e) {
             case 'b':
               activeGlo.modifiers.forEach(mod => { mod.select = false; });
               break;
-            /// Ctrl c -- Permet de définir le centre d'un click -- centre ///
+            /// Ctrl c -- Permet de définir le centre d'un click -- centre -- defineCenter ///
             case 'c':
               activeGlo.defineCenter = !activeGlo.defineCenter;
               break;
@@ -858,7 +865,7 @@ window.addEventListener("keydown", function (e) {
             case 'e':
               invColors();
               break;
-            /// Ctrl j -- Les couleurs se mélangent -- couleur ///
+            /// Ctrl j -- Les couleurs se mélangent -- couleur -- colorsAdd ///
             case 'j':
               activeGlo.colorsAdd = !activeGlo.colorsAdd;
               break;
@@ -873,7 +880,7 @@ window.addEventListener("keydown", function (e) {
                 canvas.style.backgroundColor = activeGlo.canvasLoveBg.save;
               }
               break;
-            /// Ctrl l -- Inverse périodiquement les couleurs -- couleur ///
+            /// Ctrl l -- Inverse périodiquement les couleurs -- couleur -- alternColor ///
             case 'l':
               activeGlo.alternColor = !activeGlo.alternColor;
               break;
@@ -889,11 +896,11 @@ window.addEventListener("keydown", function (e) {
             case 'p':
               activeGlo.noBlankTest = !activeGlo.noBlankTest;
               break;
-            /// Ctrl q -- Avec rayon d'attraction, mode chaos -- attraction ///
+            /// Ctrl q -- Avec rayon d'attraction, mode chaos -- attraction -- chaos ///
             case 'q':
               activeGlo.chaos = !activeGlo.chaos;
               break;
-            /// Ctrl r -- Stroke au hazard -- dessin ///
+            /// Ctrl r -- Stroke au hazard -- dessin -- alea_stroke ///
             case 'r':
               activeGlo.alea_stroke = !activeGlo.alea_stroke;
               break;
@@ -907,7 +914,7 @@ window.addEventListener("keydown", function (e) {
             case 'u':
               posPolyModifiers();
               break;
-            /// Ctrl v -- Taille des avatars selon la distance des modifiers -- avatar, taille ///
+            /// Ctrl v -- Taille des avatars selon la distance des modifiers -- avatar, taille -- sizeDirCoeff ///
             case 'v':
               activeGlo.sizeDirCoeff = !activeGlo.sizeDirCoeff;
               break;
@@ -929,7 +936,7 @@ window.addEventListener("keydown", function (e) {
             case 'y':
               posCircleModifiers();
               break;
-            /// Ctrl z -- Affiche les modifiers -- modifier ///
+            /// Ctrl z -- Affiche les modifiers -- modifier -- view_modifiers ///
             case 'z':
               activeGlo.view_modifiers = !activeGlo.view_modifiers;
               break;
@@ -937,7 +944,7 @@ window.addEventListener("keydown", function (e) {
             case ')':
               switchObjBools(activeGlo.virtual, 'avatar', false);
               break;
-            /// Ctrl & -- Infos persistantes -- info ///
+            /// Ctrl & -- Infos persistantes -- info -- persistModsInfo ///
             case '&':
               activeGlo.persistModsInfo = !activeGlo.persistModsInfo;
               break;
@@ -945,15 +952,15 @@ window.addEventListener("keydown", function (e) {
             case ';':
               switchObjBools(activeGlo.virtual, 'modifier', false);
               break;
-            /// Ctrl * --  ///
+            /// Ctrl * -- Les avatars polygonales ont la forme d'une étoile -- avatar, dessin -- starPoly ///
             case '*':
               activeGlo.starPoly = !activeGlo.starPoly;
               break;
-            /// Ctrl , -- Pour des tests avec la souris -- info ///
+            /// Ctrl , -- Pour des tests avec la souris -- info -- testOnMouse ///
             case ',':
               activeGlo.testOnMouse = !activeGlo.testOnMouse;
               break;
-            /// Ctrl ! -- Double les avatars -- avatar, dessin ///
+            /// Ctrl ! -- Double les avatars -- avatar, dessin -- doubleAvatar ///
             case '!':
               activeGlo.doubleAvatar = !activeGlo.doubleAvatar;
               activeGlo.noLimLine    = !activeGlo.noLimLine;
@@ -1035,11 +1042,11 @@ window.addEventListener("keydown", function (e) {
               if(activeGlo.brakeModstoZero){ getSelectedModifiers().forEach(mod => { mod.brakeSave = mod.brake; mod.brake = 0; }); }
               else{ getSelectedModifiers().forEach(mod => { mod.brake = mod.brakeSave; }); }
               break;
-            /// 6 -- Pose des modifiers en quinconce -- modifier, pose ///
+            /// 6 -- Pose des modifiers en quinconce -- modifier, pose -- staggered ///
             case '6':
               activeGlo.staggered = !activeGlo.staggered;
               break;
-            /// 7 -- Couleur de fond = couleur moyenne (réactualisée) -- ///
+            /// 7 -- Couleur de fond = couleur moyenne (réactualisée) -- couleur, image -- updBgToAvColor ///
             case '7':
               activeGlo.updBgToAvColor = !activeGlo.updBgToAvColor;
               break;
@@ -1078,6 +1085,10 @@ window.addEventListener("keydown", function (e) {
       for(let prop in activeGlo){
         if(typeof activeGlo[prop] === 'boolean' && activeGlo[prop] !== activeGloSave[prop]){
           getSelectedModifiers().forEach(mod => { mod.glo[prop] = activeGlo[prop]; } );
+          let tuch = tuchs.find(tuch => tuch.property === prop);
+          if(tuch){
+            activeGlo[prop] ? addClasses(getById(tuch.id), 'on') : removeClasses(getById(tuch.id), 'on');
+          }
         }
       }
       for(let prop in activeGlo.mode){
@@ -1097,10 +1108,10 @@ window.addEventListener("keydown", function (e) {
 
 function alphaVarSize(obj, buttonCk = true){
   obj.shortcut.alphaVarSize = !obj.shortcut.alphaVarSize;
-  obj.perm_var_size = obj.shortcut.alphaVarSize;
-  obj.growDecrease  = obj.shortcut.alphaVarSize;
+  obj.perm_var_size         = obj.shortcut.alphaVarSize;
+  obj.growDecrease          = obj.shortcut.alphaVarSize;
+  obj.alphaAbs              = !obj.alphaAbs;
 
-  if(buttonCk){ button_check('alphaAbs'); }
 
   if(obj.growDecrease){ obj.sizeLineSave = obj.params.line_size; }
   else{ obj.params.line_size = obj.sizeLineSave; }
@@ -1113,11 +1124,12 @@ async function feedHelp(){
     tuchs = tuchs.map( tuch => {
       let infos = tuch.substring(4, tuch.length - 4).split(' -- ');
 
-      let tags = infos[2] ? infos[2].replace(/\s/g, '').split(',') : '';
+      let tags     = infos[2] ? infos[2].replace(/\s/g, '').split(',') : '';
+      let property = infos[3] ? infos[3].replace(/\s/g, '') : '';
 
       if(tags){ tags.forEach(tag => { HTags.push(tag); }); }
 
-      return {ctrl: infos[0].toLowerCase().includes("ctrl"), alt: infos[0].toLowerCase().includes("alt"), tuch: infos[0], action: infos[1], tags: tags};
+      return {ctrl: infos[0].toLowerCase().includes("ctrl"), alt: infos[0].toLowerCase().includes("alt"), tuch: infos[0], action: infos[1], tags: tags, property: property};
     });
 
     if(HTags.length){ HTags = [...new Set(HTags)]; HTags.sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase())); }
@@ -1136,11 +1148,15 @@ function toggleHelpDialog(){
 function constructHelpDialog(){
   getById('searchInHelp').value = "";
 
-  tuchs.forEach(tuch => {
+  tuchs.forEach((tuch, i) => {
     let divContainer = document.createElement("div");
     let kbdTuch      = document.createElement("kbd");
     let divAction    = document.createElement("div");
 
+    let tuchId = 'helpTuch_' + i;
+
+    tuch.id    = tuchId;
+    kbdTuch.id = tuchId;
     kbdTuch.className = 'keys';
     divAction.className = 'helpTxt';
 
@@ -1157,7 +1173,11 @@ function constructHelpDialog(){
     tuchToTrigger = tuchToTrigger.replace('↑', 'ArrowUp');
     tuchToTrigger = tuchToTrigger.replace('↓', 'ArrowDown');
 
-    kbdTuch.setAttribute('onclick', `window.dispatchEvent(new KeyboardEvent('keydown',  {'key':'${tuchToTrigger}', 'ctrlKey' : ${tuch.ctrl}, 'altKey' : ${tuch.alt}})); `);
+    kbdTuch.setAttribute('onclick', 
+      `window.dispatchEvent(new KeyboardEvent('keydown',  {'key':'${tuchToTrigger}', 'ctrlKey' : ${tuch.ctrl}, 'altKey' : ${tuch.alt}})); checkHelpProp('${kbdTuch.id}', '${tuch.property}'); `
+    );
+
+    if(activeGlo[tuch.property]){ addClasses(kbdTuch, 'on'); }
 
     kbdTuch.style.textAlign      = 'center';
     divAction.style.paddingRight = '30px';
@@ -1209,6 +1229,12 @@ function constructHelpDialog(){
   });
   getById('helpDialogOpacity').value = 0.67;
   helpDialog.style.opacity           = 0.67;
+}
+
+function checkHelpProp(tuchId, property){
+  if(property){
+    activeGlo[property] ? addClasses(getById(tuchId), 'on') : removeClasses(getById(tuchId), 'on');
+  } 
 }
 
 function applyToSelectedMods(prop){
