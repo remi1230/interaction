@@ -51,8 +51,8 @@ class Avatar {
     num_avatar++;
   }
 
-  lim_x(){ let dec = activeGlo.mode.far_rebound.state ? this.size * 2 : 0; return canvas.width - this.size + dec; }
-  lim_y(){ let dec = activeGlo.mode.far_rebound.state ? this.size * 2 : 0; return canvas.height - this.size + dec; }
+  lim_x(){ let dec = activeGlo.far_rebound ? this.size * 2 : 0; return canvas.width - this.size + dec; }
+  lim_y(){ let dec = activeGlo.far_rebound ? this.size * 2 : 0; return canvas.height - this.size + dec; }
 
   direct(angle, dist){
     return {
@@ -127,7 +127,7 @@ class Avatar {
     }
 
     let lim_line = obj.params.lim_line;
-    if(!obj.mode.var_size.state){
+    if(!obj.var_size){
       size   = obj.size + this.grow;
       if(size <= 0){ size = 0.1; }
       size_x = size;
@@ -203,7 +203,7 @@ class Avatar {
       y -= dec.y;
     }
 
-    let isPath = objGlo.curve && !objGlo.mode.clear.state;
+    let isPath = objGlo.curve && !objGlo.clear;
     let p;
     if(isPath){
       p = new Path2D();
@@ -221,8 +221,8 @@ class Avatar {
         break;
       case 'ellipse':
         let oval_size = objGlo.params.oval_size;
-        let sx = !objGlo.mode.sameSizeEllipse.state ? (1+size) * (1 + this.speed*oval_size) : (1+size) * (1 + oval_size);
-        let sy = !objGlo.mode.sameSizeEllipse.state ? 1+size*oval_size : size * oval_size;
+        let sx = !objGlo.sameSizeEllipse ? (1+size) * (1 + this.speed*oval_size) : (1+size) * (1 + oval_size);
+        let sy = !objGlo.sameSizeEllipse ? 1+size*oval_size : size * oval_size;
 
         let dir = this.direction;
 
@@ -241,7 +241,7 @@ class Avatar {
         break;
       case 'cloud':
         ctx.cloud({pos: {x: x, y: y}, size: size, nb_points: objGlo.params.nb_points_cloud,
-                   sz_point: objGlo.params.sz_points_cloud, withLine: objGlo.mode.withLine.state, color: this.fillStyle});
+                   sz_point: objGlo.params.sz_points_cloud, withLine: objGlo.withLine, color: this.fillStyle});
         break;
       case 'alea_form':
         ctx.alea_form({pos: {x: x, y: y}, size: size, nb_edges: objGlo.params.nb_edges, color: this.fillStyle});
@@ -249,7 +249,7 @@ class Avatar {
       case 'line':
       case 'bezier':
         let last = this.lasts[this.lasts.length - 1];
-        if(objGlo.mode.secondMove.state && this.lasts[this.lasts.length - 2]){ last = this.lasts[this.lasts.length - 2]; }
+        if(objGlo.secondMove && this.lasts[this.lasts.length - 2]){ last = this.lasts[this.lasts.length - 2]; }
         let last_x = last.x;
         let last_y = last.y;
         let dx     = x - last_x;
@@ -293,9 +293,9 @@ class Avatar {
         break;
     }
 
-    var stroke = objGlo.mode.stroke.state;
+    var stroke = objGlo.stroke;
     if(objGlo.alea_stroke){ stroke = rnd() < 0.5 ? true : false; }
-    if(objGlo.mode.strokeAndFill.state){
+    if(objGlo.strokeAndFill){
       //if(objGlo.perm_var_size || objGlo.growDecrease){ ctx.lineWidth = objGlo.sizeLineSave; }
       ctx.strokeStyle = this.strokeStyle;
       ctx.fillStyle   = this.fillStyle;
@@ -311,7 +311,7 @@ class Avatar {
       ctx.stroke();
     }
 
-    if(objGlo.mode.tail.state && this.draw){ this.drawTail(); }
+    if(objGlo.tail && this.draw){ this.drawTail(); }
 
     if(objGlo.doubleAvatar){
       objGlo.doubleAvatar = false;
@@ -442,7 +442,7 @@ class Avatar {
   collidBorder(){
     let x = this.x;
     let y = this.y;
-    let size  = activeGlo.mode.far_rebound.state ? -this.size*2 : this.size;
+    let size  = activeGlo.far_rebound ? -this.size*2 : this.size;
 
     var is_inv = false;
 
@@ -461,7 +461,7 @@ class Avatar {
   }
 
   invDir(axe_x = true){
-    if(!activeGlo.mode.normalCollid.state){
+    if(!activeGlo.normalCollid){
       this.vx = -this.vx;
       this.vy = -this.vy;
     }
@@ -511,7 +511,7 @@ class Avatar {
     return {secondNearMod: nearModSecond, secondDistMinModifiers: distMinModifiers};
   }
 
-  interaction(obj = !activeGlo.mode.hyperAlea.state ? activeGlo : this.glo){
+  interaction(obj = !activeGlo.hyperAlea ? activeGlo : this.glo){
     let attract        = obj.params.attract/100;
     let lim_attract    = obj.params.lim_attract;
     let same_dir       = obj.params.same_dir;
@@ -524,11 +524,11 @@ class Avatar {
     let follow_force_x = obj.params.follow_force_x;
     let follow_force_y = obj.params.follow_force_y;
     let alea_attract   = activeGlo.alea_attract;
-    let inv_g          = obj.mode.inverse_g.state ? -1 : 1;
-    let dist_mean      = obj.mode.dist_mean.state;
+    let inv_g          = obj.inverse_g ? -1 : 1;
+    let dist_mean      = obj.dist_mean;
     let dist_moy       = activeGlo.dist_moy;
-    let dist_mean_inv  = obj.mode.dist_mean_inv.state;
-    let dist_mean_one  = obj.mode.dist_mean_one.state;
+    let dist_mean_inv  = obj.dist_mean_inv;
+    let dist_mean_one  = obj.dist_mean_one;
     let is_chaos       = obj.chaos;
     let breakAdd       = obj.params.breakAdd;
 
@@ -574,7 +574,7 @@ class Avatar {
           att = alea_attract ? getRandomIntInclusive(1, attract*10) : attract;
           siz = this.size;
 
-          vit = !obj.mode.gSpeed.state ? 1 : avatar.vit().v;
+          vit = !obj.gSpeed ? 1 : avatar.vit().v;
 
           if(isNaN(vit)){ vit = 1; }
 
@@ -631,7 +631,10 @@ class Avatar {
     let point;
     let size = activeGlo.params.rAleaPos;
 
-    point = size >= 1 ? getRandomPoint(size) : getRandomPointInCircle(size);
+    /*point = size >= 1 ? getRandomPoint(size) : getRandomPointInCircle(size, activeGlo.modifiers.length ? 
+      activeGlo.randomPointByMod : false, activeGlo.followAvatar, activeGlo.followAvatar ? this.avToFollow : false);*/
+    point = getRandomPointInCircle(size, activeGlo.modifiers.length ? 
+      activeGlo.randomPointByMod : false, activeGlo.followAvatar, activeGlo.followAvatar ? this.avToFollow : false);
     this.x = point.x;
     this.y = point.y;
   }
@@ -640,7 +643,7 @@ class Avatar {
     let brake_pow = activeGlo.params.brake_pow;
     let mouseG    = activeGlo.params.wheel_force;
 
-    if(activeGlo.mode.attract_center.state){ mouse.x = canvas.width/2; mouse.y = canvas.height/2; }
+    if(activeGlo.attract_center){ mouse.x = canvas.width/2; mouse.y = canvas.height/2; }
 
     let dx = mouse.x - this.x;
     let dy = mouse.y - this.y;
@@ -659,7 +662,7 @@ class Avatar {
   mouse_rotate(){
     let angle  = activeGlo.params.wheel_force / (this.mouse_dist()**2);
 
-    if(activeGlo.mode.attract_center.state){ mouse.x = canvas.width/2; mouse.y = canvas.height/2; }
+    if(activeGlo.attract_center){ mouse.x = canvas.width/2; mouse.y = canvas.height/2; }
 
     this.rotate(angle, mouse, {x: 1, y:1});
   }
@@ -1035,7 +1038,7 @@ class Avatar {
   }
   angle(){ this.angle   = atan2piZ(this.x - this.center.x, this.y - this.center.y); }
 
-  spiral(inv_spiral = activeGlo.mode.inv_spiral.state){
+  spiral(inv_spiral = activeGlo.inv_spiral){
     let center = !this.center ? { x: canvas.width/2, y: canvas.height/2 } : { x: this.center.x, y: this.center.y };
     let dx     = center.x - this.x, dy = center.y - this.y;
     let d      = this.dist_to_center(center);
@@ -1052,18 +1055,18 @@ class Avatar {
 
     if(!activeGlo.nb_spirals)  { activeGlo.nb_spirals = 0; }
 
-    let nb_spirals = activeGlo.mode.cos_spiral.state ? activeGlo.nb_spirals : 0;
+    let nb_spirals = activeGlo.cos_spiral ? activeGlo.nb_spirals : 0;
     let angle      = activeGlo.params.spiral_angle;
     let dev_angle  = activeGlo.params.dev_angle;
 
-    if(!activeGlo.mode.cos_spiral.state && !activeGlo.mode.spiral_cross.state){ this.rotate(turn*angle, pRot); }
-    else if(!activeGlo.mode.spiral_cross.state){ this.rotate(turn*(angle * (1 + cos(nb_spirals))), pRot); }
+    if(!activeGlo.cos_spiral && !activeGlo.spiral_cross){ this.rotate(turn*angle, pRot); }
+    else if(!activeGlo.spiral_cross){ this.rotate(turn*(angle * (1 + cos(nb_spirals))), pRot); }
     else{
       turn = this.n_avatars % 2 == 0 ? -1 : 1;
       this.rotate(turn*angle, pRot);
     }
 
-    if(activeGlo.mode.cos_spiral.state){ activeGlo.nb_spirals+=dev_angle; }
+    if(activeGlo.cos_spiral){ activeGlo.nb_spirals+=dev_angle; }
   }
 
   spiralToAvatar(){
@@ -1080,7 +1083,7 @@ class Avatar {
 
       let exp  = activeGlo.params.spiral_exp;
       let turn = 1;
-      if(activeGlo.mode.inv_spiral.state){ d = -d; turn = -turn; }
+      if(activeGlo.inv_spiral){ d = -d; turn = -turn; }
 
       let x_move = cpow(dx,exp)/pow(d,exp);
       let y_move = cpow(dy,exp)/pow(d,exp);
@@ -1089,11 +1092,11 @@ class Avatar {
 
       if(!activeGlo.nb_spirals){ activeGlo.nb_spirals = 0; }
 
-      let nb_spirals = activeGlo.mode.cos_spiral.state ? activeGlo.nb_spirals : 0;
+      let nb_spirals = activeGlo.cos_spiral ? activeGlo.nb_spirals : 0;
       let angle      = activeGlo.params.spirAvatar_angle;
       let dev_angle  = activeGlo.params.dev_angle;
 
-      if(!activeGlo.mode.cos_spiral.state){ this.rotate(turn*angle, pRot); }
+      if(!activeGlo.cos_spiral){ this.rotate(turn*angle, pRot); }
       else{ this.rotate(turn*(angle * (1 + cos(nb_spirals))), pRot); }
 
       activeGlo.nb_spirals+=dev_angle;
@@ -1156,20 +1159,55 @@ class Avatar {
     return 360-(360*move/move_max);
   }
 
+  /*colorByFollow(){
+    if(this.avToFollow){
+      let newStrokeH =  this.avToFollow.hslStroke.h + (rnd_sign() * activeGlo.params.avToFollowColorStrokeH);
+      let newFillH   =  this.avToFollow.hsl.h + (rnd_sign() * activeGlo.params.avToFollowColorH);
+      let newStrokeS =  this.avToFollow.hslStroke.s + (rnd_sign() * activeGlo.params.avToFollowColorStrokeS);
+      let newFillS   =  this.avToFollow.hsl.s + (rnd_sign() * activeGlo.params.avToFollowColorS);
+      let newStrokeL =  this.avToFollow.hslStroke.l + (rnd_sign() * activeGlo.params.avToFollowColorStrokeL);
+      let newFillL   =  this.avToFollow.hsl.l + (rnd_sign() * activeGlo.params.avToFollowColorL);
+      
+      this.strokeStyle = 'hsla(' + newStrokeH + ', ' + newStrokeS + '%, ' + newStrokeL + '%, ' + this.avToFollow.hslStroke.a +')';
+      this.fillStyle   = 'hsla(' + newFillH + ', ' + newFillS + '%, ' + newFillL + '%, ' + this.avToFollow.hsl.a +')';
+
+      this.hslStroke = {h: newStrokeH, s: newStrokeS, l: newStrokeL, a: this.avToFollow.hslStroke.a, p: 1};
+      this.hsl       = {h: newFillH, s: newFillS, l: newFillL, a: this.avToFollow.hsl.a, p: 1};
+    }
+    else{ this.colorHsl(); }
+  }*/
+
+  colorByFollow(){
+    this.colorHsl();
+
+    let newStrokeH =  this.hslStroke.h + (rnd_sign() * activeGlo.params.avToFollowColorStrokeH);
+    let newFillH   =  this.hsl.h + (rnd_sign() * activeGlo.params.avToFollowColorH);
+    let newStrokeS =  this.hslStroke.s + (rnd_sign() * activeGlo.params.avToFollowColorStrokeS);
+    let newFillS   =  this.hsl.s + (rnd_sign() * activeGlo.params.avToFollowColorS);
+    let newStrokeL =  this.hslStroke.l + (rnd_sign() * activeGlo.params.avToFollowColorStrokeL);
+    let newFillL   =  this.hsl.l + (rnd_sign() * activeGlo.params.avToFollowColorL);
+    
+    this.strokeStyle = 'hsla(' + newStrokeH + ', ' + newStrokeS + '%, ' + newStrokeL + '%, ' + this.hslStroke.a +')';
+    this.fillStyle   = 'hsla(' + newFillH + ', ' + newFillS + '%, ' + newFillL + '%, ' + this.hsl.a +')';
+
+    this.hslStroke = {h: newStrokeH, s: newStrokeS, l: newStrokeL, a: this.hslStroke.a, p: 1};
+    this.hsl       = {h: newFillH, s: newFillS, l: newFillL, a: this.hsl.a, p: 1};
+  }
+
   colorHsl(obj = this.nearMod.num_modifier ? this.nearMod.glo : activeGlo){
     //if(activeGlo.params.formule_param && activeGlo.params.formule_param != '0'){ formule_param(obj, this); }
-    if(obj.mode.hyperAlea.state){ obj = this.glo; }
+    if(obj.hyperAlea){ obj = this.glo; }
 
     let params = this.nearMod.params ? this.nearMod.params : obj.params;
 
-    let tint          = !obj.mode.hyperAlea.state ? params.tint_color : obj.params.tint_color;
+    let tint          = !obj.hyperAlea ? params.tint_color : obj.params.tint_color;
     let sat           = !this.nearMod.sat  ? obj.params.saturation : this.nearMod.sat;
     let satStroke     = !this.nearMod.satStroke  ? obj.params.satStroke : this.nearMod.satStroke;
     let tint_stroke   = !this.nearMod.tint_stroke  ? obj.params.tint_stroke : this.nearMod.tint_stroke;
     let var_cent_col  = obj.params.var_center_col;
     let varMoveCol    = obj.params.varMoveCol;
-    let move          = obj.mode.speed_color.state ? this.speed : this.accel;
-    let move_max      = obj.mode.speed_color.state ? activeGlo.speed_max : activeGlo.accel_max;
+    let move          = obj.speed_color ? this.speed : this.accel;
+    let move_max      = obj.speed_color ? activeGlo.speed_max : activeGlo.accel_max;
 
 
     let cd = !this.nearMod.colorDec && this.nearMod.colorDec != 0 ? obj.params.colorDec : this.nearMod.colorDec;
@@ -1179,7 +1217,7 @@ class Avatar {
 
     let colorSum;
 
-    if(!obj.mode.colorCumul.state){
+    if(!obj.colorCumul){
       let switchColor = this.nearMod.colorFunction != undefined ? this.nearMod.colorFunction : obj.colorFunction;
       switch(switchColor){
         case 'distMod' :
@@ -1201,7 +1239,7 @@ class Avatar {
           break;
         case 'center'  : move = this.colorByCenter(var_cent_col); break;
         case 'dir'     : move = this.colorByDir(); break;
-        case 'qMove'   : move = 360 - (360*move*varMoveCol/(glo.mode.relative.state ? move_max : 1)); break;
+        case 'qMove'   : move = 360 - (360*move*varMoveCol/(obj.relative ? move_max : 1)); break;
       }
     }
     else{
@@ -1330,13 +1368,13 @@ class Avatar {
 
     if(!obj.colorsAdd){ move += cd; }
 
-    tint        = obj.mode.color_white.state ? 100 : obj.mode.color_black.state ? 0 : tint;
-    tint_stroke = obj.mode.color_white.state ? 100 : obj.mode.color_black.state ? 0 : tint_stroke;
-    satStroke   = obj.mode.color_white.state ? 100 : obj.mode.color_black.state ? 0 : satStroke;
+    tint        = obj.color_white ? 100 : obj.color_black ? 0 : tint;
+    tint_stroke = obj.color_white ? 100 : obj.color_black ? 0 : tint_stroke;
+    satStroke   = obj.color_white ? 100 : obj.color_black ? 0 : satStroke;
 
     if(obj.alternColor && zeroOneCycle(activeGlo.nb_moves, params.alternColorSpeed)){
       move += params.alternColorVal;
-      if(obj.mode.color_white.state || obj.mode.color_black.state){
+      if(obj.color_white || obj.color_black){
         tint        = 100 - tint;
         tint_stroke = 100 - tint_stroke;
         satStroke   = 100 - satStroke;
@@ -1373,7 +1411,7 @@ class Avatar {
     }
     else{ a = !this.nearMod.alpha ? obj.params.alpha_color : this.nearMod.alpha; }
 
-    if(obj.mode.alphaBySize.state){
+    if(obj.alphaBySize){
       let c = this.sizeCalc.s - obj.params.alphaBySize;
       if(c > 1){ a /= pow(c, obj.params.powAlpha); }
     }
@@ -1396,7 +1434,8 @@ class Avatar {
     this.strokeStyle = 'hsla(' + (move + cdStroke) + ', ' + satStroke + '%, ' + tint_stroke + '%, ' + a +')';
     this.fillStyle   = 'hsla(' + move + ', ' + sat + '%, ' + tint + '%, ' + a +')';
 
-    this.hsl = {h: move, s: sat, l: tint, a: a, p: 1};
+    this.hsl       = {h: move, s: sat, l: tint, a: a, p: 1};
+    this.hslStroke = {h: move + cdStroke, s: satStroke, l: tint_stroke, a: a, p: 1};
   }
 
   formuleColor(h, s, l, a, formuleColor){

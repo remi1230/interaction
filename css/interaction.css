@@ -119,10 +119,10 @@ kbd.keys {
 	white-space: nowrap;
   height: 15px;
 }
-kbd.keys.on {
+kbd.keys.on, kbd.keys.helpOn {
 	background-color: #835040;
-  color:#c3e7e5;
-  box-shadow: unset;
+    color:#c3e7e5;
+    box-shadow: unset;
 }
 .hidden{
   opacity: 0;

@@ -458,14 +458,14 @@ function deleteAvatar(nb){
 }
 //------------------ DÉPLACEMENTS D'AVATARS ----------------- //
 function animation(){
-  if(!activeGlo.mode.totalBreak.state){
+  if(!activeGlo.totalBreak){
     let attract_mouse = activeGlo.attract_mouse.state && activeGlo.attract_mouse.mousedown;
-    let growing_mouse = activeGlo.mode.growByMouse.state;
+    let growing_mouse = activeGlo.growByMouse;
     let posOnMouse    = activeGlo.posOnMouse.avatar;
     let defineCenter  = activeGlo.defineCenter;
     let is_modifier   = activeGlo.pos_modifiers != 'none';
     let tail_memory   = activeGlo.params.tail_memory;
-    let pause         = activeGlo.mode.break.state;
+    let pause         = activeGlo.break;
     let nears_calc    = activeGlo.params.nears_calc;
     let noAvToAv      = activeGlo.noAvToAv ? activeGlo.noAvToAv.state : false;
     let keep_dir      = activeGlo.params.keep_dir;
@@ -473,7 +473,7 @@ function animation(){
 
     path = new Path2D();
 
-    if(activeGlo.nb_moves%keep_dir == 0 && activeGlo.mode.global_alea.state && !activeGlo.mode.hyperAlea.state){ alea_params(); }
+    if(activeGlo.nb_moves%keep_dir == 0 && activeGlo.global_alea && !activeGlo.hyperAlea){ alea_params(); }
     if(activeGlo.nb_moves%keep_dir == 0){ one_alea_param(); }
 
     if(noAvToAv){
@@ -486,15 +486,14 @@ function animation(){
       let avatar = avatars[i];
 
       let paramsNearMod = avatar.nearMod.params ? avatar.nearMod.params : activeGlo.params;
-      let modeNearMod   = avatar.nearMod.glo ? avatar.nearMod.glo.mode : activeGlo.mode;
       let gloNear       = avatar.nearMod.glo ? avatar.nearMod.glo : activeGlo;
       let angle         = paramsNearMod.rotate_angle / 10;
       let spap          = paramsNearMod.speed_alea_pos;
 
       avatar.modifiersValues = {x: 0, y: 0, curve:{x: 0, y: 0}};
 
-      if(activeGlo.mode.hyperAlea.state && !avatar.glo){ avatar.glo = deepCopy(activeGlo); }
-      if(activeGlo.nb_moves%keep_dir == 0 && activeGlo.mode.global_alea.state && activeGlo.mode.hyperAlea.state){ alea_params(avatar); }
+      if(activeGlo.hyperAlea && !avatar.glo){ avatar.glo = deepCopy(activeGlo); }
+      if(activeGlo.nb_moves%keep_dir == 0 && activeGlo.global_alea && activeGlo.hyperAlea){ alea_params(avatar); }
 
       if(!avatar.virtual){
         avatar.last_x = avatar.x;
@@ -506,7 +505,7 @@ function animation(){
 
         avatar.distMods = [];
 
-        if(modeNearMod.tail.state){
+        if(gloNear.tail){
           tail_length = avatar.tail_length();
           if(tail_length <= paramsNearMod.lim_line){ avatar.lasts.push({x: avatar.last_x, y: avatar.last_y}); }
           if(avatar.lasts.length > tail_memory){ avatar.lasts.shift(); }
@@ -517,14 +516,14 @@ function animation(){
           if(avatar.lasts.length > 2){ avatar.lasts.shift(); }
         }
 
-        if(gloNear.lim_dist && avatar.it%nears_calc == 0 && !gloNear.mode.stopNear.state){ avatar.nearAvatars(); }
+        if(gloNear.lim_dist && avatar.it%nears_calc == 0 && !gloNear.stopNear){ avatar.nearAvatars(); }
 
         if(resist == 0){ avatar.vx = 0; avatar.vy = 0; }
 
-        if(modeNearMod.moveOnAlea.state && avatar.it%spap == 0){ avatar.lasts = []; avatar.moveOnAlea(); }
+        if(gloNear.moveOnAlea && avatar.it%spap == 0){ avatar.lasts = []; avatar.moveOnAlea(); }
         if(avatar.nears.length){ avatar.interaction(); }
 
-        if(modeNearMod.follow.state){ avatar.follow(); }
+        if(gloNear.follow){ avatar.follow(); }
         if(activeGlo.attractByOne){ avatar.attractByOne(); }
 
         if(paramsNearMod.angleEllipse && paramsNearMod.rotate_angle){
@@ -532,7 +531,7 @@ function animation(){
                               {x: paramsNearMod.ellipse_x, y: paramsNearMod.ellipse_y}, paramsNearMod.angleEllipse, paramsNearMod.spiral_force);
         }
         else if(paramsNearMod.rotate_angle){
-          if(modeNearMod.spiral_cross.state && modeNearMod.spiral_cross_rotate.state){ angle = activeGlo.nb_spiral_cross % 2 != 0 ? -angle : angle; }
+          if(gloNear.spiral_cross && gloNear.spiral_cross_rotate){ angle = activeGlo.nb_spiral_cross % 2 != 0 ? -angle : angle; }
           avatar.rotate(angle, !avatar.center ? { x: canvas.width/2, y: canvas.height/2 } : { x: avatar.center.x, y: avatar.center.y },
                         {x: paramsNearMod.ellipse_x, y: paramsNearMod.ellipse_y}, paramsNearMod.spiral_force);
         }
@@ -559,6 +558,11 @@ function animation(){
           }
         }
 
+        if(activeGlo.asyncModify){
+          if(activeGlo.nb_moves%paramsNearMod.asyncTime == 0){ activeGlo.asyncNumModifier++; }
+          if(activeGlo.asyncNumModifier == activeGlo.modifiers.length){ activeGlo.asyncNumModifier = 0; }
+        }
+
         avatar.vx += avatar.ax; avatar.vy += avatar.ay;
 
         if(resist > 0){
@@ -574,22 +578,17 @@ function animation(){
       }
     }
 
-    if(activeGlo.asyncModify){
-      if(activeGlo.nb_moves%paramsNearMod.asyncTime == 0){ activeGlo.asyncNumModifier++; }
-      if(activeGlo.asyncNumModifier == activeGlo.modifiers.length){ activeGlo.asyncNumModifier = 0; }
-    }
-
     activeGlo.trans.state = false;
 
-    if(activeGlo.mode.spirAvatar.state){ avatars.forEach(avatar => { avatar.spiralToAvatar(); }); }
-    else if(activeGlo.mode.orbite.state){ avatars.forEach(avatar => { avatar.orbite(); }); }
+    if(activeGlo.spirAvatar){ avatars.forEach(avatar => { avatar.spiralToAvatar(); }); }
+    else if(activeGlo.orbite){ avatars.forEach(avatar => { avatar.orbite(); }); }
 
 
     for(let i = 0; i < avatars.length; i++){
       if(!avatars[i].virtual){
         let avatar        = avatars[i];
         let paramsNearMod = avatar.nearMod.params ? avatar.nearMod.params : activeGlo.params;
-        let modeNearMod   = avatar.nearMod.glo ? avatar.nearMod.glo.mode : activeGlo.mode;
+        let gloNearMod    = avatar.nearMod.glo ? avatar.nearMod.glo : activeGlo;
 
         avatar.x += avatar.modifiersValues.curve.x;
         avatar.y += avatar.modifiersValues.curve.y;
@@ -607,7 +606,7 @@ function animation(){
           if(avatar.distMinModifiers < paramsNearMod.distNearClearMods){
             avatar.draw_ok = false;
             avatar.draw    = false;
-            if(modeNearMod.moveOnAlea.state){ avatar.moveOnAlea(); }
+            if(gloNearMod.moveOnAlea){ avatar.moveOnAlea(); }
           }
         }
 
@@ -669,11 +668,11 @@ function positionAvatars(){
   var speed = 0; var speeds = []; var accel = 0; var accels = []; activeGlo.dist_moy = 0;
   for(let i = 0; i < avatars.length; i++){
     let avatar        = avatars[i];
-    let modeNearMod   = avatar.nearMod.glo ? avatar.nearMod.glo.mode : activeGlo.mode;
+    let gloNearMod    = avatar.nearMod.glo ? avatar.nearMod.glo : activeGlo;
 
-    if(modeNearMod.collid_bord.state){ avatar.collidBorder(); }
+    if(gloNearMod.collid_bord){ avatar.collidBorder(); }
     avatar.dir();
-    if(modeNearMod.secondMove.state){
+    if(gloNearMod.secondMove){
       avatar.secondMove();
       avatar.dirSecond();
 
@@ -692,9 +691,9 @@ function positionAvatars(){
     if(activeGlo.sizeDirCoeff && avatar.lasts[avatar.lasts.length - 2]){ avatar.coeffDirSize(); }
 
     avatar.sizeIt();
-    avatar.colorHsl();
+    !activeGlo.followAvatar ? avatar.colorHsl() : avatar.colorByFollow();
 
-    if((!modeNearMod.drawAltern.state || avatar.it%activeGlo.params.speedRndDraw == 0) && avatar.draw){
+    if((!gloNearMod.drawAltern || avatar.it%activeGlo.params.speedRndDraw == 0) && avatar.draw){
       avatar.draw_avatar();
     }
 
@@ -712,7 +711,7 @@ function positionAvatars(){
 
     activeGlo.dist_moy += avatar.dist_moy;
 
-    if(modeNearMod.secondMove.state){
+    if(gloNearMod.secondMove){
       avatar.x         = avatar.pSave.x;
       avatar.y         = avatar.pSave.y;
       avatar.last_x    = avatar.lSave.x;
@@ -726,9 +725,9 @@ function positionAvatars(){
 
   /*for(let i = 0; i < avatars.length; i++){
     let avatar      = avatars[i];
-    let modeNearMod = avatar.nearMod.glo ? avatar.nearMod.glo.mode : activeGlo.mode;
+    let gloNearMod = avatar.nearMod.glo ? avatar.nearMod.glo : activeGlo;
 
-    if((!modeNearMod.drawAltern.state || avatar.it%activeGlo.params.speedRndDraw == 0) && avatar.draw){
+    if((!gloNearMod.drawAltern.state || avatar.it%activeGlo.params.speedRndDraw == 0) && avatar.draw){
       avatar.draw_avatar();
     }
   }*/
@@ -739,8 +738,8 @@ function positionAvatars(){
   activeGlo.speed_moy = speed / avatars.length;
   activeGlo.accel_moy = accel / avatars.length;
   activeGlo.dist_moy /= avatars.length;
-  if(activeGlo.simple_pause_tmp){ activeGlo.mode.break.state = true; activeGlo.simple_pause_tmp = false; }
-  if(activeGlo.total_pause_tmp){ activeGlo.mode.totalBreak.state = true; activeGlo.total_pause_tmp = false; }
+  if(activeGlo.simple_pause_tmp){ activeGlo.break = true; activeGlo.simple_pause_tmp = false; }
+  if(activeGlo.total_pause_tmp){ activeGlo.totalBreak = true; activeGlo.total_pause_tmp = false; }
 }
 
 function modIsNearMouse(mod, dist){
@@ -943,98 +942,6 @@ function createGoInterface(){
     getById('goInterFaceContainer').appendChild(div);
   });
 }
-function createCanvasMenu(menu = activeGlo.mode, keyType = 'min'){
-  while (canvas_menu_button.firstChild) { canvas_menu_button.removeChild(canvas_menu_button.firstChild); }
-  for (var p in menu){ createItemMenu(menu, p, keyType); }
-}
-function createItemMenu(menu, p, keyType){
-  let name  = p;
-  let state = menu[p];
-  let key   = '';
-  if(typeof(menu[p]) == 'object'){
-    name       = menu[p].name;
-    state      = menu[p].state;
-    key        = typeof(menu[p].key) != 'undefined' ? menu[p].key : '';
-    specialKey = typeof(menu[p].specialKey) != 'undefined' ? menu[p].specialKey : '';
-  }
-
-  let create;
-  if(keyType      == 'min'  && specialKey == ''){ create = key.toLowerCase() == key ? true : false; }
-  else if(keyType == 'maj'  && specialKey == ''){ create = key.toUpperCase() == key && key.charCodeAt() > 64 && key.charCodeAt() < 91 ? true : false; }
-  else if(keyType == 'ctrl'  && specialKey == 'ctrl'){ create = key.toLowerCase() == key ? true : false; }
-  else if(keyType == 'ctrl' && specialKey == 'ctrl'){ create = key.toUpperCase() == key && key.charCodeAt() > 64 && key.charCodeAt() < 91 ? true : false; }
-
-  if(create){
-    var newButton  = document.createElement("button");
-
-    var div_txt = document.createElement("div");
-    var div_key = document.createElement("div");
-    var div_chk = document.createElement("div");
-    var txt     = document.createTextNode(name);
-    var key_txt = document.createTextNode(specialKey + ' ' + key);
-    var chk     = document.createTextNode('✓');
-
-    div_key.style.color     = '#666';
-    div_key.style.fontStyle = 'italic';
-    div_key.style.textAlign = 'right';
-
-    div_txt.appendChild(txt);
-    div_key.appendChild(key_txt);
-    div_chk.appendChild(chk);
-
-    name = typeof(menu[p]) == 'object' ? p : name;
-
-    div_chk.className     = 'check_button';
-    div_chk.id            = 'check_button_' + name;
-    div_chk.style.opacity = state ? '1' : '0';
-
-    var buttonGrid = document.createElement("div");
-    buttonGrid.className = "buttonGrid";
-    buttonGrid.appendChild(div_txt);
-    buttonGrid.appendChild(div_chk);
-    buttonGrid.appendChild(div_key);
-
-    newButton.style.paddingBottom = '4px';
-    newButton.appendChild(buttonGrid);
-
-    newButton.setAttribute("onclick", "button_check('" + name + "'); ");
-    newButton.setAttribute("oncontextmenu", "event.preventDefault(); activeGlo.mode['" + p + "'].noAlea = !activeGlo.mode['" + p + "'].noAlea; ");
-
-    canvas_menu_button.appendChild(newButton);
-  }
-}
-function createCanvasBoolMenu(){
-  while (canvas_menu_button.firstChild) { canvas_menu_button.removeChild(canvas_menu_button.firstChild); }
-  for (var prop in activeGlo){ if(typeof activeGlo[prop] === 'boolean'){createBoolItemMenu(prop, activeGlo[prop]);} }
-}
-function createBoolItemMenu(propName, propState){
-  var newButton  = document.createElement("button");
-
-  var div_txt = document.createElement("div");
-  var div_chk = document.createElement("div");
-  var txt     = document.createTextNode(propName);
-  var chk     = document.createTextNode('✓');
-
-  div_txt.appendChild(txt);
-  div_chk.appendChild(chk);
-
-  div_chk.className     = 'check_bool_button';
-  div_chk.id            = 'check_bool_button_' + propName;
-  div_chk.style.opacity = propState ? '1' : '0';
-
-  var buttonBoolGrid = document.createElement("div");
-  buttonBoolGrid.className = "buttonBoolGrid";
-  buttonBoolGrid.appendChild(div_txt);
-  buttonBoolGrid.appendChild(div_chk);
-
-  newButton.style.paddingBottom = '4px';
-  newButton.appendChild(buttonBoolGrid);
-
-  newButton.setAttribute("onclick", "button_bool_check('" + propName + "'); ");
-  newButton.setAttribute("oncontextmenu", "event.preventDefault(); ");
-
-  canvas_menu_button.appendChild(newButton);
-}
 
 function addCanvas(start = false, duplicate = false, toImport = false){
   let arenaCanvas      = [...document.getElementsByClassName('arenaCanvas')];
@@ -1134,8 +1041,8 @@ function checkColorFunctions(){
     if(inp.checked){ checked++; }
   });
 
-  if(checked > 1){ activeGlo.mode.colorCumul.state = false; button_check('colorCumul'); }
-  else{ activeGlo.mode.colorCumul.state = true; button_check('colorCumul'); }
+  if(checked > 1){ activeGlo.colorCumul = false; }
+  else{ activeGlo.colorCumul = true; }
 }
 /**
 *@description Create HTML checkboxes
@@ -1202,40 +1109,6 @@ function createCheckboxWithRange(checkTxt, id, checked = false, evtCheck = {even
 
   return divContainer;
 }
-//------------------ SHOW/HIDE CHECH IN MENU ----------------- //
-function button_check(mode_prop, menu = activeGlo.mode){
-  if(typeof(menu[mode_prop]) != 'object'){ menu[mode_prop] = !menu[mode_prop]; }
-  else{ menu[mode_prop].state = !menu[mode_prop].state; }
-
-  if(activeGlo.mode.hyperAlea.state){ avatars.forEach(avatar => { avatar.glo.mode[mode_prop].state = !avatar.glo.mode[mode_prop].state; }); }
-
-  var div_chk = getById('check_button_' + mode_prop);
-
-  if(div_chk != null){ div_chk.style.opacity = div_chk.style.opacity == '0' ? '1' : '0'; }
-  if(typeof(menu[mode_prop]) == 'object' && typeof(menu[mode_prop].callback) == 'function'){
-    if(typeof(menu[mode_prop].callback_args) != 'undefined'){ menu[mode_prop].callback(menu[mode_prop].callback_args); }
-    else{menu[mode_prop].callback(); }
-  }
-}
-function button_bool_check(prop){
-  activeGlo[prop] = !activeGlo[prop];
-  getSelectedModifiers().forEach(mod => { mod.glo[prop] = activeGlo[prop]; } );
-
-  var div_chk = getById('check_bool_button_' + prop);
-
-  if(div_chk != null){ div_chk.style.opacity = div_chk.style.opacity == '0' ? '1' : '0'; }
-}
-
-/**
- * @description Uncheck a button in menu if param prop is true
- * @param {{}}  obj The obj that contains the property
- * @param {boolean} stateProp The state of prop
- * @param {string}  propCheck The prop to check in menu
- * @returns {void}
- */
-function buttonCheckPropToAnother(obj, stateProp, propCheck){
-  if(stateProp && obj[propCheck].state){ button_check(propCheck); }
-}
 
 //------------------ AfFICHE UN MESSAGE TEMPORAIRE SUR LE CANVAS ----------------- //
 function msg(...txts){
@@ -1283,7 +1156,7 @@ function updateGlo(ctrl){
 
   activeGlo.fromUpdGlo = true;
 
-  if(activeGlo.mode.hyperAlea.state){ avatars.forEach(avatar => avatar.glo.params[ctrl.id] = val); }
+  if(activeGlo.hyperAlea){ avatars.forEach(avatar => avatar.glo.params[ctrl.id] = val); }
 }
 
 /**
@@ -1342,7 +1215,10 @@ function updateScale(ctrl, e){
   if(activeGlo.params[ctrl.id]){ activeGlo.params[ctrl.id] = ctrl.value; }
 }
 
-function radius_attract(){ activeGlo.lim_dist = pow(pow(canvas.width, 2) + pow(canvas.height, 2), 0.5) / (256 / activeGlo.params.radius_attract); }
+function radius_attract(){
+  activeGlo.lim_dist = pow(pow(canvas.width, 2) + pow(canvas.height, 2), 0.5) / (256 / activeGlo.params.radius_attract);
+  getSelectedModifiers().forEach(mod => { mod.glo.lim_dist = activeGlo.lim_dist; });
+}
 
 //------------------ LES AVATARS DANS LE RAYON D'ATTRACTION ----------------- //
 function all_nearsAvatars(){  avatars.forEach(avatar => { avatar.nearAvatars(); });  }
@@ -1846,7 +1722,7 @@ function simpleArr(data, imgData){
  * @returns {void}
  */
 function updColorFunction(ctrl){
-  switchObjBools(activeGlo.colorFunctions, activeGlo.colorFunctionLabels[ctrl.value], activeGlo.mode.colorCumul.state);
+  switchObjBools(activeGlo.colorFunctions, activeGlo.colorFunctionLabels[ctrl.value], activeGlo.colorCumul);
   /*if(!activeGlo.mode.colorCumul.state){
     switchObjBools(activeGlo.colorFunctions, activeGlo.colorFunctionLabels[ctrl.dataset.last_value], activeGlo.mode.colorCumul.state);
   }*/
@@ -1939,14 +1815,14 @@ function putModsOnGrid(){
 //------------------ POS A MODIFIER ----------------- //
 function pos_modifier(type = 'attractor', pos = mouse, inv = false, groupe = 0, virtual = false){
   let invAtt     = !inv ? 1 : -1;
-  let random     = !activeGlo.mode.pos_rnd_modifiers.state ? 1 : rnd();
+  let random     = !activeGlo.pos_rnd_modifiers ? 1 : rnd();
   let force      = !activeGlo.modsToZero ? invAtt * 100 * random : 0;
-  let dir_rnd    = !activeGlo.mode.pos_rnd_modifiers.state ? 0 : rnd() * two_pi;
+  let dir_rnd    = !activeGlo.pos_rnd_modifiers ? 0 : rnd() * two_pi;
   let dir_angle  = invAtt * activeGlo.params.director_angle  + dir_rnd - invAtt * activeGlo.params.director_angle_upd;
 
   if(activeGlo.grid.draw){ pos = posOnGrid(pos, activeGlo.grid.type); }
 
-  pos = !activeGlo.mode.attract_center.state ? pos :
+  pos = !activeGlo.attract_center ? pos :
         !activeGlo.center ? canvas.getCenter() : activeGlo.center;
 
   let cent = !activeGlo.center ? canvas.getCenter() : activeGlo.center;
@@ -2431,7 +2307,7 @@ function makeModifierFunction(modifierType){
 
 
 //------------------ POS ATTRACTORS OR ROTATORS ----------------- //
-function posModifiers(type = activeGlo.pos_modifiers, inv = activeGlo.mode.invModifiersAtt.state){
+function posModifiers(type = activeGlo.pos_modifiers, inv = activeGlo.invModifiersAtt){
   let invAtt = inv;
   if(type != 'all'){
     for(let i = 0; i < activeGlo.params.nb_modifiers; i++){
@@ -2468,7 +2344,7 @@ function posModifiersByType(cent, type = activeGlo.formModTypes[activeGlo.params
 }
 
 //------------------ POS CIRCLES MODIFIERS ----------------- //
-function posCircleModifiers(cent = false, type = activeGlo.pos_modifiers, inv = activeGlo.mode.invModifiersAtt.state, rot = activeGlo.params.rotCircleModifiers){
+function posCircleModifiers(cent = false, type = activeGlo.pos_modifiers, inv = activeGlo.invModifiersAtt, rot = activeGlo.params.rotCircleModifiers){
   let pt, n = 0;
   let invAtt = inv;
   if(!cent){
@@ -2500,7 +2376,7 @@ function posCircleModifiers(cent = false, type = activeGlo.pos_modifiers, inv = 
   }
 }
 //------------------ POS POLYGONE(S) MODIFIERS ----------------- //
-function posPolyModifiers(cent = false, type = activeGlo.pos_modifiers, nb = activeGlo.params.nb_modifiers, inv = activeGlo.mode.invModifiersAtt.state,
+function posPolyModifiers(cent = false, type = activeGlo.pos_modifiers, nb = activeGlo.params.nb_modifiers, inv = activeGlo.invModifiersAtt,
   rot = activeGlo.params.rotCircleModifiers, nbEdges = activeGlo.params.posModsNbEdges){
   let n = 0;
   let invAtt = inv;
@@ -2521,7 +2397,7 @@ function posPolyModifiers(cent = false, type = activeGlo.pos_modifiers, nb = act
   }
 }
 //------------------ POS SQUARE MODIFIERS ----------------- //
-function posSquareModifiers(cent = false, type = activeGlo.pos_modifiers, inv = activeGlo.mode.invModifiersAtt.state, rot = activeGlo.params.rotCircleModifiers){
+function posSquareModifiers(cent = false, type = activeGlo.pos_modifiers, inv = activeGlo.de.invModifiersAtt, rot = activeGlo.params.rotCircleModifiers){
   let x, y, pt, n = 0;
   let invAtt = inv;
   if(!cent){
@@ -2550,7 +2426,7 @@ function posSquareModifiers(cent = false, type = activeGlo.pos_modifiers, inv = 
   }
 }
 //------------------ POS RECTANGLE MODIFIERS ----------------- //
-function posRectModifiers(cent = false, type = activeGlo.pos_modifiers, inv = activeGlo.mode.invModifiersAtt.state, rot = activeGlo.params.rotCircleModifiers){
+function posRectModifiers(cent = false, type = activeGlo.pos_modifiers, inv = activeGlo.invModifiersAtt, rot = activeGlo.params.rotCircleModifiers){
   let x, y, pt, n = 0;
   let invAtt = inv;
   if(!cent){
@@ -2841,13 +2717,6 @@ function defineCenter(byMouse = true, define = false){
   }
   return cent;
 }
-//------------------ RAZ ROTATE CANVAS----------------- //
-function raz_rotate(){
-  if(!activeGlo.mode.rotate.state){
-    ctx.rotate(-activeGlo.mode.rotate.current_rotate);
-    activeGlo.mode.rotate.current_rotate = 0;
-  }
-}
 //------------------ CHANGE L'ÉCHELLE ----------------- //
 function scale_avatars(sign, div = 10){
   let center = { x: canvas.width / 2, y: canvas.height / 2 };
@@ -2931,18 +2800,6 @@ function alea_params(avatar = false){
       }
     }
   }
-  for(var mode in activeGlo.mode){
-    if(!activeGlo.mode[mode].noAlea){
-      if(!avatar){
-        let state = activeGlo.mode[mode].state;
-        activeGlo.mode[mode].state = rnd() > 0.5 ? true : false;
-        if(state != activeGlo.mode[mode].state){ button_check(mode); }
-      }
-      else{
-        avatar.glo.mode[mode].state = rnd() > 0.5 ? true : false;
-      }
-    }
-  }
 }
 //------------------ ATTRIBUE DES VALEURS ALÉATOIRES AUX PARAMÉTRES DÉCLENCHEMENT CLICK DROIT ----------------- //
 function one_alea_param(playInput = true){
@@ -2957,13 +2814,13 @@ function one_alea_param(playInput = true){
       if(parseInt(ctrl.step) == ctrl.step){ new_val = round(new_val, 0); }
       ctrl.value = new_val;
 
-      if(activeGlo.mode.hyperAlea.state && !activeGlo.mode.global_alea.state){
+      if(activeGlo.hyperAlea && !activeGlo.global_alea){
         avatars.forEach(avatar => {
           let new_val = getRnd(ctrl_min, ctrl_max);
           if(parseInt(ctrl.step) == ctrl.step){ new_val = round(new_val, 0); }
           avatar.glo.params[param] = new_val;
 
-          if(activeGlo.mode.hyperAlea.state && param == 'upd_size'){ avatar.size = new_val; }
+          if(activeGlo.hyperAlea && param == 'upd_size'){ avatar.size = new_val; }
         });
       }
       else if(playInput){
@@ -3022,7 +2879,7 @@ function glo_params(style = 'gravity'){
         radius_attract: 0,
         same_dir: 0,
       };
-      if(activeGlo.mode.collid_bord.state){ button_check('collid_bord'); }
+      if(activeGlo.collid_bord){ button_check('collid_bord'); }
       break;
     case 'stars':
       params = {
@@ -3043,8 +2900,8 @@ function glo_params(style = 'gravity'){
       activeGlo.bg_black                 = true;
       activeGlo.numLineCap               = 1;
       activeGlo.alphaAbs                 = true;
-      activeGlo.mode.tail.state          = false;
-      activeGlo.mode.collid_bord.state   = false;
+      activeGlo.tail                     = false;
+      activeGlo.collid_bord              = false;
       canvas.style.backgroundColor = '#000';
       activeGlo.form                     = 'ellipse';
       break;
@@ -3479,11 +3336,11 @@ function showInfos(){
   let inf;
   putTxt({txt: "Selection mode      "  + activeGlo.modifierSelect.whatIsSelect(), pos_y: pos_y});
   putTxt({txt: "Modifers type        " + activeGlo.pos_modifiers, pos_y: pos_y});
-  putTxt({txt: "Put in the center    " + (!activeGlo.mode.attract_center.state ? 'disabled' : 'enabled '), pos_y: pos_y});
+  putTxt({txt: "Put in the center    " + (!activeGlo.attract_center ? 'disabled' : 'enabled '), pos_y: pos_y});
   inf = activeGlo.params.wheel_force > 0 ? 'positive' : 'negative';
   if(activeGlo.params.wheel_force == 0){inf = 'zero';}
   putTxt({txt: "Mouse force sign    "  + inf, pos_y: pos_y});
-  putTxt({txt: "Pos/neg modifiers  "   + (!activeGlo.mode.invModifiersAtt.state ? 'disabled' : 'enabled '), pos_y: pos_y});
+  putTxt({txt: "Pos/neg modifiers  "   + (!activeGlo.invModifiersAtt ? 'disabled' : 'enabled '), pos_y: pos_y});
   putTxt({txt: "Pos mods with sign "   + (!activeGlo.modsWithSign ? 'disabled' : 'enabled '), pos_y: pos_y});
   putTxt({txt: "Define center        " + (!activeGlo.defineCenter ? 'disabled' : 'enabled '), pos_y: pos_y});
 
@@ -3532,18 +3389,9 @@ function fillStyleAccordToBg(canvasVar, ctxVar){
   ctxVar.fillStyle = objRgb_to_strRgb(updateColorToBack(strRgb_to_objRgb(canvasVar.style.backgroundColor)));
 }
 
-//------------------ UPDATE MODE ----------------- //
-function updateMode(opts, menu = activeGlo.mode){
-  var state_prop = menu[opts.state_prop].state;
-  opts.props.forEach((prop) => {
-    if(typeof(menu[prop]) != 'object'){ menu[prop] = state_prop; }
-    else{ menu[prop].state = state_prop; }
-  });
-  createCanvasMenu();
-}
 //------------------ SWITCH HYPER ALEA ----------------- //
 function switchHyperAlea() {
-  if(activeGlo.mode.hyperAlea.state){ avatars.forEach(av => { av.glo = deepCopy(activeGlo); }); }
+  if(activeGlo.hyperAlea){ avatars.forEach(av => { av.glo = deepCopy(activeGlo); }); }
   else{ avatars.forEach(av => { delete av.glo; }); }
 }
 //------------------ TAILLE ALÉATOIRE DES AVATARS ----------------- //
@@ -3580,7 +3428,7 @@ function updMaxAngleToNbEdges(idAngle, nbEdges){
 
 //------------------ SAVE OR RESTORE STATE OF AVATARS ----------------- //
 function dealBreakAvatars(){
-  if(activeGlo.mode.break.state){
+  if(activeGlo.break){
     avatars.forEach(av => {
       av.vx_break = av.vx;
       av.vy_break = av.vy;
@@ -3686,7 +3534,7 @@ function impt_json(){
 }
 //------------------ IMPORT JSON ----------------- //
 function impt_image(event){
-  if(!activeGlo.mode.break.state){ button_check('pause'); }
+  if(!activeGlo.break){ button_check('pause'); }
   var fileread = new FileReader();
   fileread.onload = function(e) {
     var img = new Image();
@@ -3739,21 +3587,6 @@ function restoreFlash(){
   updateSize(upd_size);
   if(activeGlo.modifiers.some(mod => mod.type == 'magnetor' || mod.type == 'mimagnetor' || mod.double)){ activeGlo.magnetors = true; }
   activeGlo.modifiers.forEach(mod => { mod.modify = makeModifierFunction(mod.type); });
-}
-
-//------------------ CHEK MENU WITH activeGlo.MODE ----------------- //
-function upd_mode(){
-  Object.entries(activeGlo.mode).forEach(([mode_prop, val]) => {
-    var div_chk = getById('check_button_' + mode_prop);
-    if(div_chk){
-      div_chk.style.opacity = activeGlo.mode[mode_prop].state ? '1' : '0';
-
-      if(typeof(activeGlo.mode[mode_prop]) == 'object' && typeof(activeGlo.mode[mode_prop].callback) == 'function'){
-        if(typeof(activeGlo.mode[mode_prop].callback_args) != 'undefined'){ activeGlo.mode[mode_prop].callback(activeGlo.mode[mode_prop].callback_args); }
-        else{ activeGlo.mode[mode_prop].callback(); }
-      }
-    }
-  });
 }
 
 //------------------ CANVAS PICKER COLOR UPD CANVAS BG----------------- //
@@ -3809,9 +3642,20 @@ function downloadCanvas(){
   a.click();
 }
 
+function followAvatar(){
+  activeGlo.avsToFollow = [];
+  avatars.forEach(av => {
+    if(rnd() <= (activeGlo.params.avToFollowTAvs/100)){ activeGlo.avsToFollow.push(av); }
+  });
+  avatars.forEach(av => {
+    if(!activeGlo.avsToFollow.includes(av)){ av.avToFollow = activeGlo.avsToFollow[parseInt(rnd() * activeGlo.avsToFollow.length)]; }
+    else{ av.avToFollow = false; }
+  });
+}
+
 function getRandomPoint(coeff){ return {x: canvas.width * (coeff * rnd() + (1-coeff)/2), y: canvas.height * (coeff * rnd() + (1-coeff)/2)}; }
 
-function getRandomPointInCircle(coeff, byMod = activeGlo.modifiers.length ? activeGlo.randomPointByMod : false){
+function getRandomPointInCircle(coeff, byMod = activeGlo.modifiers.length ? activeGlo.randomPointByMod : false, byAv = activeGlo.followAvatar, avToFollow = false){
   let center  = activeGlo.center;
   let minDist = activeGlo.params.rAleaPosMin;
 
@@ -3822,7 +3666,11 @@ function getRandomPointInCircle(coeff, byMod = activeGlo.modifiers.length ? acti
     minDist = mod.params.rAleaPosMin;
   }
 
-  let r = coeff * h(canvas.width, canvas.height) / 2;
+  if(avToFollow){
+    center  = {x: avToFollow.x, y: avToFollow.y};
+  }
+
+  let r = !avToFollow ? coeff * h(canvas.width, canvas.height) / 2 : coeff * activeGlo.params.avToFollowDist;
 
   function calculTrigo(lim, it){
     let angle  = rnd() * two_pi;
@@ -3845,10 +3693,10 @@ function getRandomPointInCircle(coeff, byMod = activeGlo.modifiers.length ? acti
 //------------------ GARDE LA PAUSE ----------------- //
 function keepBreak(func, param = null) {
   var nb    = activeGlo.params.nb;
-  var simple_pause = activeGlo.mode.break.state;
-  var total_pause  = activeGlo.mode.totalBreak.state;
-  if(simple_pause){ activeGlo.mode.break.state = false; }
-  if(total_pause) { activeGlo.mode.totalBreak.state = false; }
+  var simple_pause = activeGlo.break;
+  var total_pause  = activeGlo.totalBreak;
+  if(simple_pause){ activeGlo.break = false; }
+  if(total_pause) { activeGlo.totalBreak = false; }
   func(param);
   if(simple_pause){ activeGlo.simple_pause_tmp = true; }
   if(total_pause){ activeGlo.total_pause_tmp = true; }

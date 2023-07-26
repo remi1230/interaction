@@ -355,13 +355,61 @@
             </div>
             <div>
               <div>
-                <input type="range" id="lightByCenter" name="lightByCenter" class='input_params' oninput="updateGlo(this); "
+                <input type="range" id="lightByCenter" name="lightByCenter" class='input_params' oninput="updateGlo(this); " ondblclick="updateScale(this, event)"
                        min="-10" max="10" value="0" step="0.1">
                 <label for="lightByCenter">Light by center</label>
               </div>
               <div>
               </div>
               <div>
+              </div>
+            </div>
+            <div>
+              <div>
+                <input type="range" id="avToFollowDist" name="avToFollowDist" class='input_params' oninput="updateGlo(this); " ondblclick="updateScale(this, event)"
+                       min="0" max="100" value="10" step="1">
+                <label for="avToFollowDist">Av to follow dist</label>
+              </div>
+              <div>
+                <input type="range" id="avToFollowTAvs" name="avToFollowTAvs" class='input_params' oninput="updateGlo(this); followAvatar(); "
+                       min="0" max="100" value="10" step="1">
+                <label for="avToFollowTAvs">Av to follow %</label>
+              </div>
+              <div>
+              </div>
+            </div>
+            <div>
+              <div>
+                <input type="range" id="avToFollowColorH" name="avToFollowColorH" class='input_params' oninput="updateGlo(this); "
+                       min="0" max="360" value="10" step="1">
+                <label for="avToFollowColorH">Av to follow var H</label>
+              </div>
+              <div>
+                <input type="range" id="avToFollowColorS" name="avToFollowColorS" class='input_params' oninput="updateGlo(this); "
+                       min="0" max="360" value="10" step="1">
+                <label for="avToFollowColorS">Av to follow var S</label>
+              </div>
+              <div>
+                <input type="range" id="avToFollowColorL" name="avToFollowColorL" class='input_params' oninput="updateGlo(this); "
+                       min="0" max="360" value="10" step="1">
+                <label for="avToFollowColorL">Av to follow var L</label>
+              </div>
+            </div>
+            <div>
+              <div>
+                <input type="range" id="avToFollowColorStrokeH" name="avToFollowColorStrokeH" class='input_params' oninput="updateGlo(this); "
+                       min="0" max="360" value="10" step="1">
+                <label for="avToFollowColorStrokeH">Av to follow var stroke H</label>
+              </div>
+              <div>
+                <input type="range" id="avToFollowColorStrokeS" name="avToFollowColorStrokeS" class='input_params' oninput="updateGlo(this); "
+                       min="0" max="360" value="10" step="1">
+                <label for="avToFollowColorStrokeS">Av to follow var stroke S</label>
+              </div>
+              <div>
+                <input type="range" id="avToFollowColorStrokeL" name="avToFollowColorStrokeL" class='input_params' oninput="updateGlo(this); "
+                       min="0" max="360" value="10" step="1">
+                <label for="avToFollowColorStrokeL">Av to follow var stroke L</label>
               </div>
             </div>
           </div>
@@ -1064,12 +1112,16 @@
           </div>
           <dialog id="helpDialog" style="width: 85%; height: 85%; position: absolute; top: -10px; border: none; border-radius: 5px; overflow-x: hidden"
                   oninput="event.stopPropagation(); " onchange="event.stopPropagation(); " onclick="event.stopPropagation(); ">
-            <div style="text-align: center; margin-top: 10px; display: grid; grid-template-columns: 210px 210px; justify-content: space-between; "
+            <div style="text-align: center; margin-top: 10px; display: grid; grid-template-columns: 210px 210px 210px; justify-content: space-between; "
                  oninput="event.stopPropagation(); " onchange="event.stopPropagation(); " onclick="event.stopPropagation(); ">
               <div>
                 <label for="searchInHelp">🔍</label>
                 <input style="margin-top: 10px; " type="text" id="searchInHelp" class="stopWindowEvents" name="searchInHelp" value=""
-                      oninput="updHelp(event); " onchange="event.stopPropagation(); " onclick="event.stopPropagation(); ">
+                      oninput="constructHelpDialog(false); " onchange="event.stopPropagation(); " onclick="event.stopPropagation(); ">
+              </div>
+              <div>
+                <kbd id="helpTuch_On" class="keys" onclick="toggleHelpOnTuch(this); "
+                     oninput="constructHelpDialog(false);  " style="text-align: center; cursor: pointer;">ON</kbd>
               </div>
               <div>
                 <label for="helpDialogOpacity">Opacité</label>
