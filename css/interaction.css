@@ -148,6 +148,12 @@ kbd.keys.on, kbd.keys.helpOn {
     background-color: rgb(212, 65, 29);
     color: #e8f7fd;
 }
+.toLinked{
+    border: 1px #ccc solid;
+}
+.linkedTo{
+    border: 1px #cc0000 solid;
+}
 
 #ui{
   font-size: 0.777vw;

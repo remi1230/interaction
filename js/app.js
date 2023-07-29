@@ -593,9 +593,14 @@ function animation(){
         avatar.x += avatar.modifiersValues.curve.x;
         avatar.y += avatar.modifiersValues.curve.y;
 
-        avatar.limSpeedMax();
-        avatar.limSpeedMin();
-        //if(!paramsNearMod.distNearClearMods || !avatar.goToNearMod){
+        if(gloNearMod.limSpeedBySize){
+          avatar.limSpeedBySize();
+        }
+        else{
+          avatar.limSpeedMax();
+          avatar.limSpeedMin();
+        }
+
         if(!paramsNearMod.distNearClearMods){
           avatar.x += avatar.modifiersValues.x;
           avatar.y += avatar.modifiersValues.y;
@@ -762,6 +767,33 @@ function getModNearestMouse(dist){
     }
   });
   return nearModToReturn;
+}
+
+function modsSymToCenter(sym = 'vhAxe'){
+  getSelectedModifiers().forEach(mod => {
+    let p      = symToCenter({x: mod.x, y: mod.y});
+    let newMod = deepCopy(mod, 'modifiers');
+    newMod.select = false;
+
+    if(sym !== 'all'){
+      newMod.x = sym == 'vhAxe' || sym == 'vAxe' ? p.x : newMod.x;
+      newMod.y = sym == 'vhAxe' || sym == 'hAxe' ? p.y : newMod.y;
+    }
+    else{
+      newMod.x = p.x;
+      var newMod2 = deepCopy(mod, 'modifiers');
+      newMod2.select = false;
+      newMod2.y = p.y;
+      var newMod3 = deepCopy(mod, 'modifiers');
+      newMod3.select = false;
+      newMod3.x = p.x;
+      newMod3.y = p.y;
+      activeGlo.modifiers.push(newMod2);
+      activeGlo.modifiers.push(newMod3);
+    }
+    
+    activeGlo.modifiers.push(newMod);
+  });
 }
 
 function testModsFormule(){
@@ -1157,6 +1189,26 @@ function updateGlo(ctrl){
   activeGlo.fromUpdGlo = true;
 
   if(activeGlo.hyperAlea){ avatars.forEach(avatar => avatar.glo.params[ctrl.id] = val); }
+
+  if(activeGlo.linkedInputs[ctrl.id] && activeGlo.linkedInputs[ctrl.id] !== 'toLinked'){
+    let ctrlToUpd = getById(activeGlo.linkedInputs[ctrl.id]);
+
+    let intervalCtrl      = ctrl.max - ctrl.min;
+    let intervalCtrlToUpd = ctrlToUpd.max - ctrlToUpd.min;
+    let coeff             = intervalCtrlToUpd / intervalCtrl;
+    let valToAdd          = (val - parseFloat(ctrl.last_vals[ctrl.last_vals.length-1])) * coeff;
+
+    valToAdd *= ctrlToUpd.classList.contains('positive') ? 1 : -1;
+    
+    ctrlToUpd.value = parseFloat(ctrlToUpd.value) + valToAdd;
+
+    updateGlo(ctrlToUpd);
+    let event = new Event('input', {
+      bubbles: true,
+      cancelable: true,
+    });
+    ctrlToUpd.dispatchEvent(event);
+  };
 }
 
 /**
@@ -1888,39 +1940,6 @@ function pos_modifier(type = 'attractor', pos = mouse, inv = false, groupe = 0, 
 
   activeGlo.modifiers.push(newMod);
 
-  //activeGlo.modifiers.forEach(mod => { delete mod.glo; });
-  //deepCopyNoCircularArray(activeGlo, 'activeGlo', 'glo', activeGlo.modifiers, 'modifiers', 1);
-
-  //newMod.glo.modifiers = deepCopy(activeGlo.modifiers, 'glo');
-
-  /*activeGlo.modifiers.forEach(mod => {
-    mod.glo.modifiers = deepCopy(activeGlo.modifiers, 'glo');
-  });*/
-
-  //newMod.glo.modifiers = deepCopy(activeGlo.modifiers, 'modifiers');
-
-  /*newMod.glo.modifiers.forEach(mod => {
-    if(mod.glo.modifiers){
-      mod.glo.modifiers.forEach(subMod => {
-        if(subMod.glo.modifiers){
-          subMod.glo.modifiers.forEach(subSubMod => {
-            if(subSubMod.glo.modifiers){
-              subSubMod.glo.modifiers.forEach(subSubSubMod => {
-                if(subSubSubMod.glo.modifiers){
-                  subSubSubMod.glo.modifiers.forEach(subSubSubSubMod => {
-                    subSubSubSubMod.glo.modifiers = [];
-                  });
-                }
-              });
-            }
-          });
-        }
-      });
-    }
-  });*/
-
-
-
   num_modifier++;
 }
 
@@ -2473,6 +2492,7 @@ function pasteModifiers(){
     }
 
     activeGlo.groupe++;
+
     getSelectedModifiers().forEach((mod, i) => {
       let pos = {x: mod.x + dec.x, y: mod.y + dec.y};
 
@@ -2482,8 +2502,7 @@ function pasteModifiers(){
         pos = posDec;
       }
 
-      let newMod = {};
-      for(let prop in mod){ newMod[prop] = mod[prop]; }
+      let newMod = deepCopy(mod, 'modifiers');
 
       newMod.x      = pos.x;
       newMod.y      = pos.y;
@@ -2935,7 +2954,6 @@ function goToShot(){
     let upd_size     = getById('upd_size');
     let upd_size_val = upd_size.value;
     params_interface(false);
-    upd_mode();
     let nb = activeGlo.params.nb;
     deleteAvatar(avatars.length);
     activeGlo.params.nb = nb;
@@ -3516,7 +3534,6 @@ function impt_json(){
       let upd_size     = getById('upd_size');
       let upd_size_val = upd_size.value;
       params_interface(false);
-      upd_mode();
       let nb = activeGlo.params.nb;
       deleteAvatar(avatars.length);
       activeGlo.params.nb = nb;
@@ -3549,7 +3566,9 @@ function impt_image(event){
 }
 
 function flash(){
+  localStorage.clear();
   localStorage.setItem('glo', JSON.stringify(activeGlo));
+  localStorage.setItem('img', canvas.toDataURL());
 }
 
 function unflash(){
@@ -3576,7 +3595,6 @@ function restoreFlash(){
   let upd_size     = getById('upd_size');
   let upd_size_val = upd_size.value;
   params_interface(false);
-  upd_mode();
   let nb = activeGlo.params.nb;
   deleteAvatar(avatars.length);
   activeGlo.params.nb = nb;
@@ -3587,6 +3605,11 @@ function restoreFlash(){
   updateSize(upd_size);
   if(activeGlo.modifiers.some(mod => mod.type == 'magnetor' || mod.type == 'mimagnetor' || mod.double)){ activeGlo.magnetors = true; }
   activeGlo.modifiers.forEach(mod => { mod.modify = makeModifierFunction(mod.type); });
+
+  var dataURL = localStorage.getItem('img');
+  var img     = new Image;
+  img.src     = dataURL;
+  img.onload  = function () { ctx.drawImage(img, 0, 0); };
 }
 
 //------------------ CANVAS PICKER COLOR UPD CANVAS BG----------------- //
@@ -3894,8 +3917,59 @@ async function init(path){
   calculator.add = calcInstance.exports._Z6cosSinf;
 }
 
+function inputToLinked(){
+  let inputsSz = input_params.length;
 
+  for(let i = 0; i < inputsSz; i++){
+    let input = input_params[i];
+    if(input.dataset.focus && input.dataset.focus == 'true'){
+      if(typeof input.dataset.toLinked === 'undefined'){
+        input.dataset.toLinked           = 'true';
+        activeGlo.inputToLinked          = input.id;
+        activeGlo.linkedInputs[input.id] = 'toLinked';
+        addClasses(input, 'toLinked');
+      }
+      else{
+        input.dataset.toLinked           = input.dataset.toLinked === 'false' ? 'true' : 'false';
+        activeGlo.inputToLinked          = input.dataset.toLinked === 'true';
+        activeGlo.linkedInputs[input.id] = input.dataset.toLinked === 'true';
+        if(activeGlo.inputToLinked){
+          addClasses(input, 'toLinked');
+          activeGlo.linkedInputs[input.id] = 'toLinked';
+        }
+        else{
+          removeClasses(input, 'toLinked');
+          delete activeGlo.linkedInputs[input.id];
+        }
+      }
+      return true;
+    }
+  }
+  return false;
+}
+function inputToLinkedTo(positive = true){
+  let inputsSz = input_params.length;
+  for(let i = 0; i < inputsSz; i++){
+    let input = input_params[i];
+    if(input.dataset.focus && input.dataset.focus == 'true'){
+      let sign = positive ? 'positive' : 'negative';
+      if(activeGlo.inputToLinked){
+        let toLinked = activeGlo.linkedInputs[activeGlo.inputToLinked];
+        if(toLinked === 'toLinked'){
+          addClasses(input, 'linkedTo', sign);
+          activeGlo.linkedInputs[activeGlo.inputToLinked] = input.id;
+        }
+        else{
+          removeClasses(input, 'linkedTo', 'positive', 'negative');
+          activeGlo.linkedInputs[activeGlo.inputToLinked] = 'toLinked';
+        }
+      }
 
+      return true;
+    }
+  }
+  return false;
+}
 
 
 

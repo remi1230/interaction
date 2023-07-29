@@ -224,6 +224,9 @@ class Avatar {
         let sx = !objGlo.sameSizeEllipse ? (1+size) * (1 + this.speed*oval_size) : (1+size) * (1 + oval_size);
         let sy = !objGlo.sameSizeEllipse ? 1+size*oval_size : size * oval_size;
 
+        this.sizeCalc.x = sx;
+        this.sizeCalc.y = sy;
+
         let dir = this.direction;
 
         if(objGlo.params.arcRotAngle > 0){
@@ -342,8 +345,10 @@ class Avatar {
     if(lim > 0){
       let d = h(v.x, v.y);
       if(d > lim){
-        v.x *= lim/d;
-        v.y *= lim/d;
+        let lim_d = lim/d;
+
+        v.x *= lim_d;
+        v.y *= lim_d;
       }
     }
   }
@@ -351,10 +356,19 @@ class Avatar {
     if(lim > 0){
       let d = h(v.x, v.y);
       if(d < lim){
-        v.x *= lim/d;
-        v.y *= lim/d;
+        let lim_d = lim/d;
+        
+        v.x *= lim_d;
+        v.y *= lim_d;
       }
     }
+  }
+  limSpeedBySize(v = this.modifiersValues, lim = this.sizeCalc.x * 2){
+      let d     = h(v.x, v.y);
+      let lim_d = lim/d;
+
+      v.x *= lim_d;
+      v.y *= lim_d;
   }
 
   drawTail(){

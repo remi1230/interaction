@@ -273,7 +273,7 @@ window.addEventListener("keydown", function (e) {
               avatars.forEach(av => { av.nearMod = {}; av.distMinModifiers = 9999; });
 
               break;
-            /// F1 -- Effacement du canvas -- canvas ///
+            /// F1 -- Effacement du canvas -- canvas -- clear ///
             case 'F1':
               activeGlo.clear = !activeGlo.clear;
 
@@ -296,7 +296,7 @@ window.addEventListener("keydown", function (e) {
               activeGlo.modifiers.forEach(mod => { mod.select = false; if(round(rnd(), 0)){ mod.select = true; } });
 
               break;
-            /// F5 -- Sélection / Déselection de tous les modifiers -- selection, modifier ///
+            /// F5 -- Sélection / Déselection de tous les modifiers -- selection, modifier -- allModsSelected ///
             case 'F5':
               activeGlo.allModsSelected = !activeGlo.allModsSelected;
               activeGlo.modifiers.forEach(mod => { mod.select = activeGlo.allModsSelected; });
@@ -307,7 +307,7 @@ window.addEventListener("keydown", function (e) {
               activeGlo.modifiers.forEach(mod => { mod.select = !mod.select; });
 
               break;
-            /// F7 -- Sélection des modifiers positifs puis négatifs -- selection, modifier ///
+            /// F7 -- Sélection des modifiers positifs puis négatifs -- selection, modifier -- selectBySign ///
             case 'F7':
               activeGlo.selectBySign = !activeGlo.selectBySign;
               let sign = activeGlo.selectBySign ? 1 : -1;
@@ -332,7 +332,7 @@ window.addEventListener("keydown", function (e) {
               switchObjBools(activeGlo.posOnMouse, 'pasteMods', false);
 
               break;
-            /// F11 -- Attribue au hazard une couleur à chaque modifier -- couleur, modifier ///
+            /// F11 -- Attribue au hazard une couleur à chaque modifier -- couleur, modifier -- modifiersHaveColor ///
             case 'F11':
               let rndColSave = false;
               getSelectedModifiers().forEach(mod => {
@@ -366,6 +366,10 @@ window.addEventListener("keydown", function (e) {
         		case 'd':
               activeGlo.far_rebound = !activeGlo.far_rebound;
         			break;
+            /// e -- Le contrôle survolé est à liable -- interface ///
+        		case 'e':
+              inputToLinked();
+        			break;
             /// f -- Avec attraction, les avatars an suivent d'autres -- avatar -- follow ///
         		case 'f':
               activeGlo.follow = !activeGlo.follow;
@@ -386,7 +390,6 @@ window.addEventListener("keydown", function (e) {
         		case 'j':
               downloadCanvas();
         			break;
-            /// n -- Style de ligne -- ligne, dessin ///
         		/*case 'n':
               activeGlo.numLineCap++;
               applyToSelectedMods('numLineCap');
@@ -394,6 +397,10 @@ window.addEventListener("keydown", function (e) {
             /// k -- Dessine le bord de l'avatar -- avatar, dessin -- stroke ///
         		case 'k':
               activeGlo.stroke = !activeGlo.stroke;
+        			break;
+            /// l -- La vitesse des avatars est limitée selon leurs tailles -- avatar -- limSpeedBySize ///
+        		case 'l':
+              activeGlo.limSpeedBySize = !activeGlo.limSpeedBySize;
         			break;
             /// m -- Variation de la taille suivant la vitesse -- avatar, dessin -- var_size ///
         		case 'm':
@@ -418,11 +425,9 @@ window.addEventListener("keydown", function (e) {
               if(activeGlo.clearForm){ clear(); }
               createMenu = createForm({ form: {size: canvas.width/4} });
         			break;
-            // r -- Réinitialise les avatars au hazard -- avatar, creation ///
+            /// r -- Le contrôle survolé est lié à celui liable -- interface ///
         		case 'r':
-              activeGlo.createMod = 'random';
-              if(activeGlo.clearForm){ clear(); }
-              keepBreak(raz_avatars);
+              inputToLinkedTo();
         			break;
             /// s -- Taille des avatars aléatoire -- avatar, taille -- alea_size ///
         		case 's':
@@ -431,7 +436,8 @@ window.addEventListener("keydown", function (e) {
         			break;
             /// t -- Affiche le centre -- info, centre -- view_center ///
         		case 't':
-              activeGlo.view_center = !activeGlo.view_center;
+              let isInputToLinkedTo = inputToLinkedTo(false);
+              if(!isInputToLinkedTo){ activeGlo.view_center = !activeGlo.view_center; }
         			break;
             /// u -- Créer un rectangle d'avatars -- avatar, creation ///
         		case 'u':
@@ -451,6 +457,10 @@ window.addEventListener("keydown", function (e) {
             /// x -- Orientation des rebonds -- avatar, attraction -- normalCollid ///
         		case 'x':
               activeGlo.normalCollid = !activeGlo.normalCollid;
+        			break;
+            /// y -- Symétrie centrale des modifiers -- modifier, position ///
+        		case 'y':
+              modsSymToCenter();
         			break;
             /// z -- Transforme l'image en noir et blanc -- image, couleur ///
         		case 'z':
@@ -755,8 +765,9 @@ window.addEventListener("keydown", function (e) {
             case 'b':
               activeGlo.modifierSelect.update('byGroup');
               break;
-            //FREE
+            /// Alt c -- Pose des modifiers par symétrie totale des sélectionnés -- modifier, position ///
             case 'c':
+              modsSymToCenter('all');
               break;
             /// Alt e -- Affiche une grille au tiers -- interface, grille ///
             case 'e':
@@ -824,10 +835,13 @@ window.addEventListener("keydown", function (e) {
             case 'v':
               activeGlo.modifierSelect.update('byOne');
               break;
-            /// Alt w -- Menu avec simples touches -- interface, menu ///
+            /// Alt w -- Pose des modifiers par symétrie horizontale des sélectionnés -- modifier, position ///
             case 'w':
-              createCanvasMenu();
-              showMenu();
+              modsSymToCenter('hAxe');
+              break;
+            /// Alt x -- Pose des modifiers par symétrie verticale des sélectionnés -- modifier, position ///
+            case 'x':
+              modsSymToCenter('vAxe');
               break;
             /// Alt y -- Pose un carré de modifiers -- modifier, creation ///
             case 'y':

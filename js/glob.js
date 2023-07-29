@@ -242,6 +242,8 @@ class Glob {
             //moveOnAlea: { name: 'Move on alea', state: true, key: '8', specialKey: 'ctrl', noAlea: true, },
             //hyperAlea: { name: 'Hyper alea', state: false, key: '9', specialKey: 'ctrl', noAlea: true, callback: function() { switchHyperAlea(); } },
         };
+        this.linkedInputs = {};
+        this.inputToLinked  = false;
         this.attract_mouse = {
             state: true,
             mouseup: true,

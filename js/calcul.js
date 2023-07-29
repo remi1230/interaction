@@ -105,6 +105,10 @@ function rotateByMatrix(pos, roll, pitch, yaw, rad = true) {
 	return pos_to_return;
 }
 
+function symToCenter(point, center = activeGlo.center){
+  return { x: 2*center.x - point.x, y: 2*center.y - point.y };
+}
+
 function cpow(val, exp){
   if(parseInt(exp) == exp){ return val < 0 && exp%2 == 0 ? -pow(val, exp) : pow(val, exp); }
   else{ return val < 0 ? -pow(-val, exp) : pow(val, exp); }
