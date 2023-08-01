@@ -611,10 +611,12 @@ class Avatar {
           this.ax += addX;
           this.ay += addY;
 
-          let modsDevForce = this.nearMod.params ? this.nearMod.params.modsDevForce : activeGlo.params.modsDevForce;
+          //let modsDevForce = this.nearMod.params ? this.nearMod.params.modsDevForce : activeGlo.params.modsDevForce;
+          let modsDevForce = activeGlo.params.modsDevForce;
           modsDevForce = this.n_avatars%2 ? modsDevForce : -modsDevForce;
           if(modsDevForce != '0'){
-            let modsDevDir = this.nearMod.params ? this.nearMod.params.modsDevDir : activeGlo.params.modsDevDir;
+            //let modsDevDir = this.nearMod.params ? this.nearMod.params.modsDevDir : activeGlo.params.modsDevDir;
+            let modsDevDir = activeGlo.params.modsDevDir;
 
             let dist = h(addX, addY);
             let dir  = atan2piZ(addX, addY);
@@ -937,23 +939,29 @@ class Avatar {
     x =  speed * cos(k);
     y = -speed * sin(k);
 
+    /*if(activeGlo.polyPrecision){
+      let newD = roundStepsPro(x, y, r, 0.1);
+      x = newD.dx;
+      y = newD.dy;
+    }*/
     if(activeGlo.polyPrecision){
-      let new_d = h(dx + x, dy + y);
-      if(new_d > r){
-        let newAngle = atan2pi(dx + x, dy + y);
-        a -= polyRotAngle;
+      let new_d = h(this.x + x - this.center.x, this.y + y - this.center.y);
 
-        let nextAngle = newAngle   > a + edgeAngle || a + edgeAngle == two_pi ? a + edgeAngle : a;
-        if(a + edgeAngle == two_pi){ newAngle+=two_pi; }
-        let coeff = (nextAngle - angle + polyRotAngle) / (newAngle - angle + polyRotAngle);
+      let distToSom   = pow((r*r) - (midR*midR), 0.5);
+      let distToNewPt = pow((new_d*new_d) - (midR*midR), 0.5);
 
-        //let restAngle = newAngle - nextAngle;
+      if(distToNewPt > distToSom){
+        let coeff = distToSom/distToNewPt;
 
         if(coeff != 0){
           x*=coeff;
           y*=coeff;
 
           this.speedBf = true;
+          this.modifiersValues.x += x;
+          this.modifiersValues.y += y;
+
+          this.rotPoly(speed, center, noAvCenter, nbEdges, brake, polyRotAngle, modsDev);
         }
       }
     }

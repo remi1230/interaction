@@ -943,19 +943,6 @@ function createForm(opt){ keepBreak(function(){ var nb = activeGlo.params.nb; de
 //------------------ CLEAR CANVAS ----------------- //
 function clear(){ ctx.clearRect(0, 0, canvas.width, canvas.height); /*dataCanvas = new Uint8Array(canvas.width * canvas.height);*/ }
 
-//------------------ MENU DU CANVAS ----------------- //
-function showMenu(pos = '75%'){
-  activeGlo.is_canvas_menu = true;
-
-  canvas_menu.style.display  = 'block';
-  canvas_menu.style.position = 'absolute';
-  canvas_menu.style.left     = pos;
-  canvas_menu.style.top      = '15px';
-}
-function hideMenu(){
-  canvas_menu.style.display = 'none';
-  activeGlo.is_canvas_menu = false;
-}
 function createGoInterface(){
   let interfaces = [...document.getElementsByClassName('interface')];
   interfaces.forEach((interface, i) => {
@@ -1165,7 +1152,15 @@ function msg(...txts){
 function updateGlo(ctrl){
   let val = parseFloat(ctrl.value) ? parseFloat(ctrl.value) : ctrl.value;
 
-  if(typeof(activeGlo.params[ctrl.id]) != 'undefined'){
+  activeGlo.fromUpdGlo = true;
+
+  let selectedMods = getSelectedModifiers();
+  selectedMods.forEach(mod => {
+    mod.params[ctrl.id]     = !ctrl.classList.contains('radUnit') ? val : val * rad;
+    mod.glo.params[ctrl.id] = !ctrl.classList.contains('radUnit') ? val : val * rad;
+  });
+
+  if(typeof(activeGlo.params[ctrl.id]) != 'undefined' && (!selectedMods.length || !activeGlo.modifiers.length)){
     activeGlo.params[ctrl.id] = !ctrl.classList.contains('radUnit') ? val : val * rad;
   }
 
@@ -1180,13 +1175,6 @@ function updateGlo(ctrl){
   ctrl.dataset.last_value = val;
 
   updLabel(ctrl);
-
-  getSelectedModifiers().forEach(mod => {
-    mod.params[ctrl.id]     = !ctrl.classList.contains('radUnit') ? val : val * rad;
-    mod.glo.params[ctrl.id] = !ctrl.classList.contains('radUnit') ? val : val * rad;
-  });
-
-  activeGlo.fromUpdGlo = true;
 
   if(activeGlo.hyperAlea){ avatars.forEach(avatar => avatar.glo.params[ctrl.id] = val); }
 
@@ -1512,6 +1500,21 @@ function greyColor(ctrl){
   });
 
   ctrl.dataset.last_value = val;
+}
+function invTint(){
+  updImage(data => {
+    for (var i  = 0; i < data.length; i += 4) {
+      if(data[i] != 0 || data[i + 1] != 0 || data[i + 2] != 0){
+        let hsla  = RGBAToHSLA(data[i], data[i+1], data[i+2], data[i+3]);
+        hsla.l = 100 - hsla.l;
+        let rbga  = HSLAToRGBA(hsla.h, hsla.s, hsla.l, hsla.a);
+
+        data[i]     = rbga.r;
+        data[i + 1] = rbga.g;
+        data[i + 2] = rbga.b;
+      }
+    }
+  });
 }
 //------------------ MODIFICATION DE LA COULEUR DES AVATARS ----------------- //
 function rotateColor(x = 0.1, y = 0.1, z = 0.1){
@@ -2116,7 +2119,50 @@ function makeModifierFunction(modifierType){
             this.y       = posSave.y;
         }
       };
-    case 'invertor':
+    case 'deviator':
+      return function(av){
+        if(activeGlo.params.mods_formule != '0'){ modsFormule(this, av); }
+
+        let dist  = av.dist_av(this);
+
+        av.distMods.push({dist: dist, h: this.color.h, l: this.tint, ls: this.tint_stroke, st: this.satStroke, w: this.weight, colorDec: this.colorDec, colorStrokeDec: this.colorStrokeDec, varColDistModifs : this.params.varColDistModifs});
+        if(dist < av.distMinModifiers){ av.distMinModifiers = dist; av.nearMod = this; }
+
+        if(dist <= this.lim_attract || !this.lim_attract){
+          let att         = this.attract * this.dblForce * 4;
+          let brake       = activeGlo.params.breakAdd + pow(dist, this.brake/2);
+
+          let lastAv = av.lasts[av.lasts.length - 2];
+
+          if(lastAv){
+            let vx = av.x - lastAv.x;
+            let vy = av.y - lastAv.y;
+
+            let c = att / brake;
+
+            if(!av.direction){ av.dir(); }
+
+            let dir = direction(av.direction + this.glo.params.deviatorAngle, h(vx, vy));
+
+            av.modifiersValues.x += dir.x * c;
+            av.modifiersValues.y += dir.y * c;
+          }
+        }
+
+        if(this.double){
+            let posSave  = {x: this.x, y: this.y};
+            this.x      += cos(this.dblAngle);
+            this.y      += sin(this.dblAngle);
+            this.attract = -this.attract;
+            this.double  = false;
+            this.modify(av);
+            this.double  = true;
+            this.attract = -this.attract;
+            this.x       = posSave.x;
+            this.y       = posSave.y;
+        }
+      };
+    case 'accelerator':
       return function(av){
         if(activeGlo.params.mods_formule != '0'){ modsFormule(this, av); }
 
@@ -2129,21 +2175,10 @@ function makeModifierFunction(modifierType){
           let att         = this.attract * this.dblForce;
           let brake       = activeGlo.params.breakAdd + pow(dist, this.brake);
 
-          let lastAv = av.lasts[av.lasts.length - 2];
-
-          if(lastAv){
-            let vx = av.x - lastAv.x;
-            let vy = av.y - lastAv.y;
-
-            let c = att / brake;
-
-            if(!av.direction){ av.dir(); }
-
-            /*av.modifiersValues.x += vx * c * cos(av.direction);
-            av.modifiersValues.y += vy * c * sin(av.direction);*/
-            av.modifiersValues.x += -vx * c;
-            av.modifiersValues.y += -vy * c;
-          }
+          let coeff = 1 + att/brake;
+          
+          av.modifiersValues.x *= coeff;
+          av.modifiersValues.y *= coeff;
         }
 
         if(this.double){
@@ -2416,7 +2451,7 @@ function posPolyModifiers(cent = false, type = activeGlo.pos_modifiers, nb = act
   }
 }
 //------------------ POS SQUARE MODIFIERS ----------------- //
-function posSquareModifiers(cent = false, type = activeGlo.pos_modifiers, inv = activeGlo.de.invModifiersAtt, rot = activeGlo.params.rotCircleModifiers){
+function posSquareModifiers(cent = false, type = activeGlo.pos_modifiers, inv = activeGlo.invModifiersAtt, rot = activeGlo.params.rotCircleModifiers){
   let x, y, pt, n = 0;
   let invAtt = inv;
   if(!cent){
@@ -2876,6 +2911,24 @@ function drawLimOnInput(ctrl, e){
 
   ctrl.parentElement.appendChild(div);
 }
+//------------------ DRAW CHAR ON INPUT ----------------- //
+function drawCharOnInput(ctrl, char, endId){
+  let posCtrl        = ctrl.getClientRects()[0];
+  let div            = document.createElement("div");
+  div.className      = 'charOnInput';
+  div.id             = ctrl.id + '_' + endId;
+  div.style.fontSize = '16px';
+  div.style.position = 'absolute';
+  div.style.left     = posCtrl.x + posCtrl.width - 20 + 'px';
+  div.style.top      = ctrl.offsetTop - 10 + 'px';
+  div.style.color    = '#333';
+
+  let txt = document.createTextNode(char);
+
+  div.appendChild(txt);
+
+  ctrl.parentElement.appendChild(div);
+}
 
 //------------------ PARAMÉTRAGES PARTICULIERS ----------------- //
 function glo_params(style = 'gravity'){
@@ -3048,7 +3101,7 @@ function drawLogo(mod, style, angle = 0){
       ctxStructure.strokeStyle = attract > 0 ? 'blue' : 'red';
       ctxStructure.line({start: point, end: {x: point.x - dir.x, y: point.y - dir.y}});
       break;
-    case 'invertor':
+    case 'deviator':
       let coeff = !select ? 1 : 2;
       angleSave = angle;
       angle = -abs(angle);
@@ -3056,6 +3109,9 @@ function drawLogo(mod, style, angle = 0){
       if(angleSave < 0){ ctxStructure.strokeStyle = attract < 0 ? 'red' : 'blue'; }
       else{ ctxStructure.strokeStyle = attract > 0 ? 'blue' : 'red'; }
       ctxStructure.line({start: point, end: {x: point.x + cos(angle) * size * coeff, y: point.y + sin(angle) * size* coeff}});
+      break;
+    case 'accelerator':
+      strokeOnCanvas(ctxStructure, function(){ctxStructure.cross(point, size);});
       break;
     case 'polygonator':
       let rot = nbEdges % 2 != 0 ? PI / nbEdges : 0;
@@ -3918,52 +3974,69 @@ async function init(path){
 }
 
 function inputToLinked(){
-  let inputsSz = input_params.length;
-
-  for(let i = 0; i < inputsSz; i++){
-    let input = input_params[i];
-    if(input.dataset.focus && input.dataset.focus == 'true'){
-      if(typeof input.dataset.toLinked === 'undefined'){
-        input.dataset.toLinked           = 'true';
-        activeGlo.inputToLinked          = input.id;
-        activeGlo.linkedInputs[input.id] = 'toLinked';
+  return inputFlownByMouse(input => {
+    if(typeof input.dataset.toLinked === 'undefined'){
+      input.dataset.toLinked           = 'true';
+      activeGlo.inputToLinked          = input.id;
+      activeGlo.linkedInputs[input.id] = 'toLinked';
+      addClasses(input, 'toLinked');
+      drawCharOnInput(input,  getRndChar(4449, 4649), 'charToLinked');
+    }
+    else{
+      input.dataset.toLinked           = input.dataset.toLinked === 'false' ? 'true' : 'false';
+      activeGlo.inputToLinked          = input.dataset.toLinked === 'true';
+      activeGlo.linkedInputs[input.id] = input.dataset.toLinked === 'true';
+      if(activeGlo.inputToLinked){
         addClasses(input, 'toLinked');
+        activeGlo.linkedInputs[input.id] = 'toLinked';
+        drawCharOnInput(input,  getRndChar(4449, 4649), 'charToLinked');
       }
       else{
-        input.dataset.toLinked           = input.dataset.toLinked === 'false' ? 'true' : 'false';
-        activeGlo.inputToLinked          = input.dataset.toLinked === 'true';
-        activeGlo.linkedInputs[input.id] = input.dataset.toLinked === 'true';
-        if(activeGlo.inputToLinked){
-          addClasses(input, 'toLinked');
-          activeGlo.linkedInputs[input.id] = 'toLinked';
-        }
-        else{
-          removeClasses(input, 'toLinked');
-          delete activeGlo.linkedInputs[input.id];
-        }
+        removeClasses(input, 'toLinked');
+        delete activeGlo.linkedInputs[input.id];
+        clearCharOnInput(input, 'charToLinked');
       }
-      return true;
     }
-  }
-  return false;
+  });
 }
 function inputToLinkedTo(positive = true){
+  return inputFlownByMouse((input, positive) => {
+    let sign = positive ? 'positive' : 'negative';
+    if(activeGlo.inputToLinked){
+      let toLinked = activeGlo.linkedInputs[activeGlo.inputToLinked];
+      if(toLinked === 'toLinked'){
+        addClasses(input, 'linkedTo', sign);
+        activeGlo.linkedInputs[activeGlo.inputToLinked] = input.id;
+        let char = getById(activeGlo.inputToLinked + '_charToLinked').textContent;
+        drawCharOnInput(input,  char, 'charLinkedTo');
+      }
+      else{
+        removeClasses(input, 'linkedTo', 'positive', 'negative');
+        activeGlo.linkedInputs[activeGlo.inputToLinked] = 'toLinked';
+        clearCharOnInput(input, 'charLinkedTo');
+      }
+    }
+  }, positive);
+}
+function inputToSlideWithMouse(){
+  return inputFlownByMouse(input => {
+    if(activeGlo.inputToSlideWithMouse){ removeClasses(activeGlo.inputToSlideWithMouse, 'toSlideWithMouse'); }
+    if(input !== activeGlo.inputToSlideWithMouse){
+      activeGlo.inputToSlideWithMouse = input;
+      addClasses(input, 'toSlideWithMouse');
+    }
+    else{
+      activeGlo.inputToSlideWithMouse = false;
+    }
+  });
+}
+
+function inputFlownByMouse(func, ...args){
   let inputsSz = input_params.length;
   for(let i = 0; i < inputsSz; i++){
     let input = input_params[i];
     if(input.dataset.focus && input.dataset.focus == 'true'){
-      let sign = positive ? 'positive' : 'negative';
-      if(activeGlo.inputToLinked){
-        let toLinked = activeGlo.linkedInputs[activeGlo.inputToLinked];
-        if(toLinked === 'toLinked'){
-          addClasses(input, 'linkedTo', sign);
-          activeGlo.linkedInputs[activeGlo.inputToLinked] = input.id;
-        }
-        else{
-          removeClasses(input, 'linkedTo', 'positive', 'negative');
-          activeGlo.linkedInputs[activeGlo.inputToLinked] = 'toLinked';
-        }
-      }
+      func(input, ...args);
 
       return true;
     }
@@ -3971,6 +4044,33 @@ function inputToLinkedTo(positive = true){
   return false;
 }
 
+function clearCharOnInput(ctrl, endId){
+  getById(ctrl.id + '_' + endId).remove();
+}
+
+function scaleCanvas(scale){
+  ctx.scale(scale, scale);
+  scale = scale > 1 ? -1/(scale*2) : scale;
+  ctx.translate(canvas.width * scale, canvas.height * scale);
+}
+
+function rotateCanvas(angle){
+  ctx.translate(canvas.width / 2,canvas.height / 2);
+  ctx.rotate(angle);
+  ctx.translate(-canvas.width / 2, -canvas.height / 2);
+}
+
+function tiltCanvas(axe, angle){
+  axe = 'h' ? ctx.transform(1, angle, 0, 1, 0, 0) : ctx.transform(1, 0, angle, 1, 0, 0);
+}
+
+function nbAvatarsInScreen(){
+  let nb = 0;
+  avatars.forEach(av => {
+    if(av.x <= canvas.width && av.x >= 0 && av.y <= canvas.height && av.y >= 0){ nb++; }
+  });
+  return nb;
+}
 
 
 

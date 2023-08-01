@@ -59,7 +59,7 @@
             <div>
               <div>
                 <input type="range" id="modifierPos" name="modifierPos" class='input_params' oninput="updateGlo(this); activeGlo.pos_modifiers = activeGlo.modifierTypes[this.value]; "
-                       min="0" max="9" value="1" step="1" data-labels="modifierTypes">
+                       min="0" max="10" value="1" step="1" data-labels="modifierTypes">
                 <label for="modifierPos">Modifiers type</label>
               </div>
               <div>
@@ -76,12 +76,12 @@
             <div>
               <div>
                 <input type="range" id="selModsByType" name="selModsByType" class='input_params' oninput="updateGlo(this); modifier_select(false, this); "
-                       min="0" max="9" value="0" step="1" data-labels="selModsByType">
+                       min="0" max="10" value="0" step="1" data-labels="selModsByType">
                 <label for="selModsByType">Select modifiers by type</label>
               </div>
               <div>
                 <input type="range" id="turnModifiers" name="turnModifiers" class='input_params' oninput="updateGlo(this); turnModifiers(this); "
-                       min="0" max="9" value="0" step="1" data-labels="modifierTypes">
+                       min="0" max="10" value="0" step="1" data-labels="modifierTypes">
                 <label for="turnModifiers">Turn modifiers</label>
               </div>
               <div>
@@ -410,6 +410,17 @@
                 <input type="range" id="avToFollowColorStrokeL" name="avToFollowColorStrokeL" class='input_params' oninput="updateGlo(this); "
                        min="0" max="360" value="10" step="1">
                 <label for="avToFollowColorStrokeL">Av to follow var stroke L</label>
+              </div>
+            </div>
+            <div>
+              <div>
+                <input type="range" id="deviatorAngle" name="deviatorAngle" class='input_params radUnit' oninput="updateGlo(this); "
+                       min="0" max="360" value="5" step="1">
+                <label for="deviatorAngle">deviator Angle</label>
+              </div>
+              <div>
+              </div>
+              <div>
               </div>
             </div>
           </div>
@@ -1106,10 +1117,6 @@
             </div>
           </div>
         </div>
-          <div id='canvas_menu'>
-            <div id='canvas_menu_button'>
-            </div>
-          </div>
           <dialog id="helpDialog" style="width: 85%; height: 85%; position: absolute; top: -10px; border: none; border-radius: 5px; overflow-x: hidden"
                   oninput="event.stopPropagation(); " onchange="event.stopPropagation(); " onclick="event.stopPropagation(); ">
             <div style="text-align: center; margin-top: 10px; display: grid; grid-template-columns: 210px 210px 210px; justify-content: space-between; "

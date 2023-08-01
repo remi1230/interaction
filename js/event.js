@@ -9,24 +9,6 @@ document.addEventListener("DOMContentLoaded", function() {
     animation();
 });//
 
-//------------------ ClICK ON UI TO HIDE MENU ----------------- //
-ui.addEventListener('click', () => {
-  if(!activeGlo.fromUpdGlo ){ hideMenu(); }
-  activeGlo.fromUpdGlo = false;
-});
-//------------------ DBLClICK ON UI TO CHANGE INTERFACE ----------------- //
-/*ui.addEventListener('dblclick', () => {
-  changeInterface('+');
-});*/
-//------------------ WHEEL ON UI TO CHANGE INTERFACE ----------------- //
-/*ui.addEventListener('wheel', (e) => {
-  if(activeGlo.uiMouseDown){
-    e.stopPropagation();
-    if(e.deltaY > 0){ changeInterface('-'); }
-    else{ changeInterface('+'); }
-  }
-});*/
-
 ui.addEventListener('mousedown', () => { activeGlo.uiMouseDown = true; });
 ui.addEventListener('mouseup',   () => { activeGlo.uiMouseDown = false; });
 
@@ -76,7 +58,7 @@ structure.addEventListener('click', () => {
     }
     else if(activeGlo.formModTypes[activeGlo.params.formModType] != 'one'){ posModifiersByType(mouse); }
     else{
-      if(!activeGlo.is_canvas_menu && !activeGlo.attract_mouse.state){
+      if(!activeGlo.attract_mouse.state){
         if(typeof(activeGlo.num_params) == 'undefined'){ activeGlo.num_params = 0; }
 
         ui.style.display       = ui.style.display === 'none' ? '' : 'none';
@@ -87,7 +69,6 @@ structure.addEventListener('click', () => {
         simpleUpdImage(ctxStructure, fix_dpi, structure);
       }
       else{
-        hideMenu();
         if(activeGlo.defineCenter){ defineCenter(true, true); }
         else{
           if(activeGlo.modifierSelect.byOne || activeGlo.modifierSelect.byGroup){ modifier_select(); }
@@ -165,15 +146,11 @@ structure.addEventListener('wheel',     (e) => {
       modNearestToMouse.attract += event.deltaY*0.1;
     }
     else{
-      getSelectedModifiers().forEach(mod => { mod.attract += Math.sign(mod.attract) * event.deltaY*0.1; });
-      /*activeGlo.modifiers.forEach(mod => {
-        if(mod.virtual){ mod.attract = activeGlo.params.wheel_force; }
-      });
-
-      activeGlo.params.wheel_force += event.deltaY*0.1;
-      activeGlo.params.wheel_force = parseInt(activeGlo.params.wheel_force);
-      updCtrl('wheel_force');
-      activeGlo.modifiers.forEach(mod => { if(mod.virtual){ mod.attract = activeGlo.params.wheel_force; } });*/
+      if(!activeGlo.inputToSlideWithMouse ){ getSelectedModifiers().forEach(mod => { mod.attract += Math.sign(mod.attract) * event.deltaY*0.1; }); }
+      else{
+        activeGlo.inputToSlideWithMouse.value = parseFloat(activeGlo.inputToSlideWithMouse.value) + (parseFloat(activeGlo.inputToSlideWithMouse.step) * Math.sign(event.deltaY));
+        activeGlo.inputToSlideWithMouse.dispatchEvent(new Event('input', { bubbles: true, cancelable: true, }));
+      }
     }
   }
 });
@@ -349,18 +326,18 @@ window.addEventListener("keydown", function (e) {
               break;
             /// a -- L'alpha varie aléatoirement -- avatar, dessin -- alpha ///
         		case 'a':
-                    activeGlo.alpha = !activeGlo.alpha;
+              if(!inputToSlideWithMouse(false)){ activeGlo.alpha = !activeGlo.alpha; }
         			break;
             /// b -- Les modifiers ont la couleur sélectionnée avec l'interface -- couleur, modifier ///
         		case 'b':
-                    activeGlo.oneColor.state = !activeGlo.oneColor.state;
+              activeGlo.oneColor.state = !activeGlo.oneColor.state;
         			break;
             /// c -- Créer un cercle d'avatars -- avatar, creation ///
         		case 'c':
-                    activeGlo.createMod = 'circle';
-                    center = canvas.getCenter();
-                    if(activeGlo.clearForm){ clear(); }
-                    createMenu = createForm({ form: {name: 'circle', size: canvas.width/4}, center: center });
+              activeGlo.createMod = 'circle';
+              center = canvas.getCenter();
+              if(activeGlo.clearForm){ clear(); }
+              createMenu = createForm({ form: {name: 'circle', size: canvas.width/4}, center: center });
         			break;
             /// d -- Les avatars rebondissent à l'exterieur des bords -- avatar -- far_rebound ///
         		case 'd':
@@ -436,8 +413,7 @@ window.addEventListener("keydown", function (e) {
         			break;
             /// t -- Affiche le centre -- info, centre -- view_center ///
         		case 't':
-              let isInputToLinkedTo = inputToLinkedTo(false);
-              if(!isInputToLinkedTo){ activeGlo.view_center = !activeGlo.view_center; }
+              if(!inputToLinkedTo(false)){ activeGlo.view_center = !activeGlo.view_center; }
         			break;
             /// u -- Créer un rectangle d'avatars -- avatar, creation ///
         		case 'u':
@@ -606,20 +582,13 @@ window.addEventListener("keydown", function (e) {
         		case '"':
               activeGlo.alternatorInvAtt = !activeGlo.alternatorInvAtt;
         			break;
-            //FREE
+            /// ' -- Réduit le canvas par 2 -- canvas ///
         		case "'":
-              e.preventDefault();
-              activeGlo.colorSquare = !activeGlo.colorSquare;
+              scaleCanvas(0.5);
         			break;
-            //FREE
+            /// ( -- Augmente le canvas par 2 -- canvas ///
         		case "(":
-              getSelectedModifiers().forEach(mod => {
-                mod.haveColor = !mod.haveColor;
-                if(mod.haveColor){
-                  mod.color = {h: parseInt(rnd() * 360), s: 20 + parseInt(rnd() * 60), l: 20 + parseInt(rnd() * 60)};
-                }
-              });
-              activeGlo.modifiersHaveColor = !activeGlo.modifiersHaveColor;
+              scaleCanvas(2);
         			break;
             /// ) -- Mode de déplacement en courbe -- dessin -- curve ///
         		case ')':
@@ -654,15 +623,13 @@ window.addEventListener("keydown", function (e) {
         		case '%':
               activeGlo.dimSizeCenter = !activeGlo.dimSizeCenter;
         			break;
-            //FREE
+            /// µ -- Rotationne le canvas d'un angle positif -- canvas ///
         		case 'µ':
-              activeGlo.dash++;
-              applyToSelectedMods('dash');
+              rotateCanvas(PI/8);
               break;
-            //FREE
+            /// § -- Rotationne le canvas d'un angle négatif -- canvas ///
         		case '§':
-              if(activeGlo.dash > 1){ activeGlo.dash--; }
-              applyToSelectedMods('dash');
+              rotateCanvas(-PI/8);
         			break;
             /// ⏎ -- Avec gravité, relie les points de rencontre des avatars -- avatar, attraction -- lineCrossPoints ///
         		case 'Enter':
@@ -761,9 +728,9 @@ window.addEventListener("keydown", function (e) {
               if(activeGlo.grid.type == 'square' || activeGlo.grid.type == 'none'){ activeGlo.grid.draw = !activeGlo.grid.draw; }
               activeGlo.grid.type = activeGlo.grid.draw ? 'square' : 'none';
               break;
-            //FREE
+            /// Alt b -- Incline positivement le canvas verticalement -- canvas, transformation ///
             case 'b':
-              activeGlo.modifierSelect.update('byGroup');
+              tiltCanvas('v', 0.25);
               break;
             /// Alt c -- Pose des modifiers par symétrie totale des sélectionnés -- modifier, position ///
             case 'c':
@@ -774,9 +741,9 @@ window.addEventListener("keydown", function (e) {
               if(activeGlo.grid.type == 'third' || activeGlo.grid.type == 'none'){ activeGlo.grid.draw = !activeGlo.grid.draw; }
               activeGlo.grid.type = activeGlo.grid.draw ? 'third' : 'none';
               break;
-            //FREE
+            /// Alt f -- Incline le négativement canvas verticalement -- canvas, transformation ///
             case 'f':
-              activeGlo.modifiersDrawNear = !activeGlo.modifiersDrawNear;
+              tiltCanvas('v', -0.25);
               break;
             /// Alt g -- Pose des modifiers sur la grille -- modifier, grille -- putOnGrid ///
             case 'g':
@@ -794,9 +761,9 @@ window.addEventListener("keydown", function (e) {
             case 'j':
               activeGlo.spirAvatar = !activeGlo.spirAvatar;
               break;
-            //FREE
+            /// Alt f -- Incline positivement le canvas horizontalement -- canvas, transformation ///
             case 'n':
-              activeGlo.modifierSelect.update('byRectangle');
+              tiltCanvas('h', 0.25);
               break;
             /// Alt q -- /10 le pas du slider seléctionné -- interface ///
             case 'q':
@@ -818,10 +785,9 @@ window.addEventListener("keydown", function (e) {
               if(activeGlo.grid.type == 'hexagone' || activeGlo.grid.type == 'none'){ activeGlo.grid.draw = !activeGlo.grid.draw; }
               activeGlo.grid.type = activeGlo.grid.draw ? 'hexagone' : 'none';
               break;
-            //FREE
+            /// Alt s -- Incline négativement le canvas horizontalement -- canvas, transformation ///
             case 's':
-              createCanvasBoolMenu();
-              showMenu();
+              tiltCanvas('h', -0.25);
               break;
             /// Alt t -- Affiche des infos -- info -- showInfos ///
             case 't':
@@ -999,9 +965,9 @@ window.addEventListener("keydown", function (e) {
             case 'o':
               impt_json();
               break;
-            //FREE
+            /// Ctrl p -- Inverse la tinte de l'image -- image, couleur ///
             case 'p':
-              activeGlo.noBlankTest = !activeGlo.noBlankTest;
+              invTint();
               break;
             /// Ctrl q -- Avec rayon d'attraction, mode chaos -- attraction -- chaos ///
             case 'q':
@@ -1052,7 +1018,7 @@ window.addEventListener("keydown", function (e) {
               activeGlo.break = !activeGlo.break;
               dealBreakAvatars();
         			break;
-            /// Ctrl ( -- Un click donne des infos -- info -- infoOnMouse ///
+            /// Ctrl ( -- Survoler un modifier donne des infos -- info -- infoOnMouse ///
             case '(':
               activeGlo.infoOnMouse = !activeGlo.infoOnMouse;
               break;
@@ -1204,10 +1170,6 @@ window.addEventListener("keydown", function (e) {
             activeGlo.dist_mean_one = !activeGlo.dist_mean_one;
             break;
           /// Ctrl 6 -- Les avatars ont un second mouvement sinusoïdal -- avatar, attraction -- secondMove ///
-          case '6':
-            activeGlo.secondMove = !activeGlo.secondMove;
-            break;
-          /// Ctrl 6 -- Les avatars ont un second mouvement sinusoïdal -- avatar -- secondMove ///
           case '6':
             activeGlo.secondMove = !activeGlo.secondMove;
             break;

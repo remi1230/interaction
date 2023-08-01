@@ -174,6 +174,7 @@ class Glob {
                 avToFollowColorStrokeH : 10,
                 avToFollowColorStrokeS : 10,
                 avToFollowColorStrokeL : 10,
+                deviatorAngle : 5,
             };
         this.alea = {
             colorDec       : true,
@@ -309,8 +310,8 @@ class Glob {
         this.forms = ['circle', 'square', 'line', 'bezier', 'poly', 'ellipse', 'alea_form', 'cloud', 'cross'];
         this.colorCumulType = ['average', 'average_mul', 'average_div', 'average_mul_fact', 'average_div_fact', 'test'];
         this.pos_modifiers = 'rotator';
-        this.modifierTypes = ['none', 'rotator', 'attractor', 'polygonator', 'spiralor', 'invertor', 'alternator', 'magnetor', 'formulator', 'director'];
-        this.selModsByType = ['none', 'rotator', 'attractor', 'polygonator', 'spiralor', 'invertor', 'alternator', 'magnetor', 'formulator', 'director'];
+        this.modifierTypes = ['none', 'rotator', 'attractor', 'polygonator', 'spiralor', 'deviator', 'accelerator', 'alternator', 'magnetor', 'formulator', 'director'];
+        this.selModsByType = ['none', 'rotator', 'attractor', 'polygonator', 'spiralor', 'deviator', 'accelerator', 'alternator', 'magnetor', 'formulator', 'director'];
         this.formModTypes  = ['one', 'circle', 'square', 'rectangle', 'polygone'];
         this.ctxCompositions  = ["source-over", "destination-over", "lighter", "xor"];
         this.selectCanvas  = [];
@@ -318,8 +319,8 @@ class Glob {
         this.rangesCmlColor = {range_qMove: 1, range_center: 1, range_dir: 1, range_distMod: 1,};
         this.colorFunctions = {qMove: true};
         this.colorFunction  = 'distMod';
-        this.is_canvas_menu = false;
         this.other_menu = false;
+        this.inputToSlideWithMouse = false;
         this.clear = true;
         this.modifiersDrawNear = true;
         this.orientedPoly = true;
@@ -402,8 +403,6 @@ var num_modifier = 1;
 var canvas                = getById('arene');
 var structure             = getById('structure');
 var ui                    = getById('ui');
-var canvas_menu           = getById('canvas_menu');
-var canvas_menu_button    = getById('canvas_menu_button');
 var ctrl_canvas_container = getById('ctrl_canvas_container');
 var formule_container     = getById('formule_container');
 var formule_x             = getById('formule_x');

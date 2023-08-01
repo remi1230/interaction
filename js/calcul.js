@@ -647,7 +647,7 @@ function factDec(n){
 
 function round(val, precision = 2){ return Math.round(val*pow(10, precision))/pow(10, precision); }
 
-const deepCopy = (inObject, propNoCopy = []) => {
+const deepCopy = (inObject, ...propNoCopy) => {
   let outObject, value;
   if (typeof inObject !== "object" || inObject === null) {
     return inObject;
@@ -656,13 +656,13 @@ const deepCopy = (inObject, propNoCopy = []) => {
   outObject = Array.isArray(inObject) ? [] : {};
 
   for (let key in inObject) {
-    if(propNoCopy !== key){
+    if(!propNoCopy.includes(key)){
       value = inObject[key];
       outObject[key] = deepCopy(value, propNoCopy);
     }
   }
-
-  if(outObject.propNoCopy){ delete outObject.propNoCopy; }
+  /*propNoCopy.every(key => Object.keys(obj).includes(key))
+  if(outObject.propNoCopy){ delete outObject.propNoCopy; }*/
 
   return outObject;
 };
@@ -818,3 +818,20 @@ function digital_root(number)
 }
 
 const array_sum = arr => arr.reduce((a,b) => a+b, 0);
+
+const getRndChar = (min, max) => String.fromCharCode(parseInt(getRnd(min, max)));
+
+const roundSteps = (dx, dy, r) => {
+  let steps = r/h(dx, dy);
+  let coeff = round(steps, 0) / steps;
+  return {dx: dx * coeff, dy: dy * coeff};
+};
+const roundStepsPro = (dx, dy, r, precision) => {
+  let steps   = r/h(dx, dy);
+  let d       = roundSteps(dx, dy, r);
+  let newStep = r / h(d.dx, d.dy);
+
+  if(abs(steps - newStep) > precision){ d = roundStepsPro(d.dx, d.dy, r, precision);  }
+
+  return d;
+};
