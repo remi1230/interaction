@@ -520,7 +520,7 @@ function animation(){
 
         if(resist == 0){ avatar.vx = 0; avatar.vy = 0; }
 
-        if(gloNear.moveOnAlea && avatar.it%spap == 0){ avatar.lasts = []; avatar.moveOnAlea(); }
+        if(gloNear.moveOnAlea && avatar.it%spap == 0){ avatar.moveOnAlea(); }
         if(avatar.nears.length){ avatar.interaction(); }
 
         if(gloNear.follow){ avatar.follow(); }
@@ -609,8 +609,6 @@ function animation(){
           avatar.x += avatar.modifiersValues.x;
           avatar.y += avatar.modifiersValues.y;
           if(avatar.distMinModifiers < paramsNearMod.distNearClearMods){
-            avatar.draw_ok = false;
-            avatar.draw    = false;
             if(gloNearMod.moveOnAlea){ avatar.moveOnAlea(); }
           }
         }
@@ -675,9 +673,14 @@ function positionAvatars(){
     let avatar        = avatars[i];
     let gloNearMod    = avatar.nearMod.glo ? avatar.nearMod.glo : activeGlo;
 
+    if(gloNearMod.secondMove && (!avatar.draw || !avatar.draw_ok)){
+      avatar.lasts   = []; 
+      avatar.lastsSm = [];
+    }
+
     if(gloNearMod.collid_bord){ avatar.collidBorder(); }
     avatar.dir();
-    if(gloNearMod.secondMove){
+    if(gloNearMod.secondMove && avatar.draw){
       avatar.secondMove();
       avatar.dirSecond();
 
@@ -709,14 +712,11 @@ function positionAvatars(){
       accels.push(avatar.accel);
     }
 
-    if(avatar.draw_ok){ avatar.draw = true; }
-    if(!avatar.draw){ avatar.draw_ok = true; }
-
     avatar.dist_moy = avatar.dist / avatars.length;
 
     activeGlo.dist_moy += avatar.dist_moy;
 
-    if(gloNearMod.secondMove){
+    if(gloNearMod.secondMove && avatar.draw){
       avatar.x         = avatar.pSave.x;
       avatar.y         = avatar.pSave.y;
       avatar.last_x    = avatar.lSave.x;
@@ -725,17 +725,9 @@ function positionAvatars(){
       avatar.direction = avatar.dirSave;
     }
 
-    //if(!activeGlo.clear && activeGlo.curve){dataCanvas[round(avatar.y,0) * canvas.width + round(avatar.x,0)] = 1;}
+    if(avatar.draw_ok){ avatar.draw = true; }
+    if(!avatar.draw){ avatar.draw_ok = true; }
   }
-
-  /*for(let i = 0; i < avatars.length; i++){
-    let avatar      = avatars[i];
-    let gloNearMod = avatar.nearMod.glo ? avatar.nearMod.glo : activeGlo;
-
-    if((!gloNearMod.drawAltern.state || avatar.it%activeGlo.params.speedRndDraw == 0) && avatar.draw){
-      avatar.draw_avatar();
-    }
-  }*/
 
   activeGlo.speed_max = Math.max(...speeds);
   activeGlo.accel_max = Math.max(...accels);
@@ -1160,7 +1152,7 @@ function updateGlo(ctrl){
     mod.glo.params[ctrl.id] = !ctrl.classList.contains('radUnit') ? val : val * rad;
   });
 
-  if(typeof(activeGlo.params[ctrl.id]) != 'undefined' && (!selectedMods.length || !activeGlo.modifiers.length)){
+  if(typeof(activeGlo.params[ctrl.id]) != 'undefined' && (selectedMods.length === activeGlo.modifiers.length || !activeGlo.modifiers.length)){
     activeGlo.params[ctrl.id] = !ctrl.classList.contains('radUnit') ? val : val * rad;
   }
 
@@ -2947,11 +2939,9 @@ function glo_params(style = 'gravity'){
       break;
     case 'test':
       params = {
-        attract: 0,
-        radius_attract: 0,
-        same_dir: 0,
+        limSpeedMin: 2,
+        rAleaPos: 0.2,
       };
-      if(activeGlo.collid_bord){ button_check('collid_bord'); }
       break;
     case 'stars':
       params = {
@@ -3408,22 +3398,7 @@ function showInfos(){
   let esp   = 30;
   let txts  = [];
   let inf;
-  putTxt({txt: "Selection mode      "  + activeGlo.modifierSelect.whatIsSelect(), pos_y: pos_y});
-  putTxt({txt: "Modifers type        " + activeGlo.pos_modifiers, pos_y: pos_y});
-  putTxt({txt: "Put in the center    " + (!activeGlo.attract_center ? 'disabled' : 'enabled '), pos_y: pos_y});
-  inf = activeGlo.params.wheel_force > 0 ? 'positive' : 'negative';
-  if(activeGlo.params.wheel_force == 0){inf = 'zero';}
-  putTxt({txt: "Mouse force sign    "  + inf, pos_y: pos_y});
-  putTxt({txt: "Pos/neg modifiers  "   + (!activeGlo.invModifiersAtt ? 'disabled' : 'enabled '), pos_y: pos_y});
-  putTxt({txt: "Pos mods with sign "   + (!activeGlo.modsWithSign ? 'disabled' : 'enabled '), pos_y: pos_y});
-  putTxt({txt: "Define center        " + (!activeGlo.defineCenter ? 'disabled' : 'enabled '), pos_y: pos_y});
-
-  inf = "";
-  for(let colFunc in activeGlo.colorFunctions){
-    if(activeGlo.colorFunctions[colFunc]){ inf += colFunc + " "; }
-  }
-
-  putTxt({txt: "Color function(s)    " + inf, pos_y: pos_y});
+  putTxt({txt: "Nb avatars in screen "  + nbAvatarsInScreen(), pos_y: pos_y});
 
   txts.map(txt => ctxStructure.fillText(txt.txt, pos_x, txt.pos_y));
 }
@@ -3607,7 +3582,7 @@ function impt_json(){
 }
 //------------------ IMPORT JSON ----------------- //
 function impt_image(event){
-  if(!activeGlo.break){ button_check('pause'); }
+  //if(!activeGlo.break){ button_check('pause'); }
   var fileread = new FileReader();
   fileread.onload = function(e) {
     var img = new Image();
@@ -4070,6 +4045,17 @@ function nbAvatarsInScreen(){
     if(av.x <= canvas.width && av.x >= 0 && av.y <= canvas.height && av.y >= 0){ nb++; }
   });
   return nb;
+}
+
+function posModsOnMods(){
+  getSelectedModifiers().forEach(mod => {
+    let newMod     = deepCopy(mod, 'modifiers');
+    newMod.type    = activeGlo.pos_modifiers;
+    newMod.nbEdges = activeGlo.params.posModsNbEdges;
+    newMod.modify  = makeModifierFunction(newMod.type);
+
+    activeGlo.modifiers.push(newMod);
+  });
 }
 
 

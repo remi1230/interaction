@@ -972,6 +972,23 @@
             </div>
             <div>
               <div>
+                <input type="range" id="alphaBySize" name="alphaBySize" class='input_params' oninput="updateGlo(this)" ondblclick="updateScale(this, event)"
+                       min="0.1" max="20" value="2" step=".1">
+                <label for="alphaBySize">Alpha by size</label>
+              </div>
+              <div>
+                <input type="range" id="powAlpha" name="powAlpha" class='input_params' oninput="updateGlo(this)" ondblclick="updateScale(this, event)"
+                       min="0.1" max="20" value="1" step=".1">
+                <label for="powAlpha">Pow alpha</label>
+              </div>
+              <div>
+                <input type="range" id="powColorAdd" name="powColorAdd" class='input_params' oninput="updateGlo(this)" ondblclick="updateScale(this, event)"
+                       min="0.1" max="20" value="1.8" step=".1">
+                <label for="powColorAdd">Pow color add</label>
+              </div>
+            </div>
+            <div>
+              <div>
                 <input type="range" id="changeCurve" name="changeCurve" class='input_params' oninput="updateGlo(this); " ondblclick="updateScale(this, event)"
                        min="1" max="400" value="200" step="1">
                 <label for="changeCurve">Change curve</label>
@@ -988,38 +1005,6 @@
               </div>
             </div>
             <div>
-              <div>
-                <input type="range" id="curveTestCoeff" name="curveTestCoeff" class='input_params' oninput="updateGlo(this)" ondblclick="updateScale(this, event)"
-                       min="0.01" max="1" value="0.1" step=".01">
-                <label for="curveTestCoeff">Curve coeff</label>
-              </div>
-              <div>
-                <input type="range" id="curveRnd" name="curveRnd" class='input_params' oninput="updateGlo(this)" ondblclick="updateScale(this, event)"
-                       min="0" max="20" value="5" step="1">
-                <label for="curveRnd">Curve rnd</label>
-              </div>
-              <div>
-                <input type="range" id="curveStartTest" name="curveStartTest" class='input_params radUnit' oninput="updateGlo(this)" ondblclick="updateScale(this, event)"
-                       min="0" max="20" value="0" step="1">
-                <label for="curveStartTest">Curve dist test</label>
-              </div>
-            </div>
-            <div>
-              <div>
-                <input type="range" id="alphaBySize" name="alphaBySize" class='input_params' oninput="updateGlo(this)" ondblclick="updateScale(this, event)"
-                       min="0.1" max="20" value="2" step=".1">
-                <label for="alphaBySize">Alpha by size</label>
-              </div>
-              <div>
-                <input type="range" id="powAlpha" name="powAlpha" class='input_params' oninput="updateGlo(this)" ondblclick="updateScale(this, event)"
-                       min="0.1" max="20" value="1" step=".1">
-                <label for="powAlpha">Pow alpha</label>
-              </div>
-              <div>
-                <input type="range" id="powColorAdd" name="powColorAdd" class='input_params' oninput="updateGlo(this)" ondblclick="updateScale(this, event)"
-                       min="0.1" max="20" value="1.8" step=".1">
-                <label for="powColorAdd">Pow color add</label>
-              </div>
             </div>
           </div>
           <div style='display: none; ' id="interface_window_1" class='interface interfaceWindow'>

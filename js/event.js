@@ -120,7 +120,7 @@ structure.addEventListener('mouseup',   () => {
     }
   }
 });
-structure.addEventListener('wheel',     (e) => {
+structure.addEventListener('wheel', (e) => {
   e.preventDefault();
 
   if(e.shiftKey){
@@ -141,16 +141,10 @@ structure.addEventListener('wheel',     (e) => {
     updCtrl('circle_size');
   }
   else{
-    let modNearestToMouse = getModNearestMouse(15);
-    if(modNearestToMouse){
-      modNearestToMouse.attract += event.deltaY*0.1;
-    }
+    if(!activeGlo.inputToSlideWithMouse ){ getSelectedModifiers().forEach(mod => { mod.attract += Math.sign(mod.attract) * event.deltaY*0.1; }); }
     else{
-      if(!activeGlo.inputToSlideWithMouse ){ getSelectedModifiers().forEach(mod => { mod.attract += Math.sign(mod.attract) * event.deltaY*0.1; }); }
-      else{
-        activeGlo.inputToSlideWithMouse.value = parseFloat(activeGlo.inputToSlideWithMouse.value) + (parseFloat(activeGlo.inputToSlideWithMouse.step) * Math.sign(event.deltaY));
-        activeGlo.inputToSlideWithMouse.dispatchEvent(new Event('input', { bubbles: true, cancelable: true, }));
-      }
+      activeGlo.inputToSlideWithMouse.value = parseFloat(activeGlo.inputToSlideWithMouse.value) + (parseFloat(activeGlo.inputToSlideWithMouse.step) * Math.sign(event.deltaY));
+      activeGlo.inputToSlideWithMouse.dispatchEvent(new Event('input', { bubbles: true, cancelable: true, }));
     }
   }
 });
@@ -337,7 +331,7 @@ window.addEventListener("keydown", function (e) {
               activeGlo.createMod = 'circle';
               center = canvas.getCenter();
               if(activeGlo.clearForm){ clear(); }
-              createMenu = createForm({ form: {name: 'circle', size: canvas.width/4}, center: center });
+              createForm({ form: {name: 'circle', size: canvas.width/4}, center: center });
         			break;
             /// d -- Les avatars rebondissent à l'exterieur des bords -- avatar -- far_rebound ///
         		case 'd':
@@ -400,7 +394,7 @@ window.addEventListener("keydown", function (e) {
         		case 'q':
               activeGlo.createMod = 'square';
               if(activeGlo.clearForm){ clear(); }
-              createMenu = createForm({ form: {size: canvas.width/4} });
+              createForm({ form: {size: canvas.width/4} });
         			break;
             /// r -- Le contrôle survolé est lié à celui liable -- interface ///
         		case 'r':
@@ -417,7 +411,7 @@ window.addEventListener("keydown", function (e) {
         			break;
             /// u -- Créer un rectangle d'avatars -- avatar, creation ///
         		case 'u':
-              createMenu = false; activeGlo.createMod = 'rect';
+              activeGlo.createMod = 'rect';
               if(activeGlo.clearForm){ clear(); }
               keepBreak(function(){ var nb = activeGlo.params.nb; deleteAvatar('all'); activeGlo.params.nb = nb; createAvatar({form: {name: 'rect'} }); });
         			break;
@@ -557,7 +551,7 @@ window.addEventListener("keydown", function (e) {
               activeGlo.createMod = 'spiral';
               center = canvas.getCenter();
               if(activeGlo.clearForm){ clear(); }
-              createMenu = createForm({ form: {name: 'spiral', size: canvas.width/4}, center: center });
+              createForm({ form: {name: 'spiral', size: canvas.width/4}, center: center });
         			break;
             /// ù -- Switch entre un fond noir et blanc -- image, couleur -- bg_black ///
         		case 'ù':
@@ -598,16 +592,16 @@ window.addEventListener("keydown", function (e) {
         		case '°':
               activeGlo.forceByCenter = !activeGlo.forceByCenter;
         			break;
-            //FREE
+            /// . -- Pose des modifiers sur les sélectionnés -- modifiers, selection, pose ///
         		case '.':
-              activeGlo.oneModToAdd = !activeGlo.oneModToAdd;
+              posModsOnMods();
         			break;
             /// £ -- Créer un polygone d'avatars -- avatar, creation ///
         		case '£':
               activeGlo.createMod = 'poly';
               center = canvas.getCenter();
               if(activeGlo.clearForm){ clear(); }
-              createMenu = createForm({ form: {name: 'poly', size: canvas.width/4}, center: center });
+              createForm({ form: {name: 'poly', size: canvas.width/4}, center: center });
         			break;
             /// * -- Attribue les propriété du 1er modifier aux autres -- avatar, copie ///
         		case '*':
@@ -645,7 +639,7 @@ window.addEventListener("keydown", function (e) {
         			break;
             /// ▼ -- Exécution pas à pas -- divers ///
         		case 'PageDown':
-              if(!activeGlo.totalBreak){ button_check('totalBreak'); }
+              //if(!activeGlo.totalBreak){ button_check('totalBreak'); }
               keepBreak(function(){});
         			break;
             /// ² -- RAZ des avatars avec pose au hazard -- avatar, RAZ ///
@@ -681,15 +675,19 @@ window.addEventListener("keydown", function (e) {
         			break;
             /// < -- Dessine un cercle d'avatars -- creation, avatar ///
         		case '<':
+              activeGlo.modifiers             = [];
+              
+              if(!activeGlo.randomPointByMod){ window.dispatchEvent(new KeyboardEvent('keydown',  {'key':'V', 'ctrlKey' : false, 'altKey' : false})); }
               keepBreak(glo_params, 'test');
-              activeGlo.createMod = 'circle';
-              var cent = canvas.getCenter();
-              if(activeGlo.clearForm){ clear(); }
-              createMenu = createForm({ form: {name: 'circle', size: canvas.width/4}, center: cent });
+              clear();
+
+              window.dispatchEvent(new KeyboardEvent('keydown',  {'key':'²', 'ctrlKey' : false, 'altKey' : false}));
+              if(!activeGlo.shortcut.alphaVarSize){ window.dispatchEvent(new KeyboardEvent('keydown',  {'key':'F2', 'ctrlKey' : false, 'altKey' : false})); }
+              window.dispatchEvent(new KeyboardEvent('keydown',  {'key':'y', 'ctrlKey' : true, 'altKey' : false}));
+              if(activeGlo.clear){ window.dispatchEvent(new KeyboardEvent('keydown',  {'key':'F1', 'ctrlKey' : false, 'altKey' : false})); }
         			break;
             /// > -- Rotation des couleurs de l'image -- image, couleur ///
         		case '>':
-              createMenu = false;
               rotateColor();
         			break;
             /// ← -- Déplace les avatars vers la gauche -- avatar, deplacement ///

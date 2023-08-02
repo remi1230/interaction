@@ -314,7 +314,7 @@ class Avatar {
       ctx.stroke();
     }
 
-    if(objGlo.tail && this.draw){ this.drawTail(); }
+    if(objGlo.tail && this.draw && !this.lapWithoutDraw){ this.drawTail(); }
 
     if(objGlo.doubleAvatar){
       objGlo.doubleAvatar = false;
@@ -372,11 +372,16 @@ class Avatar {
   }
 
   drawTail(){
-    ctx.beginPath();
-    ctx.strokeStyle = this.fillStyle;
     let lastsSz = this.lasts.length;
-    for(let i = 0; i < lastsSz; i++){ ctx.lineTo(this.lasts[i].x, this.lasts[i].y); }
-    ctx.stroke();
+
+    if(lastsSz){
+      ctx.beginPath();
+      ctx.strokeStyle = this.fillStyle;
+      for(let i = 0; i < lastsSz; i++){
+        ctx.lineTo(this.lasts[i].x, this.lasts[i].y);
+      }
+      ctx.stroke();
+    }
   }
 
   dealPath(p){
@@ -395,15 +400,15 @@ class Avatar {
     if(this.secondMovePos){
       this.lastSm = {x: this.secondMovePos.x, y: this.secondMovePos.y};
       this.lastsSm.push(this.lastSm);
-      if(this.lastsSm.length > 2){ this.lastsSm.shift(); }
+      if(this.lastsSm.length > activeGlo.params.tail_memory){ this.lastsSm.shift(); }
     }
     else{
       this.lastSm = {x: this.x, y: this.y};
       this.lastsSm.push(this.lastSm);
     }
 
-    let d   = cos(this.it * activeGlo.params.secondMoveIt * rad) * activeGlo.params.secondMoveRange;
-    let dir = direction(this.direction + half_pi, d);
+    let d              = cos(this.it * activeGlo.params.secondMoveIt * rad) * activeGlo.params.secondMoveRange;
+    let dir            = direction(this.direction + half_pi, d);
     this.secondMovePos = {x: this.x + dir.x, y: this.y + dir.y};
   }
 
@@ -643,14 +648,14 @@ class Avatar {
   moveOnAlea(){
     this.draw    = false;
     this.draw_ok = false;
+    this.lasts   = []; 
+    this.lastsSm = [];
 
     let point;
     let size = activeGlo.params.rAleaPos;
 
-    /*point = size >= 1 ? getRandomPoint(size) : getRandomPointInCircle(size, activeGlo.modifiers.length ? 
-      activeGlo.randomPointByMod : false, activeGlo.followAvatar, activeGlo.followAvatar ? this.avToFollow : false);*/
     point = getRandomPointInCircle(size, activeGlo.modifiers.length ? 
-      activeGlo.randomPointByMod : false, activeGlo.followAvatar, activeGlo.followAvatar ? this.avToFollow : false);
+    activeGlo.randomPointByMod : false, activeGlo.followAvatar, activeGlo.followAvatar ? this.avToFollow : false);
     this.x = point.x;
     this.y = point.y;
   }
@@ -1343,7 +1348,6 @@ class Avatar {
         let w = canvas.width;
         let colors = [];
 
-        //let mods = obj.oneModToAdd ? [this.nearMod, this.secondNearMod().secondNearMod] : obj.modifiers;
         let mods = activeGlo.modifiers;
 
         mods.forEach(mod => {
