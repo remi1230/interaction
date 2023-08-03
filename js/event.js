@@ -1258,9 +1258,9 @@ function constructHelpDialog(start = false){
 
     let tuchId = 'helpTuch_' + i;
 
-    tuch.id    = tuchId;
-    kbdTuch.id = tuchId;
-    kbdTuch.className = 'keys';
+    tuch.id             = tuchId;
+    kbdTuch.id          = tuchId;
+    kbdTuch.className   = 'keys';
     divAction.className = 'helpTxt';
 
     let txtTuch   = document.createTextNode(tuch.tuch);
@@ -1289,8 +1289,6 @@ function constructHelpDialog(start = false){
     divContainer.style.gridTemplateColumns = '50px 100%';
     divContainer.style.columnGap           = '5px';
     divContainer.dataset.tags              = '';
-    divContainer.dataset.notInSearch       = 'false';
-    divContainer.dataset.notInTag          = 'false';
 
     divContainer.appendChild(kbdTuch);
     divContainer.appendChild(divAction);

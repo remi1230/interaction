@@ -172,6 +172,8 @@ class Glob {
                 avToFollowColorStrokeS : 10,
                 avToFollowColorStrokeL : 10,
                 deviatorAngle : 5,
+                aleaAttractLaps : 10000,
+                tailDec : 0.5,
             };
         this.alea = {
             colorDec       : true,

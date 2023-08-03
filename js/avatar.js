@@ -373,12 +373,19 @@ class Avatar {
 
   drawTail(){
     let lastsSz = this.lasts.length;
+    let tailDec = -activeGlo.params.tailDec;
+
+    let dec = {x: 0, y: 0};
+    
+    if((this.nearMod.glo && this.nearMod.glo.form === 'ellipse') || activeGlo.form === 'ellipse'){
+      dec = {x: tailDec * this.sizeCalc.x * cos(this.direction), y: tailDec * this.sizeCalc.x * sin(this.direction)}; 
+    }
 
     if(lastsSz){
       ctx.beginPath();
       ctx.strokeStyle = this.fillStyle;
       for(let i = 0; i < lastsSz; i++){
-        ctx.lineTo(this.lasts[i].x, this.lasts[i].y);
+        ctx.lineTo(this.lasts[i].x + dec.x, this.lasts[i].y + dec.y);
       }
       ctx.stroke();
     }
@@ -553,11 +560,12 @@ class Avatar {
 
     if(activeGlo.alea_inv_g){ inv_g = activeGlo.nb_moves%dep_dir == 0 ? -activeGlo.params.inv_g_force : 1; }
 
-    this.ax = 0;
-    this.ay = 0;
+    this.ax      = 0;
+    this.ay      = 0;
     let nb_nears = 0;
+    let att      = attract;
 
-    let avatar, x_avatar, y_avatar, x_av, y_av, dist, lim, brake, att, siz, vit, x, y;
+    let avatar, x_avatar, y_avatar, x_av, y_av, dist, lim, brake, siz, vit, x, y;
 
     for(let i = 0; i < this.nears.length; i++){
       avatar = this.nears[i];
@@ -590,9 +598,17 @@ class Avatar {
         }
         if(dist >= lim_attract){
           brake = breakAdd + pow(dist, brake_pow);
-          att = alea_attract ? getRandomIntInclusive(1, attract*10) : attract;
-          siz = this.size;
+          if(attract && alea_attract){
+            if(!this.signAleaAttract || this.signAleaAttract.nbLaps >= activeGlo.params.aleaAttractLaps){
+              this.signAleaAttract = {sign: Math.sign(rnd_sign()), nbLaps: 1, att: rnd()};
+            }
+            else{
+              this.signAleaAttract.nbLaps++;
+            }
+            att = 10 * attract * this.signAleaAttract.sign * this.signAleaAttract.att;
+          }
 
+          siz = this.size;
           vit = !obj.gSpeed ? 1 : avatar.vit().v;
 
           if(isNaN(vit)){ vit = 1; }
@@ -933,8 +949,11 @@ class Avatar {
 
     let a = flatNumber(angle, edgeAngle);
 
+    let numSide = round(a/edgeAngle, 0);
     let midR = abs(d*cos(a + firstAngle - angle));
     let r    = midR/cos(firstAngle);
+
+    //let nextSide = {x: center.x + r * cos(two_pi * numSide / nbEdges), y: center.y + r * sin(two_pi * numSide / nbEdges)};
 
     if(brake){ speed /= pow(r, brake/1.18); }
     speed*=midR;
@@ -950,8 +969,19 @@ class Avatar {
       y = newD.dy;
     }*/
     if(activeGlo.polyPrecision){
-      let new_d = h(this.x + x - this.center.x, this.y + y - this.center.y);
+      let nextSide = {x: center.x + r * cos(two_pi * numSide / nbEdges), y: center.y + r * sin(two_pi * numSide / nbEdges)};
 
+      let distToNextSide  = h(nextSide.x - this.x, nextSide.y - this.y);
+      let distToNextPoint = h(x, y);
+
+      if(distToNextPoint > distToNextSide){
+        x = nextSide.x - this.x;
+        y = nextSide.y - this.y;
+      }
+
+      //this.rotPoly(speed, center, noAvCenter, nbEdges, brake, polyRotAngle, modsDev);
+
+      /*let new_d = h(this.x + x - this.center.x, this.y + y - this.center.y);
       let distToSom   = pow((r*r) - (midR*midR), 0.5);
       let distToNewPt = pow((new_d*new_d) - (midR*midR), 0.5);
 
@@ -968,7 +998,7 @@ class Avatar {
 
           this.rotPoly(speed, center, noAvCenter, nbEdges, brake, polyRotAngle, modsDev);
         }
-      }
+      }*/
     }
 
     this.modifiersValues.x += x;
@@ -1294,7 +1324,7 @@ class Avatar {
         nbMoves += cml.range_dir;
       }
       if(obj.colorFunctions.qMove){
-        move = 360 - (360*move*varMoveCol/move_max);
+        move = 360 - (360*move*varMoveCol/(obj.relative ? move_max : 1));
         moves.push(move * cml.range_qMove);
         colors.push({h: move, s: sat, l: tint, a: 1, p: cml.range_qMove});
         nbMoves += cml.range_qMove;

@@ -1052,8 +1052,10 @@ function checkColorFunctions(){
     if(inp.checked){ checked++; }
   });
 
-  if(checked > 1){ activeGlo.colorCumul = false; }
-  else{ activeGlo.colorCumul = true; }
+  if(checked > 1){ activeGlo.colorCumul = true; }
+  else{ activeGlo.colorCumul = false; }
+
+  getSelectedModifiers().forEach(mod => { mod.glo.colorCumul = activeGlo.colorCumul; mod.glo.colorFunctions[event.target.id] = activeGlo.colorFunctions[event.target.id]; });
 }
 /**
 *@description Create HTML checkboxes
@@ -1205,10 +1207,12 @@ function updateForm(val){
 
 //------------------ MODIFICATION DE VARIABLES GLOBALES SUITE À ÉVÈNEMENT INPUT RANGE COLOR CUMUL ----------------- //
 function updateGloRangeCmlColor(ctrl){
-  let val = ctrl.value;
+  let val = parseFloat(ctrl.value);
 
-  activeGlo.rangesCmlColor[ctrl.id] = parseFloat(val);
+  activeGlo.rangesCmlColor[ctrl.id] = val;
   activeGlo.fromUpdGlo = true;
+
+  getSelectedModifiers().forEach(mod => { mod.glo.rangesCmlColor[ctrl.id] = val; mod.glo.fromUpdGlo = true; });
 }
 
 function updCtrl(ctlr_id){
@@ -2319,8 +2323,8 @@ function makeModifierFunction(modifierType){
             let brake  = activeGlo.params.breakAdd + pow(dist, this.brake);
             let force  = 100 * att / brake;
             let result = {x: 0, y: 0};
-            let reg_x  = '((av.x - canvas.getCenter().x) * rad)';
-            let reg_y  = '((av.y - canvas.getCenter().y) * rad)';
+            let reg_x  = '((av.x - this.x) * rad)';
+            let reg_y  = '((av.y - this.y) * rad)';
 
             if(this.formule.x && this.formule.x != ''){
               let x = this.formule.x;
@@ -3398,7 +3402,7 @@ function showInfos(){
   let esp   = 30;
   let txts  = [];
   let inf;
-  putTxt({txt: "Nb avatars in screen "  + nbAvatarsInScreen(), pos_y: pos_y});
+  putTxt({txt: "Nb avatars in screen "  + nbAvatarsInScreen() + " / " + avatars.length, pos_y: pos_y});
 
   txts.map(txt => ctxStructure.fillText(txt.txt, pos_x, txt.pos_y));
 }
