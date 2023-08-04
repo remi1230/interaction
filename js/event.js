@@ -161,9 +161,26 @@ structure.addEventListener('mousemove', (e) => {
   }
 });
 
-// Fermeture du modal d'aide
+// Fermeture des modaux
 helpDialog.addEventListener('click', () => { helpDialogVisible = !helpDialogVisible; helpDialog.close(); });
+brushDialog.addEventListener('click', () => { brushDialogVisible = !brushDialogVisible; brushDialog.close(); });
 helpDialogGrid.addEventListener('click', (event) => event.stopPropagation());
+
+//Canvas pour la brosse
+brushCanvas.addEventListener('click', event => event.stopPropagation() );
+brushCanvas.addEventListener('mousedown', event => { brushCanvasMouseDown = true; drawOnBrushCanvas(mouseCanvas, true); } );
+brushCanvas.addEventListener('mouseup',   event => { brushCanvasMouseDown = false; turnPointsBrushToMove(); } );
+brushCanvas.addEventListener('mousemove', event => {
+  let rect = brushCanvas.getBoundingClientRect();
+  let coeff = {x: brushCanvas.width / brushCanvas.clientWidth, y: brushCanvas.height / brushCanvas.clientHeight};
+  mouseCanvas.x = (event.clientX- rect.left) * coeff.x;
+  mouseCanvas.y = (event.clientY - rect.top) * coeff.y;
+
+  let x  = mouseCanvas.x;
+  let y  = mouseCanvas.y;
+
+  if(brushCanvasMouseDown){ drawOnBrushCanvas({x, y}); }
+});
 
 //------------------ WHEEL ON INPUTS ----------------- //
 input_params.forEach(() => {
@@ -795,9 +812,9 @@ window.addEventListener("keydown", function (e) {
             case 'u':
               posRectModifiers();
               break;
-            //FREE
+            /// Alt v -- Affiche ou cache la fenêtre pour créer une brosse -- interface ///
             case 'v':
-              activeGlo.modifierSelect.update('byOne');
+              toggleBrushDialog();
               break;
             /// Alt w -- Pose des modifiers par symétrie horizontale des sélectionnés -- modifier, position ///
             case 'w':
@@ -824,10 +841,9 @@ window.addEventListener("keydown", function (e) {
             case ',':
               switchObjBools(activeGlo.posOnMouse, 'pasteMods', false);
               break;
-            //FREE
+            /// Alt & -- Rotation des brosses orientables -- orientation, avatar -- rotateBrush  ///
             case '&':
-              if(activeGlo.grid.type == 'spirale' || activeGlo.grid.type == 'none'){ activeGlo.grid.draw = !activeGlo.grid.draw; }
-              activeGlo.grid.type = activeGlo.grid.draw ? 'spirale' : 'none';
+              activeGlo.rotateBrush = !activeGlo.rotateBrush;
               break;
             /// Alt + -- Augmente la visibilité de l'interface -- interface ///
             case '+':
@@ -1239,6 +1255,12 @@ function toggleHelpDialog(){
 
   if(helpDialogVisible){ helpDialog.showModal(); }
   else{ helpDialog.close(); }
+}
+function toggleBrushDialog(){
+  brushDialogVisible = !brushDialogVisible;
+
+  if(brushDialogVisible){ ctxBrush.clearRect(0, 0, brushCanvas.width, brushCanvas.height); pointsBrush = []; brushDialog.showModal(); }
+  else{ brushDialog.close(); }
 }
 
 function constructHelpDialog(start = false){

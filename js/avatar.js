@@ -40,12 +40,6 @@ class Avatar {
     if(options.center){ this.center = options.center; }
     if(options.virtual){ this.virtual = options.virtual; }
 
-    this.path     = new Path2D();
-    this.selfPath = new Path2D();
-    this.savePath = [];
-    this.pathIt   = 0;
-    this.nPath    = 19;
-
     avatars.push(this);
 
     num_avatar++;
@@ -203,13 +197,6 @@ class Avatar {
       y -= dec.y;
     }
 
-    let isPath = objGlo.curve && !objGlo.clear;
-    let p;
-    if(isPath){
-      p = new Path2D();
-      p.moveTo(x, y);
-    }
-
     let addAngle = 0;
     ctx.beginPath();
     switch(form){
@@ -228,13 +215,12 @@ class Avatar {
         this.sizeCalc.y = sy;
 
         let dir = this.direction;
+        if(!objGlo.rotateBrush){ dir = 0; }
 
         if(objGlo.params.arcRotAngle > 0){
           addAngle = cyclicNumber(-0.1 * this.it * objGlo.params.arcRotAngle, objGlo.params.arcEndAngle - objGlo.params.arcStartAngle - rad);
         }
         ctx.ellipse(x, y, sx, sy, dir, objGlo.params.arcStartAngle + addAngle, objGlo.params.arcEndAngle);
-
-        if(isPath){ p.ellipse(x, y, sx, sy, dir, objGlo.params.arcStartAngle + addAngle, objGlo.params.arcEndAngle); this.dealPath(p); }
         break;
       case 'square':
         ctx.rect(x, y, size_x, size_y);
@@ -283,7 +269,6 @@ class Avatar {
         if(form == 'line'){
           ctx.moveTo(last_x, last_y);
           ctx.lineTo(x, y);
-          if(isPath){ p.moveTo(last_x, last_y); p.lineTo(x, y); this.dealPath(p); }
         }
         else{
           let ln = redimLine({x: last_x, y: last_y}, {x: x, y: y}, 10);
@@ -293,6 +278,23 @@ class Avatar {
         break;
       case 'cross':
         ctx.crossDiag({x: x, y: y}, size);
+        break;
+      case 'brush':
+        if(pointsBrush[0] && pointsBrush[0].length){
+          let ptsB = pointsBrush;
+
+          if(objGlo.rotateBrush){
+            ptsB = [];
+            pointsBrush.forEach((ptsBrush, i) => {
+              ptsB[i] = [];
+              ptsBrush.forEach(ptBrush => {
+                ptsB[i].push(rotate(ptBrush, {x: 0, y: 0}, this.direction ));
+              });
+            });
+          }
+          
+          ctx.brush({x: x, y: y}, size, ptsB);
+        }
         break;
     }
 
@@ -389,18 +391,6 @@ class Avatar {
       }
       ctx.stroke();
     }
-  }
-
-  dealPath(p){
-    this.path.addPath(p);
-    if(this.pathIt == this.nPath){
-      this.nPath = 10;
-      for(let i = 0; i < 10; i++){ this.selfPath.addPath(this.savePath[i]); }
-      this.savePath.splice(0, 10);
-      this.pathIt   = 0;
-    }
-    this.savePath.push(p);
-    this.pathIt++;
   }
 
   secondMove(){
@@ -1001,8 +991,8 @@ class Avatar {
       }*/
     }
 
-    this.modifiersValues.x += x;
-    this.modifiersValues.y += y;
+    this.modifiersValues.x -= x;
+    this.modifiersValues.y -= y;
 
     if(modsDev.force != '0'){
       let dist = h(x, y);

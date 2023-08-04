@@ -306,7 +306,7 @@ class Glob {
         this.persp_cent_y = 0;
         this.moveOnAleaIt = 0;
         this.form = 'ellipse';
-        this.forms = ['circle', 'square', 'line', 'bezier', 'poly', 'ellipse', 'alea_form', 'cloud', 'cross'];
+        this.forms = ['circle', 'square', 'line', 'bezier', 'poly', 'ellipse', 'alea_form', 'cloud', 'cross', 'brush'];
         this.colorCumulType = ['average', 'average_mul', 'average_div', 'average_mul_fact', 'average_div_fact', 'test'];
         this.pos_modifiers = 'rotator';
         this.modifierTypes = ['none', 'rotator', 'attractor', 'polygonator', 'spiralor', 'deviator', 'accelerator', 'alternator', 'magnetor', 'formulator', 'director'];
@@ -333,6 +333,7 @@ class Glob {
         this.clearForm = true;
         this.sameSizeEllipse = true;
         this.moveOnAlea = true;
+        this.rotateBrush = true;
         this.oneColor = {state: false, color: {h: 100, s:77, l:42} };
         this.trans = {};
         this.lineCap = ["butt", "round", "square"];
@@ -394,8 +395,6 @@ var HTags       = [];
 
 avatars.apply = function(func){ this.forEach(avatar => { avatar[func](); }); };
 
-var path = new Path2D();
-
 var num_avatar   = 1;
 var num_modifier = 1;
 
@@ -414,10 +413,20 @@ var helpDialog            = getById('helpDialog');
 var helpDialogGrid        = getById('helpDialogGrid');
 let containerInt          = getById('othersInterfaceContainer');
 let toggleInt             = getById('showHideInterfaceTxt');
+let brushDialog           = getById('brushDialog');
+let brushCanvas           = getById('brushCanvas');
 
-let helpDialogVisible = false;
+let helpDialogVisible    = false;
+let brushDialogVisible   = false;
+let brushCanvasMouseDown = false;
 
-var mouse =  { click: {x: 0, y: 0} };
+let brushSpecialPoints = {};
+
+let ctxBrush    = brushCanvas.getContext('2d');
+let pointsBrush = [];
+
+let mouse       =  { click: {x: 0, y: 0} };
+let mouseCanvas =  { x: 0, y: 0};
 
 formule_x.value = 0;
 formule_y.value = 0;

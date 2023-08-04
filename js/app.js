@@ -23,6 +23,7 @@ var startHeight   = canvas.height;
 var ctxStructure  = get_ctx(structure);
 
 giveFuncToCanvas(structure, ctxStructure);
+giveFuncToCanvas(brushCanvas, ctxBrush);
 
 /**
  * @description Gives function to a canvas variable and to a ctx variable
@@ -242,12 +243,67 @@ function giveFuncToCanvas(varCanvas, varCtx){
     varCtx.moveTo(startPt.x, startPt.y);
     varCtx.bezierCurveTo(firstAnchor.x, firstAnchor.y, lastAnchor.x, lastAnchor.y, endPt.x, endPt.y);
   };
+  //------------------ DÉSSINER AVEC LA BROSSE ----------------- //
+  varCtx.brush = function(pos, size, pts = pointsBrush){
+    let sz     = size / 10;
+    let lastPt = false;
+
+    ctx.moveTo(pos.x, pos.y);
+    for(let i = 0; i < pts.length; i++){
+      if(lastPt && pts[i][0]){
+        pos = {x: lastPt.x + pts[i][0].x*sz, y: lastPt.y + pts[i][0].y*sz};
+        ctx.moveTo(pos.x, pos.y);
+      }
+      pts[i].forEach((ptBrush, j) => {
+        if((!i || j) && j !== pts[i].length-1){
+          pos    = {x: pos.x + ptBrush.x*sz, y: pos.y + ptBrush.y*sz};
+          lastPt = {x: pos.x, y: pos.y};
+          varCtx.lineTo(lastPt.x, lastPt.y);
+        }
+      });
+    }
+  };
   //------------------ RETURN TRUE IF PIXEL AT POS IS BLANK, ELSE FASE ----------------- //
   varCtx.isBlank = function(pos, data = dataCanvas){
     return !data[round(pos.y,0) * canvas.width + round(pos.x,0)];
   };
 
   varCtx.font = "30px Comic Sans MS";
+}
+
+function drawOnBrushCanvas(pt = mouseCanvas, first = false){
+  ctxBrush.beginPath();
+  ctxBrush.fillStyle = '#cc0000';
+  ctxBrush.lineWidth = 1;
+  ctxBrush.arc(pt.x, pt.y, 1, 0, two_pi, true);
+  ctxBrush.fill();
+  if(!first){ pointsBrush[pointsBrush.length-1].push(pt); }
+  else{
+    pointsBrush.push([]);
+  }
+}
+
+function turnPointsBrushToMove(){
+  pointsBrush.forEach((ptsBrush, i) => { if(!ptsBrush.length){ pointsBrush.splice(i, 1); } });
+
+  if(pointsBrush.length){
+    let newPointsBrush   = [];
+    let lastPtsBrush     = pointsBrush[pointsBrush.length-1];
+    let avLastPtsBrush   = pointsBrush[pointsBrush.length-2];
+
+    let dec = 1;
+    if(avLastPtsBrush){
+      newPointsBrush[0] = {x: lastPtsBrush[0].x - avLastPtsBrush[avLastPtsBrush.length-1].x, y: lastPtsBrush[0].y - avLastPtsBrush[avLastPtsBrush.length-1].y };
+      dec = 0;
+    }
+
+    lastPtsBrush.forEach((pointBrush, i) => {
+      if(i){ newPointsBrush[i-dec] = {x: pointBrush.x - lastPtsBrush[i-1].x, y: pointBrush.y - lastPtsBrush[i-1].y}; }
+      if(i === lastPtsBrush.length-1){ newPointsBrush.push({x: pointBrush.x, y: pointBrush.y}); }
+    });
+
+    pointsBrush[pointsBrush.length-1] = newPointsBrush;
+  }
 }
 
 /**
@@ -470,8 +526,6 @@ function animation(){
     let noAvToAv      = activeGlo.noAvToAv ? activeGlo.noAvToAv.state : false;
     let keep_dir      = activeGlo.params.keep_dir;
     let resist        = activeGlo.params.resist;
-
-    path = new Path2D();
 
     if(activeGlo.nb_moves%keep_dir == 0 && activeGlo.global_alea && !activeGlo.hyperAlea){ alea_params(); }
     if(activeGlo.nb_moves%keep_dir == 0){ one_alea_param(); }
@@ -3801,17 +3855,6 @@ function changeInterface(dir){
     else{ activeGlo.num_params = interfaces.length - 1; }
   }
   showInterface(activeGlo.num_params);
-}
-
-function razAvPaths(){
-  if(activeGlo.clear){
-    avatars.forEach(av => {
-      av.path     = new Path2D();
-      av.selfPath = new Path2D();
-      av.savePath = [];
-      av.pathIt   = 0;
-    });
-  }
 }
 
 function deleteAvatarsProp(prop){
