@@ -656,13 +656,12 @@ const deepCopy = (inObject, ...propNoCopy) => {
   outObject = Array.isArray(inObject) ? [] : {};
 
   for (let key in inObject) {
-    if(!propNoCopy.includes(key)){
+    //if(!propNoCopy.includes(key)){
+    if(!propNoCopy.some(p => p == key )){
       value = inObject[key];
       outObject[key] = deepCopy(value, propNoCopy);
     }
   }
-  /*propNoCopy.every(key => Object.keys(obj).includes(key))
-  if(outObject.propNoCopy){ delete outObject.propNoCopy; }*/
 
   return outObject;
 };

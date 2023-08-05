@@ -271,15 +271,17 @@ function giveFuncToCanvas(varCanvas, varCtx){
   varCtx.font = "30px Comic Sans MS";
 }
 
-function drawOnBrushCanvas(pt = mouseCanvas, first = false){
+function drawOnBrushCanvas(pt = mouseCanvas, first = false, toLine = false){
   ctxBrush.beginPath();
   ctxBrush.fillStyle = '#cc0000';
   ctxBrush.lineWidth = 1;
   ctxBrush.arc(pt.x, pt.y, 1, 0, two_pi, true);
   ctxBrush.fill();
-  if(!first){ pointsBrush[pointsBrush.length-1].push(pt); }
-  else{
-    pointsBrush.push([]);
+  if(!toLine){
+    if(!first){ pointsBrush[pointsBrush.length-1].push(pt); }
+    else{
+      pointsBrush.push([]);
+    }
   }
 }
 
@@ -303,6 +305,17 @@ function turnPointsBrushToMove(){
     });
 
     pointsBrush[pointsBrush.length-1] = newPointsBrush;
+  }
+}
+function turnPointsLineBrushToMove(){
+  if(pointsBrushToLine.length){
+
+    let newPointsLineBrush   = [];
+    pointsBrushToLine.forEach((pointLineBrush, i) => {
+      if(i){ newPointsLineBrush[i-1] = {x: pointLineBrush.x - pointsBrushToLine[i-1].x, y: pointLineBrush.y - pointsBrushToLine[i-1].y}; }
+    });
+
+    pointsBrushToLine = newPointsLineBrush;
   }
 }
 
@@ -546,7 +559,7 @@ function animation(){
 
       avatar.modifiersValues = {x: 0, y: 0, curve:{x: 0, y: 0}};
 
-      if(activeGlo.hyperAlea && !avatar.glo){ avatar.glo = deepCopy(activeGlo); }
+      if(activeGlo.hyperAlea && !avatar.glo){ avatar.glo = deepCopy(activeGlo, 'modifiers', 'inputToSlideWithMouse'); }
       if(activeGlo.nb_moves%keep_dir == 0 && activeGlo.global_alea && activeGlo.hyperAlea){ alea_params(avatar); }
 
       if(!avatar.virtual){
@@ -1035,6 +1048,8 @@ function addCanvas(start = false, duplicate = false, toImport = false){
   ctx    = get_ctx(newCanvas);
   canvas = newCanvas;
 
+  gloStart.center = {x: canvas.width/2, y: canvas.height/2};
+
   giveFuncToCanvas(canvas, ctx);
 
   canvasContext.push(ctx);
@@ -1046,6 +1061,7 @@ function addCanvas(start = false, duplicate = false, toImport = false){
 
     activeGlo = glos[numCanvas];
     activeGlo.modifiers.forEach(mod => {
+      mod.glo = deepCopy(activeGlo, 'modifiers', 'inputToSlideWithMouse');
       activeGlo.modifiers.push(deepCopy(mod));
     });
   }
@@ -1963,7 +1979,7 @@ function pos_modifier(type = 'attractor', pos = mouse, inv = false, groupe = 0, 
     formuleColorHisto : {h: 'h', s: 's', l: 'l', a: 'a'},
     type              : type,
     center            : cent,
-    glo               : deepCopy(activeGlo, 'modifiers'),
+    glo               : deepCopy(activeGlo, 'modifiers', 'inputToSlideWithMouse'),
     params            : deepCopy(activeGlo.params),
     size              : activeGlo.size,
     color             : activeGlo.modifiersColor,
@@ -3456,7 +3472,8 @@ function showInfos(){
   let esp   = 30;
   let txts  = [];
   let inf;
-  putTxt({txt: "Nb avatars in screen "  + nbAvatarsInScreen() + " / " + avatars.length, pos_y: pos_y});
+  putTxt({txt: "Nb avatars in screen : "  + nbAvatarsInScreen() + " / " + avatars.length, pos_y: pos_y});
+  putTxt({txt: "Pause                         : "  + (activeGlo.totalBreak ? 'yes' : 'no'), pos_y: pos_y});
 
   txts.map(txt => ctxStructure.fillText(txt.txt, pos_x, txt.pos_y));
 }
@@ -3498,7 +3515,7 @@ function fillStyleAccordToBg(canvasVar, ctxVar){
 
 //------------------ SWITCH HYPER ALEA ----------------- //
 function switchHyperAlea() {
-  if(activeGlo.hyperAlea){ avatars.forEach(av => { av.glo = deepCopy(activeGlo); }); }
+  if(activeGlo.hyperAlea){ avatars.forEach(av => { av.glo = deepCopy(activeGlo, 'modifiers', 'inputToSlideWithMouse'); }); }
   else{ avatars.forEach(av => { delete av.glo; }); }
 }
 //------------------ TAILLE ALÉATOIRE DES AVATARS ----------------- //

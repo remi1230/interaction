@@ -280,17 +280,40 @@ class Avatar {
         ctx.crossDiag({x: x, y: y}, size);
         break;
       case 'brush':
-        if(pointsBrush[0] && pointsBrush[0].length){
-          let ptsB = pointsBrush;
+        if((pointsBrush[0] && pointsBrush[0].length) || pointsBrushToLine[0]){
+          let ptsB     = pointsBrush[0] && pointsBrush[0].length ? pointsBrush : pointsBrushToLine;
+          let ptsBSave = ptsB.slice();
 
           if(objGlo.rotateBrush){
             ptsB = [];
-            pointsBrush.forEach((ptsBrush, i) => {
-              ptsB[i] = [];
-              ptsBrush.forEach(ptBrush => {
-                ptsB[i].push(rotate(ptBrush, {x: 0, y: 0}, this.direction ));
+            if(pointsBrush[0] && pointsBrush[0].length){
+              ptsBSave.forEach((ptsBrush, i) => {
+                ptsB[i] = [];
+                ptsBrush.forEach(ptBrush => {
+                  ptsB[i].push(rotate(ptBrush, {x: 0, y: 0}, this.direction ));
+                });
               });
-            });
+            }
+            else{
+              ptsB    = [];
+              ptsB[0] = [];
+              ptsBSave.forEach((ptBrush, i) => {
+                ptsB[0].push(rotate(ptBrush, {x: 0, y: 0}, this.direction ));
+              });
+            }
+          }
+          else{
+            if(!pointsBrushToLine[0]){ ptsB = ptsBSave; }
+            else{ ptsB = []; ptsB[0] = ptsBSave; }
+          }
+
+          if(activeGlo.params.formVarLevel){
+            let formVarLevel = activeGlo.params.formVarLevel / 10;
+              ptsB.forEach((ptsBrush, i) => {
+                ptsBrush.forEach((pt, j) => {
+                  ptsB[i][j] = {x: ptsB[i][j].x + rnd_sign() * formVarLevel, y: ptsB[i][j].y + rnd_sign() * formVarLevel};
+                });
+              });
           }
           
           ctx.brush({x: x, y: y}, size, ptsB);

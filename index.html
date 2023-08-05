@@ -419,6 +419,9 @@
                 <label for="deviatorAngle">deviator Angle</label>
               </div>
               <div>
+                <input type="range" id="formVarLevel" name="formVarLevel" class='input_params' oninput="updateGlo(this); "
+                       min="0" max="100" value="1" step="1">
+                <label for="formVarLevel">Form var level</label>
               </div>
               <div>
               </div>
@@ -1139,10 +1142,12 @@
           <div id="canvasContainer">
             <canvas id='structure' class='canvas'></canvas>
           </div>
-          <dialog id="brushDialog" style="width: 50%; height: 50%; position: absolute; top: -100px; border: none; border-radius: 5px; overflow-x: hidden; ">
-            <canvas id="brushCanvas" style="width: 99%;height: 99%;" onclick="event.stopPropagation(); ">
-
-            </canvas>
+          <dialog id="brushDialog" style="width: 50%; height: 70%; position: absolute; top: 130px; padding-bottom: 23px; border: none; border-radius: 5px; overflow: hidden; ">
+            <canvas id="brushCanvas" style="width: 99%;height: 99%; border: 1px #cccccc solid; " onclick="event.stopPropagation(); "></canvas>
+            <div id="brushInterface" onclick="event.stopPropagation(); ">
+                <input type="checkbox" id="brushWithLine" onclick="activeGlo.brushWithLine = !activeGlo.brushWithLine; ">
+                <label for="brushWithLine">Line</label>
+            </div>
           </dialog>
     </body>
 </html>

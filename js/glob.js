@@ -174,6 +174,7 @@ class Glob {
                 deviatorAngle : 5,
                 aleaAttractLaps : 10000,
                 tailDec : 0.5,
+                formVarLevel: 0,
             };
         this.alea = {
             colorDec       : true,
@@ -422,8 +423,9 @@ let brushCanvasMouseDown = false;
 
 let brushSpecialPoints = {};
 
-let ctxBrush    = brushCanvas.getContext('2d');
-let pointsBrush = [];
+let ctxBrush          = brushCanvas.getContext('2d');
+let pointsBrush       = [];
+let pointsBrushToLine = [];
 
 let mouse       =  { click: {x: 0, y: 0} };
 let mouseCanvas =  { x: 0, y: 0};

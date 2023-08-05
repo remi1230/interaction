@@ -4,10 +4,11 @@ document.addEventListener("DOMContentLoaded", function() {
     createGoInterface();
     createCheckboxesWithRange(activeGlo.colorFunctionLabels, 'colorCumulContainer', 'qMove', {event: 'onchange', func: 'checkColorFunctions()'});
     feedHelp();
+    getById('brushWithLine').checked = false;
     if(!localStorage.getItem('glo')){ createAvatar({nb: activeGlo.params.nb, w: activeGlo.size}); }
     else{ restoreFlash(); }
     animation();
-});//
+});
 
 ui.addEventListener('mousedown', () => { activeGlo.uiMouseDown = true; });
 ui.addEventListener('mouseup',   () => { activeGlo.uiMouseDown = false; });
@@ -162,24 +163,53 @@ structure.addEventListener('mousemove', (e) => {
 });
 
 // Fermeture des modaux
-helpDialog.addEventListener('click', () => { helpDialogVisible = !helpDialogVisible; helpDialog.close(); });
-brushDialog.addEventListener('click', () => { brushDialogVisible = !brushDialogVisible; brushDialog.close(); });
+helpDialog.addEventListener('click', () => {
+  helpDialogVisible = !helpDialogVisible;
+  helpDialog.close();
+});
+brushDialog.addEventListener('click', () => {
+  if(activeGlo.brushWithLine){ turnPointsLineBrushToMove(); }
+  brushCanvasMouseDown = false;
+  brushDialogVisible = !brushDialogVisible;
+  brushDialog.close();
+});
 helpDialogGrid.addEventListener('click', (event) => event.stopPropagation());
 
 //Canvas pour la brosse
-brushCanvas.addEventListener('click', event => event.stopPropagation() );
-brushCanvas.addEventListener('mousedown', event => { brushCanvasMouseDown = true; drawOnBrushCanvas(mouseCanvas, true); } );
-brushCanvas.addEventListener('mouseup',   event => { brushCanvasMouseDown = false; turnPointsBrushToMove(); } );
+brushCanvas.addEventListener('click', event => {
+  event.stopPropagation();
+  if(activeGlo.brushWithLine){
+    let rect = brushCanvas.getBoundingClientRect();
+    let coeff = {x: brushCanvas.width / brushCanvas.clientWidth, y: brushCanvas.height / brushCanvas.clientHeight};
+    mouseCanvas.x = (event.clientX- rect.left) * coeff.x;
+    mouseCanvas.y = (event.clientY - rect.top) * coeff.y;
+
+    let x  = mouseCanvas.x;
+    let y  = mouseCanvas.y;
+    pointsBrushToLine.push({x: x, y: y});
+    drawOnBrushCanvas({x: x, y: y}, false, true);
+
+    ctxBrush.strokeStyle = '#cc0000';
+    ctxBrush.beginPath();
+    if(pointsBrushToLine.length > 1){ ctxBrush.moveTo(pointsBrushToLine[pointsBrushToLine.length-2].x, pointsBrushToLine[pointsBrushToLine.length-2].y); }
+    ctxBrush.lineTo(x, y);
+    ctxBrush.stroke();
+  }
+});
+brushCanvas.addEventListener('mousedown', event => { brushCanvasMouseDown = true; if(!activeGlo.brushWithLine){drawOnBrushCanvas(mouseCanvas, true);} } );
+brushCanvas.addEventListener('mouseup',   event => { brushCanvasMouseDown = false; if(!activeGlo.brushWithLine){turnPointsBrushToMove();} } );
 brushCanvas.addEventListener('mousemove', event => {
-  let rect = brushCanvas.getBoundingClientRect();
-  let coeff = {x: brushCanvas.width / brushCanvas.clientWidth, y: brushCanvas.height / brushCanvas.clientHeight};
-  mouseCanvas.x = (event.clientX- rect.left) * coeff.x;
-  mouseCanvas.y = (event.clientY - rect.top) * coeff.y;
+  if(!activeGlo.brushWithLine){
+    let rect = brushCanvas.getBoundingClientRect();
+    let coeff = {x: brushCanvas.width / brushCanvas.clientWidth, y: brushCanvas.height / brushCanvas.clientHeight};
+    mouseCanvas.x = (event.clientX- rect.left) * coeff.x;
+    mouseCanvas.y = (event.clientY - rect.top) * coeff.y;
 
-  let x  = mouseCanvas.x;
-  let y  = mouseCanvas.y;
+    let x  = mouseCanvas.x;
+    let y  = mouseCanvas.y;
 
-  if(brushCanvasMouseDown){ drawOnBrushCanvas({x, y}); }
+    if(brushCanvasMouseDown){ drawOnBrushCanvas({x, y}); }
+  }
 });
 
 //------------------ WHEEL ON INPUTS ----------------- //
@@ -692,7 +722,7 @@ window.addEventListener("keydown", function (e) {
         			break;
             /// < -- Dessine un cercle d'avatars -- creation, avatar ///
         		case '<':
-              activeGlo.modifiers             = [];
+              activeGlo.modifiers = [];
               
               if(!activeGlo.randomPointByMod){ window.dispatchEvent(new KeyboardEvent('keydown',  {'key':'V', 'ctrlKey' : false, 'altKey' : false})); }
               keepBreak(glo_params, 'test');
@@ -839,7 +869,6 @@ window.addEventListener("keydown", function (e) {
               break;
             //FREE
             case ',':
-              switchObjBools(activeGlo.posOnMouse, 'pasteMods', false);
               break;
             /// Alt & -- Rotation des brosses orientables -- orientation, avatar -- rotateBrush  ///
             case '&':
@@ -1259,7 +1288,7 @@ function toggleHelpDialog(){
 function toggleBrushDialog(){
   brushDialogVisible = !brushDialogVisible;
 
-  if(brushDialogVisible){ ctxBrush.clearRect(0, 0, brushCanvas.width, brushCanvas.height); pointsBrush = []; brushDialog.showModal(); }
+  if(brushDialogVisible){ ctxBrush.clearRect(0, 0, brushCanvas.width, brushCanvas.height); pointsBrush = []; pointsBrushToLine = []; brushDialog.showModal(); }
   else{ brushDialog.close(); }
 }
 
