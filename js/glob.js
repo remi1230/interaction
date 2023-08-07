@@ -175,6 +175,7 @@ class Glob {
                 aleaAttractLaps : 10000,
                 tailDec : 0.5,
                 formVarLevel: 0,
+                sizeToSearchBlank: 10,
             };
         this.alea = {
             colorDec       : true,
@@ -281,6 +282,8 @@ class Glob {
         };
         this.modifiers = [];
         this.avsToFollow = [];
+        this.pointsBrush = [];
+        this.pointsBrushToLine = [];
         this.posOnMouse = {};
         this.virtual = {};
         this.shortcut = {};
@@ -396,6 +399,9 @@ var HTags       = [];
 
 avatars.apply = function(func){ this.forEach(avatar => { avatar[func](); }); };
 
+let fCanvas;
+let mouseFcanvas;
+
 var num_avatar   = 1;
 var num_modifier = 1;
 
@@ -421,14 +427,14 @@ let helpDialogVisible    = false;
 let brushDialogVisible   = false;
 let brushCanvasMouseDown = false;
 
-let brushSpecialPoints = {};
-
 let ctxBrush          = brushCanvas.getContext('2d');
 let pointsBrush       = [];
 let pointsBrushToLine = [];
 
 let mouse       =  { click: {x: 0, y: 0} };
 let mouseCanvas =  { x: 0, y: 0};
+
+let imgData;
 
 formule_x.value = 0;
 formule_y.value = 0;

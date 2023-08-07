@@ -264,58 +264,131 @@ function giveFuncToCanvas(varCanvas, varCtx){
     }
   };
   //------------------ RETURN TRUE IF PIXEL AT POS IS BLANK, ELSE FASE ----------------- //
-  varCtx.isBlank = function(pos, data = dataCanvas){
-    return !data[round(pos.y,0) * canvas.width + round(pos.x,0)];
+  varCtx.isBlank = function(pos, data = imgData){
+    let dataPixel = getPosInImageData(data.data, pos.x, pos.y, data.width);
+    return dataPixel[0] == 0 && dataPixel[1] == 0 && dataPixel[2] == 0 && dataPixel[3] == 0;
   };
 
   varCtx.font = "30px Comic Sans MS";
 }
 
-function drawOnBrushCanvas(pt = mouseCanvas, first = false, toLine = false){
-  ctxBrush.beginPath();
-  ctxBrush.fillStyle = '#cc0000';
-  ctxBrush.lineWidth = 1;
-  ctxBrush.arc(pt.x, pt.y, 1, 0, two_pi, true);
-  ctxBrush.fill();
+function getPosInImageData(imgData, x, y, width) {
+  var p = 4 * (x + y * width);
+  return imgData.slice(p, p + 4);
+}
+
+function drawOnBrushCanvas(pt = mouseCanvas, first = false, toLine = false, draw = true){
+  if(draw){
+    ctxBrush.beginPath();
+    ctxBrush.fillStyle = '#cc0000';
+    ctxBrush.lineWidth = 1;
+    ctxBrush.arc(pt.x, pt.y, 1, 0, two_pi, true);
+    ctxBrush.fill();
+  }
   if(!toLine){
-    if(!first){ pointsBrush[pointsBrush.length-1].push(pt); }
+    if(!first){
+      if(activeGlo.modifiers.length){
+        getSelectedModifiers().forEach(mod => {
+          if(!mod.glo.pointsBrush || !mod.glo.pointsBrush[0]){
+            mod.glo.pointsBrush    = [];
+            mod.glo.pointsBrush[0] = [];
+          }
+          mod.glo.pointsBrush[mod.glo.pointsBrush.length-1].push(pt);
+        });
+      }
+      else{
+        if(!activeGlo.pointsBrush[0]){ activeGlo.pointsBrush[0] = []; }
+        activeGlo.pointsBrush[activeGlo.pointsBrush.length-1].push(pt);
+      }
+    }
     else{
-      pointsBrush.push([]);
+      if(!activeGlo.modifiers.length){ activeGlo.pointsBrush.push([]); }
+      else{
+        let selectedModifiers = getSelectedModifiers();
+        selectedModifiers.forEach((mod, n) => { selectedModifiers[n].glo.pointsBrush.push([]); });
+      }
     }
   }
 }
 
 function turnPointsBrushToMove(){
-  pointsBrush.forEach((ptsBrush, i) => { if(!ptsBrush.length){ pointsBrush.splice(i, 1); } });
+  if(!activeGlo.modifiers.length){
+    let pointsBrush = activeGlo.pointsBrush;
 
-  if(pointsBrush.length){
-    let newPointsBrush   = [];
-    let lastPtsBrush     = pointsBrush[pointsBrush.length-1];
-    let avLastPtsBrush   = pointsBrush[pointsBrush.length-2];
+    pointsBrush.forEach((ptsBrush, i) => { if(!ptsBrush.length){ pointsBrush.splice(i, 1); } });
 
-    let dec = 1;
-    if(avLastPtsBrush){
-      newPointsBrush[0] = {x: lastPtsBrush[0].x - avLastPtsBrush[avLastPtsBrush.length-1].x, y: lastPtsBrush[0].y - avLastPtsBrush[avLastPtsBrush.length-1].y };
-      dec = 0;
+    if(pointsBrush.length){
+      let newPointsBrush   = [];
+      let lastPtsBrush     = pointsBrush[pointsBrush.length-1];
+      let avLastPtsBrush   = pointsBrush[pointsBrush.length-2];
+
+      let dec = 1;
+      if(avLastPtsBrush){
+        newPointsBrush[0] = {x: lastPtsBrush[0].x - avLastPtsBrush[avLastPtsBrush.length-1].x, y: lastPtsBrush[0].y - avLastPtsBrush[avLastPtsBrush.length-1].y };
+        dec = 0;
+      }
+
+      lastPtsBrush.forEach((pointBrush, i) => {
+        if(i){ newPointsBrush[i-dec] = {x: pointBrush.x - lastPtsBrush[i-1].x, y: pointBrush.y - lastPtsBrush[i-1].y}; }
+        if(i === lastPtsBrush.length-1){ newPointsBrush.push({x: pointBrush.x, y: pointBrush.y}); }
+      });
+
+      pointsBrush[pointsBrush.length-1] = newPointsBrush;
     }
+  }
+  else{
+    let selectedModifiers = getSelectedModifiers();
+    selectedModifiers.forEach((mod, n)  => {
+      let pointsBrush = mod.glo.pointsBrush;
 
-    lastPtsBrush.forEach((pointBrush, i) => {
-      if(i){ newPointsBrush[i-dec] = {x: pointBrush.x - lastPtsBrush[i-1].x, y: pointBrush.y - lastPtsBrush[i-1].y}; }
-      if(i === lastPtsBrush.length-1){ newPointsBrush.push({x: pointBrush.x, y: pointBrush.y}); }
+      pointsBrush.forEach((ptsBrush, i) => { if(!ptsBrush.length){ selectedModifiers[n].glo.pointsBrush.splice(i, 1); } });
+
+      if(pointsBrush.length){
+        let newPointsBrush   = [];
+        let lastPtsBrush     = pointsBrush[pointsBrush.length-1];
+        let avLastPtsBrush   = pointsBrush[pointsBrush.length-2];
+
+        let dec = 1;
+        if(avLastPtsBrush){
+          newPointsBrush[0] = {x: lastPtsBrush[0].x - avLastPtsBrush[avLastPtsBrush.length-1].x, y: lastPtsBrush[0].y - avLastPtsBrush[avLastPtsBrush.length-1].y };
+          dec = 0;
+        }
+
+        lastPtsBrush.forEach((pointBrush, i) => {
+          if(i){ newPointsBrush[i-dec] = {x: pointBrush.x - lastPtsBrush[i-1].x, y: pointBrush.y - lastPtsBrush[i-1].y}; }
+          if(i === lastPtsBrush.length-1){ newPointsBrush.push({x: pointBrush.x, y: pointBrush.y}); }
+        });
+
+        selectedModifiers[n].glo.pointsBrush[selectedModifiers[n].glo.pointsBrush.length-1] = newPointsBrush;
+      }
     });
-
-    pointsBrush[pointsBrush.length-1] = newPointsBrush;
   }
 }
 function turnPointsLineBrushToMove(){
-  if(pointsBrushToLine.length){
-
-    let newPointsLineBrush   = [];
-    pointsBrushToLine.forEach((pointLineBrush, i) => {
-      if(i){ newPointsLineBrush[i-1] = {x: pointLineBrush.x - pointsBrushToLine[i-1].x, y: pointLineBrush.y - pointsBrushToLine[i-1].y}; }
+  if(!activeGlo.modifiers.length){
+    let pointsBrushToLine = activeGlo.pointsBrushToLine;
+    if(pointsBrushToLine.length){
+      let newPointsLineBrush = [];
+      pointsBrushToLine.forEach((pointLineBrush, i) => {
+        if(i){ newPointsLineBrush[i-1] = {x: pointLineBrush.x - pointsBrushToLine[i-1].x, y: pointLineBrush.y - pointsBrushToLine[i-1].y}; }
+      });
+  
+      activeGlo.pointsBrushToLine = newPointsLineBrush;
+    }
+  }
+  else{
+    let selectedModifiers = getSelectedModifiers();
+    selectedModifiers.forEach((mod, n) => {
+      let pointsBrushToLine = mod.glo.pointsBrushToLine;
+      if(pointsBrushToLine.length){
+        let newPointsLineBrush = [];
+        pointsBrushToLine.forEach((pointLineBrush, i) => {
+          if(i){ newPointsLineBrush[i-1] = {x: pointLineBrush.x - pointsBrushToLine[i-1].x, y: pointLineBrush.y - pointsBrushToLine[i-1].y}; }
+        });
+    
+        selectedModifiers[n].glo.pointsBrushToLine = newPointsLineBrush;
+      }
     });
-
-    pointsBrushToLine = newPointsLineBrush;
   }
 }
 
@@ -540,6 +613,8 @@ function animation(){
     let keep_dir      = activeGlo.params.keep_dir;
     let resist        = activeGlo.params.resist;
 
+    if(activeGlo.checkBlanks){ imgData = ctx.getImageData(0, 0, canvas.width, canvas.height); }
+
     if(activeGlo.nb_moves%keep_dir == 0 && activeGlo.global_alea && !activeGlo.hyperAlea){ alea_params(); }
     if(activeGlo.nb_moves%keep_dir == 0){ one_alea_param(); }
 
@@ -683,9 +758,11 @@ function animation(){
         if(!avatar.speedBf){ avatar.speed = avatar.speed_avatar(); }
         else{ avatar.speedBefore(); avatar.speedBf = false; }
         avatar.accel = avatar.accel_avatar();
+
+        if(activeGlo.checkBlanks && avatar.nextIsBlank()){ avatar.moveOnAlea(); }
       }
     }
-
+    
     positionAvatars();
 
     if(activeGlo.crossPoints)     { drawCrossPoints(); }
@@ -3913,7 +3990,24 @@ function testOnMouse(){
 }
 
 function testIsBlank(){
-  msg(ctx.isBlank(mouse));
+  let imgData = ctx.getImageData(mouse.x, mouse.y, canvas.width, canvas.height);
+
+  let index = (round(mouse.x, 0) + round(mouse.y, 0) * canvas.width) * 4;
+
+  if(imgData.data[index+3]){
+    ctx.beginPath();
+    //ctx.moveTo(mouse.x, mouse.y);
+    ctx.arc(mouse.x, mouse.y, 10, 0, two_pi);
+    ctx.fillStyle = '#cc0000';
+    ctx.strokeStyle = '#880000';
+    ctx.lineWidth = 2;
+    ctx.fill();
+    ctx.stroke();
+  }
+
+  msg("Mouse x : " + mouse.x, "Mouse y : " + mouse.y, "Index : " + index, "Data index 0 : " + imgData.data[index], "Data index 1 : " + imgData.data[index+1],
+  "Data index 2 : " + imgData.data[index+2],
+  "Data index 3 : " + imgData.data[index+3]);
 }
 
 function testSumHsl(cs  = [{h: 220, s: 77, l: 42, a: 1}, {h: 350, s: 77, l: 42, a: 1},]){

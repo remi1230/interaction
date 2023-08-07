@@ -1018,7 +1018,11 @@
                        min="0" max="2" value="0.5" step="0.01">
                 <label for="tailDec">Size of dec tail</label>
               </div>
-              <div></div>
+              <div>
+                <input type="range" id="sizeToSearchBlank" name="sizeToSearchBlank" class='input_params' oninput="changeAvatarsProp(this.value, 'curveAngle', true); updateGlo(this)" ondblclick="updateScale(this, event)"
+                       min="1" max="100" value="10" step="1">
+                <label for="sizeToSearchBlank">Size to check blanks pixel</label>
+              </div>
             </div>
           </div>
           <div style='display: none; ' id="interface_window_1" class='interface interfaceWindow'>

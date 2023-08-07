@@ -186,7 +186,20 @@ brushCanvas.addEventListener('click', event => {
 
     let x  = mouseCanvas.x;
     let y  = mouseCanvas.y;
-    pointsBrushToLine.push({x: x, y: y});
+
+    let pointsBrushToLine;
+    if(!activeGlo.modifiers.length){
+      activeGlo.pointsBrushToLine.push({x: x, y: y});
+      pointsBrushToLine = activeGlo.pointsBrushToLine;
+    }
+    else{
+      getSelectedModifiers().forEach(mod => {
+        if(!mod.glo.pointsBrushToLine){ mod.glo.pointsBrushToLine = []; }
+        mod.glo.pointsBrushToLine.push({x: x, y: y});
+        pointsBrushToLine = mod.glo.pointsBrushToLine;
+      });
+    }
+
     drawOnBrushCanvas({x: x, y: y}, false, true);
 
     ctxBrush.strokeStyle = '#cc0000';
@@ -208,7 +221,26 @@ brushCanvas.addEventListener('mousemove', event => {
     let x  = mouseCanvas.x;
     let y  = mouseCanvas.y;
 
-    if(brushCanvasMouseDown){ drawOnBrushCanvas({x, y}); }
+    if(brushCanvasMouseDown){
+      drawOnBrushCanvas({x, y}, false, false, false);
+
+      let pointsBrush;
+      if(activeGlo.modifiers.length && activeGlo.modifiers[0].glo.pointsBrush){ pointsBrush = getSelectedModifiers()[0].glo.pointsBrush; }
+      else{ pointsBrush = activeGlo.pointsBrush; }
+
+      if(pointsBrush.length && pointsBrush[pointsBrush.length - 1] && pointsBrush[pointsBrush.length - 1].length > 1){
+        let lastPtsBrush   =  pointsBrush[pointsBrush.length - 1];
+        let avLastPtBrush  =  lastPtsBrush[lastPtsBrush.length - 2];
+        let lastPtBrush    =  lastPtsBrush[lastPtsBrush.length - 1];
+
+        ctxBrush.beginPath();
+        ctxBrush.strokeStyle = '#cc0000';
+        ctxBrush.lineWidth   = 1;
+        ctxBrush.moveTo(avLastPtBrush.x, avLastPtBrush.y);
+        ctxBrush.lineTo(lastPtBrush.x, lastPtBrush.y);
+        ctxBrush.stroke();
+      }
+    }
   }
 });
 
@@ -867,8 +899,9 @@ window.addEventListener("keydown", function (e) {
             case 'ç':
               activeGlo.polyPrecision = !activeGlo.polyPrecision;
               break;
-            //FREE
+            /// Alt , -- Ne dessine que sur les blancs -- dessin -- checkBlanks  ///
             case ',':
+              activeGlo.checkBlanks = !activeGlo.checkBlanks;
               break;
             /// Alt & -- Rotation des brosses orientables -- orientation, avatar -- rotateBrush  ///
             case '&':
@@ -1288,7 +1321,20 @@ function toggleHelpDialog(){
 function toggleBrushDialog(){
   brushDialogVisible = !brushDialogVisible;
 
-  if(brushDialogVisible){ ctxBrush.clearRect(0, 0, brushCanvas.width, brushCanvas.height); pointsBrush = []; pointsBrushToLine = []; brushDialog.showModal(); }
+  if(brushDialogVisible){
+    ctxBrush.clearRect(0, 0, brushCanvas.width, brushCanvas.height);
+    
+    if(activeGlo.modifiers.length){
+      getSelectedModifiers().forEach(mod => { mod.glo.pointsBrush = []; mod.glo.pointsBrushToLine = []; });
+    }
+    else{
+      activeGlo.pointsBrush       = [];
+      activeGlo.pointsBrushToLine = [];
+    }
+    
+    brushDialog.showModal();
+    fix_dpi(brushCanvas);
+  }
   else{ brushDialog.close(); }
 }
 

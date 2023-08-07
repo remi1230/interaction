@@ -280,13 +280,13 @@ class Avatar {
         ctx.crossDiag({x: x, y: y}, size);
         break;
       case 'brush':
-        if((pointsBrush[0] && pointsBrush[0].length) || pointsBrushToLine[0]){
-          let ptsB     = pointsBrush[0] && pointsBrush[0].length ? pointsBrush : pointsBrushToLine;
+        if((objGlo.pointsBrush[0] && objGlo.pointsBrush[0].length) || objGlo.pointsBrushToLine[0]){
+          let ptsB     = objGlo.pointsBrush[0] && objGlo.pointsBrush[0].length ? objGlo.pointsBrush : objGlo.pointsBrushToLine;
           let ptsBSave = ptsB.slice();
 
           if(objGlo.rotateBrush){
             ptsB = [];
-            if(pointsBrush[0] && pointsBrush[0].length){
+            if(objGlo.pointsBrush[0] && objGlo.pointsBrush[0].length){
               ptsBSave.forEach((ptsBrush, i) => {
                 ptsB[i] = [];
                 ptsBrush.forEach(ptBrush => {
@@ -303,7 +303,7 @@ class Avatar {
             }
           }
           else{
-            if(!pointsBrushToLine[0]){ ptsB = ptsBSave; }
+            if(!objGlo.pointsBrushToLine[0]){ ptsB = ptsBSave; }
             else{ ptsB = []; ptsB[0] = ptsBSave; }
           }
 
@@ -315,6 +315,8 @@ class Avatar {
                 });
               });
           }
+          
+          //ptsB.pop();
           
           ctx.brush({x: x, y: y}, size, ptsB);
         }
@@ -1027,7 +1029,7 @@ class Avatar {
     }
   }
 
-  nextIsBlank(){
+  /*nextIsBlank(){
     let next = {x: this.x, y: this.y};
     let now  = {x: this.lasts[this.lasts.length - 1].x, y: this.lasts[this.lasts.length - 1].y};
     let dist = {x: next.x - now.x, y: next.y - now.y, d: h(next.x - now.x, next.y - now.y)};
@@ -1046,6 +1048,19 @@ class Avatar {
       this.x = point.x;
       this.y = point.y;
     }
+  }*/
+  nextIsBlank(){
+    let obj = this.nearMod.num_modifier ? this.nearMod.glo : activeGlo;
+
+    for(let i = 0; i < obj.params.sizeToSearchBlank; i++){
+      for(let j = 0; j < obj.params.sizeToSearchBlank; j++){
+        if(!ctx.isBlank({x: this.x + i, y: this.y + j})){ return false; }
+        if(!ctx.isBlank({x: this.x + i, y: this.y - j})){ return false; }
+        if(!ctx.isBlank({x: this.x - i, y: this.y + j})){ return false; }
+        if(!ctx.isBlank({x: this.x - i, y: this.y - j})){ return false; }
+      }
+    }
+    return true;
   }
 
   curve(){
