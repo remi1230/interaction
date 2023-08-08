@@ -200,7 +200,7 @@ brushCanvas.addEventListener('click', event => {
       });
     }
 
-    drawOnBrushCanvas({x: x, y: y}, false, true);
+    drawOnBrushCanvas({x: x, y: y});
 
     ctxBrush.strokeStyle = '#cc0000';
     ctxBrush.beginPath();
@@ -209,7 +209,13 @@ brushCanvas.addEventListener('click', event => {
     ctxBrush.stroke();
   }
 });
-brushCanvas.addEventListener('mousedown', event => { brushCanvasMouseDown = true; if(!activeGlo.brushWithLine){drawOnBrushCanvas(mouseCanvas, true);} } );
+brushCanvas.addEventListener('mousedown', event => {
+  brushCanvasMouseDown = true;
+  if(!activeGlo.brushWithLine){
+    savePtOnBrushCanvas(mouseCanvas, true);
+    drawOnBrushCanvas(mouseCanvas);
+  }
+} );
 brushCanvas.addEventListener('mouseup',   event => { brushCanvasMouseDown = false; if(!activeGlo.brushWithLine){turnPointsBrushToMove();} } );
 brushCanvas.addEventListener('mousemove', event => {
   if(!activeGlo.brushWithLine){
@@ -222,7 +228,7 @@ brushCanvas.addEventListener('mousemove', event => {
     let y  = mouseCanvas.y;
 
     if(brushCanvasMouseDown){
-      drawOnBrushCanvas({x, y}, false, false, false);
+      savePtOnBrushCanvas({x, y}, false);
 
       let pointsBrush;
       if(activeGlo.modifiers.length && activeGlo.modifiers[0].glo.pointsBrush){ pointsBrush = getSelectedModifiers()[0].glo.pointsBrush; }

@@ -316,8 +316,6 @@ class Avatar {
               });
           }
           
-          //ptsB.pop();
-          
           ctx.brush({x: x, y: y}, size, ptsB);
         }
         break;

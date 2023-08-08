@@ -248,7 +248,10 @@ function giveFuncToCanvas(varCanvas, varCtx){
     let sz     = size / 10;
     let lastPt = false;
 
-    ctx.moveTo(pos.x, pos.y);
+    //Pour tests
+    //pts = testBrushPoints;
+
+    //ctx.moveTo(pos.x, pos.y);
     for(let i = 0; i < pts.length; i++){
       if(lastPt && pts[i][0]){
         pos = {x: lastPt.x + pts[i][0].x*sz, y: lastPt.y + pts[i][0].y*sz};
@@ -277,40 +280,40 @@ function getPosInImageData(imgData, x, y, width) {
   return imgData.slice(p, p + 4);
 }
 
-function drawOnBrushCanvas(pt = mouseCanvas, first = false, toLine = false, draw = true){
-  if(draw){
-    ctxBrush.beginPath();
-    ctxBrush.fillStyle = '#cc0000';
-    ctxBrush.lineWidth = 1;
-    ctxBrush.arc(pt.x, pt.y, 1, 0, two_pi, true);
-    ctxBrush.fill();
-  }
-  if(!toLine){
-    if(!first){
-      if(activeGlo.modifiers.length){
-        getSelectedModifiers().forEach(mod => {
-          if(!mod.glo.pointsBrush || !mod.glo.pointsBrush[0]){
-            mod.glo.pointsBrush    = [];
-            mod.glo.pointsBrush[0] = [];
-          }
-          mod.glo.pointsBrush[mod.glo.pointsBrush.length-1].push(pt);
-        });
-      }
-      else{
-        if(!activeGlo.pointsBrush[0]){ activeGlo.pointsBrush[0] = []; }
-        activeGlo.pointsBrush[activeGlo.pointsBrush.length-1].push(pt);
-      }
+function drawOnBrushCanvas(pt = mouseCanvas){
+  ctxBrush.beginPath();
+  ctxBrush.fillStyle = '#cc0000';
+  ctxBrush.lineWidth = 1;
+  ctxBrush.arc(pt.x, pt.y, 1, 0, two_pi, true);
+  ctxBrush.fill();
+}
+
+function savePtOnBrushCanvas(pt = mouseCanvas, first = false){
+  if(!first){
+    if(activeGlo.modifiers.length){
+      getSelectedModifiers().forEach(mod => {
+        if(!mod.glo.pointsBrush || !mod.glo.pointsBrush[0]){
+          mod.glo.pointsBrush    = [];
+          mod.glo.pointsBrush[0] = [];
+        }
+        mod.glo.pointsBrush[mod.glo.pointsBrush.length-1].push(pt);
+      });
     }
     else{
-      if(!activeGlo.modifiers.length){ activeGlo.pointsBrush.push([]); }
-      else{
-        let selectedModifiers = getSelectedModifiers();
-        selectedModifiers.forEach((mod, n) => { selectedModifiers[n].glo.pointsBrush.push([]); });
-      }
+      if(!activeGlo.pointsBrush[0]){ activeGlo.pointsBrush[0] = []; }
+      activeGlo.pointsBrush[activeGlo.pointsBrush.length-1].push(pt);
+    }
+  }
+  else{
+    if(!activeGlo.modifiers.length){ activeGlo.pointsBrush.push([]); }
+    else{
+      let selectedModifiers = getSelectedModifiers();
+      selectedModifiers.forEach((_mod, n) => { selectedModifiers[n].glo.pointsBrush.push([]); });
     }
   }
 }
 
+// Transformation des points pour la brosse en vecteurs
 function turnPointsBrushToMove(){
   if(!activeGlo.modifiers.length){
     let pointsBrush = activeGlo.pointsBrush;
@@ -318,22 +321,7 @@ function turnPointsBrushToMove(){
     pointsBrush.forEach((ptsBrush, i) => { if(!ptsBrush.length){ pointsBrush.splice(i, 1); } });
 
     if(pointsBrush.length){
-      let newPointsBrush   = [];
-      let lastPtsBrush     = pointsBrush[pointsBrush.length-1];
-      let avLastPtsBrush   = pointsBrush[pointsBrush.length-2];
-
-      let dec = 1;
-      if(avLastPtsBrush){
-        newPointsBrush[0] = {x: lastPtsBrush[0].x - avLastPtsBrush[avLastPtsBrush.length-1].x, y: lastPtsBrush[0].y - avLastPtsBrush[avLastPtsBrush.length-1].y };
-        dec = 0;
-      }
-
-      lastPtsBrush.forEach((pointBrush, i) => {
-        if(i){ newPointsBrush[i-dec] = {x: pointBrush.x - lastPtsBrush[i-1].x, y: pointBrush.y - lastPtsBrush[i-1].y}; }
-        if(i === lastPtsBrush.length-1){ newPointsBrush.push({x: pointBrush.x, y: pointBrush.y}); }
-      });
-
-      pointsBrush[pointsBrush.length-1] = newPointsBrush;
+      helpTurnPointsBrushToMove(pointsBrush);
     }
   }
   else{
@@ -344,51 +332,54 @@ function turnPointsBrushToMove(){
       pointsBrush.forEach((ptsBrush, i) => { if(!ptsBrush.length){ selectedModifiers[n].glo.pointsBrush.splice(i, 1); } });
 
       if(pointsBrush.length){
-        let newPointsBrush   = [];
-        let lastPtsBrush     = pointsBrush[pointsBrush.length-1];
-        let avLastPtsBrush   = pointsBrush[pointsBrush.length-2];
-
-        let dec = 1;
-        if(avLastPtsBrush){
-          newPointsBrush[0] = {x: lastPtsBrush[0].x - avLastPtsBrush[avLastPtsBrush.length-1].x, y: lastPtsBrush[0].y - avLastPtsBrush[avLastPtsBrush.length-1].y };
-          dec = 0;
-        }
-
-        lastPtsBrush.forEach((pointBrush, i) => {
-          if(i){ newPointsBrush[i-dec] = {x: pointBrush.x - lastPtsBrush[i-1].x, y: pointBrush.y - lastPtsBrush[i-1].y}; }
-          if(i === lastPtsBrush.length-1){ newPointsBrush.push({x: pointBrush.x, y: pointBrush.y}); }
-        });
-
-        selectedModifiers[n].glo.pointsBrush[selectedModifiers[n].glo.pointsBrush.length-1] = newPointsBrush;
+        helpTurnPointsBrushToMove(pointsBrush);
       }
     });
   }
 }
+function helpTurnPointsBrushToMove(pointsBrush){
+  let newPointsBrush   = [];
+  let lastPtsBrush     = pointsBrush[pointsBrush.length-1];
+  let avLastPtsBrush   = pointsBrush[pointsBrush.length-2];
+
+  let dec = 1;
+  if(avLastPtsBrush){
+    newPointsBrush[0] = {x: lastPtsBrush[0].x - avLastPtsBrush[avLastPtsBrush.length-1].x, y: lastPtsBrush[0].y - avLastPtsBrush[avLastPtsBrush.length-1].y };
+    dec = 0;
+  }
+
+  lastPtsBrush.forEach((_pointBrush, i) => {
+    if(i){ newPointsBrush[i-dec] = {x: lastPtsBrush[i].x - lastPtsBrush[i-1].x, y: lastPtsBrush[i].y - lastPtsBrush[i-1].y}; }
+    if(i === lastPtsBrush.length-1){ newPointsBrush.push({x: lastPtsBrush[i].x, y: lastPtsBrush[i].y}); }
+  });
+
+  pointsBrush[pointsBrush.length-1] = newPointsBrush;
+
+  /*if(pointsBrush.length > 1){
+    pointsBrush[pointsBrush.length-1][0].x = pointsBrush[pointsBrush.length-1][1].x;
+    pointsBrush[pointsBrush.length-1].splice(1,1);
+  }*/
+}
+
 function turnPointsLineBrushToMove(){
   if(!activeGlo.modifiers.length){
-    let pointsBrushToLine = activeGlo.pointsBrushToLine;
-    if(pointsBrushToLine.length){
-      let newPointsLineBrush = [];
-      pointsBrushToLine.forEach((pointLineBrush, i) => {
-        if(i){ newPointsLineBrush[i-1] = {x: pointLineBrush.x - pointsBrushToLine[i-1].x, y: pointLineBrush.y - pointsBrushToLine[i-1].y}; }
-      });
-  
-      activeGlo.pointsBrushToLine = newPointsLineBrush;
-    }
+    activeGlo.pointsBrushToLine = helpTurnPointsLineBrushToMove(activeGlo.pointsBrushToLine);
   }
   else{
     let selectedModifiers = getSelectedModifiers();
-    selectedModifiers.forEach((mod, n) => {
-      let pointsBrushToLine = mod.glo.pointsBrushToLine;
-      if(pointsBrushToLine.length){
-        let newPointsLineBrush = [];
-        pointsBrushToLine.forEach((pointLineBrush, i) => {
-          if(i){ newPointsLineBrush[i-1] = {x: pointLineBrush.x - pointsBrushToLine[i-1].x, y: pointLineBrush.y - pointsBrushToLine[i-1].y}; }
-        });
-    
-        selectedModifiers[n].glo.pointsBrushToLine = newPointsLineBrush;
-      }
+    selectedModifiers.forEach(mod => {
+      mod.glo.pointsBrushToLine = helpTurnPointsLineBrushToMove(mod.glo.pointsBrushToLine);
     });
+  }
+}
+function helpTurnPointsLineBrushToMove(pointsBrushToLine){
+  if(pointsBrushToLine.length){
+    let newPointsLineBrush = [];
+    pointsBrushToLine.forEach((pointLineBrush, i) => {
+      if(i){ newPointsLineBrush[i-1] = {x: pointLineBrush.x - pointsBrushToLine[i-1].x, y: pointLineBrush.y - pointsBrushToLine[i-1].y}; }
+    });
+
+    return newPointsLineBrush;
   }
 }
 
