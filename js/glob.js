@@ -176,6 +176,7 @@ class Glob {
                 tailDec : 0.5,
                 formVarLevel: 0,
                 sizeToSearchBlank: 10,
+                weightDistMinMod: 1,
             };
         this.alea = {
             colorDec       : true,
@@ -427,9 +428,10 @@ let helpDialogVisible    = false;
 let brushDialogVisible   = false;
 let brushCanvasMouseDown = false;
 
-let ctxBrush          = brushCanvas.getContext('2d');
-let pointsBrush       = [];
-let pointsBrushToLine = [];
+let ctxBrush             = brushCanvas.getContext('2d');
+let pointsBrush          = [];
+let pointsBrushToLine    = [];
+let pointsBrushToLineEnd = [];
 
 let mouse       =  { click: {x: 0, y: 0} };
 let mouseCanvas =  { x: 0, y: 0};

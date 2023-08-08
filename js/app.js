@@ -354,14 +354,9 @@ function helpTurnPointsBrushToMove(pointsBrush){
   });
 
   pointsBrush[pointsBrush.length-1] = newPointsBrush;
-
-  /*if(pointsBrush.length > 1){
-    pointsBrush[pointsBrush.length-1][0].x = pointsBrush[pointsBrush.length-1][1].x;
-    pointsBrush[pointsBrush.length-1].splice(1,1);
-  }*/
 }
 
-function turnPointsLineBrushToMove(){
+/*function turnPointsLineBrushToMove(){
   if(!activeGlo.modifiers.length){
     activeGlo.pointsBrushToLine = helpTurnPointsLineBrushToMove(activeGlo.pointsBrushToLine);
   }
@@ -380,6 +375,30 @@ function helpTurnPointsLineBrushToMove(pointsBrushToLine){
     });
 
     return newPointsLineBrush;
+  }
+}*/
+
+function turnPointsLineBrushToMove(){
+  if(!activeGlo.modifiers.length){
+    if(!activeGlo.pointsBrushToLineEnd){ activeGlo.pointsBrushToLineEnd = []; }
+    activeGlo.pointsBrushToLineEnd = helpTurnPointsLineBrushToMove(activeGlo.pointsBrushToLine, activeGlo.pointsBrushToLineEnd);
+  }
+  else{
+    let selectedModifiers = getSelectedModifiers();
+    selectedModifiers.forEach(mod => {
+      if(!mod.glo.pointsBrushToLineEnd){ mod.glo.pointsBrushToLineEnd = []; }
+      mod.glo.pointsBrushToLineEnd = helpTurnPointsLineBrushToMove(mod.glo.pointsBrushToLine, mod.glo.pointsBrushToLineEnd);
+    });
+  }
+}
+function helpTurnPointsLineBrushToMove(pointsBrushToLine, pointsBrushToLineEnd){
+  if(pointsBrushToLine.length > 1){
+    let avLastPt = pointsBrushToLine[pointsBrushToLine.length-2];
+    let lastPt   = pointsBrushToLine[pointsBrushToLine.length-1];
+
+    pointsBrushToLineEnd.push({x: lastPt.x - avLastPt.x, y: lastPt.y - avLastPt.y});
+
+    return pointsBrushToLineEnd;
   }
 }
 
@@ -2100,7 +2119,7 @@ function makeModifierFunction(modifierType){
       return function(av){
         if(activeGlo.params.mods_formule != '0'){ modsFormule(this, av); }
 
-        let dist = av.dist_av(this);
+        let dist = av.dist_av(this) / this.glo.params.weightDistMinMod;
         if(this == av.nearMod){
           av.goToNearMod    = dist < av.distMinNearMod ? true : false;
           av.distMinNearMod = dist;
@@ -2163,7 +2182,7 @@ function makeModifierFunction(modifierType){
           this.doublePos.double = {x: this.x, y: this.y};
         }
 
-        let dist  = av.dist_av(this);
+        let dist  = av.dist_av(this) / this.glo.params.weightDistMinMod;
         av.distMods.push({dist: dist, h: this.color.h, l: this.tint, ls: this.tint_stroke, st: this.satStroke, w: this.weight, colorDec: this.colorDec, colorStrokeDec: this.colorStrokeDec, varColDistModifs : this.params.varColDistModifs});
         if(dist < av.distMinModifiers){ av.distMinModifiers = dist; av.nearMod = this; }
 
@@ -2214,7 +2233,7 @@ function makeModifierFunction(modifierType){
       return function(av){
         if(activeGlo.params.mods_formule != '0'){ modsFormule(this, av); }
 
-        let dist  = av.dist_av(this);
+        let dist  = av.dist_av(this) / this.glo.params.weightDistMinMod;
 
         av.distMods.push({dist: dist, h: this.color.h, l: this.tint, ls: this.tint_stroke, st: this.satStroke, w: this.weight, colorDec: this.colorDec, colorStrokeDec: this.colorStrokeDec, varColDistModifs : this.params.varColDistModifs});
         if(dist < av.distMinModifiers){ av.distMinModifiers = dist; av.nearMod = this; }
@@ -2257,7 +2276,7 @@ function makeModifierFunction(modifierType){
       return function(av){
         if(activeGlo.params.mods_formule != '0'){ modsFormule(this, av); }
 
-        let dist  = av.dist_av(this);
+        let dist  = av.dist_av(this) / this.glo.params.weightDistMinMod;
 
         av.distMods.push({dist: dist, h: this.color.h, l: this.tint, ls: this.tint_stroke, st: this.satStroke, w: this.weight, colorDec: this.colorDec, colorStrokeDec: this.colorStrokeDec, varColDistModifs : this.params.varColDistModifs});
         if(dist < av.distMinModifiers){ av.distMinModifiers = dist; av.nearMod = this; }
@@ -2300,7 +2319,7 @@ function makeModifierFunction(modifierType){
       return function(av){
         if(activeGlo.params.mods_formule != '0'){ modsFormule(this, av); }
 
-        let dist  = av.dist_av(this);
+        let dist  = av.dist_av(this) / this.glo.params.weightDistMinMod;
 
         av.distMods.push({dist: dist, h: this.color.h, l: this.tint, ls: this.tint_stroke, st: this.satStroke, w: this.weight, colorDec: this.colorDec, colorStrokeDec: this.colorStrokeDec, varColDistModifs : this.params.varColDistModifs});
         if(dist < av.distMinModifiers){ av.distMinModifiers = dist; av.nearMod = this; }
@@ -2332,7 +2351,7 @@ function makeModifierFunction(modifierType){
       return function(av){
         if(activeGlo.params.mods_formule != '0'){ modsFormule(this, av); }
 
-        let dist  = av.dist_av(this);
+        let dist  = av.dist_av(this) / this.glo.params.weightDistMinMod;
 
         av.distMods.push({dist: dist, h: this.color.h, l: this.tint, ls: this.tint_stroke, st: this.satStroke, w: this.weight, colorDec: this.colorDec, colorStrokeDec: this.colorStrokeDec, varColDistModifs : this.params.varColDistModifs});
         if(dist < av.distMinModifiers){ av.distMinModifiers = dist; av.nearMod = this; }
@@ -2364,7 +2383,7 @@ function makeModifierFunction(modifierType){
       return function(av){
         if(activeGlo.params.mods_formule != '0'){ modsFormule(this, av); }
 
-        let dist  = av.dist_av(this);
+        let dist  = av.dist_av(this) / this.glo.params.weightDistMinMod;
 
         av.distMods.push({dist: dist, h: this.color.h, l: this.tint, ls: this.tint_stroke, st: this.satStroke, w: this.weight, colorDec: this.colorDec, colorStrokeDec: this.colorStrokeDec, varColDistModifs : this.params.varColDistModifs});
         if(dist < av.distMinModifiers){ av.distMinModifiers = dist; av.nearMod = this; }
@@ -2393,7 +2412,7 @@ function makeModifierFunction(modifierType){
       return function(av){
         if(activeGlo.params.mods_formule != '0'){ modsFormule(this, av); }
 
-        let dist  = av.dist_av(this);
+        let dist  = av.dist_av(this) / this.glo.params.weightDistMinMod;
 
         av.distMods.push({dist: dist, h: this.color.h, l: this.tint, ls: this.tint_stroke, st: this.satStroke, w: this.weight, colorDec: this.colorDec, colorStrokeDec: this.colorStrokeDec, varColDistModifs : this.params.varColDistModifs});
         if(dist < av.distMinModifiers){ av.distMinModifiers = dist; av.nearMod = this; }
@@ -2431,7 +2450,7 @@ function makeModifierFunction(modifierType){
       return function(av){
         if(activeGlo.params.mods_formule != '0'){ modsFormule(this, av); }
 
-        let dist  = av.dist_av(this);
+        let dist  = av.dist_av(this) / this.glo.params.weightDistMinMod;
 
         av.distMods.push({dist: dist, h: this.color.h, l: this.tint, ls: this.tint_stroke, st: this.satStroke, w: this.weight, colorDec: this.colorDec, colorStrokeDec: this.colorStrokeDec, varColDistModifs : this.params.varColDistModifs});
         if(dist < av.distMinModifiers){ av.distMinModifiers = dist; av.nearMod = this; }
@@ -2451,7 +2470,7 @@ function makeModifierFunction(modifierType){
         if(this.formule){
           if(activeGlo.params.mods_formule != '0'){ modsFormule(this, av); }
 
-          let dist  = av.dist_av(this);
+          let dist  = av.dist_av(this) / this.glo.params.weightDistMinMod;
 
           av.distMods.push({dist: dist, h: this.color.h, l: this.tint, ls: this.tint_stroke, st: this.satStroke, w: this.weight, colorDec: this.colorDec, colorStrokeDec: this.colorStrokeDec, varColDistModifs : this.params.varColDistModifs});
           if(dist < av.distMinModifiers){ av.distMinModifiers = dist; av.nearMod = this; }

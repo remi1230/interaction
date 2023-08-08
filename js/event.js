@@ -4,9 +4,9 @@ document.addEventListener("DOMContentLoaded", function() {
     createGoInterface();
     createCheckboxesWithRange(activeGlo.colorFunctionLabels, 'colorCumulContainer', 'qMove', {event: 'onchange', func: 'checkColorFunctions()'});
     feedHelp();
-    getById('brushWithLine').checked = false;
     if(!localStorage.getItem('glo')){ createAvatar({nb: activeGlo.params.nb, w: activeGlo.size}); }
     else{ restoreFlash(); }
+    getById('brushWithLine').checked = activeGlo.brushWithLine;
     animation();
 });
 
@@ -168,7 +168,6 @@ helpDialog.addEventListener('click', () => {
   helpDialog.close();
 });
 brushDialog.addEventListener('click', () => {
-  if(activeGlo.brushWithLine){ turnPointsLineBrushToMove(); }
   brushCanvasMouseDown = false;
   brushDialogVisible = !brushDialogVisible;
   brushDialog.close();
@@ -207,6 +206,8 @@ brushCanvas.addEventListener('click', event => {
     if(pointsBrushToLine.length > 1){ ctxBrush.moveTo(pointsBrushToLine[pointsBrushToLine.length-2].x, pointsBrushToLine[pointsBrushToLine.length-2].y); }
     ctxBrush.lineTo(x, y);
     ctxBrush.stroke();
+
+    turnPointsLineBrushToMove();
   }
 });
 brushCanvas.addEventListener('mousedown', event => {
@@ -228,7 +229,7 @@ brushCanvas.addEventListener('mousemove', event => {
     let y  = mouseCanvas.y;
 
     if(brushCanvasMouseDown){
-      savePtOnBrushCanvas({x, y}, false);
+      savePtOnBrushCanvas({x, y}, false)
 
       let pointsBrush;
       if(activeGlo.modifiers.length && activeGlo.modifiers[0].glo.pointsBrush){ pointsBrush = getSelectedModifiers()[0].glo.pointsBrush; }
@@ -1331,11 +1332,12 @@ function toggleBrushDialog(){
     ctxBrush.clearRect(0, 0, brushCanvas.width, brushCanvas.height);
     
     if(activeGlo.modifiers.length){
-      getSelectedModifiers().forEach(mod => { mod.glo.pointsBrush = []; mod.glo.pointsBrushToLine = []; });
+      getSelectedModifiers().forEach(mod => { mod.glo.pointsBrush = []; mod.glo.pointsBrushToLine = []; mod.glo.pointsBrushToLineEnd = []; });
     }
     else{
-      activeGlo.pointsBrush       = [];
-      activeGlo.pointsBrushToLine = [];
+      activeGlo.pointsBrush          = [];
+      activeGlo.pointsBrushToLine    = [];
+      activeGlo.pointsBrushToLineEnd = [];
     }
     
     brushDialog.showModal();

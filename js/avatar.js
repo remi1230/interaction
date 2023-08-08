@@ -280,8 +280,8 @@ class Avatar {
         ctx.crossDiag({x: x, y: y}, size);
         break;
       case 'brush':
-        if((objGlo.pointsBrush[0] && objGlo.pointsBrush[0].length) || objGlo.pointsBrushToLine[0]){
-          let ptsB     = objGlo.pointsBrush[0] && objGlo.pointsBrush[0].length ? objGlo.pointsBrush : objGlo.pointsBrushToLine;
+        if((objGlo.pointsBrush[0] && objGlo.pointsBrush[0].length) || objGlo.pointsBrushToLineEnd){
+          let ptsB     = objGlo.pointsBrush[0] && objGlo.pointsBrush[0].length ? objGlo.pointsBrush : objGlo.pointsBrushToLineEnd;
           let ptsBSave = ptsB.slice();
 
           if(objGlo.rotateBrush){
@@ -512,18 +512,20 @@ class Avatar {
 
   distMinMods(...args){
     this.distMinModifiers = 9999;
+
+    let weightDistMinMod = mod.glo.params.weightDistMinMod;
     if(args.length == 0){
       let modifiersSz = activeGlo.modifiers.length;
       for(let i = 0; i < modifiersSz; i++){
         let mod  = activeGlo.modifiers[i];
-        let dist = pow(pow(this.x - mod.x, 2) + pow(this.y - mod.y, 2), 0.5);
+        let dist = pow(pow(this.x - mod.x, 2) + pow(this.y - mod.y, 2), 0.5) / weightDistMinMod;
         if(dist < this.distMinModifiers){ this.distMinModifiers = dist; this.nearMod = mod; }
       }
     }
     else{
       args.map(arg =>{
         activeGlo.modifiers.filter(mod => mod.type == arg).map(mod => {
-          let dist = pow(pow(this.x - mod.x, 2) + pow(this.y - mod.y, 2), 0.5);
+          let dist = pow(pow(this.x - mod.x, 2) + pow(this.y - mod.y, 2), 0.5) / weightDistMinMod;
           if(dist < this.distMinModifiers){ this.distMinModifiers = dist; this.nearMod = mod; }
         });
       });
