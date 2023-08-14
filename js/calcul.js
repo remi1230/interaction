@@ -835,9 +835,9 @@ const roundStepsPro = (dx, dy, r, precision) => {
   return d;
 };
 
-function getMousePos(e){
-  let rect = canvas.getBoundingClientRect();
-  let coeff = {x: startWidth / canvas.clientWidth, y: startHeight / canvas.clientHeight};
+function getMousePos(e, canvasVar){
+  let rect = canvasVar.getBoundingClientRect();
+  let coeff = {x: canvasVar.width / canvasVar.clientWidth, y: canvasVar.height / canvasVar.clientHeight};
 
   return {x: (e.clientX- rect.left) * coeff.x, y: (e.clientY - rect.top) * coeff.y};
 }

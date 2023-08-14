@@ -177,6 +177,7 @@ class Glob {
                 formVarLevel: 0,
                 sizeToSearchBlank: 10,
                 weightDistMinMod: 1,
+                brushSize: 10,
             };
         this.alea = {
             colorDec       : true,
@@ -346,6 +347,7 @@ class Glob {
         this.modifiersColor  = {h:180, s:50, l: 50};
         this.canvasLoveBg    = {color: "rgb(0, 0, 32)"};
         this.thirdGridColor  = '#fc4e03';
+        this.brushType  = 'manual';
     }
 }
 
@@ -427,14 +429,20 @@ let brushCanvas           = getById('brushCanvas');
 let helpDialogVisible    = false;
 let brushDialogVisible   = false;
 let brushCanvasMouseDown = false;
+let brushCanvasMouseUp   = false;
 
 let ctxBrush             = brushCanvas.getContext('2d');
 let pointsBrush          = [];
 let pointsBrushToLine    = [];
 let pointsBrushToLineEnd = [];
 
-let mouse       =  { click: {x: 0, y: 0} };
-let mouseCanvas =  { x: 0, y: 0};
+let mouse                =  { click: {x: 0, y: 0} };
+let mouseCanvas          =  { x: 0, y: 0, first: true, form: false};
+let mouseCanvasLast      =  { x: 0, y: 0, first: true, form: false};
+let mouseCanvasClick     =  { x: 0, y: 0, first: true, form: false};
+let mouseCanvasLastClick =  { x: 0, y: 0, first: true, form: false};
+
+let mouseCanvasChangeToLine = false;
 
 let imgData;
 

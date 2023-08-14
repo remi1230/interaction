@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", function() {
     feedHelp();
     if(!localStorage.getItem('glo')){ createAvatar({nb: activeGlo.params.nb, w: activeGlo.size}); }
     else{ restoreFlash(); }
-    getById('brushWithLine').checked = activeGlo.brushWithLine;
+    getById('brushFormType_0').checked = true;
     animation();
 });
 
@@ -24,18 +24,6 @@ ui.addEventListener('contextmenu', () => {
 
   activeGlo.time = new Date().getTime();
 });
-
-//------------------ ClICK ON NUM INTERFACE ----------------- //
-/*getById('num_interface').addEventListener('click', () => {
-  event.stopPropagation();
-  changeInterface('+');
-});
-
-//------------------ ClICK ON NUM INTERFACE ----------------- //
-getById('num_interface').addEventListener('contextmenu', () => {
-  event.preventDefault();
-  changeInterface('-');
-});*/
 
 //------------------ ClICK ON SHOW / HIDE INTERFACE ----------------- //
 getById('showHideInterfaceTxt').addEventListener('click', () => {
@@ -174,82 +162,69 @@ brushDialog.addEventListener('click', () => {
 });
 helpDialogGrid.addEventListener('click', (event) => event.stopPropagation());
 
-//Canvas pour la brosse
-brushCanvas.addEventListener('click', event => {
-  event.stopPropagation();
-  if(activeGlo.brushWithLine){
-    let rect = brushCanvas.getBoundingClientRect();
-    let coeff = {x: brushCanvas.width / brushCanvas.clientWidth, y: brushCanvas.height / brushCanvas.clientHeight};
-    mouseCanvas.x = (event.clientX- rect.left) * coeff.x;
-    mouseCanvas.y = (event.clientY - rect.top) * coeff.y;
 
-    let x  = mouseCanvas.x;
-    let y  = mouseCanvas.y;
+//*************************************CANVAS POUR LA BROSSE*************************************//
+function toggleBrushDialog(){
+  brushDialogVisible = !brushDialogVisible;
 
-    let pointsBrushToLine;
-    if(!activeGlo.modifiers.length){
-      activeGlo.pointsBrushToLine.push({x: x, y: y});
-      pointsBrushToLine = activeGlo.pointsBrushToLine;
+  if(brushDialogVisible){
+    ctxBrush.clearRect(0, 0, brushCanvas.width, brushCanvas.height);
+    
+    if(activeGlo.modifiers.length){ getSelectedModifiers().forEach(mod => { mod.glo.stepsBrush = []; }); }
+    else{ activeGlo.stepsBrush = []; }
+
+    mouseCanvasClick     =  { x: 0, y: 0, form: false};
+    mouseCanvasLastClick =  { x: 0, y: 0, form: false};
+    mouseCanvas          =  { x: 0, y: 0, first: true, form: false};
+    mouseCanvasLast      =  { x: 0, y: 0, first: true, form: false};
+
+    mouseCanvasChangeToLine = false;
+    brushCanvasMouseDown    = false;
+    brushCanvasMouseUp      = false;
+
+    if(getById('brushFormType_1').checked){
+      savePtOnBrushCanvas({x: 0, y: 0});
     }
-    else{
-      getSelectedModifiers().forEach(mod => {
-        if(!mod.glo.pointsBrushToLine){ mod.glo.pointsBrushToLine = []; }
-        mod.glo.pointsBrushToLine.push({x: x, y: y});
-        pointsBrushToLine = mod.glo.pointsBrushToLine;
-      });
-    }
-
-    drawOnBrushCanvas({x: x, y: y});
-
-    ctxBrush.strokeStyle = '#cc0000';
-    ctxBrush.beginPath();
-    if(pointsBrushToLine.length > 1){ ctxBrush.moveTo(pointsBrushToLine[pointsBrushToLine.length-2].x, pointsBrushToLine[pointsBrushToLine.length-2].y); }
-    ctxBrush.lineTo(x, y);
-    ctxBrush.stroke();
-
-    turnPointsLineBrushToMove();
+    
+    brushDialog.showModal();
+    fix_dpi(brushCanvas);
   }
-});
-brushCanvas.addEventListener('mousedown', event => {
+  else{ brushDialog.close(); }
+}
+
+brushCanvas.addEventListener('mousedown', e => {
   brushCanvasMouseDown = true;
-  if(!activeGlo.brushWithLine){
-    savePtOnBrushCanvas(mouseCanvas, true);
-    drawOnBrushCanvas(mouseCanvas);
-  }
+  mouseCanvasLastClick = mouseCanvasClick;
+  mouseCanvasClick     = getMousePos(e, brushCanvas);
+  
+  saveMoveOrPtOnBrushCanvas(mouseCanvas, activeGlo.brushType, 'mousedown', brushCanvasMouseUp);
+  if(!mouseCanvasChangeToLine){ drawOnBrushCanvas(); }
+  else{ drawOnBrushCanvas(activeGlo.brushType === 'manual' || activeGlo.brushType === 'line' ? 'manual' : activeGlo.brushType); }
+
+  mouseCanvasChangeToLine = false;
+  brushCanvasMouseUp      = false;
 } );
-brushCanvas.addEventListener('mouseup',   event => { brushCanvasMouseDown = false; if(!activeGlo.brushWithLine){turnPointsBrushToMove();} } );
-brushCanvas.addEventListener('mousemove', event => {
-  if(!activeGlo.brushWithLine){
-    let rect = brushCanvas.getBoundingClientRect();
-    let coeff = {x: brushCanvas.width / brushCanvas.clientWidth, y: brushCanvas.height / brushCanvas.clientHeight};
-    mouseCanvas.x = (event.clientX- rect.left) * coeff.x;
-    mouseCanvas.y = (event.clientY - rect.top) * coeff.y;
 
-    let x  = mouseCanvas.x;
-    let y  = mouseCanvas.y;
+getById('brushFormType_1').addEventListener('change', _event => {
+  mouseCanvasChangeToLine = getById('brushFormType_1').checked;
+});
 
-    if(brushCanvasMouseDown){
-      savePtOnBrushCanvas({x, y}, false)
+brushCanvas.addEventListener('mouseup', _event => {
+  brushCanvasMouseDown = false;
+  brushCanvasMouseUp   = true;
+} );
 
-      let pointsBrush;
-      if(activeGlo.modifiers.length && activeGlo.modifiers[0].glo.pointsBrush){ pointsBrush = getSelectedModifiers()[0].glo.pointsBrush; }
-      else{ pointsBrush = activeGlo.pointsBrush; }
+brushCanvas.addEventListener('mousemove', e => {
+  mouseCanvasLast = mouseCanvas;
+  mouseCanvas     = getMousePos(e, brushCanvas);
 
-      if(pointsBrush.length && pointsBrush[pointsBrush.length - 1] && pointsBrush[pointsBrush.length - 1].length > 1){
-        let lastPtsBrush   =  pointsBrush[pointsBrush.length - 1];
-        let avLastPtBrush  =  lastPtsBrush[lastPtsBrush.length - 2];
-        let lastPtBrush    =  lastPtsBrush[lastPtsBrush.length - 1];
-
-        ctxBrush.beginPath();
-        ctxBrush.strokeStyle = '#cc0000';
-        ctxBrush.lineWidth   = 1;
-        ctxBrush.moveTo(avLastPtBrush.x, avLastPtBrush.y);
-        ctxBrush.lineTo(lastPtBrush.x, lastPtBrush.y);
-        ctxBrush.stroke();
-      }
-    }
+  if(brushCanvasMouseDown && activeGlo.brushType === 'manual'){
+    saveMoveOrPtOnBrushCanvas(mouseCanvas, activeGlo.brushType, 'mousemove');
+    drawLineOnBrushCanvas();
   }
 });
+//***********************************************************************************************//
+
 
 //------------------ WHEEL ON INPUTS ----------------- //
 input_params.forEach(() => {
@@ -902,7 +877,7 @@ window.addEventListener("keydown", function (e) {
               if(activeGlo.grid.type == 'circle' || activeGlo.grid.type == 'none'){ activeGlo.grid.draw = !activeGlo.grid.draw; }
               activeGlo.grid.type = activeGlo.grid.draw ? 'circle' : 'none';
               break;
-            /// Alt ç -- Rotation polygonale plus précise -- calcul -- polyPrecision  ///
+            /// Alt ç -- Rotation polygonale plus précise -- caslcul -- polyPrecision  ///
             case 'ç':
               activeGlo.polyPrecision = !activeGlo.polyPrecision;
               break;
@@ -1325,26 +1300,6 @@ function toggleHelpDialog(){
   if(helpDialogVisible){ helpDialog.showModal(); }
   else{ helpDialog.close(); }
 }
-function toggleBrushDialog(){
-  brushDialogVisible = !brushDialogVisible;
-
-  if(brushDialogVisible){
-    ctxBrush.clearRect(0, 0, brushCanvas.width, brushCanvas.height);
-    
-    if(activeGlo.modifiers.length){
-      getSelectedModifiers().forEach(mod => { mod.glo.pointsBrush = []; mod.glo.pointsBrushToLine = []; mod.glo.pointsBrushToLineEnd = []; });
-    }
-    else{
-      activeGlo.pointsBrush          = [];
-      activeGlo.pointsBrushToLine    = [];
-      activeGlo.pointsBrushToLineEnd = [];
-    }
-    
-    brushDialog.showModal();
-    fix_dpi(brushCanvas);
-  }
-  else{ brushDialog.close(); }
-}
 
 function constructHelpDialog(start = false){
   let tuchs_save = tuchs.slice();
@@ -1381,6 +1336,7 @@ function constructHelpDialog(start = false){
     tuchToTrigger = tuchToTrigger.replace('↑', 'ArrowUp');
     tuchToTrigger = tuchToTrigger.replace('↓', 'ArrowDown');
 
+    kbdTuch.title = tuch.property;
     kbdTuch.setAttribute('onclick', 
       `window.dispatchEvent(new KeyboardEvent('keydown',  {'key':'${tuchToTrigger}', 'ctrlKey' : ${tuch.ctrl}, 'altKey' : ${tuch.alt}})); checkHelpProp('${kbdTuch.id}', '${tuch.property}'); `
     );

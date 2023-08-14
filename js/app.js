@@ -37,26 +37,26 @@ function giveFuncToCanvas(varCanvas, varCtx){
 
   //------------------ DRAW A LINE BETWEEN TWO POINTS ON CANVAS ----------------- //
   varCtx.ln = function(x1, y1, x2, y2){
-    varCtx.moveTo(x1, y1);
-    varCtx.lineTo(x2, y2);
+    this.moveTo(x1, y1);
+    this.lineTo(x2, y2);
   };
   //------------------ DRAW A LINE BETWEEN TWO POINTS ON CANVAS ----------------- //
   varCtx.line = function(ln){
-    varCtx.beginPath();
-    varCtx.ln(ln.start.x, ln.start.y, ln.end.x, ln.end.y);
-    varCtx.stroke();
+    this.beginPath()
+    this.ln(ln.start.x, ln.start.y, ln.end.x, ln.end.y);
+    this.stroke();
   };
   //------------------ DRAW A CROSS ON CANVAS ----------------- //
   varCtx.cross = function(point, size){
-    varCtx.ln(point.x, point.y - size, point.x, point.y + size);
-    varCtx.ln(point.x + size, point.y, point.x - size, point.y);
+    this.ln(point.x, point.y - size, point.x, point.y + size);
+    this.ln(point.x + size, point.y, point.x - size, point.y);
   };
   //------------------ DRAW A DIAG CROSS ON CANVAS ----------------- //
   varCtx.crossDiag = function(point, size){
-    varCtx.moveTo(point.x - size, point.y - size);
-    varCtx.lineTo(point.x + size, point.y + size);
-    varCtx.moveTo(point.x + size, point.y - size);
-    varCtx.lineTo(point.x - size, point.y + size);
+    this.moveTo(point.x - size, point.y - size);
+    this.lineTo(point.x + size, point.y + size);
+    this.moveTo(point.x + size, point.y - size);
+    this.lineTo(point.x - size, point.y + size);
   };
   //------------------ DRAW AN ANGLE CROSS ON CANVAS ----------------- //
   varCtx.angleCross = function(pt, size, angle){
@@ -69,17 +69,17 @@ function giveFuncToCanvas(varCanvas, varCtx){
 
     for(let i = 0; i < 4; i++){ points[i] = rotate(points[i], pt, angle); }
 
-    varCtx.moveTo(points[0].x, points[0].y);
-    varCtx.lineTo(points[1].x, points[1].y);
-    varCtx.moveTo(points[2].x, points[2].y);
-    varCtx.lineTo(points[3].x, points[3].y);
+    this.moveTo(points[0].x, points[0].y);
+    this.lineTo(points[1].x, points[1].y);
+    this.moveTo(points[2].x, points[2].y);
+    this.lineTo(points[3].x, points[3].y);
   };
   //------------------ DRAW MULTI ARC ON CANVAS ----------------- //
   varCtx.arcMulti = function(point, size, nb){
     for(let i = 1; i <= nb; i++){
-      varCtx.arc(point.x, point.y, size * i / nb, 0, two_pi, false);
-      varCtx.stroke();
-      varCtx.beginPath();
+      this.arc(point.x, point.y, size * i / nb, 0, two_pi, false);
+      this.stroke();
+      this.beginPath();
     }
   };
   //------------------ DRAW ELLIPSE ON CANVAS ----------------- //
@@ -91,14 +91,14 @@ function giveFuncToCanvas(varCanvas, varCtx){
 
     for(let i = 0; i < nb; i++){
       var less = i * dim;
-      varCtx.beginPath();
-      varCtx.ellipse(pos.x, pos.y, r - less, r - less, 0, 0, angle, false);
-      varCtx.stroke();
+      this.beginPath();
+      this.ellipse(pos.x, pos.y, r - less, r - less, 0, 0, angle, false);
+      this.stroke();
       for(let j = 1; j < turn; j++){
         var add = j*angle;
-        varCtx.beginPath();
-        varCtx.ellipse(pos.x, pos.y, r - dim - less, r - less, 0, add, angle + add, false);
-        varCtx.stroke();
+        this.beginPath();
+        this.ellipse(pos.x, pos.y, r - dim - less, r - less, 0, add, angle + add, false);
+        this.stroke();
       }
     }
   };
@@ -118,23 +118,23 @@ function giveFuncToCanvas(varCanvas, varCtx){
       point = rotate(point, pos, activeGlo.rotPoly_angle);
     }
 
-    varCtx.strokeStyle = opt.color;
-    varCtx.moveTo(point.x, point.y);
+    this.strokeStyle = opt.color;
+    this.moveTo(point.x, point.y);
 
     let oneMore = false;
     for(var i = 0; i < nb_edges; i++){
       if(star && nb_edges % 2 == 0 && nb_edges % 4 != 0 && i == 1 + nb_edges/2){
         oneMore = true;
         point = rotate(point, pos, two_pi/nb_edges);
-        varCtx.moveTo(point.x, point.y);
+        this.moveTo(point.x, point.y);
       }
       point = rotate(point, pos, nbRots * two_pi/nb_edges);
-      varCtx.lineTo(point.x, point.y);
+      this.lineTo(point.x, point.y);
     }
 
     if(oneMore){
       point = rotate(point, pos, nbRots * two_pi/nb_edges);
-      varCtx.lineTo(point.x, point.y);
+      this.lineTo(point.x, point.y);
     }
   };
   //------------------ DÉSSINER UNE ÉTOILE ----------------- //
@@ -151,23 +151,23 @@ function giveFuncToCanvas(varCanvas, varCtx){
       point = rotate(point, pos, activeGlo.rotPoly_angle);
     }
 
-    varCtx.strokeStyle = opt.color;
-    varCtx.moveTo(point.x, point.y);
+    this.strokeStyle = opt.color;
+    this.moveTo(point.x, point.y);
 
     for(var i = 0; i < nb_edges; i++){
       oneMore = false;
       if(nb_edges % 2 == 0 && nb_edges % 4 != 0 && i == 1 + nb_edges/2){
         oneMore = true;
         point = rotate(point, pos, two_pi/nb_edges);
-        varCtx.moveTo(point.x, point.y);
+        this.moveTo(point.x, point.y);
       }
 
       point = rotate(point, pos, nbRots*two_pi/nb_edges);
-      varCtx.lineTo(point.x, point.y);
+      this.lineTo(point.x, point.y);
 
       if(oneMore){
         point = rotate(point, pos, nbRots * two_pi/nb_edges);
-        varCtx.lineTo(point.x, point.y);
+        this.lineTo(point.x, point.y);
       }
     }
   };
@@ -178,7 +178,7 @@ function giveFuncToCanvas(varCanvas, varCtx){
     let nbp = opt.nb_points;
     let szp = opt.sz_point;
 
-    varCtx.strokeStyle = opt.color;
+    this.strokeStyle = opt.color;
 
     if(!opt.withLine){
       for(let i = 0; i < nbp; i++){
@@ -186,8 +186,8 @@ function giveFuncToCanvas(varCanvas, varCtx){
         let pt_x = pos.x + rnd() * siz * Math.cos(pt_angle);
         let pt_y = pos.y + rnd() * siz * Math.sin(pt_angle);
 
-        varCtx.moveTo(pt_x, pt_y);
-        varCtx.arc(pt_x, pt_y, szp, 0, two_pi, false);
+        this.moveTo(pt_x, pt_y);
+        this.arc(pt_x, pt_y, szp, 0, two_pi, false);
       }
     }
     else{
@@ -196,8 +196,8 @@ function giveFuncToCanvas(varCanvas, varCtx){
         let pt_x = pos.x + rnd() * siz * Math.cos(pt_angle);
         let pt_y = pos.y + rnd() * siz * Math.sin(pt_angle);
 
-        varCtx.moveTo(pos.x, pos.y);
-        varCtx.arc(pt_x, pt_y, szp, 0, two_pi, false);
+        this.moveTo(pos.x, pos.y);
+        this.arc(pt_x, pt_y, szp, 0, two_pi, false);
       }
     }
   };
@@ -216,12 +216,12 @@ function giveFuncToCanvas(varCanvas, varCtx){
       point = rotate(point, pos, activeGlo.rotPoly_angle);
     }
 
-    varCtx.strokeStyle = opt.color;
-    varCtx.moveTo(point.x, point.y);
+    this.strokeStyle = opt.color;
+    this.moveTo(point.x, point.y);
 
     for(var i = 0; i < nb_edges; i++){
       point = rotate(point, pos, two_pi/(nb_edges*rnd()));
-      varCtx.lineTo(point.x, point.y);
+      this.lineTo(point.x, point.y);
     }
   };
   //------------------ DÉSSINER UNE COURBE DE BÉZIER ----------------- //
@@ -240,31 +240,29 @@ function giveFuncToCanvas(varCanvas, varCtx){
     let firstAnchor = {x: qPt.x  + dir.x, y: qPt.y  + dir.y};
     let lastAnchor  = {x: tqPt.x - dir.x, y: tqPt.y - dir.y};
 
-    varCtx.moveTo(startPt.x, startPt.y);
-    varCtx.bezierCurveTo(firstAnchor.x, firstAnchor.y, lastAnchor.x, lastAnchor.y, endPt.x, endPt.y);
+    this.moveTo(startPt.x, startPt.y);
+    this.bezierCurveTo(firstAnchor.x, firstAnchor.y, lastAnchor.x, lastAnchor.y, endPt.x, endPt.y);
   };
   //------------------ DÉSSINER AVEC LA BROSSE ----------------- //
-  varCtx.brush = function(pos, size, pts = pointsBrush){
-    let sz     = size / 10;
-    let lastPt = false;
+  varCtx.brush = function(pos, avSize, moves){
 
-    //Pour tests
-    //pts = testBrushPoints;
+    moves.forEach(move => {
+      let vector = move.vector;
+      let type   = move.type;
+      let size   = move.size * avSize;
 
-    //ctx.moveTo(pos.x, pos.y);
-    for(let i = 0; i < pts.length; i++){
-      if(lastPt && pts[i][0]){
-        pos = {x: lastPt.x + pts[i][0].x*sz, y: lastPt.y + pts[i][0].y*sz};
-        ctx.moveTo(pos.x, pos.y);
+      pos = {x: pos.x + vector.x*avSize, y: pos.y + vector.y*avSize};
+      if(type === 'espace'){ this.moveTo(pos.x, pos.y); }
+      else if(type === 'line'){
+        this.lineTo(pos.x, pos.y);
       }
-      pts[i].forEach((ptBrush, j) => {
-        if((!i || j) && j !== pts[i].length-1){
-          pos    = {x: pos.x + ptBrush.x*sz, y: pos.y + ptBrush.y*sz};
-          lastPt = {x: pos.x, y: pos.y};
-          varCtx.lineTo(lastPt.x, lastPt.y);
+      else{
+        switch(move.formType){
+          case 'circle' : this.moveTo(pos.x + size/2, pos.y); this.arc(pos.x, pos.y, size/2, 0, two_pi); break; 
+          case 'square' : this.moveTo(pos.x - size/2, pos.y - size/2); this.rect(pos.x - size/2, pos.y - size/2, size, size); break; 
         }
-      });
-    }
+      }
+    });
   };
   //------------------ RETURN TRUE IF PIXEL AT POS IS BLANK, ELSE FASE ----------------- //
   varCtx.isBlank = function(pos, data = imgData){
@@ -280,127 +278,110 @@ function getPosInImageData(imgData, x, y, width) {
   return imgData.slice(p, p + 4);
 }
 
-function drawOnBrushCanvas(pt = mouseCanvas){
+//**************************BRUSH**************************//
+function savePtOnBrushCanvas(pt){
+  pt.size = activeGlo.params.brushSize;
+  if(activeGlo.modifiers.length){ getSelectedModifiers().forEach(mod => { mod.glo.firstPtBrush = pt; }); }
+  else{ activeGlo.firstPtBrush = pt; }
+}
+
+function saveMoveOnBrushCanvas(pt){
+  if(activeGlo.modifiers.length){ getSelectedModifiers().forEach(mod => { pushVector(mod.glo); }); }
+  else{ pushVector(activeGlo); }
+
+  function pushVector(obj){
+    if(!obj.stepsBrush){ obj.stepsBrush = []; }
+    obj.stepsBrush.push(new BrushMovement({
+      vector: {
+        x: pt.x - obj.firstPtBrush.x,
+        y: pt.y - obj.firstPtBrush.y
+      },
+        type: pt.type,
+        formType: pt.formType,
+        size: activeGlo.params.brushSize
+    }));
+  }
+}
+
+function saveMoveOrPtOnBrushCanvas(mouseCanvas, brushType, eventType, brushCanvasMouseUp){
+  mouseCanvas.form      = brushType !== 'manual' && brushType !== 'line';
+  mouseCanvas.first     = false;
+  mouseCanvas.formType  = brushType;
+  mouseCanvas.size      = activeGlo.params.brushSize;
+
+  if(eventType === 'mousedown'){
+    if(!brushCanvasMouseUp){
+      mouseCanvas.first = true;
+      mouseCanvas.type = brushType === 'manual' ? 'espace' : brushType;
+      if(mouseCanvas.form){
+        mouseCanvas.type = 'form'; 
+        savePtOnBrushCanvas({x: 0, y: 0});
+        saveMoveOnBrushCanvas(mouseCanvas);
+        savePtOnBrushCanvas(mouseCanvas);
+      }
+      else{
+        savePtOnBrushCanvas(mouseCanvas);
+      }
+    }
+    else{
+      mouseCanvas.type = brushType === 'manual' || mouseCanvasChangeToLine ? 'espace' : brushType;
+      if(mouseCanvas.form){ mouseCanvas.type = 'form'; }
+      saveMoveOnBrushCanvas(mouseCanvas);
+      savePtOnBrushCanvas(mouseCanvas);
+    }
+  }
+  else if(brushCanvasMouseDown && brushType === 'manual'){
+    mouseCanvas.type = 'line';
+    saveMoveOnBrushCanvas(mouseCanvas);
+    savePtOnBrushCanvas(mouseCanvas);
+  }
+}
+
+function drawOnBrushCanvas(brushType = activeGlo.brushType){
+  switch(brushType){
+    case 'manual':
+      drawPtOnBrushCanvas();
+    break;
+    case 'line':
+      drawLineOnBrushCanvas(mouseCanvasClick, mouseCanvasLastClick);
+    break;
+    case 'circle':
+      drawCircleOnBrushCanvas();
+    break;
+    case 'square':
+      drawSquareOnBrushCanvas();
+    break;
+  }
+}
+function drawSquareOnBrushCanvas(pt = mouseCanvas){
+  ctxBrush.beginPath();
+  ctxBrush.strokeStyle = '#cc0000';
+  ctxBrush.lineWidth = 1;
+  let sz = pt.size;
+  ctxBrush.rect(pt.x - sz/2, pt.y - sz/2, sz, sz);
+  ctxBrush.stroke();
+}
+function drawCircleOnBrushCanvas(pt = mouseCanvas){
+  ctxBrush.beginPath();
+  ctxBrush.strokeStyle = '#cc0000';
+  ctxBrush.lineWidth = 1;
+  ctxBrush.arc(pt.x, pt.y, pt.size/2, 0, two_pi, true);
+  ctxBrush.stroke();
+}
+function drawPtOnBrushCanvas(pt = mouseCanvas){
   ctxBrush.beginPath();
   ctxBrush.fillStyle = '#cc0000';
   ctxBrush.lineWidth = 1;
   ctxBrush.arc(pt.x, pt.y, 1, 0, two_pi, true);
   ctxBrush.fill();
 }
-
-function savePtOnBrushCanvas(pt = mouseCanvas, first = false){
-  if(!first){
-    if(activeGlo.modifiers.length){
-      getSelectedModifiers().forEach(mod => {
-        if(!mod.glo.pointsBrush || !mod.glo.pointsBrush[0]){
-          mod.glo.pointsBrush    = [];
-          mod.glo.pointsBrush[0] = [];
-        }
-        mod.glo.pointsBrush[mod.glo.pointsBrush.length-1].push(pt);
-      });
-    }
-    else{
-      if(!activeGlo.pointsBrush[0]){ activeGlo.pointsBrush[0] = []; }
-      activeGlo.pointsBrush[activeGlo.pointsBrush.length-1].push(pt);
-    }
-  }
-  else{
-    if(!activeGlo.modifiers.length){ activeGlo.pointsBrush.push([]); }
-    else{
-      let selectedModifiers = getSelectedModifiers();
-      selectedModifiers.forEach((_mod, n) => { selectedModifiers[n].glo.pointsBrush.push([]); });
-    }
-  }
+function drawLineOnBrushCanvas(ptStart = mouseCanvasLast, ptEnd = mouseCanvas){
+  ctxBrush.strokeStyle = '#cc0000';
+  ctxBrush.lineWidth = 1;
+  ctxBrush.line({ start: {x: ptStart.x, y: ptStart.y}, end: {x: ptEnd.x, y: ptEnd.y} });
 }
+//*********************************************************//
 
-// Transformation des points pour la brosse en vecteurs
-function turnPointsBrushToMove(){
-  if(!activeGlo.modifiers.length){
-    let pointsBrush = activeGlo.pointsBrush;
-
-    pointsBrush.forEach((ptsBrush, i) => { if(!ptsBrush.length){ pointsBrush.splice(i, 1); } });
-
-    if(pointsBrush.length){
-      helpTurnPointsBrushToMove(pointsBrush);
-    }
-  }
-  else{
-    let selectedModifiers = getSelectedModifiers();
-    selectedModifiers.forEach((mod, n)  => {
-      let pointsBrush = mod.glo.pointsBrush;
-
-      pointsBrush.forEach((ptsBrush, i) => { if(!ptsBrush.length){ selectedModifiers[n].glo.pointsBrush.splice(i, 1); } });
-
-      if(pointsBrush.length){
-        helpTurnPointsBrushToMove(pointsBrush);
-      }
-    });
-  }
-}
-function helpTurnPointsBrushToMove(pointsBrush){
-  let newPointsBrush   = [];
-  let lastPtsBrush     = pointsBrush[pointsBrush.length-1];
-  let avLastPtsBrush   = pointsBrush[pointsBrush.length-2];
-
-  let dec = 1;
-  if(avLastPtsBrush){
-    newPointsBrush[0] = {x: lastPtsBrush[0].x - avLastPtsBrush[avLastPtsBrush.length-1].x, y: lastPtsBrush[0].y - avLastPtsBrush[avLastPtsBrush.length-1].y };
-    dec = 0;
-  }
-
-  lastPtsBrush.forEach((_pointBrush, i) => {
-    if(i){ newPointsBrush[i-dec] = {x: lastPtsBrush[i].x - lastPtsBrush[i-1].x, y: lastPtsBrush[i].y - lastPtsBrush[i-1].y}; }
-    if(i === lastPtsBrush.length-1){ newPointsBrush.push({x: lastPtsBrush[i].x, y: lastPtsBrush[i].y}); }
-  });
-
-  pointsBrush[pointsBrush.length-1] = newPointsBrush;
-}
-
-/*function turnPointsLineBrushToMove(){
-  if(!activeGlo.modifiers.length){
-    activeGlo.pointsBrushToLine = helpTurnPointsLineBrushToMove(activeGlo.pointsBrushToLine);
-  }
-  else{
-    let selectedModifiers = getSelectedModifiers();
-    selectedModifiers.forEach(mod => {
-      mod.glo.pointsBrushToLine = helpTurnPointsLineBrushToMove(mod.glo.pointsBrushToLine);
-    });
-  }
-}
-function helpTurnPointsLineBrushToMove(pointsBrushToLine){
-  if(pointsBrushToLine.length){
-    let newPointsLineBrush = [];
-    pointsBrushToLine.forEach((pointLineBrush, i) => {
-      if(i){ newPointsLineBrush[i-1] = {x: pointLineBrush.x - pointsBrushToLine[i-1].x, y: pointLineBrush.y - pointsBrushToLine[i-1].y}; }
-    });
-
-    return newPointsLineBrush;
-  }
-}*/
-
-function turnPointsLineBrushToMove(){
-  if(!activeGlo.modifiers.length){
-    if(!activeGlo.pointsBrushToLineEnd){ activeGlo.pointsBrushToLineEnd = []; }
-    activeGlo.pointsBrushToLineEnd = helpTurnPointsLineBrushToMove(activeGlo.pointsBrushToLine, activeGlo.pointsBrushToLineEnd);
-  }
-  else{
-    let selectedModifiers = getSelectedModifiers();
-    selectedModifiers.forEach(mod => {
-      if(!mod.glo.pointsBrushToLineEnd){ mod.glo.pointsBrushToLineEnd = []; }
-      mod.glo.pointsBrushToLineEnd = helpTurnPointsLineBrushToMove(mod.glo.pointsBrushToLine, mod.glo.pointsBrushToLineEnd);
-    });
-  }
-}
-function helpTurnPointsLineBrushToMove(pointsBrushToLine, pointsBrushToLineEnd){
-  if(pointsBrushToLine.length > 1){
-    let avLastPt = pointsBrushToLine[pointsBrushToLine.length-2];
-    let lastPt   = pointsBrushToLine[pointsBrushToLine.length-1];
-
-    pointsBrushToLineEnd.push({x: lastPt.x - avLastPt.x, y: lastPt.y - avLastPt.y});
-
-    return pointsBrushToLineEnd;
-  }
-}
 
 /**
 *@description Stroke a draw function on ctxVar
@@ -412,7 +393,6 @@ function strokeOnCanvas(ctxVar, func){
   func();
   ctxVar.stroke();
 }
-
 
 //------------------ TAILLE DU CANVAS ADAPTÉE À LA RÉSOLUTION D'ÉCRAN ----------------- //
 function fix_dpi(varCanvas) {
@@ -680,7 +660,7 @@ function animation(){
 
         if(paramsNearMod.angleEllipse && paramsNearMod.rotate_angle){
           avatar.rotateEllipse(angle, !avatar.center ? { x: canvas.width/2, y: canvas.height/2 } : { x: avatar.center.x, y: avatar.center.y },
-                              {x: paramsNearMod.ellipse_x, y: paramsNearMod.ellipse_y}, paramsNearMod.angleEllipse, paramsNearMod.spiral_force);
+                              {x: paramsNearMod.ellipse_x, y: paramsNearMod.ellipse_y}, paramsNearMod.angleEllipse, paramsNearMod.spiral_force, false);
         }
         else if(paramsNearMod.rotate_angle){
           if(gloNear.spiral_cross && gloNear.spiral_cross_rotate){ angle = activeGlo.nb_spiral_cross % 2 != 0 ? -angle : angle; }
@@ -1430,18 +1410,18 @@ function verif_nb(){
   if(nb != activeGlo.params.nb){ nbAvatars(nb); }
 }
 //------------------ MODIFICATION DE LA TAILLE DES AVATARS ----------------- //
-function updateSize(ctrl, alea = false){
-  let upd_val = calcUpdVal(ctrl);
-
+function updateSize(ctrl){
   if(!activeGlo.updByVal){
+    let upd_val = calcUpdVal(ctrl);
     activeGlo.size *= upd_val;
     avatars.forEach(avatar => { avatar.size *= upd_val; });
     getSelectedModifiers().forEach(mod => { mod.size *= upd_val; mod.glo.size *= upd_val; });
   }
   else{
-    activeGlo.size = ctrl.value;
-    avatars.forEach(avatar => { avatar.size = ctrl.value; });
-    getSelectedModifiers().forEach(mod => { mod.size = ctrl.value; mod.glo.size = ctrl.value; });
+    let val = parseFloat(ctrl.value);
+    activeGlo.size = val;
+    avatars.forEach(avatar => { avatar.size = val; });
+    getSelectedModifiers().forEach(mod => { mod.size = val; mod.glo.size = val; });
   }
 }
 //------------------ MODIFICATION DE LA FORCE DES MODIFIEURS ----------------- //
@@ -2062,8 +2042,6 @@ function pos_modifier(type = 'attractor', pos = mouse, inv = false, groupe = 0, 
     dblAngle          : dblAngle,
     dir_angle         : dir_angle,
     formule           : formule,
-    formuleColor      : {h: 'h', s: 's', l: 'l', a: 'a'},
-    formuleColorHisto : {h: 'h', s: 's', l: 'l', a: 'a'},
     type              : type,
     center            : cent,
     glo               : deepCopy(activeGlo, 'modifiers', 'inputToSlideWithMouse'),
@@ -2117,9 +2095,9 @@ function makeModifierFunction(modifierType){
   switch (modifierType) {
     case 'attractor':
       return function(av){
-        if(activeGlo.params.mods_formule != '0'){ modsFormule(this, av); }
+        if(this.params.mods_formule != '0'){ modsFormule(this, av); }
 
-        let dist = av.dist_av(this) / this.glo.params.weightDistMinMod;
+        let dist = av.dist_av(this) / this.params.weightDistMinMod;
         if(this == av.nearMod){
           av.goToNearMod    = dist < av.distMinNearMod ? true : false;
           av.distMinNearMod = dist;
@@ -2135,7 +2113,7 @@ function makeModifierFunction(modifierType){
           if(angleToMod >= this.params.minAngleMod && angleToMod <= this.params.maxAngleMod){
             let att   = this.attract * this.dblForce * (this.glo.forceByCenter ? av.coeffSizeCenter() : 1);
             let b = !this.glo.invBrake ? this.brake : 1/this.brake;
-            let brake = activeGlo.params.breakAdd + pow(dist, b);
+            let brake = this.params.breakAdd + pow(dist, b);
             let addX  = att * (this.x - av.x) / brake;
             let addY  = att * (this.y - av.y) / brake;
 
@@ -2169,10 +2147,10 @@ function makeModifierFunction(modifierType){
     case 'rotator':
     case 'magnetor':
       return function(av){
-        if(activeGlo.params.mods_formule != '0'){ modsFormule(this, av); }
+        if(this.params.mods_formule != '0'){ modsFormule(this, av); }
 
         let posSave;
-        let k = activeGlo.params.dblModDist;
+        let k = this.params.dblModDist;
         if(this.double){
           posSave = {x: this.x, y: this.y};
           this.x -= k*cos(this.dblAngle);
@@ -2182,7 +2160,7 @@ function makeModifierFunction(modifierType){
           this.doublePos.double = {x: this.x, y: this.y};
         }
 
-        let dist  = av.dist_av(this) / this.glo.params.weightDistMinMod;
+        let dist  = av.dist_av(this) / this.params.weightDistMinMod;
         av.distMods.push({dist: dist, h: this.color.h, l: this.tint, ls: this.tint_stroke, st: this.satStroke, w: this.weight, colorDec: this.colorDec, colorStrokeDec: this.colorStrokeDec, varColDistModifs : this.params.varColDistModifs});
         if(dist < av.distMinModifiers){ av.distMinModifiers = dist; av.nearMod = this; }
 
@@ -2192,18 +2170,18 @@ function makeModifierFunction(modifierType){
           if(angleToMod >= this.params.minAngleMod && angleToMod <= this.params.maxAngleMod){
             let att    = this.attract * (this.glo.forceByCenter ? av.coeffSizeCenter() : 1);
             let b = !this.glo.invBrake ? this.brake : 1/this.brake;
-            let brake  = activeGlo.params.breakAdd + pow(dist, b);
+            let brake  = this.params.breakAdd + pow(dist, b);
             let attRot = att / brake;
 
             if(this.rotMax > 0){ attRot = abs(attRot) > this.rotMax ? Math.sign(attRot) * this.rotMax : attRot; }
 
-            if(!activeGlo.params.angleEllipseMod){
+            if(!this.params.ell_x_mod_upd && !this.params.ell_y_mod_upd){
               av.rotate(attRot, {x: this.x, y: this.y}, {x: att*this.ellipse.x/brake, y: att*this.ellipse.y/brake},
-                                  activeGlo.params.spiral_force, {force: this.params.modsDevForce, dir: this.params.modsDevDir});
+                                  this.params.spiral_force, {force: this.params.modsDevForce, dir: this.params.modsDevDir});
             }
             else{
               av.rotateEllipse(attRot, {x: this.x, y: this.y},
-                                  {x: att*this.ellipse.x/brake, y: att*this.ellipse.y/brake}, this.dblAngle, activeGlo.params.spiral_force);
+                                  {x: att*this.ellipse.x/brake, y: att*this.ellipse.y/brake}, this.params.angleEllipseMod, this.params.spiral_force);
             }
           }
 
@@ -2231,16 +2209,16 @@ function makeModifierFunction(modifierType){
       };
     case 'magnetor':
       return function(av){
-        if(activeGlo.params.mods_formule != '0'){ modsFormule(this, av); }
+        if(this.params.mods_formule != '0'){ modsFormule(this, av); }
 
-        let dist  = av.dist_av(this) / this.glo.params.weightDistMinMod;
+        let dist  = av.dist_av(this) / this.params.weightDistMinMod;
 
         av.distMods.push({dist: dist, h: this.color.h, l: this.tint, ls: this.tint_stroke, st: this.satStroke, w: this.weight, colorDec: this.colorDec, colorStrokeDec: this.colorStrokeDec, varColDistModifs : this.params.varColDistModifs});
         if(dist < av.distMinModifiers){ av.distMinModifiers = dist; av.nearMod = this; }
 
         if(dist <= this.lim_attract || !this.lim_attract){
           let att         = this.attract * this.dblForce;
-          let brake       = activeGlo.params.breakAdd + pow(dist, this.brake);
+          let brake       = this.params.breakAdd + pow(dist, this.brake);
           let dxToMod     = av.x - this.x;
           let dyToMod     = av.y - this.y;
           let angleToMod  = atan2pi(dxToMod, dyToMod);
@@ -2274,16 +2252,16 @@ function makeModifierFunction(modifierType){
       };
     case 'deviator':
       return function(av){
-        if(activeGlo.params.mods_formule != '0'){ modsFormule(this, av); }
+        if(this.params.mods_formule != '0'){ modsFormule(this, av); }
 
-        let dist  = av.dist_av(this) / this.glo.params.weightDistMinMod;
+        let dist  = av.dist_av(this) / this.params.weightDistMinMod;
 
         av.distMods.push({dist: dist, h: this.color.h, l: this.tint, ls: this.tint_stroke, st: this.satStroke, w: this.weight, colorDec: this.colorDec, colorStrokeDec: this.colorStrokeDec, varColDistModifs : this.params.varColDistModifs});
         if(dist < av.distMinModifiers){ av.distMinModifiers = dist; av.nearMod = this; }
 
         if(dist <= this.lim_attract || !this.lim_attract){
           let att         = this.attract * this.dblForce * 4;
-          let brake       = activeGlo.params.breakAdd + pow(dist, this.brake/2);
+          let brake       = this.params.breakAdd + pow(dist, this.brake/2);
 
           let lastAv = av.lasts[av.lasts.length - 2];
 
@@ -2295,7 +2273,7 @@ function makeModifierFunction(modifierType){
 
             if(!av.direction){ av.dir(); }
 
-            let dir = direction(av.direction + this.glo.params.deviatorAngle, h(vx, vy));
+            let dir = direction(av.direction + this.params.deviatorAngle, h(vx, vy));
 
             av.modifiersValues.x += dir.x * c;
             av.modifiersValues.y += dir.y * c;
@@ -2317,16 +2295,16 @@ function makeModifierFunction(modifierType){
       };
     case 'accelerator':
       return function(av){
-        if(activeGlo.params.mods_formule != '0'){ modsFormule(this, av); }
+        if(this.params.mods_formule != '0'){ modsFormule(this, av); }
 
-        let dist  = av.dist_av(this) / this.glo.params.weightDistMinMod;
+        let dist  = av.dist_av(this) / this.params.weightDistMinMod;
 
         av.distMods.push({dist: dist, h: this.color.h, l: this.tint, ls: this.tint_stroke, st: this.satStroke, w: this.weight, colorDec: this.colorDec, colorStrokeDec: this.colorStrokeDec, varColDistModifs : this.params.varColDistModifs});
         if(dist < av.distMinModifiers){ av.distMinModifiers = dist; av.nearMod = this; }
 
         if(dist <= this.lim_attract || !this.lim_attract){
           let att         = this.attract * this.dblForce;
-          let brake       = activeGlo.params.breakAdd + pow(dist, this.brake);
+          let brake       = this.params.breakAdd + pow(dist, this.brake);
 
           let coeff = 1 + att/brake;
           
@@ -2349,16 +2327,16 @@ function makeModifierFunction(modifierType){
       };
     case 'polygonator':
       return function(av){
-        if(activeGlo.params.mods_formule != '0'){ modsFormule(this, av); }
+        if(this.params.mods_formule != '0'){ modsFormule(this, av); }
 
-        let dist  = av.dist_av(this) / this.glo.params.weightDistMinMod;
+        let dist  = av.dist_av(this) / this.params.weightDistMinMod;
 
         av.distMods.push({dist: dist, h: this.color.h, l: this.tint, ls: this.tint_stroke, st: this.satStroke, w: this.weight, colorDec: this.colorDec, colorStrokeDec: this.colorStrokeDec, varColDistModifs : this.params.varColDistModifs});
         if(dist < av.distMinModifiers){ av.distMinModifiers = dist; av.nearMod = this; }
 
         if(dist <= this.lim_attract || !this.lim_attract){
           let att   = this.attract * this.dblForce * (this.glo.forceByCenter ? av.coeffSizeCenter() : 1);
-          let brake = activeGlo.params.breakAdd + pow(dist, this.brake);
+          let brake = this.params.breakAdd + pow(dist, this.brake);
           attRot    = 10 * att / brake;
 
           if(this.rotMax > 0){ att = abs(attRot) > this.rotMax ? Math.sign(attRot) * this.rotMax : att; }
@@ -2381,53 +2359,53 @@ function makeModifierFunction(modifierType){
       };
     case 'spiralor':
       return function(av){
-        if(activeGlo.params.mods_formule != '0'){ modsFormule(this, av); }
+        if(this.params.mods_formule != '0'){ modsFormule(this, av); }
 
-        let dist  = av.dist_av(this) / this.glo.params.weightDistMinMod;
+        let dist  = av.dist_av(this) / this.params.weightDistMinMod;
 
         av.distMods.push({dist: dist, h: this.color.h, l: this.tint, ls: this.tint_stroke, st: this.satStroke, w: this.weight, colorDec: this.colorDec, colorStrokeDec: this.colorStrokeDec, varColDistModifs : this.params.varColDistModifs});
         if(dist < av.distMinModifiers){ av.distMinModifiers = dist; av.nearMod = this; }
 
         if(dist <= this.lim_attract || !this.lim_attract){
           let att     = this.attract;
-          let brake   = activeGlo.params.breakAdd + pow(dist, this.brake/1.15);
+          let brake   = this.params.breakAdd + pow(dist, this.brake/1.15);
           let attract = att/4;
           let rot_spi = this.rot_spi;
           let attSpi  = rot_spi/brake;
 
           if(this.rotMax > 0){ attSpi = abs(attSpi) > this.rotMax ? Math.sign(attSpi) * this.rotMax : attSpi; }
 
-          let attB = !activeGlo.spiralOnlyInvrot ? attract/brake : abs(attract/brake);
+          let attB = !this.glo.spiralOnlyInvrot ? attract/brake : abs(attract/brake);
           let f = 1 + attB;
 
-          if(!activeGlo.params.angleEllipseMod){
+          if(!this.params.ell_x_mod_upd && !this.params.ell_y_mod_upd){
               av.rotate(attSpi, {x: this.x, y: this.y}, {x: rot_spi*this.ellipse.x/brake, y: rot_spi*this.ellipse.y/brake}, f);
           }
           else{
-              av.rotateEllipse(attSpi, {x: this.x, y: this.y}, {x: rot_spi*this.ellipse.x/brake, y: rot_spi*this.ellipse.y/brake}, this.dblAngle, f);
+              av.rotateEllipse(attSpi, {x: this.x, y: this.y}, {x: rot_spi*this.ellipse.x/brake, y: rot_spi*this.ellipse.y/brake}, this.params.angleEllipseMod, f);
           }
         }
       };
     case 'alternator':
       return function(av){
-        if(activeGlo.params.mods_formule != '0'){ modsFormule(this, av); }
+        if(this.params.mods_formule != '0'){ modsFormule(this, av); }
 
-        let dist  = av.dist_av(this) / this.glo.params.weightDistMinMod;
+        let dist  = av.dist_av(this) / this.params.weightDistMinMod;
 
         av.distMods.push({dist: dist, h: this.color.h, l: this.tint, ls: this.tint_stroke, st: this.satStroke, w: this.weight, colorDec: this.colorDec, colorStrokeDec: this.colorStrokeDec, varColDistModifs : this.params.varColDistModifs});
         if(dist < av.distMinModifiers){ av.distMinModifiers = dist; av.nearMod = this; }
 
         if(dist <= this.lim_attract || !this.lim_attract){
           let att   = this.attract;
-          let brake = activeGlo.params.breakAdd + pow(dist, this.brake);
+          let brake = this.params.breakAdd + pow(dist, this.brake);
           if(this.brake == 0){ att /= 100; }
           attRot    = att / brake;
 
-          let alternatorSpeed = this.brake != 0 ? activeGlo.params.alternatorSpeed : parseInt(activeGlo.params.alternatorSpeed / 10);
-          if(zeroOneCycle(activeGlo.nb_moves, alternatorSpeed)){
+          let alternatorSpeed = this.brake != 0 ? this.params.alternatorSpeed : parseInt(this.params.alternatorSpeed / 10);
+          if(zeroOneCycle(this.glo.nb_moves, alternatorSpeed)){
             this.alternAtt.state = false;
 
-            if(!activeGlo.alternatorInv){ this.alternRot.inv = 1; }
+            if(!this.glo.alternatorInv){ this.alternRot.inv = 1; }
             else{ this.alternRot.inv = this.alternRot.state ? this.alternRot.inv : -this.alternRot.inv; }
 
             this.alternRot.state = true;
@@ -2437,7 +2415,7 @@ function makeModifierFunction(modifierType){
           else{
             this.alternRot.state = false;
 
-            if(!activeGlo.alternatorInvAtt){ this.alternAtt.inv = 1; }
+            if(!this.glo.alternatorInvAtt){ this.alternAtt.inv = 1; }
             else{ this.alternAtt.inv = this.alternAtt.state ? this.alternAtt.inv : -this.alternAtt.inv; }
 
             this.alternAtt.state = true;
@@ -2448,16 +2426,16 @@ function makeModifierFunction(modifierType){
       };
     case 'director':
       return function(av){
-        if(activeGlo.params.mods_formule != '0'){ modsFormule(this, av); }
+        if(this.params.mods_formule != '0'){ modsFormule(this, av); }
 
-        let dist  = av.dist_av(this) / this.glo.params.weightDistMinMod;
+        let dist  = av.dist_av(this) / this.params.weightDistMinMod;
 
         av.distMods.push({dist: dist, h: this.color.h, l: this.tint, ls: this.tint_stroke, st: this.satStroke, w: this.weight, colorDec: this.colorDec, colorStrokeDec: this.colorStrokeDec, varColDistModifs : this.params.varColDistModifs});
         if(dist < av.distMinModifiers){ av.distMinModifiers = dist; av.nearMod = this; }
 
         if(dist <= this.lim_attract || !this.lim_attract){
           let att   = this.attract * (this.glo.forceByCenter ? av.coeffSizeCenter() : 1);
-          let brake = activeGlo.params.breakAdd + pow(dist, this.brake);
+          let brake = this.params.breakAdd + pow(dist, this.brake);
           let force = 100 * att / brake;
           let angle = this.dir_angle + this.params.director_angle_upd;
 
@@ -2468,16 +2446,16 @@ function makeModifierFunction(modifierType){
     case 'formulator':
       return function(av){
         if(this.formule){
-          if(activeGlo.params.mods_formule != '0'){ modsFormule(this, av); }
+          if(this.params.mods_formule != '0'){ modsFormule(this, av); }
 
-          let dist  = av.dist_av(this) / this.glo.params.weightDistMinMod;
+          let dist  = av.dist_av(this) / this.params.weightDistMinMod;
 
           av.distMods.push({dist: dist, h: this.color.h, l: this.tint, ls: this.tint_stroke, st: this.satStroke, w: this.weight, colorDec: this.colorDec, colorStrokeDec: this.colorStrokeDec, varColDistModifs : this.params.varColDistModifs});
           if(dist < av.distMinModifiers){ av.distMinModifiers = dist; av.nearMod = this; }
 
           if(dist <= this.lim_attract || !this.lim_attract){
             let att    = this.attract * (this.glo.forceByCenter ? av.coeffSizeCenter() : 1);
-            let brake  = activeGlo.params.breakAdd + pow(dist, this.brake);
+            let brake  = this.params.breakAdd + pow(dist, this.brake);
             let force  = 100 * att / brake;
             let result = {x: 0, y: 0};
             let reg_x  = '((av.x - this.x) * rad)';
@@ -2507,7 +2485,7 @@ function makeModifierFunction(modifierType){
       };
     case 'none':
       return function(av){
-        if(activeGlo.params.mods_formule != '0'){ modsFormule(this, av); }
+        if(this.params.mods_formule != '0'){ modsFormule(this, av); }
       };
   }
 }
@@ -2780,45 +2758,50 @@ function updFormuleModifiers(ctrl, coordType){
 }
 //------------------ UPD FORMULE COLOR ----------------- //
 function updFormuleColor(ctrl, colorType){
-  activeGlo.formuleColor[colorType] = ctrl.value;
+  if(!activeGlo.modifiers.length){ updateColor(activeGlo); }
+  else{ getSelectedModifiers().forEach(mod => { updateColor(mod.glo); }); }
 
-  let formuleColorTest = false;
+  function updateColor(objGlo){
+    objGlo.formuleColor[colorType] = ctrl.value;
 
-  let valToTests = ['H', 'S', 'L', 'A', 'D', 'sz', 'cx', 'cy', 'vx', 'vy', 'v', 'x', 'y'];
+    let formuleColorTest = false;
 
-  let form = activeGlo.formuleColor[colorType];
-  valToTests.forEach(valToTest => {
-    let reg = new RegExp("\\d+" + valToTest, "g");
-    if(!form.match('undefined')){ form = form.replaceAll(reg, undefined); }
-    reg = new RegExp(valToTest + "\\d+", "g");
-    if(!form.match('undefined')){ form = form.replaceAll(reg, undefined); }
-  });
+    let valToTests = ['H', 'S', 'L', 'A', 'D', 'sz', 'cx', 'cy', 'vx', 'vy', 'v', 'x', 'y'];
 
-  if(!form.match('undefined')){
+    let form = objGlo.formuleColor[colorType];
     valToTests.forEach(valToTest => {
-      valToTests.forEach(valToTest2 => {
-        if(!form.match('undefined')){ form = form.replaceAll(valToTest + valToTest2, undefined); }
-      });
-      if(!form.match('undefined')){ form = form.replaceAll(valToTest, 1); }
+      let reg = new RegExp("\\d+" + valToTest, "g");
+      if(!form.match('undefined')){ form = form.replaceAll(reg, undefined); }
+      reg = new RegExp(valToTest + "\\d+", "g");
+      if(!form.match('undefined')){ form = form.replaceAll(reg, undefined); }
     });
-    if(!form.match('undefined')){
-      form = form.replaceAll('this', 'avatars[0]');
-      formuleColorTest = evalFormuleColor(form);
-    }
-  }
 
-  if(!formuleColorTest){
-    Object.assign(activeGlo.formuleColor, activeGlo.formuleColorHisto);
-    getSelectedModifiers().forEach(mod => { Object.assign(mod.formuleColor, mod.formuleColorHisto); });
-  }
-  else{
-    let formule = replacesInFormuleColor(activeGlo.formuleColor[colorType]);
-    activeGlo.formuleColor[colorType] = formule;
-    Object.assign(activeGlo.formuleColorHisto, activeGlo.formuleColor);
-    getSelectedModifiers().forEach(mod => {
-      mod.formuleColor[colorType] = formule;
-      Object.assign(mod.formuleColorHisto, mod.formuleColor);
-    });
+    if(!form.match('undefined')){
+      valToTests.forEach(valToTest => {
+        valToTests.forEach(valToTest2 => {
+          if(!form.match('undefined')){ form = form.replaceAll(valToTest + valToTest2, undefined); }
+        });
+        if(!form.match('undefined')){ form = form.replaceAll(valToTest, 1); }
+      });
+      if(!form.match('undefined')){
+        form = form.replaceAll('this', 'avatars[0]');
+        formuleColorTest = evalFormuleColor(form);
+      }
+    }
+
+    if(!formuleColorTest){
+      Object.assign(objGlo.formuleColor, objGlo.formuleColorHisto);
+      /*getSelectedModifiers().forEach(mod => { Object.assign(mod.formuleColor, mod.formuleColorHisto); });*/
+    }
+    else{
+      let formule = replacesInFormuleColor(objGlo.formuleColor[colorType]);
+      objGlo.formuleColor[colorType] = formule;
+      Object.assign(objGlo.formuleColorHisto, objGlo.formuleColor);
+      /*getSelectedModifiers().forEach(mod => {
+        mod.formuleColor[colorType] = formule;
+        Object.assign(mod.formuleColorHisto, mod.formuleColor);
+      });*/
+    }
   }
 }
 
@@ -4191,20 +4174,26 @@ function clearCharOnInput(ctrl, endId){
   getById(ctrl.id + '_' + endId).remove();
 }
 
-function scaleCanvas(scale){
-  ctx.scale(scale, scale);
-  scale = scale > 1 ? -1/(scale*2) : scale;
-  ctx.translate(canvas.width * scale, canvas.height * scale);
+function scaleCanvas(scale, ctxVars = [ctx, ctxStructure]){
+  ctxVars.forEach(ctxVar => {
+    ctxVar.scale(scale, scale);
+    let sc = scale > 1 ? -1/(scale*2) : scale;
+    ctxVar.translate(canvas.width * sc, canvas.height * sc);
+  });
 }
 
-function rotateCanvas(angle){
-  ctx.translate(canvas.width / 2,canvas.height / 2);
-  ctx.rotate(angle);
-  ctx.translate(-canvas.width / 2, -canvas.height / 2);
+function rotateCanvas(angle, ctxVars = [ctx, ctxStructure]){
+  ctxVars.forEach(ctxVar => {
+    ctxVar.translate(canvas.width / 2,canvas.height / 2);
+    ctxVar.rotate(angle);
+    ctxVar.translate(-canvas.width / 2, -canvas.height / 2);
+  });
 }
 
-function tiltCanvas(axe, angle){
-  axe = 'h' ? ctx.transform(1, angle, 0, 1, 0, 0) : ctx.transform(1, 0, angle, 1, 0, 0);
+function tiltCanvas(axe, angle, ctxVars = [ctx, ctxStructure]){
+  ctxVars.forEach(ctxVar => {
+    axe === 'h' ? ctxVar.transform(1, angle, 0, 1, 0, 0): ctxVar.transform(1, 0, angle, 1, 0, 0);;
+  });
 }
 
 function nbAvatarsInScreen(){

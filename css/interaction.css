@@ -157,6 +157,9 @@ kbd.keys.on, kbd.keys.helpOn {
 .toSlideWithMouse{
   border: 1px #00ccbb solid;
 }
+.radio-inline{
+  display: inline-block;
+}
 
 #ui{
   font-size: 0.777vw;

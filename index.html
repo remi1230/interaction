@@ -419,7 +419,7 @@
                 <label for="deviatorAngle">deviator Angle</label>
               </div>
               <div>
-                <input type="range" id="formVarLevel" name="formVarLevel" class='input_params' oninput="updateGlo(this); "
+                <input type="range" id="formVarLevel" name="formVarLevel" class='input_params' oninput="updateGlo(this); " ondblclick="updateScale(this, event)"
                        min="0" max="100" value="1" step="1">
                 <label for="formVarLevel">Form var level</label>
               </div>
@@ -1150,10 +1150,26 @@
             <canvas id='structure' class='canvas'></canvas>
           </div>
           <dialog id="brushDialog" style="width: 50%; height: 70%; position: absolute; top: 130px; padding-bottom: 23px; border: none; border-radius: 5px; overflow: hidden; ">
-            <canvas id="brushCanvas" style="width: 99%;height: 99%; border: 1px #cccccc solid; " onclick="event.stopPropagation(); "></canvas>
-            <div id="brushInterface" onclick="event.stopPropagation(); ">
-                <input type="checkbox" id="brushWithLine" onclick="activeGlo.brushWithLine = !activeGlo.brushWithLine; ">
-                <label for="brushWithLine">Line</label>
+            <canvas id="brushCanvas" style="width: 99%; height: 95%; border: 1px #cccccc solid; " onclick="event.stopPropagation(); "></canvas>
+            <div id="brushInterface" onclick="event.stopPropagation(); " style="display: grid; grid-template-columns: 50% 50%; ">
+              <div>
+                <label class="radio-inline">
+                  <input type="radio" id="brushFormType_0" name="brushFormType" onclick="activeGlo.brushType = this.value; " value="manual">Manual
+                </label>
+                <label class="radio-inline">
+                  <input type="radio" id="brushFormType_1" name="brushFormType" onclick="activeGlo.brushType = this.value; " value="line">Line
+                </label>
+                <label class="radio-inline">
+                  <input type="radio" id="brushFormType_2" name="brushFormType" onclick="activeGlo.brushType = this.value; " value="circle">Circle
+                </label>
+                <label class="radio-inline">
+                  <input type="radio" id="brushFormType_2" name="brushFormType" onclick="activeGlo.brushType = this.value; " value="square">Square
+                </label>
+              </div>
+              <div>
+                <label for="brushSize" class="radio-inline">Size</label>
+                <input type="range" id="brushSize" name="brushSize" class='input_params' value="10" oninput="updateGlo(this)" ondblclick="updateScale(this, event)">
+              </div>
             </div>
           </dialog>
     </body>

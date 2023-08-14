@@ -280,43 +280,23 @@ class Avatar {
         ctx.crossDiag({x: x, y: y}, size);
         break;
       case 'brush':
-        if((objGlo.pointsBrush[0] && objGlo.pointsBrush[0].length) || objGlo.pointsBrushToLineEnd){
-          let ptsB     = objGlo.pointsBrush[0] && objGlo.pointsBrush[0].length ? objGlo.pointsBrush : objGlo.pointsBrushToLineEnd;
-          let ptsBSave = ptsB.slice();
+        if(objGlo.stepsBrush && objGlo.stepsBrush[0]){
+          let ptsB = deepCopy(objGlo.stepsBrush);
 
           if(objGlo.rotateBrush){
-            ptsB = [];
-            if(objGlo.pointsBrush[0] && objGlo.pointsBrush[0].length){
-              ptsBSave.forEach((ptsBrush, i) => {
-                ptsB[i] = [];
-                ptsBrush.forEach(ptBrush => {
-                  ptsB[i].push(rotate(ptBrush, {x: 0, y: 0}, this.direction ));
-                });
-              });
-            }
-            else{
-              ptsB    = [];
-              ptsB[0] = [];
-              ptsBSave.forEach((ptBrush, i) => {
-                ptsB[0].push(rotate(ptBrush, {x: 0, y: 0}, this.direction ));
-              });
-            }
-          }
-          else{
-            if(!objGlo.pointsBrushToLine[0]){ ptsB = ptsBSave; }
-            else{ ptsB = []; ptsB[0] = ptsBSave; }
+            ptsB.forEach((ptBrush, i) => {
+              ptsB[i].vector = rotate(ptBrush.vector, {x: 0, y: 0}, this.direction);
+            });
           }
 
           if(activeGlo.params.formVarLevel){
             let formVarLevel = activeGlo.params.formVarLevel / 10;
-              ptsB.forEach((ptsBrush, i) => {
-                ptsBrush.forEach((pt, j) => {
-                  ptsB[i][j] = {x: ptsB[i][j].x + rnd_sign() * formVarLevel, y: ptsB[i][j].y + rnd_sign() * formVarLevel};
-                });
+              ptsB.forEach((ptBrush, i) => {
+                ptsB[i].vector = {x: ptBrush.vector.x + rnd_sign() * formVarLevel, y: ptBrush.vector.y + rnd_sign() * formVarLevel};
               });
           }
           
-          ctx.brush({x: x, y: y}, size, ptsB);
+          ctx.brush({x: x, y: y}, size/2, ptsB);
         }
         break;
     }
@@ -324,7 +304,6 @@ class Avatar {
     var stroke = objGlo.stroke;
     if(objGlo.alea_stroke){ stroke = rnd() < 0.5 ? true : false; }
     if(objGlo.strokeAndFill){
-      //if(objGlo.perm_var_size || objGlo.growDecrease){ ctx.lineWidth = objGlo.sizeLineSave; }
       ctx.strokeStyle = this.strokeStyle;
       ctx.fillStyle   = this.fillStyle;
       ctx.stroke();
@@ -870,9 +849,20 @@ class Avatar {
   }
 
   rotateEllipse(angle = activeGlo.params.rotate_angle, center = { x: canvas.width/2, y: canvas.height/2 },
-         ellipse = {x: activeGlo.params.ellipse_x, y: activeGlo.params.ellipse_y}, angleEllipse = 0, spiral = activeGlo.params.spiral_force, numMod = false) {
+         ellipse = {x: activeGlo.params.ellipse_x, y: activeGlo.params.ellipse_y}, angleEllipse = 0, spiral = activeGlo.params.spiral_force, fromMod = true) {
    let xM, yM;
    let k = ellipse.x/ellipse.y;
+
+   if(this.nearMod.glo && this.nearMod.glo.orientedPoly){
+    angleEllipse = this.nearMod.dir_angle;
+   }
+   else if(activeGlo.orientedPoly && fromMod){
+    angleEllipse = activeGlo.params.dirAngle;
+   }
+  
+   let paramsObj = this.nearMod.params ? this.nearMod.params : activeGlo.params;
+
+   if(paramsObj.orientedPoly && fromMod){ angleEllipse = paramsObj.dir_angle; }  
 
    let mat = [
      [cos(angle),     -k*sin(angle)],
@@ -1065,7 +1055,13 @@ class Avatar {
 
   curve(){
     let pos    = {x: this.x, y: this.y};
-    let rCurve = activeGlo.params.rCurve;
+    let rCurve = activeGlo.params.rCurve / 3;
+
+    let dir = this.direction ? this.direction + half_pi : 0.0001 + half_pi;
+    let rCurveX = rCurve * cos(dir);
+    let rCurveY = rCurve * sin(dir);
+
+    rCurve *= cos(this.it);
 
     if(!this.curveRot){
       this.curveAngle = activeGlo.params.curveAngle;
@@ -1074,7 +1070,7 @@ class Avatar {
 
     let angle = this.curveAngle;
     if(this.it%activeGlo.params.changeCurve==0 || !this.curveRot){
-      this.curveRot = {x: pos.x + rnd_sign()*rCurve, y: pos.y + rnd_sign()*rCurve};
+      this.curveRot = {x: pos.x + rCurve, y: pos.y + rCurve};
       this.sw = Math.sign(rnd_sign());
     }
 
@@ -1502,8 +1498,8 @@ class Avatar {
 
     if(obj.alphaRnd){ a /= (1 + rnd()); }
 
-    if(obj.formuleColorMode && this.nearMod.formuleColor){
-      let color = this.formuleColor(move, sat, tint, a, this.nearMod.formuleColor);
+    if(obj.formuleColorMode){
+      let color = this.formuleColor(move, sat, tint, a, obj.formuleColor);
       move = color.move; sat = color.sat; tint = color.tint; a = color.a;
     }
 
@@ -1530,8 +1526,19 @@ class Avatar {
       a    : eval(formuleColor.a)
     };
   }
+}
 
+/**
+ * @description Creates a new Brush Movement
+ */
+class BrushMovement {
+  constructor(options = {}){
+    this.vector   = options.vector;
+    this.type     = options.type;
+    this.formType = options.formType;
+    this.size     = options.size;
+  }
 }
 
 
-//END CLASS
+//END CLASSES
