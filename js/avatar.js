@@ -5,27 +5,24 @@
 class Avatar {
 
   constructor(options = {}){
+    this.n_avatars    = avatars.length;
     this.x            = options.x;
     this.y            = options.y;
-    this.z            = 0;
+    this.speed        = 0;
+    this.size         = options.size;
+    this.form         = activeGlo.form;
     this.vx           = 0;
     this.vy           = 0;
-    this.speed        = 0;
     this.ax           = 0;
     this.ay           = 0;
     this.grow         = 0;
     this.growLine     = 0;
-    this.dist_moy     = 1;
-    this.size         = options.size;
+    this.dist_moy     = 1
     this.sizeCalc     = {s: options.size, x: options.size, y: options.size};
     this.fillStyle    = options.fillStyle;
     this.strokeStyle  = options.fillStyle;
     this.hsl          = {h: 0, s: 0, l: 0, a: 1, p: 1};
-    this.form         = activeGlo.form;
     this.colorMod     = activeGlo.modifiersColor;
-    this.it           = num_avatar;
-    this.id           = num_avatar;
-    this.n_avatars    = avatars.length;
     this.lasts        = [];
     this.lastsSm      = [];
     this.multi        = [];
@@ -33,8 +30,11 @@ class Avatar {
     this.numsMod      = [];
     this.nearMod      = {};
     this.draw         = true;
+    this.it           = num_avatar;
+    this.id           = num_avatar;
     this.goToNearMod  = true;
-
+    this.z            = 0;
+    
     this.distMinModifiers = 9999;
 
     if(options.center){ this.center = options.center; }
@@ -177,6 +177,8 @@ class Avatar {
         ctx.lineWidth = ctx.lineWidth / (1+rnd()) / obj.params.level_var_size;
       }
     }
+
+    if(this.infoSelect){ size *= 4; }
 
     ctx.lineWidth    *= coeff * coeffLn;
     this.sizeCalc     = {s: size, x: size_x, y: size_y};
@@ -1511,8 +1513,9 @@ class Avatar {
     //if(obj.oneColor.state){ move = activeGlo.oneColor.color.h; sat = activeGlo.oneColor.color.s; tint = activeGlo.oneColor.color.l;  }
     if(activeGlo.oneColor.state){ move = activeGlo.oneColor.color.h; sat = activeGlo.oneColor.color.s; tint = activeGlo.oneColor.color.l;  }
 
-    this.strokeStyle = 'hsla(' + (move + cdStroke) + ', ' + satStroke + '%, ' + tint_stroke + '%, ' + a +')';
-    this.fillStyle   = 'hsla(' + move + ', ' + sat + '%, ' + tint + '%, ' + a +')';
+    let roundMove = round(move, 2);
+    this.strokeStyle = 'hsla(' + (roundMove + cdStroke) + ', ' + round(satStroke, 2) + '%, ' + round(tint_stroke, 2) + '%, ' + a +')';
+    this.fillStyle   = 'hsla(' + roundMove + ', ' + round(sat, 2) + '%, ' + round(tint, 2) + '%, ' + a +')';
 
     this.hsl       = {h: move, s: sat, l: tint, a: a, p: 1};
     this.hslStroke = {h: move + cdStroke, s: satStroke, l: tint_stroke, a: a, p: 1};

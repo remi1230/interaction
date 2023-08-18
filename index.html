@@ -59,7 +59,7 @@
             <div>
               <div>
                 <input type="range" id="modifierPos" name="modifierPos" class='input_params' oninput="updateGlo(this); activeGlo.pos_modifiers = activeGlo.modifierTypes[this.value]; "
-                       min="0" max="10" value="1" step="1" data-labels="modifierTypes">
+                       min="0" max="11" value="1" step="1" data-labels="modifierTypes">
                 <label for="modifierPos">Modifiers type</label>
               </div>
               <div>
@@ -76,12 +76,12 @@
             <div>
               <div>
                 <input type="range" id="selModsByType" name="selModsByType" class='input_params' oninput="updateGlo(this); modifier_select(false, this); "
-                       min="0" max="10" value="0" step="1" data-labels="selModsByType">
+                       min="0" max="11" value="0" step="1" data-labels="selModsByType">
                 <label for="selModsByType">Select modifiers by type</label>
               </div>
               <div>
                 <input type="range" id="turnModifiers" name="turnModifiers" class='input_params' oninput="updateGlo(this); turnModifiers(this); "
-                       min="0" max="10" value="0" step="1" data-labels="modifierTypes">
+                       min="0" max="11" value="0" step="1" data-labels="modifierTypes">
                 <label for="turnModifiers">Turn modifiers</label>
               </div>
               <div>
@@ -1123,10 +1123,14 @@
             </div>
           </div>
         </div>
+        <div id="canvasContainer">
+          <canvas id='structure' class='canvas'></canvas>
+        </div>
+        <div id="dialogContainer">
           <dialog id="helpDialog" style="width: 85%; height: 85%; position: absolute; top: -10px; border: none; border-radius: 5px; overflow-x: hidden; "
                   oninput="event.stopPropagation(); " onchange="event.stopPropagation(); " onclick="event.stopPropagation(); ">
             <div style="text-align: center; margin-top: 10px; display: grid; grid-template-columns: 210px 210px 210px; justify-content: space-between; "
-                 oninput="event.stopPropagation(); " onchange="event.stopPropagation(); " onclick="event.stopPropagation(); ">
+                oninput="event.stopPropagation(); " onchange="event.stopPropagation(); " onclick="event.stopPropagation(); ">
               <div>
                 <label for="searchInHelp">🔍</label>
                 <input style="margin-top: 10px; " type="text" id="searchInHelp" class="stopWindowEvents" name="searchInHelp" value=""
@@ -1134,7 +1138,7 @@
               </div>
               <div>
                 <kbd id="helpTuch_On" class="keys" onclick="toggleHelpOnTuch(this); "
-                     oninput="constructHelpDialog(false);  " style="text-align: center; cursor: pointer;">ON</kbd>
+                    oninput="constructHelpDialog(false);  " style="text-align: center; cursor: pointer;">ON</kbd>
               </div>
               <div>
                 <label for="helpDialogOpacity">Opacité</label>
@@ -1146,9 +1150,6 @@
             <div id="HelpTags" style="min-height: 35px; margin-bottom: 7px; " onclick="event.stopPropagation(); "></div>
             <div id="helpDialogGrid" style="display: grid; grid-template-columns: repeat(3, 33%); column-gap: 10px; row-gap: 10px; " onclick="event.stopPropagation(); "></div>
           </dialog>
-          <div id="canvasContainer">
-            <canvas id='structure' class='canvas'></canvas>
-          </div>
           <dialog id="brushDialog" style="width: 50%; height: 70%; position: absolute; top: 130px; padding-bottom: 23px; border: none; border-radius: 5px; overflow: hidden; ">
             <canvas id="brushCanvas" style="width: 99%; height: 95%; border: 1px #cccccc solid; " onclick="event.stopPropagation(); "></canvas>
             <div id="brushInterface" onclick="event.stopPropagation(); " style="display: grid; grid-template-columns: 50% 50%; ">
@@ -1172,5 +1173,9 @@
               </div>
             </div>
           </dialog>
+          <dialog id="modPathDialog" style="width: 50%; height: 70%; position: absolute; top: 130px; border: none; border-radius: 5px; overflow: hidden; ">
+            <canvas id="modPathCanvas" style="width: 99%; height: 100%; border: 1px #cccccc solid; " onclick="event.stopPropagation(); "></canvas>
+          </dialog>
+        </div>
     </body>
 </html>

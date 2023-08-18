@@ -138,10 +138,7 @@ structure.addEventListener('wheel', (e) => {
   }
 });
 structure.addEventListener('mousemove', (e) => {
-  let rect = canvas.getBoundingClientRect();
-  let coeff = {x: startWidth / canvas.clientWidth, y: startHeight / canvas.clientHeight};
-  mouse.x = (e.clientX- rect.left) * coeff.x;
-  mouse.y = (e.clientY - rect.top) * coeff.y;
+  mouse = getMousePos(e, canvas, mouse);
 
   if(activeGlo.infoOnMouse){ infoOnMouse(); }
   else if(activeGlo.posVirtualMod){
@@ -164,10 +161,33 @@ helpDialogGrid.addEventListener('click', (event) => event.stopPropagation());
 
 
 //*************************************CANVAS POUR LA BROSSE*************************************//
-function toggleBrushDialog(){
+function toggleModPathDialog(){
   brushDialogVisible = !brushDialogVisible;
 
   if(brushDialogVisible){
+    ctxModPath.clearRect(0, 0, modPathCanvas.width, modPathCanvas.height);
+
+    if(activeGlo.modifiers.length){ getSelectedModifiers().forEach(mod => { mod.glo.stepsModPath = []; }); }
+    else{ activeGlo.stepsModPath = []; }
+
+    mouseModPathCanvas     =  { x: 0, y: 0, first: true, form: false};
+    mouseModPathCanvasLast =  { x: 0, y: 0, first: true, form: false};
+    modPathCanvasMouseDown = false;
+    modPathCanvasMouseUp   = false;
+    
+    modPathDialog.showModal();
+    fix_dpi(modPathCanvas);
+
+    ctxModPath.strokeStyle = '#cc0000';
+    strokeOnCanvas(ctxModPath, function(){ctxModPath.crossDiag(modPathCanvas.getCenter(), 10);});
+  }
+  else{ modPathDialog.close(); }
+}
+
+function toggleBrushDialog(){
+  brushModPathVisible = !brushModPathVisible;
+
+  if(brushModPathVisible){
     ctxBrush.clearRect(0, 0, brushCanvas.width, brushCanvas.height);
     
     if(activeGlo.modifiers.length){ getSelectedModifiers().forEach(mod => { mod.glo.stepsBrush = []; }); }
@@ -203,7 +223,53 @@ brushCanvas.addEventListener('mousedown', e => {
 
   mouseCanvasChangeToLine = false;
   brushCanvasMouseUp      = false;
-} );
+});
+
+modPathCanvas.addEventListener('mousedown', e => {
+  modPathCanvasMouseDown = true;
+  mouseModPathCanvasLast = mouseModPathCanvas;
+  mouseModPathCanvas     = getMousePos(e, modPathCanvas);
+  
+  helpToSaveMoveOnModPathCanvas();
+
+  if(mouseModPathCanvasLast.x && mouseModPathCanvasLast.y){
+    ctxModPath.strokeStyle = '#cc0000';
+    ctxModPath.line({start: {x: mouseModPathCanvasLast.x, y: mouseModPathCanvasLast.y}, end: {x: mouseModPathCanvas.x, y: mouseModPathCanvas.y}});
+  }
+
+  modPathCanvasMouseUp = false;
+});
+
+function helpToSaveMoveOnModPathCanvas(lastPt = mouseModPathCanvasLast, pt = mouseModPathCanvas){
+  if(!activeGlo.modifiers.length){ saveMoveOnModPathCanvas(activeGlo, lastPt, pt); }
+  else{ getSelectedModifiers().forEach(mod => { saveMoveOnModPathCanvas(mod.glo, lastPt, pt); }); }
+}
+
+modPathCanvas.addEventListener('mouseup', _event => {
+  modPathCanvasMouseDown = false;
+  modPathCanvasMouseUp   = true;
+
+  ctxModPath.strokeStyle = '#cc0000';
+  ctxModPath.moveTo(mouseModPathCanvas.x, mouseModPathCanvas.y);
+  ctxModPath.arc(mouseModPathCanvas.x, mouseModPathCanvas.y, 1, 0, two_pi);
+  ctxModPath.stroke();
+});
+
+modPathCanvas.addEventListener('mousemove', e => {
+  if(modPathCanvasMouseDown){
+    mouseModPathCanvasLast = mouseModPathCanvas;
+    mouseModPathCanvas     = getMousePos(e, modPathCanvas);
+
+    helpToSaveMoveOnModPathCanvas();
+
+    ctxModPath.strokeStyle = '#cc0000';
+    ctxModPath.line({start: {x: mouseModPathCanvasLast.x, y: mouseModPathCanvasLast.y}, end: {x: mouseModPathCanvas.x, y: mouseModPathCanvas.y}});
+  }
+});
+
+modPathDialog.addEventListener("close", (event) => {
+  helpToSaveMoveOnModPathCanvas(mouseModPathCanvas, activeGlo.modifiers.length ? getSelectedModifiers()[0].glo.stepsModPath[0] : activeGlo.stepsModPath[0]);
+});
 
 getById('brushFormType_1').addEventListener('change', _event => {
   mouseCanvasChangeToLine = getById('brushFormType_1').checked;
@@ -795,6 +861,15 @@ window.addEventListener("keydown", function (e) {
             case 'c':
               modsSymToCenter('all');
               break;
+            /// Alt d -- Liste des touches libres pour les évènements -- info ///
+            case 'd':
+              let freeTuchsDialog = getById('freeTuchsDialog');
+              if(freeTuchsDialog){ freeTuchsDialog.remove(); }
+              else{
+                let freeTuchsDialog = makeFreeTuchsDialog();
+                freeTuchsDialog.showModal();
+              }
+              break;
             /// Alt e -- Affiche une grille au tiers -- interface, grille ///
             case 'e':
               if(activeGlo.grid.type == 'third' || activeGlo.grid.type == 'none'){ activeGlo.grid.draw = !activeGlo.grid.draw; }
@@ -820,7 +895,7 @@ window.addEventListener("keydown", function (e) {
             case 'j':
               activeGlo.spirAvatar = !activeGlo.spirAvatar;
               break;
-            /// Alt f -- Incline positivement le canvas horizontalement -- canvas, transformation ///
+            /// Alt n -- Incline positivement le canvas horizontalement -- canvas, transformation ///
             case 'n':
               tiltCanvas('h', 0.25);
               break;
@@ -898,9 +973,9 @@ window.addEventListener("keydown", function (e) {
               if(ui.style.opacity == ""){ ui.style.opacity = "0.99"; }
               else if(ui.style.opacity > 0){ ui.style.opacity = parseFloat(ui.style.opacity) - 0.02; }
               break;
-            //FREE
+            /// Alt " -- Affiche ou cache la fenêtre pour créer un chemin de mods ///
             case '"':
-              getSelectedModifiers().forEach(mod => { mod.modsWithSign = !mod.modsWithSign; });
+              toggleModPathDialog();
               break;
             //FREE
             case "'":
@@ -1035,11 +1110,17 @@ window.addEventListener("keydown", function (e) {
             case 'r':
               activeGlo.alea_stroke = !activeGlo.alea_stroke;
               break;
-            //FREE
+            /// Ctrl s -- Infos sur les avatars -- info, avatar ///
             case 's':
-              activeGlo.params.wheel_force = -activeGlo.params.wheel_force;
-              updCtrl('wheel_force');
-              activeGlo.modifiers.forEach(mod => { if(mod.virtual){ mod.attract = activeGlo.params.wheel_force; } });
+              let infosAvatarsDialog = getById('infosAvatarsDialog');
+              if(infosAvatarsDialog){ infosAvatarsDialog.remove(); }
+              else{
+                let infosAvatarsDialog = makeInfosAvatarsDialog();
+                infosAvatarsDialog.addEventListener("close", (event) => {
+                  activeGlo.infosAvatars = false;
+                });
+                infosAvatarsDialog.showModal();
+              }
               break;
             /// Ctrl u -- Pose un polygone de modifiers -- modifier, pose ///
             case 'u':
@@ -1049,19 +1130,14 @@ window.addEventListener("keydown", function (e) {
             case 'v':
               activeGlo.sizeDirCoeff = !activeGlo.sizeDirCoeff;
               break;
-            //FREE
+            /// Ctrl x -- Infos sur les modifiers -- info, modifier ///
             case 'x':
-              let gcoLength = gco.length;
-              if(typeof(activeGlo.num_gco) == 'undefined'){ activeGlo.num_gco = 0; }
-
-              if(activeGlo.num_gco < gcoLength - 1){ activeGlo.num_gco++; }
-              else{ activeGlo.num_gco = 0; }
-
-              ctx.save_globalCompositeOperation = ctx.globalCompositeOperation;
-              ctx.globalCompositeOperation      = gco[activeGlo.num_gco];
-
-              console.log(ctx.globalCompositeOperation);
-
+              let infosDialog = getById('infosDialog');
+              if(infosDialog){ infosDialog.remove(); }
+              else{
+                let infosDialog = makeInfosDialog();
+                infosDialog.showModal();
+              }
               break;
             /// Ctrl y -- Pose un cercle de modifiers -- modifier, pose ///
             case 'y':

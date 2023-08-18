@@ -315,8 +315,8 @@ class Glob {
         this.forms = ['circle', 'square', 'line', 'bezier', 'poly', 'ellipse', 'alea_form', 'cloud', 'cross', 'brush'];
         this.colorCumulType = ['average', 'average_mul', 'average_div', 'average_mul_fact', 'average_div_fact', 'test'];
         this.pos_modifiers = 'rotator';
-        this.modifierTypes = ['none', 'rotator', 'attractor', 'polygonator', 'spiralor', 'deviator', 'accelerator', 'alternator', 'magnetor', 'formulator', 'director'];
-        this.selModsByType = ['none', 'rotator', 'attractor', 'polygonator', 'spiralor', 'deviator', 'accelerator', 'alternator', 'magnetor', 'formulator', 'director'];
+        this.modifierTypes = ['none', 'rotator', 'attractor', 'polygonator', 'spiralor', 'deviator', 'accelerator', 'alternator', 'magnetor', 'formulator', 'director', 'pathor'];
+        this.selModsByType = ['none', 'rotator', 'attractor', 'polygonator', 'spiralor', 'deviator', 'accelerator', 'alternator', 'magnetor', 'formulator', 'director', 'pathor'];
         this.formModTypes  = ['one', 'circle', 'square', 'rectangle', 'polygone'];
         this.ctxCompositions  = ["source-over", "destination-over", "lighter", "xor"];
         this.selectCanvas  = [];
@@ -348,6 +348,7 @@ class Glob {
         this.canvasLoveBg    = {color: "rgb(0, 0, 32)"};
         this.thirdGridColor  = '#fc4e03';
         this.brushType  = 'manual';
+        this.modPathType  = 'manual';
     }
 }
 
@@ -424,23 +425,28 @@ var helpDialogGrid        = getById('helpDialogGrid');
 let containerInt          = getById('othersInterfaceContainer');
 let toggleInt             = getById('showHideInterfaceTxt');
 let brushDialog           = getById('brushDialog');
+let modPathDialog         = getById('modPathDialog');
 let brushCanvas           = getById('brushCanvas');
+let modPathCanvas         = getById('modPathCanvas');
 
-let helpDialogVisible    = false;
-let brushDialogVisible   = false;
-let brushCanvasMouseDown = false;
-let brushCanvasMouseUp   = false;
+let helpDialogVisible      = false;
+let brushDialogVisible     = false;
+let brushModPathVisible    = false;
+let brushCanvasMouseDown   = false;
+let brushCanvasMouseUp     = false;
+let modPathCanvasMouseDown = false;
+let modPathCanvasMouseUp   = false;
 
 let ctxBrush             = brushCanvas.getContext('2d');
-let pointsBrush          = [];
-let pointsBrushToLine    = [];
-let pointsBrushToLineEnd = [];
+let ctxModPath           = modPathCanvas.getContext('2d');
 
-let mouse                =  { click: {x: 0, y: 0} };
-let mouseCanvas          =  { x: 0, y: 0, first: true, form: false};
-let mouseCanvasLast      =  { x: 0, y: 0, first: true, form: false};
-let mouseCanvasClick     =  { x: 0, y: 0, first: true, form: false};
-let mouseCanvasLastClick =  { x: 0, y: 0, first: true, form: false};
+let mouse                  =  { click: {x: 0, y: 0} };
+let mouseCanvas            =  { x: 0, y: 0, first: true, form: false};
+let mouseModPathCanvas     =  { x: 0, y: 0, first: true, form: false};
+let mouseModPathCanvasLast =  { x: 0, y: 0, first: true, form: false};
+let mouseCanvasLast        =  { x: 0, y: 0, first: true, form: false};
+let mouseCanvasClick       =  { x: 0, y: 0, first: true, form: false};
+let mouseCanvasLastClick   =  { x: 0, y: 0, first: true, form: false};
 
 let mouseCanvasChangeToLine = false;
 

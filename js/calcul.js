@@ -282,7 +282,6 @@ function star(opt){
     points[0].pop();
   }
 
-  console.log(points);
   return points;
 }
 
@@ -835,10 +834,15 @@ const roundStepsPro = (dx, dy, r, precision) => {
   return d;
 };
 
-function getMousePos(e, canvasVar){
+function getMousePos(e, canvasVar, ms = false){
   let rect = canvasVar.getBoundingClientRect();
   let coeff = {x: canvasVar.width / canvasVar.clientWidth, y: canvasVar.height / canvasVar.clientHeight};
 
-  return {x: (e.clientX- rect.left) * coeff.x, y: (e.clientY - rect.top) * coeff.y};
+  if(!ms){ return {x: (e.clientX- rect.left) * coeff.x, y: (e.clientY - rect.top) * coeff.y}; }
+
+  ms.x = (e.clientX- rect.left) * coeff.x;
+  ms.y = (e.clientY - rect.top) * coeff.y;
+
+  return ms;
 }
 

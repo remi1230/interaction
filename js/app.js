@@ -24,6 +24,7 @@ var ctxStructure  = get_ctx(structure);
 
 giveFuncToCanvas(structure, ctxStructure);
 giveFuncToCanvas(brushCanvas, ctxBrush);
+giveFuncToCanvas(modPathCanvas, ctxModPath);
 
 /**
  * @description Gives function to a canvas variable and to a ctx variable
@@ -245,7 +246,6 @@ function giveFuncToCanvas(varCanvas, varCtx){
   };
   //------------------ DÉSSINER AVEC LA BROSSE ----------------- //
   varCtx.brush = function(pos, avSize, moves){
-
     moves.forEach(move => {
       let vector = move.vector;
       let type   = move.type;
@@ -283,6 +283,14 @@ function savePtOnBrushCanvas(pt){
   pt.size = activeGlo.params.brushSize;
   if(activeGlo.modifiers.length){ getSelectedModifiers().forEach(mod => { mod.glo.firstPtBrush = pt; }); }
   else{ activeGlo.firstPtBrush = pt; }
+}
+
+function saveMoveOnModPathCanvas(objGlo, lastPt, pt){
+  let center        = modPathCanvas.getCenter();
+  let distToCenter  = {x: pt.x - center.x, y: pt.y - center.y};
+  let angleToCenter = atan2pi(distToCenter.x, distToCenter.y); 
+
+  objGlo.stepsModPath.push({x: pt.x - lastPt.x, y: pt.y - lastPt.y, angleToCenter});
 }
 
 function saveMoveOnBrushCanvas(pt){
@@ -2031,34 +2039,40 @@ function pos_modifier(type = 'attractor', pos = mouse, inv = false, groupe = 0, 
   if(type == 'magnetor' || type == 'mimagnetor' || activeGlo.doubleMods){ activeGlo.magnetors = true; }
 
   let newMod = {
-    x: pos.x, y: pos.y, attract: force, lim_attract: 0, rot_spi: force, brake: activeGlo.params.brake_pow,
-    ellipse: {x: activeGlo.params.ellipse_x, y: activeGlo.params.ellipse_y},
-    spiral_exp        : invAtt * activeGlo.params.spiral_exp,
+    type              : type,
+    x                 : pos.x,
+    y                 : pos.y,
+    attract           : force,
+    brake             : activeGlo.params.brake_pow,
     nbEdges           : activeGlo.params.posModsNbEdges,
     magnetAngle       : magnetAngle,
-    rotMax            : 0,
-    rotSin            : [],
     modPolyRotAngle   : modPolyRotAngle,
     dblAngle          : dblAngle,
     dir_angle         : dir_angle,
-    formule           : formule,
-    type              : type,
-    center            : cent,
-    glo               : deepCopy(activeGlo, 'modifiers', 'inputToSlideWithMouse'),
-    params            : deepCopy(activeGlo.params),
-    size              : activeGlo.size,
-    color             : activeGlo.modifiersColor,
-    colorDec          : activeGlo.params.colorDec,
-    colorStrokeDec    : activeGlo.params.colorStrokeDec,
     tint              : activeGlo.params.tint_color,
-    tint_stroke       : activeGlo.params.tint_stroke,
-    satStroke         : activeGlo.params.satStroke,
     sat               : activeGlo.params.saturation,
     alpha             : activeGlo.params.alpha_color,
-    colorFunction     : activeGlo.colorFunction,
+    colorDec          : activeGlo.params.colorDec,
+    size              : activeGlo.size,
+    lim_attract       : 0,
     haveColor         : activeGlo.modifiersHaveColor,
     powColor          : activeGlo.params.nearColorPow,
     varOneColMod      : activeGlo.params.varOneColMod,
+    rot_spi           : force,
+    ellipse           : {x: activeGlo.params.ellipse_x, y: activeGlo.params.ellipse_y},
+    spiral_exp        : invAtt * activeGlo.params.spiral_exp,
+    rotMax            : 0,
+    rotSin            : [],
+    formule           : formule,
+    center            : cent,
+    num_modifier      : num_modifier,
+    glo               : deepCopy(activeGlo, 'modifiers', 'inputToSlideWithMouse'),
+    params            : deepCopy(activeGlo.params),
+    color             : activeGlo.modifiersColor,
+    colorStrokeDec    : activeGlo.params.colorStrokeDec,
+    tint_stroke       : activeGlo.params.tint_stroke,
+    satStroke         : activeGlo.params.satStroke,
+    colorFunction     : activeGlo.colorFunction,
     curveAngle        : activeGlo.params.curveAngle,
     double            : type == 'magnetor' ? true : false,
     dblForce          : activeGlo.doubleMods ? 200 : 1,
@@ -2068,7 +2082,6 @@ function pos_modifier(type = 'attractor', pos = mouse, inv = false, groupe = 0, 
     weight            : 1,
     groupe            : groupe,
     virtual           : virtual,
-    num_modifier      : num_modifier,
     modify            : makeModifierFunction(type)
   };
 
@@ -2345,9 +2358,12 @@ function makeModifierFunction(modifierType){
         }
 
         if(this.double){
+            this.modPolyRotAngle += PI / this.nbEdges;
+
+            let k        = this.params.dblModDist;
             let posSave  = {x: this.x, y: this.y};
-            this.x      += cos(this.dblAngle);
-            this.y      += sin(this.dblAngle);
+            this.x      += k*cos(this.dblAngle);
+            this.y      += k*sin(this.dblAngle);
             this.attract = -this.attract;
             this.double  = false;
             this.modify(av);
@@ -2355,6 +2371,8 @@ function makeModifierFunction(modifierType){
             this.attract = -this.attract;
             this.x       = posSave.x;
             this.y       = posSave.y;
+
+            this.modPolyRotAngle -= PI / this.nbEdges;
         }
       };
     case 'spiralor':
@@ -2442,7 +2460,42 @@ function makeModifierFunction(modifierType){
           av.modifiersValues.x += cos(angle) * force;
           av.modifiersValues.y += sin(angle) * force;
         }
-      };
+    };
+    case 'pathor':
+      return function(av){
+        if(this.glo.stepsModPath){
+          if(this.params.mods_formule != '0'){ modsFormule(this, av); }
+
+          let dist  = av.dist_av(this) / this.params.weightDistMinMod;
+
+          av.distMods.push({dist: dist, h: this.color.h, l: this.tint, ls: this.tint_stroke, st: this.satStroke, w: this.weight, colorDec: this.colorDec, colorStrokeDec: this.colorStrokeDec, varColDistModifs : this.params.varColDistModifs});
+          if(dist < av.distMinModifiers){ av.distMinModifiers = dist; av.nearMod = this; }
+
+          if(dist <= this.lim_attract || !this.lim_attract){
+            let att   = this.attract * (this.glo.forceByCenter ? av.coeffSizeCenter() : 1);
+            let brake = this.params.breakAdd + pow(dist, this.brake);
+            let force = 100 * att / brake;
+
+            let angleToCenter = atan2pi(av.x - this.x, av.y - this.y);
+            let vects         = this.glo.stepsModPath.sort((a,b) => a.angleToCenter - b.angleToCenter).slice(1);
+
+            if(vects.length){
+              vects = vects.map(vect => { vect.angleToCenter.x -= vects[0].angleToCenter.x; vect.angleToCenter.y -= vects[0].angleToCenter.y; return vect; });
+
+              let vect = vects[0];
+              for(let i = 0; i < vects.length-1; i++){
+                if(angleToCenter > vects[i].angleToCenter && angleToCenter <= vects[i+1].angleToCenter){ vect = vects[i]; break; }
+              }
+              if(angleToCenter > vects[vects.length-1].angleToCenter){
+                vect = vects[vects.length-1];
+              }
+
+              av.modifiersValues.x += vect.x * force;
+              av.modifiersValues.y += vect.y * force;
+            }
+          }
+        }
+    };
     case 'formulator':
       return function(av){
         if(this.formule){
@@ -2831,7 +2884,6 @@ function testFormule(formule){
 }
 //------------------ SELECT MODIFIER ----------------- //
 function modifier_select(byMouse = true, ctrl = null){
-  let modifiersSz = activeGlo.modifiers.length;
   if(byMouse){
     let nearestModToMouse = getModNearestMouse(10);
 
@@ -3278,6 +3330,18 @@ function drawLogo(mod, style, angle = 0){
       angle += mod.params.director_angle_upd;
       ctxStructure.line({start: point, end: {x: point.x + size, y: point.y}});
       ctxStructure.line({start: {x:point.x, y: point.y + size}, end: {x: point.x + size, y: point.y + size}});
+      break;
+    case 'pathor':
+      if(mod.glo.stepsModPath && mod.glo.stepsModPath.length){
+        mod.glo.stepsModPath.slice(1).forEach(vect => {
+          let pointLast = {x: point.x + vect.x, y: point.y + vect.y};
+          ctxStructure.line({start: {x:point.x, y: point.y}, end: {x: pointLast.x, y: pointLast.y}});
+          point = pointLast;
+        });
+      }
+      else{
+        strokeOnCanvas(ctxStructure, function(){ctxStructure.arc(point.x, point.y, size, 0, two_pi, false);});
+      }
       break;
   }
   ctxStructure.lineWidth = lineW;
@@ -4213,6 +4277,302 @@ function posModsOnMods(){
 
     activeGlo.modifiers.push(newMod);
   });
+}
+
+function isInHelpTuchs(){
+  let frees = {alt: [], ctrl: [], simple: []};
+
+  let tuchLetters = tuchs.filter(t => !t.ctrl && !t.alt) ;
+  let tuchCtrls   = tuchs.filter(t => t.ctrl);
+  let tuchAlts    = tuchs.filter(t => t.alt);
+
+  for(let i = 33; i < 123; i++){
+    let char = String.fromCharCode(i);
+
+    let charInTuchLetters = tuchLetters.find(t => t.tuch === char);
+    let charInTuchCtrls   = tuchCtrls.find(t => t.tuch.slice(-1) === char);
+    let charInTuchAlts    = tuchAlts.find(t => t.tuch.slice(-1) === char);
+
+    if(!charInTuchLetters){ frees.simple.push({alt: false, ctrl: false, tuch: char, charCode: i}); }
+    if(!charInTuchCtrls){ frees.ctrl.push({alt: false, ctrl: true, tuch: char, charCode: i}); }
+    if(!charInTuchAlts){ frees.alt.push({alt: true, ctrl: false, tuch: char, charCode: i}); }
+  }
+
+  let notInfrees = [35, 43, 45, 64, 91, 92, 93, 94, 95, 96];
+
+  frees.alt    = frees.alt.filter(t => t.tuch.toLowerCase() === t.tuch && !notInfrees.some(n => n === t.charCode));
+  frees.ctrl   = frees.ctrl.filter(t => t.tuch.toLowerCase() === t.tuch && !notInfrees.some(n => n === t.charCode));
+  frees.simple = frees.simple.filter(t => !notInfrees.some(n => n === t.charCode));
+
+  return frees;
+}
+
+function makeDialog(options = {style: {width: '50%', height: '50%'}, }, content, closeOrRemove = 'remove'){
+  let dialogContainer = getById('dialogContainer');
+
+  let dialog = document.createElement("dialog");
+
+  for (let prop in options.style){
+    dialog.style[prop] = options.style[prop];
+  }
+
+  dialog.id = options.id ? options.id : '';
+
+  dialog.style.position     = 'absolute';
+  dialog.style.border       = 'none';
+  dialog.style.borderRadius = '5px';
+  dialog.style.overflowX    = 'hidden';
+
+  content = "<div class='dialogContentContainer' onclick='event.stopPropagation(); '>" + content + "</div>";
+
+  dialog.addEventListener('click', (e) => {
+    closeOrRemove === 'remove' ? dialog.remove() : dialog.close();
+  });
+
+  dialog.innerHTML = content;
+  dialogContainer.appendChild(dialog);
+
+  return dialog;
+}
+
+function makeFreeTuchsDialog(){
+  let freeTuchs = isInHelpTuchs();
+
+  let content   = "<h1 style='text-align: center; '>Touches libres pour les évènements</h1>";
+  content      += "<h3 class='helpTitle'>Caractères uniques</h3>";
+  content      += "<div style='display: grid; grid-template-columns: repeat(4, 1fr); '>";
+  content      += "<div>";
+  content      += "<h4>Lettres minuscules</h4>";
+  content      += "<div id='unikMinLetterContainer'></div>";
+  content      += "</div>";
+  content      += "<div>";
+  content      += "<h4>Lettres majuscules</h4>";
+  content      += "<div id='unikMajLetterContainer'></div>";
+  content      += "</div>";
+  content      += "<div>";
+  content      += "<h4>Chiffres</h4>";
+  content      += "<div id='unikNumbersContainer'></div>";
+  content      += "</div>";
+  content      += "<div>";
+  content      += "<h4>Caractères spéciaux</h4>";
+  content      += "<div id='unikSpecialContainer'></div>";
+  content      += "</div>";
+  content      += "</div>";
+
+  content      += "<hr class='hrHelp'>";
+
+  content      += "<h3 class='helpTitle'>Touche control + caractère</h3>";
+  content      += "<div style='display: grid; grid-template-columns: repeat(3, 1fr); '>";
+  content      += "<div>";
+  content      += "<h4>Lettres minuscules</h4>";
+  content      += "<div id='controlMinLetterContainer'></div>";
+  content      += "</div>";
+  content      += "<div>";
+  content      += "<h4>Chiffres</h4>";
+  content      += "<div id='controlNumbersContainer'></div>";
+  content      += "</div>";
+  content      += "<div>";
+  content      += "<h4>Caractères spéciaux</h4>";
+  content      += "<div id='controlSpecialContainer'></div>";
+  content      += "</div>";
+  content      += "</div>";
+
+  content      += "<hr class='hrHelp'>";
+
+  content      += "<h3 class='helpTitle'>Touche alt + caractère</h3>";
+  content      += "<div style='display: grid; grid-template-columns: repeat(3, 1fr); '>";
+  content      += "<div>";
+  content      += "<h4>Lettres minuscules</h4>";
+  content      += "<div id='altMinLetterContainer'></div>";
+  content      += "</div>";
+  content      += "<div>";
+  content      += "<h4>Chiffres</h4>";
+  content      += "<div id='altNumbersContainer'></div>";
+  content      += "</div>";
+  content      += "<div>";
+  content      += "<h4>Caractères spéciaux</h4>";
+  content      += "<div id='altSpecialContainer'></div>";
+  content      += "</div>";
+  content      += "</div>";
+
+  let freeTuchsDialog = makeDialog(options = {style: {width: '66%', height: '66%'}, id: 'freeTuchsDialog'}, content);
+
+  let freeTuchsOneLetterMIN   = freeTuchs.simple.filter(t => t.tuch.match(/[a-z]/));
+  let freeTuchsOneLetterMAJ   = freeTuchs.simple.filter(t => t.tuch.match(/[A-Z]/));
+  let freeTuchsOneNumber      = freeTuchs.simple.filter(t => t.tuch.match(/[0-9]/));
+  let freeTuchsOneSpecialChar = freeTuchs.simple.filter(t => t.charCode > 32 && t.charCode < 48);
+
+  let freeTuchsCtrlLetterMIN   = freeTuchs.ctrl.filter(t => t.tuch.match(/[a-z]/));
+  let freeTuchsCtrlNumber      = freeTuchs.ctrl.filter(t => t.tuch.match(/[0-9]/));
+  let freeTuchsCtrlSpecialChar = freeTuchs.ctrl.filter(t => t.charCode > 32 && t.charCode < 48);
+
+  let freeTuchsAltLetterMIN   = freeTuchs.alt.filter(t => t.tuch.match(/[a-z]/));
+  let freeTuchsAltNumber      = freeTuchs.alt.filter(t => t.tuch.match(/[0-9]/));
+  let freeTuchsAltSpecialChar = freeTuchs.alt.filter(t => t.charCode > 32 && t.charCode < 48);
+
+  makeKbdTuch(freeTuchsOneLetterMIN, 'unikMinLetterContainer');
+  makeKbdTuch(freeTuchsOneLetterMAJ, 'unikMajLetterContainer');
+  makeKbdTuch(freeTuchsOneNumber, 'unikNumbersContainer');
+  makeKbdTuch(freeTuchsOneSpecialChar, 'unikSpecialContainer');
+
+  makeKbdTuch(freeTuchsCtrlLetterMIN, 'controlMinLetterContainer');
+  makeKbdTuch(freeTuchsCtrlNumber, 'controlNumbersContainer');
+  makeKbdTuch(freeTuchsCtrlSpecialChar, 'controlSpecialContainer');
+
+  makeKbdTuch(freeTuchsAltLetterMIN, 'altMinLetterContainer');
+  makeKbdTuch(freeTuchsAltNumber, 'altNumbersContainer');
+  makeKbdTuch(freeTuchsAltSpecialChar, 'altSpecialContainer');
+
+  function makeKbdTuch(varTuchs, idTuchContainer){
+    varTuchs.forEach(t => {
+      let kbdTuch = document.createElement("kbd");
+
+      kbdTuch.className = 'keys';
+      kbdTuch.style.margin = '5px';
+
+      let txtTuch = document.createTextNode(t.tuch);
+      kbdTuch.appendChild(txtTuch);
+
+      getById(idTuchContainer).appendChild(kbdTuch);
+    });
+  }
+  return freeTuchsDialog;
+}
+
+function makeInfosDialog(isSorted = false, newDir = 'none'){
+  let infsModifiers = infosModifiers(isSorted, newDir);
+
+  let limNbProps = 20;
+  infsModifiers.propsInMods = infsModifiers.propsInMods.slice(0, limNbProps);
+  infsModifiers.infosMods.forEach((_infModifier, i) => { infsModifiers.infosMods[i] = infsModifiers.infosMods[i].slice(0, limNbProps); });
+
+  let content   = "<h1 style='text-align: center; '>Infos sur les modifiers</h1>";
+  content      += "<table style='width: 100%; border-collapse: collapse; '>";
+  content      += "<thead style='border-bottom: 1px #ccc solid; '>";
+  content      += "<tr>";
+  infsModifiers.propsInMods.forEach(propInMod => { content += `<th class="thHelpInfo sort_${isSorted === propInMod ? newDir : 'none' }" ${isSorted === propInMod ? "data-sortdir='" + newDir + "' " : "data-sortdir='none' " } onclick="makeInfosDialog(this.textContent, this.dataset.sortdir !== 'none' && this.dataset.sortdir === 'asc' ? 'desc' : 'asc'); ">${propInMod}</th>`; });
+  content      += "</tr>";
+  content      += "</thead>";
+  content      += "<tbody style='text-align: center; '>";
+  infsModifiers.infosMods.forEach(infModifier => {
+    content += "<tr onclick='trSelect(this); ' onmouseenter=\"addClasses(this, 'flyOnTr'); \" onmouseleave=\"removeClasses(this, 'flyOnTr'); \">";
+    infModifier.forEach( infMod => {
+      let val = typeof infMod.val === 'number' ? round(infMod.val, 2) : infMod.val;
+      content += `<td>${val}</td>`;
+    });
+    content += "</tr>";
+  });
+  content      += "</tbody>";
+  content      += "</table>";
+
+  if(!isSorted){
+    let infosDialog = makeDialog(options = {style: {width: '95%', height: '77%'}, id: 'infosDialog'}, content);
+    return infosDialog;
+  }
+
+  content = "<div class='dialogContentContainer' onclick='event.stopPropagation(); '>" + content + "</div>";
+  getById('infosDialog').innerHTML = content;
+  return content;
+}
+
+function makeInfosAvatarsDialog(isSorted = false, newDir = 'none', isJustForContent = isSorted){
+  let infsAvatars = infosAvatars(isSorted, newDir);
+
+  let limNbProps = 18;
+  infsAvatars.propsInAvs = infsAvatars.propsInAvs.slice(0, limNbProps);
+  infsAvatars.infosAvs.forEach((_infAvatar, i) => { infsAvatars.infosAvs[i] = infsAvatars.infosAvs[i].slice(0, limNbProps); });
+
+  let content   = "<h1 style='text-align: center; '>";
+  content      += "<button type='button' class='helpMajButton' onclick=\"makeInfosAvatarsDialog(false, 'none', true); \">↺</button>Infos sur les avatars</h1>";
+  content      += "<table style='width: 100%; border-collapse: collapse; '>";
+  content      += "<thead style='border-bottom: 1px #ccc solid; '>";
+  content      += "<tr>";
+  infsAvatars.propsInAvs.forEach(propInAv => { content += `<th class="thHelpInfo sort_${isSorted === propInAv ? newDir : 'none' }" ${isSorted === propInAv ? "data-sortdir='" + newDir + "' " : "data-sortdir='none' " } onclick="makeInfosAvatarsDialog(this.textContent, this.dataset.sortdir !== 'none' && this.dataset.sortdir === 'asc' ? 'desc' : 'asc'); ">${propInAv}</th>`; });
+  content      += "</tr>";
+  content      += "</thead>";
+  content      += "<tbody style='text-align: center; '>";
+  infsAvatars.infosAvs.forEach(infAvatar => {
+    content += "<tr class='" + selectClassAvatarToInfos(infAvatar[0].val) + "' onclick='trSelect(this); selectAvatarToInfos(this, " + infAvatar[0].val + "); ' onmouseenter=\"addClasses(this, 'flyOnTr'); \" onmouseleave=\"removeClasses(this, 'flyOnTr'); \">";
+    infAvatar.forEach( infAv => {
+      let val    = typeof infAv.val === 'number' ? round(infAv.val, 2) : infAv.val;
+      let fill   = '';
+      let stroke = '';
+      if(infAv.prop === 'fillStyle'){ fill = ` <div style="background-color: ${val}; width: 10px; height: 10px; margin-top: 5px; display: inline-block; "></div>`; }
+      else if(infAv.prop === 'strokeStyle'){ stroke = ` <div style="border: 1px ${val} solid; width: 10px; height: 10px; margin-top: 5px; display: inline-block; "></div>`; }
+      content += `<td>${stroke || fill ? "<div style='display: grid; grid-template-columns: 200px 100%; '>" : ''}<div>${val}</div>${fill}${stroke}${stroke || fill ? "</div>" : ''}</td>`;
+    });
+    content += "<tr>";
+  });
+  content      += "</tbody>";
+  content      += "</table>";
+
+  if(!isSorted && !isJustForContent){
+    let infosDialog = makeDialog(options = {style: {width: '95%', height: '77%'}, id: 'infosAvatarsDialog'}, content);
+    return infosDialog;
+  }
+
+  content = "<div class='dialogContentContainer' onclick='event.stopPropagation(); '>" + content + "</div>";
+  getById('infosAvatarsDialog').innerHTML = content;
+  return content;
+}
+
+function selectAvatarToInfos(tr, numAv){
+  avatars[numAv].infoSelect = tr.classList.contains('trSelect'); 
+}
+
+function selectClassAvatarToInfos(numAv){
+  return avatars[numAv].infoSelect ? 'trSelect' : ''; 
+}
+
+function trSelect(tr){
+  !tr.classList.contains('trSelect') ? addClasses(tr, 'trSelect') : removeClasses(tr, 'trSelect');
+}
+
+function infosArr(obj, propsInObj = false){
+  if(obj){
+    let props = [];
+    for(let prop in obj){
+      if(typeof obj[prop] !== 'object' && typeof obj[prop] !== 'function'){
+        if(!propsInObj || propsInObj.includes(prop)){ props.push({prop: prop, val: obj[prop]}); }
+      }
+    }
+    return props;
+  }
+  return [];
+}
+
+function infosModifiers(isSorted = false, dir = 'asc'){
+  let infosMods = [];
+  let propsInMods = infosArr(activeGlo.modifiers[0]).map(p => p.prop);
+
+  if(propsInMods){
+    activeGlo.modifiers.forEach(mod => { infosMods.push(infosArr(mod, propsInMods)); });
+    if(isSorted){ sortInfosArray(infosMods, isSorted, dir); }
+    return {infosMods, propsInMods};
+  }
+  return false;
+}
+
+function infosAvatars(isSorted = false, dir = 'asc'){
+  let infosAvs = [];
+  let propsInAvs = infosArr(avatars[0]).map(p => p.prop);
+
+  if(propsInAvs){
+    avatars.forEach(av => { infosAvs.push(infosArr(av, propsInAvs)); });
+    if(isSorted){ sortInfosArray(infosAvs, isSorted, dir); }
+    return {infosAvs, propsInAvs};
+  }
+  return false;
+}
+
+function sortInfosArray(infosMods, prop, dir = 'asc'){
+  let numProp = 0;
+  for(let i = 0; i < infosMods[0].length; i++){
+    if(infosMods[0][i].prop === prop){ numProp = i; break; }
+  }
+  return dir === 'asc' ?
+                       infosMods.sort((arr1, arr2) => arr1[numProp].val - arr2[numProp].val) :
+                       infosMods.sort((arr1, arr2) => arr2[numProp].val - arr1[numProp].val); 
 }
 
 
