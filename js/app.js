@@ -753,7 +753,7 @@ function animation(){
           }
         }
 
-        if(!avatar.speedBf){ avatar.speed = avatar.speed_avatar(); }
+        if(!avatar.speedBf && avatar.draw){ avatar.speed = avatar.speed_avatar(); }
         else{ avatar.speedBefore(); avatar.speedBf = false; }
         avatar.accel = avatar.accel_avatar();
 
@@ -2038,7 +2038,11 @@ function pos_modifier(type = 'attractor', pos = mouse, inv = false, groupe = 0, 
 
   if(type == 'magnetor' || type == 'mimagnetor' || activeGlo.doubleMods){ activeGlo.magnetors = true; }
 
+  activeGlo.params.num_modifier = num_modifier;
+
   let newMod = {
+    num_modifier      : num_modifier,
+    num_av            : 'None',
     type              : type,
     x                 : pos.x,
     y                 : pos.y,
@@ -2059,15 +2063,14 @@ function pos_modifier(type = 'attractor', pos = mouse, inv = false, groupe = 0, 
     powColor          : activeGlo.params.nearColorPow,
     varOneColMod      : activeGlo.params.varOneColMod,
     rot_spi           : force,
+    params            : deepCopy(activeGlo.params),
     ellipse           : {x: activeGlo.params.ellipse_x, y: activeGlo.params.ellipse_y},
     spiral_exp        : invAtt * activeGlo.params.spiral_exp,
     rotMax            : 0,
     rotSin            : [],
     formule           : formule,
     center            : cent,
-    num_modifier      : num_modifier,
     glo               : deepCopy(activeGlo, 'modifiers', 'inputToSlideWithMouse'),
-    params            : deepCopy(activeGlo.params),
     color             : activeGlo.modifiersColor,
     colorStrokeDec    : activeGlo.params.colorStrokeDec,
     tint_stroke       : activeGlo.params.tint_stroke,
@@ -4323,7 +4326,16 @@ function makeDialog(options = {style: {width: '50%', height: '50%'}, }, content,
   dialog.style.borderRadius = '5px';
   dialog.style.overflowX    = 'hidden';
 
-  content = "<div class='dialogContentContainer' onclick='event.stopPropagation(); '>" + content + "</div>";
+  let numId = parseInt(rnd() * 32000); 
+
+  let opInput = "<div>";
+  opInput += "<label for='dialogOpacity_" + numId + "'>Opacité</label>";
+  opInput += "<input type='range' id='dialogOpacity_" + numId + "' name='dialogOpacity_" + numId + "' class='input_help'";
+  opInput += " oninput='this.parentElement.parentElement.parentElement.style.opacity = this.value;  ' onchange='event.stopPropagation(); ' onclick='event.stopPropagation(); '";
+  opInput += " min='0.01' max='1' value='0.67' step='.01'>"
+  opInput += "</div>";
+
+  content = "<div class='dialogContentContainer' onclick='event.stopPropagation(); '>" + opInput +  content + "</div>";
 
   dialog.addEventListener('click', (e) => {
     closeOrRemove === 'remove' ? dialog.remove() : dialog.close();
@@ -4439,6 +4451,78 @@ function makeFreeTuchsDialog(){
   return freeTuchsDialog;
 }
 
+function makeInfosArrObjsDialog(arrObjs, isSorted = false, newDir = 'none', idDial = false, title){
+  if(typeof arrObjs === 'string'){
+    arrObjs = arrObjs.replaceAll('///', '\"');
+    arrObjs = JSON.parse(arrObjs);
+  }
+
+  let idDialog = !idDial ? ('infosDialog_' + parseInt(rnd() * 32000)) : idDial;
+
+  let infsObjs = infosArrObjs(arrObjs, isSorted, newDir);
+
+  let arrObjsString = JSON.stringify(arrObjs);
+  arrObjsString = arrObjsString.replace(/\"/g, '///');
+
+  let limNbProps = 20;
+  infsObjs.propsInObjs = infsObjs.propsInObjs.slice(0, limNbProps);
+  infsObjs.infosObjs.forEach((_infObj, i) => { infsObjs.infosObjs[i] = infsObjs.infosObjs[i].slice(0, limNbProps); });
+
+  let content   = "<h1 style='text-align: center; '>" + title + "</h1>";
+  content      += "<table style='width: 100%; border-collapse: collapse; '>";
+  content      += "<thead style='border-bottom: 1px #ccc solid; '>";
+  content      += "<tr>";
+  infsObjs.propsInObjs.forEach(propInObj => { content += `<th class="thHelpInfo sort_${isSorted === propInObj ? newDir : 'none' }" ${isSorted === propInObj ? "data-sortdir='" + newDir + "' " : "data-sortdir='none' " } onclick="makeInfosArrObjsDialog('${arrObjsString}', this.textContent, this.dataset.sortdir !== 'none' && this.dataset.sortdir === 'asc' ? 'desc' : 'asc', '${idDialog}', '${title}'); ">${propInObj}</th>`; });
+  content      += "</tr>";
+  content      += "</thead>";
+  content      += "<tbody style='text-align: center; '>";
+  infsObjs.infosObjs.forEach(infObj => {
+    content += "<tr onclick='trSelect(this); ' onmouseenter=\"addClasses(this, 'flyOnTr'); \" onmouseleave=\"removeClasses(this, 'flyOnTr'); \">";
+    infObj.forEach( infOb => {
+      let val = typeof infOb.val === 'number' ? round(infOb.val, 2) : infOb.val;
+      content += `<td>${val}</td>`;
+    });
+    content += "</tr>";
+  });
+  content      += "</tbody>";
+  content      += "</table>";
+
+  if(!isSorted){
+    let infosDialog = makeDialog(options = {style: {width: '95%', height: '77%'}, id: idDialog}, content);
+    return infosDialog;
+  }
+
+  content = "<div class='dialogContentContainer' onclick='event.stopPropagation(); '>" + content + "</div>";
+  getById(idDialog).innerHTML = content;
+  return content;
+}
+
+function infosArrObjs(arrObjs, isSorted, newDir){
+  let infosObjs   = [];
+  let propsInObjs = allInfosArr(arrObjs[0]).map(p => p.prop);
+
+  if(propsInObjs){
+    arrObjs.forEach(obj => { infosObjs.push(allInfosArr(obj, propsInObjs)); });
+    if(isSorted){ sortInfosArray(infosObjs, isSorted, newDir); }
+    return {infosObjs, propsInObjs};
+  }
+  return false;
+}
+
+function allInfosArr(obj, propsInObj = false){
+  if(obj){
+    let props = [];
+    for(let prop in obj){
+      if(!propsInObj || propsInObj.includes(prop)){
+        let val = typeof obj[prop] !== 'object' ? obj[prop] : JSON.stringify(obj[prop]);
+        props.push({prop: prop, val: val, typeof: typeof obj[prop]});
+      }
+    }
+    return props;
+  }
+  return [];
+}
+
 function makeInfosDialog(isSorted = false, newDir = 'none'){
   let infsModifiers = infosModifiers(isSorted, newDir);
 
@@ -4476,11 +4560,13 @@ function makeInfosDialog(isSorted = false, newDir = 'none'){
 }
 
 function makeInfosAvatarsDialog(isSorted = false, newDir = 'none', isJustForContent = isSorted){
-  let infsAvatars = infosAvatars(isSorted, newDir);
+  let limNbProps  = 19;
+  let infsAvatars = infosAvatars(isSorted, newDir, 20);
 
-  let limNbProps = 18;
   infsAvatars.propsInAvs = infsAvatars.propsInAvs.slice(0, limNbProps);
-  infsAvatars.infosAvs.forEach((_infAvatar, i) => { infsAvatars.infosAvs[i] = infsAvatars.infosAvs[i].slice(0, limNbProps); });
+
+  let ind = infsAvatars.propsInAvs.indexOf('speed');
+  infsAvatars.propsInAvs.splice(ind+1, 0, "speed_rel");
 
   let content   = "<h1 style='text-align: center; '>";
   content      += "<button type='button' class='helpMajButton' onclick=\"makeInfosAvatarsDialog(false, 'none', true); \">↺</button>Infos sur les avatars</h1>";
@@ -4553,13 +4639,21 @@ function infosModifiers(isSorted = false, dir = 'asc'){
   return false;
 }
 
-function infosAvatars(isSorted = false, dir = 'asc'){
+function infosAvatars(isSorted = false, dir = 'asc', limNbProps = 19){
   let infosAvs = [];
   let propsInAvs = infosArr(avatars[0]).map(p => p.prop);
 
   if(propsInAvs){
     avatars.forEach(av => { infosAvs.push(infosArr(av, propsInAvs)); });
+
+    infosAvs.forEach((_infAvatar, i) => {
+      let ind = infosAvs[i].findIndex(inf => inf.prop === 'speed');
+      infosAvs[i].splice(ind+1, 0, {prop: "speed_rel", val: parseFloat(infosAvs[i][ind].val) / parseFloat(activeGlo.speed_max)});
+      infosAvs[i] = infosAvs[i].slice(0, limNbProps);
+    });
+
     if(isSorted){ sortInfosArray(infosAvs, isSorted, dir); }
+
     return {infosAvs, propsInAvs};
   }
   return false;
@@ -4571,8 +4665,30 @@ function sortInfosArray(infosMods, prop, dir = 'asc'){
     if(infosMods[0][i].prop === prop){ numProp = i; break; }
   }
   return dir === 'asc' ?
-                       infosMods.sort((arr1, arr2) => arr1[numProp].val - arr2[numProp].val) :
-                       infosMods.sort((arr1, arr2) => arr2[numProp].val - arr1[numProp].val); 
+                       infosMods.sort((arr1, arr2) => {
+                        let val1 = typeof arr1[numProp].val !== 'boolean' ? arr1[numProp].val : (arr1[numProp].val ? 1 : 0);
+                        let val2 = typeof arr2[numProp].val !== 'boolean' ? arr2[numProp].val : (arr2[numProp].val ? 1 : 0);
+
+                        return parseFloat(val1) - parseFloat(val2);
+                       }) :
+                       infosMods.sort((arr1, arr2) => {
+                        let val1 = typeof arr1[numProp].val !== 'boolean' ? arr1[numProp].val : (arr1[numProp].val ? 1 : 0);
+                        let val2 = typeof arr2[numProp].val !== 'boolean' ? arr2[numProp].val : (arr2[numProp].val ? 1 : 0);
+
+                        return parseFloat(val2) - parseFloat(val1);
+                       }) 
+}
+
+function toggleArrObjsDialog(arrObjs, title){
+  let infosObjsDialog = getById('infosObjsDialog');
+  if(infosObjsDialog){ infosObjsDialog.remove(); }
+  else{
+    let infosObjsDialog = makeInfosArrObjsDialog(arrObjs, false, 'none', false, title);
+    infosObjsDialog.addEventListener("close", (event) => {
+      activeGlo.infosObjsDialog = false;
+    });
+    infosObjsDialog.showModal();
+  }
 }
 
 

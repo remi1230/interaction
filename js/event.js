@@ -315,15 +315,16 @@ aleaOnRightClick(activeGlo.params);
 function aleaOnRightClick(obj_param){
   for(var p in obj_param){
     let param = getById(p);
-    //if(param == null){ alert(p); }
-    param.addEventListener('contextmenu', (e) => {
-      e.stopPropagation();
-      e.preventDefault();
+    if(param){
+      param.addEventListener('contextmenu', (e) => {
+        e.stopPropagation();
+        e.preventDefault();
 
-      let p = e.target.id;
-      if(typeof(activeGlo.params_alea) == 'undefined'){ activeGlo.params_alea = {}; }
-      activeGlo.params_alea[p] = !activeGlo.params_alea[p];
-    });
+        let p = e.target.id;
+        if(typeof(activeGlo.params_alea) == 'undefined'){ activeGlo.params_alea = {}; }
+        activeGlo.params_alea[p] = !activeGlo.params_alea[p];
+      });
+    }
   }
 }
 //------------------ ClICK GAUCHE SUR CTRL PARAMÉTRE QUAND ALEA ----------------- //
@@ -331,18 +332,20 @@ defineMinOrMax(activeGlo.params);
 function defineMinOrMax(obj_param){
   for(var p in obj_param){
     let param = getById(p);
-    param.addEventListener('mouseup', (e) => {
-      let p = e.target.id;
-      if(e.button == 0 && ((activeGlo.params_alea && activeGlo.params_alea[p]) || (activeGlo.global_alea && activeGlo.alea[p]))){
-        let ctrl = getById(p);
-        if(typeof(ctrl.dataset.defineMin) == 'undefined' || ctrl.dataset.defineMin == 'false'){ ctrl.dataset.defineMin = 'true'; }
-        else{ ctrl.dataset.defineMin = "false"; }
+    if(param){
+      param.addEventListener('mouseup', (e) => {
+        let p = e.target.id;
+        if(e.button == 0 && ((activeGlo.params_alea && activeGlo.params_alea[p]) || (activeGlo.global_alea && activeGlo.alea[p]))){
+          let ctrl = getById(p);
+          if(typeof(ctrl.dataset.defineMin) == 'undefined' || ctrl.dataset.defineMin == 'false'){ ctrl.dataset.defineMin = 'true'; }
+          else{ ctrl.dataset.defineMin = "false"; }
 
-        if(ctrl.dataset.defineMin == 'true'){ ctrl.dataset.alea_min = ctrl.value; }
-        else{ ctrl.dataset.alea_max = ctrl.value; }
-        drawLimOnInput(ctrl, e);
-      }
-    });
+          if(ctrl.dataset.defineMin == 'true'){ ctrl.dataset.alea_min = ctrl.value; }
+          else{ ctrl.dataset.alea_max = ctrl.value; }
+          drawLimOnInput(ctrl, e);
+        }
+      });
+    }
   }
 }
 //------------------ RESIZE CANVAS WHEN RESIZE WINDOW ----------------- //
@@ -883,7 +886,7 @@ window.addEventListener("keydown", function (e) {
             case 'g':
               activeGlo.putOnGrid = !activeGlo.putOnGrid;
               break;
-            /// Alt h -- Affiche ou cache cette liste de touches -- interface ///
+            /// Alt h -- Affiche ou cache cette liste de touches -- interface, info ///
             case 'h':
               toggleHelpDialog();
               break;
@@ -1046,10 +1049,12 @@ window.addEventListener("keydown", function (e) {
             /// Ctrl a -- L'orientation des modifiers se fait depuis le centre ou pas -- modifier, orientation -- orientedPoly ///
             case 'a':
               activeGlo.orientedPoly = !activeGlo.orientedPoly;
-              break;
-            //FREE
+              break; 
+            /// Ctrl b -- Infos sur les paramètres spécifiques aux modifiers -- info, divers, modifier ///
             case 'b':
-              activeGlo.modifiers.forEach(mod => { mod.select = false; });
+              let paramsMods = [];
+              activeGlo.modifiers.forEach(mod => { paramsMods.push(mod.params); });
+              toggleArrObjsDialog(paramsMods, "Infos sur les paramètres spécifiques aux modifiers");
               break;
             /// Ctrl c -- Permet de définir le centre d'un click -- centre -- defineCenter ///
             case 'c':
@@ -1062,6 +1067,15 @@ window.addEventListener("keydown", function (e) {
             /// Ctrl e -- Inverse les couleurs de l'image -- image, couleur ///
             case 'e':
               invColors();
+              break;
+            /// Ctrl g -- Infos sur les paramètres des modifiers le plus proche de chaque avatar -- info, divers ///
+            case 'g':
+              let avsNearMods = [];
+              avatars.forEach(av => {
+                let avNearModCopy = deepCopy(av.nearMod);
+                avNearModCopy.num_av = av.n_avatars; avsNearMods.push(avNearModCopy);
+              });
+              toggleArrObjsDialog(avsNearMods, "Infos sur les paramètres spécifiques au modifier le plus proche de chaque avatar");
               break;
             /// Ctrl h -- La force des modifiers posés est hazardeuse -- modifier, attraction -- pos_rnd_modifiers ///
             case 'h':

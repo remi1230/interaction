@@ -8,6 +8,7 @@ class Avatar {
     this.n_avatars    = avatars.length;
     this.x            = options.x;
     this.y            = options.y;
+    this.direction    = 0;
     this.speed        = 0;
     this.size         = options.size;
     this.form         = activeGlo.form;
@@ -1505,10 +1506,10 @@ class Avatar {
       move = color.move; sat = color.sat; tint = color.tint; a = color.a;
     }
 
-    if(tint < 0){ tint = 0; }
-    if(tint_stroke < 0){ tint_stroke = 0; }
-    if(satStroke < 0){ satStroke = 0; }
-    if(sat < 0){ sat = 0; }
+    if(tint < 0 || isNaN(tint)){ tint = 0; }
+    if(tint_stroke < 0 || isNaN(tint_stroke)){ tint_stroke = 0; }
+    if(satStroke < 0 || isNaN(satStroke)){ satStroke = 0; }
+    if(sat < 0 || isNaN(sat)){ sat = 0; }
 
     //if(obj.oneColor.state){ move = activeGlo.oneColor.color.h; sat = activeGlo.oneColor.color.s; tint = activeGlo.oneColor.color.l;  }
     if(activeGlo.oneColor.state){ move = activeGlo.oneColor.color.h; sat = activeGlo.oneColor.color.s; tint = activeGlo.oneColor.color.l;  }

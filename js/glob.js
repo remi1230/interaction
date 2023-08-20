@@ -4,6 +4,7 @@ class Glob {
         let _this = this;
         this.params =
             {
+                num_modifier: -1,
                 selectCanvas: 0,
                 nb: 512,
                 keep_dir: 50,
