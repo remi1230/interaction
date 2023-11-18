@@ -1,11 +1,3 @@
-// *********************** MOVE ALEA IN CURVE, ORIENTED ELLIPSE, SHOW THIRD MARKS INFOS (CAN PUT ON GRIDS), DEAL WITH RANDOM MODE, *********************** //
-// *********************** ANGLE POS & UPD MIMAGNETOR, REGEX FORMULE *********************** //
-// *********************** RND SAT & LIGHT IN ONE COL MOD RND *********************** //
-// *********************** CURVE NOT OUT *********************** //
-// *********************** POS POLY MOD : INV ATT ************** //
-// *********************** COLORS & OTHERS PARAMS IN MODS ************** //
-// *********************** ORIENTED ELLIPSES IN MODS ************** //
-
 (function() {
   get_ctx = function(varCanvas){ return varCanvas.getContext('2d'); };
   canvasContext = [];

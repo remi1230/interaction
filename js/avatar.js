@@ -35,6 +35,7 @@ class Avatar {
     this.id           = num_avatar;
     this.goToNearMod  = true;
     this.z            = 0;
+    this.curveInfos   = {nbMoves: 0, proba: 0.5};
     
     this.distMinModifiers = 9999;
 
@@ -958,8 +959,8 @@ class Avatar {
     let a = flatNumber(angle, edgeAngle);
 
     let numSide = round(a/edgeAngle, 0);
-    let midR = abs(d*cos(a + firstAngle - angle));
-    let r    = midR/cos(firstAngle);
+    let midR    = abs(d*cos(a + firstAngle - angle));
+    let r       = midR/cos(firstAngle);
 
     //let nextSide = {x: center.x + r * cos(two_pi * numSide / nbEdges), y: center.y + r * sin(two_pi * numSide / nbEdges)};
 
@@ -1056,7 +1057,82 @@ class Avatar {
     return true;
   }
 
+  moveFishesSave(){
+    this.fishGroup.children.each(function( fish ) {
+        let speed       = {x: 0, y: 0};
+        const baseSpeed = 50;
+
+        if(!fish.nbMoves){
+            fish.nbMoves   = 1;
+            fish.proba     = (rnd() + 0.5) / 2;
+            speed          = {x: baseSpeed * rnd_sign(), y: baseSpeed * rnd_sign()};
+        }
+        else{
+            if(fish.nbMoves%(2*NB_FPS)==0) { fish.proba = 0.75 - fish.proba; }
+            if(fish.nbMoves%(8*NB_FPS)==0) { fish.proba = (rnd() + 0.5) / 2; }
+            if(fish.nbMoves%(16*NB_FPS)==0){ fish.proba = 0.5; }
+            
+            speed = direction(fish.rotation + (rnd_sign(fish.proba)/10), baseSpeed);
+        } 
+
+        fish.body.setVelocityX(speed.x);
+        fish.body.setVelocityY(speed.y);
+
+        let angle = Math.atan2(fish.body.velocity.y, fish.body.velocity.x);
+
+        fish.rotation = angle;
+
+        fish.nbMoves++;
+    });
+  }
+
+  moveFishes(){
+    let speed       = {x: 0, y: 0};
+    const baseSpeed = 50;
+
+    if(!this.curve.nbMoves){
+        this.curve.nbMoves = 1;
+        this.curve.proba   = (rnd() + 0.5) / 2;
+        speed              = {x: baseSpeed * rnd_sign(), y: baseSpeed * rnd_sign()};
+    }
+    else{
+        if(this.curve.nbMoves%(2*NB_FPS)==0) { this.curve.proba = 0.75 - this.curve.proba; }
+        if(this.curve.nbMoves%(8*NB_FPS)==0) { this.curve.proba = (rnd() + 0.5) / 2; }
+        if(this.curve.nbMoves%(16*NB_FPS)==0){ this.curve.proba = 0.5; }
+        
+        speed = direction(this.direction + (rnd_sign(this.curve.proba)/10), baseSpeed);
+    } 
+
+    this.modifiersValues.curve.x += speed.x;
+    this.modifiersValues.curve.y += speed.y;
+
+    this.curve.nbMoves++;
+  }
+
   curve(){
+    let speed       = {x: 0, y: 0};
+    const baseSpeed = 1;
+
+    if(!this.curveInfos.nbMoves){
+        this.curveInfos.nbMoves = 1;
+        this.curveInfos.proba   = (rnd() + 0.5) / 2;
+        speed                   = {x: baseSpeed * rnd_sign(), y: baseSpeed * rnd_sign()};
+    }
+    else{
+        if(this.curveInfos.nbMoves%(2*NB_FPS)==0) { this.curveInfos.proba = 0.75 - this.curveInfos.proba; }
+        if(this.curveInfos.nbMoves%(8*NB_FPS)==0) { this.curveInfos.proba = (rnd() + 0.5) / 2; }
+        if(this.curveInfos.nbMoves%(16*NB_FPS)==0){ this.curveInfos.proba = 0.5; }
+        
+        speed = direction(this.direction + (rnd_sign(this.curveInfos.proba)/(activeGlo.params.rCurve / 40)), baseSpeed);
+    } 
+
+    this.modifiersValues.curve.x += speed.x;
+    this.modifiersValues.curve.y += speed.y;
+
+    this.curveInfos.nbMoves++;
+  }
+
+  curveSave(){
     let pos    = {x: this.x, y: this.y};
     let rCurve = activeGlo.params.rCurve / 3;
 
@@ -1462,6 +1538,15 @@ class Avatar {
         tint_stroke = 100 - tint_stroke;
         satStroke   = 100 - satStroke;
       }
+    }
+
+    if(obj.alternTint && zeroOneCycle(activeGlo.nb_moves, params.alternTintSpeed)){
+      tint        = 100 - tint;
+      tint_stroke = 100 - tint_stroke;
+    }
+    if(obj.alternSat && zeroOneCycle(activeGlo.nb_moves, params.alternSatSpeed)){
+      sat       = 100 - sat;
+      satStroke = 100 - satStroke;
     }
 
     if(!obj.colorsAdd){

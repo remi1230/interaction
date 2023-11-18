@@ -898,6 +898,14 @@ window.addEventListener("keydown", function (e) {
             case 'j':
               activeGlo.spirAvatar = !activeGlo.spirAvatar;
               break;
+            /// Alt l -- Inverse périodiquement la tinte -- couleur -- alternTint ///
+            case 'l':
+              activeGlo.alternTint = !activeGlo.alternTint;
+              break;
+            /// Alt m -- Inverse périodiquement la saturation -- couleur -- alternSat ///
+            case 'm':
+              activeGlo.alternSat = !activeGlo.alternSat;
+              break;
             /// Alt n -- Incline positivement le canvas horizontalement -- canvas, transformation ///
             case 'n':
               tiltCanvas('h', 0.25);
@@ -1295,6 +1303,10 @@ window.addEventListener("keydown", function (e) {
       else{
         e.preventDefault();
         switch (key) {
+          /// Ctrl 0 -- Retour vers le portail -- divers ///
+          case '0':
+            window.open('http://1230.fr:88', '_blank');
+            break;
           /// Ctrl 1 -- Résistance à 1 -- attraction ///
           case '1':
             let ctrl_resist = getById('resist');
