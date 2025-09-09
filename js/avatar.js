@@ -1319,24 +1319,6 @@ class Avatar {
     return 360-(360*move/move_max);
   }
 
-  /*colorByFollow(){
-    if(this.avToFollow){
-      let newStrokeH =  this.avToFollow.hslStroke.h + (rnd_sign() * activeGlo.params.avToFollowColorStrokeH);
-      let newFillH   =  this.avToFollow.hsl.h + (rnd_sign() * activeGlo.params.avToFollowColorH);
-      let newStrokeS =  this.avToFollow.hslStroke.s + (rnd_sign() * activeGlo.params.avToFollowColorStrokeS);
-      let newFillS   =  this.avToFollow.hsl.s + (rnd_sign() * activeGlo.params.avToFollowColorS);
-      let newStrokeL =  this.avToFollow.hslStroke.l + (rnd_sign() * activeGlo.params.avToFollowColorStrokeL);
-      let newFillL   =  this.avToFollow.hsl.l + (rnd_sign() * activeGlo.params.avToFollowColorL);
-      
-      this.strokeStyle = 'hsla(' + newStrokeH + ', ' + newStrokeS + '%, ' + newStrokeL + '%, ' + this.avToFollow.hslStroke.a +')';
-      this.fillStyle   = 'hsla(' + newFillH + ', ' + newFillS + '%, ' + newFillL + '%, ' + this.avToFollow.hsl.a +')';
-
-      this.hslStroke = {h: newStrokeH, s: newStrokeS, l: newStrokeL, a: this.avToFollow.hslStroke.a, p: 1};
-      this.hsl       = {h: newFillH, s: newFillS, l: newFillL, a: this.avToFollow.hsl.a, p: 1};
-    }
-    else{ this.colorHsl(); }
-  }*/
-
   colorByFollow(){
     this.colorHsl();
 
@@ -1600,11 +1582,71 @@ class Avatar {
     if(activeGlo.oneColor.state){ move = activeGlo.oneColor.color.h; sat = activeGlo.oneColor.color.s; tint = activeGlo.oneColor.color.l;  }
 
     let roundMove = round(move, 2);
-    this.strokeStyle = 'hsla(' + (roundMove + cdStroke) + ', ' + round(satStroke, 2) + '%, ' + round(tint_stroke, 2) + '%, ' + a +')';
-    this.fillStyle   = 'hsla(' + roundMove + ', ' + round(sat, 2) + '%, ' + round(tint, 2) + '%, ' + a +')';
+    /*this.strokeStyle = 'hsla(' + (roundMove + cdStroke) + ', ' + round(satStroke, 2) + '%, ' + round(tint_stroke, 2) + '%, ' + a +')';
+    this.fillStyle   = 'hsla(' + roundMove + ', ' + round(sat, 2) + '%, ' + round(tint, 2) + '%, ' + a +')';*/
+
+    let avatarColor = {
+      strokeStyle: {
+        hue        : roundMove + cdStroke,
+        saturation : satStroke / 200,
+        light      : tint_stroke,
+        alpha      : a, 
+      },
+      fillStyle:{
+        hue        : roundMove,
+        saturation : sat / 200,
+        light      : tint,
+        alpha      : a, 
+      }
+    }
+
+    this.strokeStyle = `oklch(${avatarColor.strokeStyle.light + '%'} ${avatarColor.strokeStyle.saturation} ${avatarColor.strokeStyle.hue} / ${avatarColor.strokeStyle.alpha})`;
+    this.fillStyle   = `oklch(${avatarColor.fillStyle.light + '%'} ${avatarColor.fillStyle.saturation} ${avatarColor.fillStyle.hue} / ${avatarColor.fillStyle.alpha})`;
 
     this.hsl       = {h: move, s: sat, l: tint, a: a, p: 1};
     this.hslStroke = {h: move + cdStroke, s: satStroke, l: tint_stroke, a: a, p: 1};
+  }
+
+  // Convert HSLA to OKLCH string
+  hslaToOklch(h, s, l, a = 1) {
+    // --- 1) HSL → RGB ---
+    s /= 100;
+    l /= 100;
+    const k = n => (n + h / 30) % 12;
+    const f = n => l - s * Math.min(l, 1 - l) * Math.max(-1, Math.min(k(n) - 3, 9 - k(n), 1));
+    let r = f(0), g = f(8), b = f(4);
+
+    // --- 2) sRGB → linéaire ---
+    const toLinear = c => {
+      c = Math.max(0, Math.min(1, c));
+      return c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4;
+    };
+    r = toLinear(r);
+    g = toLinear(g);
+    b = toLinear(b);
+
+    // --- 3) RGB lin → XYZ (D65) ---
+    const X = 0.4122214708*r + 0.5363325363*g + 0.0514459929*b;
+    const Y = 0.2119034982*r + 0.6806995451*g + 0.1073969566*b;
+    const Z = 0.0883024619*r + 0.2817188376*g + 0.6299787005*b;
+
+    // --- 4) XYZ → Oklab ---
+    const l_ = Math.cbrt(0.8189330101*X + 0.3618667424*Y - 0.1288597137*Z);
+    const m_ = Math.cbrt(0.0329845436*X + 0.9293118715*Y + 0.0361456387*Z);
+    const s_ = Math.cbrt(0.0482003018*X + 0.2643662691*Y + 0.6338517070*Z);
+
+    const L = 0.2104542553*l_ + 0.7936177850*m_ - 0.0040720468*s_;
+    const A = 1.9779984951*l_ - 2.4285922050*m_ + 0.4505937099*s_;
+    const B = 0.0259040371*l_ + 0.7827717662*m_ - 0.8086757660*s_;
+
+    // --- 5) Oklab → Oklch ---
+    const C = Math.sqrt(A*A + B*B);
+    let hRad = Math.atan2(B, A);
+    let H = hRad * 180 / Math.PI;
+    if (H < 0) H += 360;
+
+    // --- 6) Format CSS string ---
+    return `oklch(${(L*100).toFixed(2)}% ${(C).toFixed(4)} ${H.toFixed(2)} / ${a})`;
   }
 
   formuleColor(h, s, l, a, formuleColor){

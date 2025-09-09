@@ -4,16 +4,17 @@
       <meta charset="UTF-8" />
       <meta name="description" content="Interaction" />
       <title>Interaction</title>
-      <link rel="icon" type="image/png" href="/img/logo_interaction.png">
-      <link rel="stylesheet" href="/css/interaction.css">
-      <script src="/js/calcul.js" defer></script>
-      <script src="/js/glob.js" defer></script>
-      <script src="/js/avatar.js" defer></script>
-      <script src="/js/app.js" defer></script>
-      <script src="/js/event.js" defer></script>
+      <link rel="icon" type="image/png" href="img/logo_interaction.png">
+      <link rel="stylesheet" href="css/interaction.css">
+      <script src="js/calcul.js" defer></script>
+      <script src="js/glob.js" defer></script>
+      <script src="js/avatar.js" defer></script>
+      <script src="js/app.js" defer></script>
+      <script src="js/event.js" defer></script>
     </head>
     <body>
-      <div id='ui' style="position: relative; ">
+      <div id="ui-container">
+        <div id='ui' style="position: relative; ">
           <div id="othersInterfaceContainer">
             <div style="display: grid; grid-template-columns: 50% 50%;">
               <div id="toggleHelp"><div id="toggleHelpTxt" onclick="toggleHelpDialog(); " style="width: 30px; ">HELP</div></div>
@@ -47,12 +48,12 @@
               </div>
               <div>
                 <input type="range" id="saturation" name="saturation" class='input_params' oninput="changeModifiersProp(this, 'sat'); updateGlo(this)" ondblclick="updateScale(this, event)"
-                       min="0" max="100" value="77" step="1">
+                       min="0" max="200" value="77" step="1">
                 <label for="saturation">Saturation</label>
               </div>
               <div>
                 <input type="range" id="tint_color" name="tint_color" class='input_params' oninput="changeModifiersProp(this, 'tint'); updateGlo(this)" ondblclick="updateScale(this, event)"
-                       min="-100" max="100" value="42" step="1" data-alea_min="20">
+                       min="0" max="200" value="42" step="1" data-alea_min="20">
                 <label for="tint_color">Tint color</label>
               </div>
             </div>
@@ -1129,59 +1130,61 @@
             </div>
           </div>
         </div>
-        <div id="canvasContainer">
-          <canvas id='structure' class='canvas'></canvas>
-        </div>
-        <div id="dialogContainer">
-          <dialog id="helpDialog" style="width: 85%; height: 85%; position: absolute; top: -10px; border: none; border-radius: 5px; overflow-x: hidden; "
-                  oninput="event.stopPropagation(); " onchange="event.stopPropagation(); " onclick="event.stopPropagation(); ">
-            <div style="text-align: center; margin-top: 10px; display: grid; grid-template-columns: 210px 210px 210px; justify-content: space-between; "
+      </div>
+      
+      <div id="canvasContainer">
+        <canvas id='structure' class='canvas'></canvas>
+      </div>
+      <div id="dialogContainer">
+        <dialog id="helpDialog" style="width: 85%; height: 85%; position: absolute; top: -10px; border: none; border-radius: 5px; overflow-x: hidden; "
                 oninput="event.stopPropagation(); " onchange="event.stopPropagation(); " onclick="event.stopPropagation(); ">
-              <div>
-                <label for="searchInHelp">🔍</label>
-                <input style="margin-top: 10px; " type="text" id="searchInHelp" class="stopWindowEvents" name="searchInHelp" value=""
-                      oninput="constructHelpDialog(false); " onchange="event.stopPropagation(); " onclick="event.stopPropagation(); ">
-              </div>
-              <div>
-                <kbd id="helpTuch_On" class="keys" onclick="toggleHelpOnTuch(this); "
-                    oninput="constructHelpDialog(false);  " style="text-align: center; cursor: pointer;">ON</kbd>
-              </div>
-              <div>
-                <label for="helpDialogOpacity">Opacité</label>
-                <input type="range" id="helpDialogOpacity" name="helpDialogOpacity" class='input_help'
-                      oninput="helpDialogOpacityChange(event); " onchange="event.stopPropagation(); " onclick="event.stopPropagation(); "
-                      min="0.01" max="1" value="0.67" step=".01">
-              </div>
+          <div style="text-align: center; margin-top: 10px; display: grid; grid-template-columns: 210px 210px 210px; justify-content: space-between; "
+              oninput="event.stopPropagation(); " onchange="event.stopPropagation(); " onclick="event.stopPropagation(); ">
+            <div>
+              <label for="searchInHelp">🔍</label>
+              <input style="margin-top: 10px; " type="text" id="searchInHelp" class="stopWindowEvents" name="searchInHelp" value=""
+                    oninput="constructHelpDialog(false); " onchange="event.stopPropagation(); " onclick="event.stopPropagation(); ">
             </div>
-            <div id="HelpTags" style="min-height: 35px; margin-bottom: 7px; " onclick="event.stopPropagation(); "></div>
-            <div id="helpDialogGrid" style="display: grid; grid-template-columns: repeat(3, 33%); column-gap: 10px; row-gap: 10px; " onclick="event.stopPropagation(); "></div>
-          </dialog>
-          <dialog id="brushDialog" style="width: 50%; height: 70%; position: absolute; top: 130px; padding-bottom: 23px; border: none; border-radius: 5px; overflow: hidden; ">
-            <canvas id="brushCanvas" style="width: 99%; height: 95%; border: 1px #cccccc solid; " onclick="event.stopPropagation(); "></canvas>
-            <div id="brushInterface" onclick="event.stopPropagation(); " style="display: grid; grid-template-columns: 50% 50%; ">
-              <div>
-                <label class="radio-inline">
-                  <input type="radio" id="brushFormType_0" name="brushFormType" onclick="activeGlo.brushType = this.value; " value="manual">Manual
-                </label>
-                <label class="radio-inline">
-                  <input type="radio" id="brushFormType_1" name="brushFormType" onclick="activeGlo.brushType = this.value; " value="line">Line
-                </label>
-                <label class="radio-inline">
-                  <input type="radio" id="brushFormType_2" name="brushFormType" onclick="activeGlo.brushType = this.value; " value="circle">Circle
-                </label>
-                <label class="radio-inline">
-                  <input type="radio" id="brushFormType_2" name="brushFormType" onclick="activeGlo.brushType = this.value; " value="square">Square
-                </label>
-              </div>
-              <div>
-                <label for="brushSize" class="radio-inline">Size</label>
-                <input type="range" id="brushSize" name="brushSize" class='input_params' value="10" oninput="updateGlo(this)" ondblclick="updateScale(this, event)">
-              </div>
+            <div>
+              <kbd id="helpTuch_On" class="keys" onclick="toggleHelpOnTuch(this); "
+                  oninput="constructHelpDialog(false);  " style="text-align: center; cursor: pointer;">ON</kbd>
             </div>
-          </dialog>
-          <dialog id="modPathDialog" style="width: 50%; height: 70%; position: absolute; top: 130px; border: none; border-radius: 5px; overflow: hidden; ">
-            <canvas id="modPathCanvas" style="width: 99%; height: 100%; border: 1px #cccccc solid; " onclick="event.stopPropagation(); "></canvas>
-          </dialog>
-        </div>
+            <div>
+              <label for="helpDialogOpacity">Opacité</label>
+              <input type="range" id="helpDialogOpacity" name="helpDialogOpacity" class='input_help'
+                    oninput="helpDialogOpacityChange(event); " onchange="event.stopPropagation(); " onclick="event.stopPropagation(); "
+                    min="0.01" max="1" value="0.67" step=".01">
+            </div>
+          </div>
+          <div id="HelpTags" style="min-height: 35px; margin-bottom: 7px; " onclick="event.stopPropagation(); "></div>
+          <div id="helpDialogGrid" style="display: grid; grid-template-columns: repeat(3, 33%); column-gap: 10px; row-gap: 10px; " onclick="event.stopPropagation(); "></div>
+        </dialog>
+        <dialog id="brushDialog" style="width: 50%; height: 70%; position: absolute; top: 130px; padding-bottom: 23px; border: none; border-radius: 5px; overflow: hidden; ">
+          <canvas id="brushCanvas" style="width: 99%; height: 95%; border: 1px #cccccc solid; " onclick="event.stopPropagation(); "></canvas>
+          <div id="brushInterface" onclick="event.stopPropagation(); " style="display: grid; grid-template-columns: 50% 50%; ">
+            <div>
+              <label class="radio-inline">
+                <input type="radio" id="brushFormType_0" name="brushFormType" onclick="activeGlo.brushType = this.value; " value="manual">Manual
+              </label>
+              <label class="radio-inline">
+                <input type="radio" id="brushFormType_1" name="brushFormType" onclick="activeGlo.brushType = this.value; " value="line">Line
+              </label>
+              <label class="radio-inline">
+                <input type="radio" id="brushFormType_2" name="brushFormType" onclick="activeGlo.brushType = this.value; " value="circle">Circle
+              </label>
+              <label class="radio-inline">
+                <input type="radio" id="brushFormType_3" name="brushFormType" onclick="activeGlo.brushType = this.value; " value="square">Square
+              </label>
+            </div>
+            <div>
+              <label for="brushSize" class="radio-inline">Size</label>
+              <input type="range" id="brushSize" name="brushSize" class='input_params' value="10" oninput="updateGlo(this)" ondblclick="updateScale(this, event)">
+            </div>
+          </div>
+        </dialog>
+        <dialog id="modPathDialog" style="width: 50%; height: 70%; position: absolute; top: 130px; border: none; border-radius: 5px; overflow: hidden; ">
+          <canvas id="modPathCanvas" style="width: 99%; height: 100%; border: 1px #cccccc solid; " onclick="event.stopPropagation(); "></canvas>
+        </dialog>
+      </div>
     </body>
 </html>

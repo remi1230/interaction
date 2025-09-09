@@ -19,10 +19,10 @@ class Glob {
                 same_dir: 0,
                 resist: 0,
                 alpha_color: 0.1,
-                saturation: 77,
+                saturation: 50,
                 lim_line: 32,
                 line_size: 1,
-                tint_color: 42,
+                tint_color: 50,
                 lightByCenter: 0,
                 alternTintSpeed: 100,
                 alternSatSpeed: 100,
@@ -87,7 +87,7 @@ class Glob {
                 ctxComposition: 0,
                 rotCircleModifiers: 0,
                 rotModifiersMax: 0,
-                varColDistModifs: 2,
+                varColDistModifs: 4,
                 colorCumulType: 0,
                 coeffDimSizeCenter: 1,
                 spiral_force: 1,
@@ -343,7 +343,7 @@ class Glob {
         this.sameSizeEllipse = true;
         this.moveOnAlea = true;
         this.rotateBrush = true;
-        this.oneColor = {state: false, color: {h: 100, s:77, l:42} };
+        this.oneColor = {state: false, color: {h: 100, s:77, l:50} };
         this.trans = {};
         this.lineCap = ["butt", "round", "square"];
         this.avsOneColor = {h:180, s:50, l: 50};

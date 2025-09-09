@@ -1080,7 +1080,7 @@ function createGoInterface(){
 
     div.className    = 'goInterface' + isActive;
     div.id           = 'goInterface_' + i;
-    div.style.left   = 98.25 - ((interfaces.length - 1 - i) * 1.75) + '%';
+    //div.style.left   = 95 - ((interfaces.length - 1 - i) * 5) + '%';
 
     div.setAttribute("onclick", "showInterface(" + i + "); ");
 
