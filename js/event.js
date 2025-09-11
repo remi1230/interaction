@@ -3,6 +3,7 @@ document.addEventListener("DOMContentLoaded", function() {
     params_interface();
     createGoInterface();
     createCheckboxesWithRange(activeGlo.colorFunctionLabels, 'colorCumulContainer', 'qMove', {event: 'onchange', func: 'checkColorFunctions()'});
+    resizeUI();
     feedHelp();
     if(!localStorage.getItem('glo')){ createAvatar({nb: activeGlo.params.nb, w: activeGlo.size}); }
     else{ restoreFlash(); }
@@ -25,11 +26,6 @@ ui.addEventListener('contextmenu', () => {
   activeGlo.time = new Date().getTime();
 });
 
-//------------------ ClICK ON SHOW / HIDE INTERFACE ----------------- //
-getById('showHideInterfaceTxt').addEventListener('click', () => {
-  event.preventDefault();
-  showHideInterface();
-});
 //------------------ ClICK SUR LE CANVAS POUR SWITCHER L'AFFICHAGE DES PARAMÉTRES ----------------- //
 structure.addEventListener('click', () => {
   if(!activeGlo.virtual.modifier && !activeGlo.virtual.avatar){
@@ -376,7 +372,7 @@ window.addEventListener("keydown", function (e) {
               break;
             /// F1 -- Effacement du canvas -- canvas -- clear ///
             case 'F1':
-              activeGlo.clear = !activeGlo.clear;
+              switchPersist()
 
               break;
             /// F2 -- Style dessin -- dessin ///
@@ -805,16 +801,7 @@ window.addEventListener("keydown", function (e) {
         			break;
             /// < -- Dessine un cercle d'avatars -- creation, avatar ///
         		case '<':
-              activeGlo.modifiers = [];
-              
-              if(!activeGlo.randomPointByMod){ window.dispatchEvent(new KeyboardEvent('keydown',  {'key':'V', 'ctrlKey' : false, 'altKey' : false})); }
-              keepBreak(glo_params, 'test');
-              clear();
-
-              window.dispatchEvent(new KeyboardEvent('keydown',  {'key':'²', 'ctrlKey' : false, 'altKey' : false}));
-              if(!activeGlo.shortcut.alphaVarSize){ window.dispatchEvent(new KeyboardEvent('keydown',  {'key':'F2', 'ctrlKey' : false, 'altKey' : false})); }
-              window.dispatchEvent(new KeyboardEvent('keydown',  {'key':'y', 'ctrlKey' : true, 'altKey' : false}));
-              if(activeGlo.clear){ window.dispatchEvent(new KeyboardEvent('keydown',  {'key':'F1', 'ctrlKey' : false, 'altKey' : false})); }
+              testAll();
         			break;
             /// > -- Rotation des couleurs de l'image -- image, couleur ///
         		case '>':
@@ -1099,14 +1086,7 @@ window.addEventListener("keydown", function (e) {
               break;
             /// Ctrl k -- Couleur de fond préférée -- couleur ///
             case 'k':
-              activeGlo.canvasLoveBg.state = !activeGlo.canvasLoveBg.state;
-              if(activeGlo.canvasLoveBg.state){
-                activeGlo.canvasLoveBg.save  = canvas.style.backgroundColor;
-                canvas.style.backgroundColor = activeGlo.canvasLoveBg.color;
-              }
-              else{
-                canvas.style.backgroundColor = activeGlo.canvasLoveBg.save;
-              }
+              switchBg();
               break;
             /// Ctrl l -- Inverse périodiquement les couleurs -- couleur -- alternColor ///
             case 'l':

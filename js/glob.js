@@ -6,7 +6,7 @@ class Glob {
             {
                 num_modifier: -1,
                 selectCanvas: 0,
-                nb: 512,
+                nb: 1024,
                 keep_dir: 50,
                 speed_alea_pos: 50,
                 rAleaPos: 1.125,
@@ -19,7 +19,7 @@ class Glob {
                 same_dir: 0,
                 resist: 0,
                 alpha_color: 0.1,
-                saturation: 50,
+                saturation: 33,
                 lim_line: 32,
                 line_size: 1,
                 tint_color: 50,
@@ -466,3 +466,5 @@ var input_params     = [...document.getElementsByClassName('input_params')];
 var objectUrl;
 
 var dpi = window.devicePixelRatio;
+
+const SIXTEEN_ON_NINE = 1.7777777777777777;

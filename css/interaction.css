@@ -32,16 +32,18 @@ body{
 }
 .canvas{
   position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
+  display:block;
 }
 .interface{
   display: flex;
   flex-direction: column;
-  width: 250px;
+  height: 100%;
   grid-template-columns: repeat(6, 1fr);
   background-color: rgba(238, 238, 238, 0.5);
-  padding: 30px 0px 10px 5px;
+  padding: 0px 0px 10px 5px;
 }
 .labelImport{
   margin-right: 77px;
@@ -95,13 +97,13 @@ body{
 }
 .goInterface{
   cursor: pointer;
-  /*position: absolute;
-  text-align: right;*/
   color: var(--txt-color);
-  font-size: 12px;
+  font-size: 16px;
   height: 15px;
   font-family: arial;
   text-align: center;
+  padding: 5px;
+  border-radius: 5px;
 }
 .goInterface:hover{
   background-color: lightgray;
@@ -195,22 +197,37 @@ kbd.keys.on, kbd.keys.helpOn {
 .trSelect{
   background-color: #dcc3e7;
 }
+.titleInterface{
+  display: flex;
+}
+.ui-button{
+  font-size: 20px;
+  cursor: pointer;
+}
 
+
+#uiCanvas-container{
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+}
 #ui{
+  display: flex;
+  flex-direction: column;
   align-self: flex-end;
-  width: 250px;
+  /*width: 272px;*/
   font-size: 0.777vw;
   z-index: 1;
   opacity: 1;
 }
 #ui-container{
-  width: 100%;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
 }
 #canvasContainer{
-  position: absolute;
-  top: 0;
+  position: relative;
+  flex: 1 1 auto;
+  align-self: end;
   width: 100%;
   height: 100%;
 }
@@ -219,6 +236,8 @@ kbd.keys.on, kbd.keys.helpOn {
   flex-direction: row;
   justify-content: space-evenly;
   width: 100%;
+  background-color: #a8bdbb;
+  padding: 2px;
 }
 #num_interface{
   cursor: pointer;
@@ -232,30 +251,42 @@ kbd.keys.on, kbd.keys.helpOn {
   font-family: arial;
 }
 #othersInterfaceContainer{
-  position: absolute;
-  text-align: right;
+  padding: 5px;
+  box-sizing: border-box;
+  align-self: flex-end;
   color: var(--txt-color);
-  top: 90%;
   font-size: 12px;
   width:100%;
-  height: 15px;
   font-family: arial;
+  background-color: #c0c1df;
 }
 #showHideInterfaceTxt{
   cursor: nw-resize;
   float: right;
   margin-top: 2px;
 }
+#buttonsUI{
+  display: flex;
+  gap: 10px;
+}
 #toggleHelpTxt{
+  width: 30px;
+  border: 1px #ccc solid;
+  padding: 5px 0px;
+  border-radius: 50px;
+  background-color: #00ccbb;
   cursor: pointer;
-  margin-top: 3px;
+  font-size: 1.2em;
+  font-weight: 600;
 }
 #toggleHelp{
-  text-align: left;
-  text-align: left;
+  text-align: center;
   font-size: 10px;
   font-weight: 600;
   color: green;
+}
+#colorCumulContainer{
+  margin-top: 20px;
 }
 #structure{
   cursor: pointer;

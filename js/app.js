@@ -1080,7 +1080,6 @@ function createGoInterface(){
 
     div.className    = 'goInterface' + isActive;
     div.id           = 'goInterface_' + i;
-    //div.style.left   = 95 - ((interfaces.length - 1 - i) * 5) + '%';
 
     div.setAttribute("onclick", "showInterface(" + i + "); ");
 
@@ -3860,14 +3859,57 @@ function modifiersColor_upd(ctrl) {
   });
 }
 
+function switchBg(){
+  activeGlo.canvasLoveBg.state = !activeGlo.canvasLoveBg.state;
+  if(activeGlo.canvasLoveBg.state){
+    activeGlo.canvasLoveBg.save  = canvas.style.backgroundColor;
+    canvas.style.backgroundColor = activeGlo.canvasLoveBg.color;
+  }
+  else{
+    canvas.style.backgroundColor = activeGlo.canvasLoveBg.save;
+  }
+
+  document.getElementById('switchBgButton').textContent = !activeGlo.canvasLoveBg.state ? '☀️' : '🌙';
+}
+
+function switchPersist(){
+  activeGlo.clear = !activeGlo.clear;
+  document.getElementById('switchPersistButton').textContent = !activeGlo.clear? '✍️' : '🖐️';
+}
+
+function switchPause(){
+  activeGlo.totalBreak = !activeGlo.totalBreak;
+  document.getElementById('switchPauseButton').textContent = !activeGlo.totalBreak? '▶️' : '⏸️';
+}
+
+function switchSroke(){
+  activeGlo.strokeAndFill = !activeGlo.strokeAndFill;
+  document.getElementById('switchPauseButton').textContent = activeGlo.totalBreak? '▶️' : '⏸️';
+}
+
+function testAll(){
+  activeGlo.modifiers = [];
+              
+  if(!activeGlo.randomPointByMod){ window.dispatchEvent(new KeyboardEvent('keydown',  {'key':'V', 'ctrlKey' : false, 'altKey' : false})); }
+  keepBreak(glo_params, 'test');
+  clear();
+
+  window.dispatchEvent(new KeyboardEvent('keydown',  {'key':'²', 'ctrlKey' : false, 'altKey' : false}));
+  if(!activeGlo.shortcut.alphaVarSize){ window.dispatchEvent(new KeyboardEvent('keydown',  {'key':'F2', 'ctrlKey' : false, 'altKey' : false})); }
+  window.dispatchEvent(new KeyboardEvent('keydown',  {'key':'y', 'ctrlKey' : true, 'altKey' : false}));
+  if(activeGlo.clear){
+    switchPersist();
+  }
+}
+
 //------------------ CANVAS DOWNLOAD IMAGE ----------------- //
 function downloadCanvas(){
   let firstCanvas = canvasContext[0].canvas;
   let canvasToImg = document.createElement('canvas');
   let ctxToImg    = get_ctx(canvasToImg);
 
-  canvasToImg.width  = canvasContext[0].canvas.width;
-  canvasToImg.height = canvasContext[0].canvas.height;
+  canvasToImg.width  = canvasContext[0].canvas.clientWidth;
+  canvasToImg.height = canvasContext[0].canvas.clientHeight;
 
   ctxToImg.fillStyle = firstCanvas.style.backgroundColor == '' ? 'white' : firstCanvas.style.backgroundColor;
   ctxToImg.fillRect(0, 0, firstCanvas.width, firstCanvas.height);
@@ -3875,7 +3917,7 @@ function downloadCanvas(){
   canvasContext.forEach(ctxCan => {
     let can = ctxCan.canvas;
 
-    ctxCan.saveImg = ctxCan.getImageData(0, 0, can.width, can.height);
+    ctxCan.saveImg = ctxCan.getImageData(0, 0, can.width, can.height);console.log(can.width, can.height);
 
     ctxCan.globalCompositeOperation = 'destination-over';
     ctxCan.fillStyle = can.style.backgroundColor == '' ? 'white' : can.style.backgroundColor;
@@ -4683,6 +4725,19 @@ function toggleArrObjsDialog(arrObjs, title){
   }
 }
 
+function resizeUI(cv = structure){
+  const canvasHeight = cv.height;
+
+  const canvasNormalizeWidth = canvasHeight * SIXTEEN_ON_NINE;
+
+  const windowWidth = document.getElementsByTagName('body')[0].clientWidth;
+
+  const uiWidth = windowWidth - canvasNormalizeWidth;
+
+  console.log(canvasHeight, windowWidth, canvasNormalizeWidth, uiWidth);
+
+  ui.style.width = `${Math.abs(uiWidth)}px`;
+}
 
 
 
