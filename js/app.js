@@ -3874,17 +3874,20 @@ function switchBg(){
 
 function switchPersist(){
   activeGlo.clear = !activeGlo.clear;
-  document.getElementById('switchPersistButton').textContent = !activeGlo.clear? '✍️' : '🖐️';
+  window.dispatchEvent(new KeyboardEvent('keydown',  {'key':'²', 'ctrlKey' : false, 'altKey' : false}));
+  window.dispatchEvent(new KeyboardEvent('keydown',  {'key':'F2', 'ctrlKey' : false, 'altKey' : false}));
+  document.getElementById('switchPersistButton').textContent = !activeGlo.clear ? '✍️' : '🖐️';
 }
 
 function switchPause(){
   activeGlo.totalBreak = !activeGlo.totalBreak;
-  document.getElementById('switchPauseButton').textContent = !activeGlo.totalBreak? '▶️' : '⏸️';
+  document.getElementById('switchPauseButton').textContent = !activeGlo.totalBreak ? '▶️' : '⏸️';
 }
 
 function switchSroke(){
   activeGlo.strokeAndFill = !activeGlo.strokeAndFill;
-  document.getElementById('switchPauseButton').textContent = activeGlo.totalBreak? '▶️' : '⏸️';
+  getSelectedModifiers().forEach(mod => { mod.glo.strokeAndFill = activeGlo.strokeAndFill; } );
+  document.getElementById('switchStrokeIcon').classList = !activeGlo.strokeAndFill ? "fillRound" : "fillAndStrokeRound";
 }
 
 function testAll(){
@@ -3898,7 +3901,8 @@ function testAll(){
   if(!activeGlo.shortcut.alphaVarSize){ window.dispatchEvent(new KeyboardEvent('keydown',  {'key':'F2', 'ctrlKey' : false, 'altKey' : false})); }
   window.dispatchEvent(new KeyboardEvent('keydown',  {'key':'y', 'ctrlKey' : true, 'altKey' : false}));
   if(activeGlo.clear){
-    switchPersist();
+    activeGlo.clear = !activeGlo.clear;
+    document.getElementById('switchPersistButton').textContent = !activeGlo.clear ? '✍️' : '🖐️';
   }
 }
 
@@ -4366,7 +4370,7 @@ function makeDialog(options = {style: {width: '50%', height: '50%'}, }, content,
   opInput += "<label for='dialogOpacity_" + numId + "'>Opacité</label>";
   opInput += "<input type='range' id='dialogOpacity_" + numId + "' name='dialogOpacity_" + numId + "' class='input_help'";
   opInput += " oninput='this.parentElement.parentElement.parentElement.style.opacity = this.value;  ' onchange='event.stopPropagation(); ' onclick='event.stopPropagation(); '";
-  opInput += " min='0.01' max='1' value='0.67' step='.01'>"
+  opInput += " min='0.01' max='1' value='1' step='.01'>"
   opInput += "</div>";
 
   content = "<div class='dialogContentContainer' onclick='event.stopPropagation(); '>" + opInput +  content + "</div>";

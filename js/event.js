@@ -5,6 +5,7 @@ document.addEventListener("DOMContentLoaded", function() {
     createCheckboxesWithRange(activeGlo.colorFunctionLabels, 'colorCumulContainer', 'qMove', {event: 'onchange', func: 'checkColorFunctions()'});
     resizeUI();
     feedHelp();
+    switchBg();
     if(!localStorage.getItem('glo')){ createAvatar({nb: activeGlo.params.nb, w: activeGlo.size}); }
     else{ restoreFlash(); }
     getById('brushFormType_0').checked = true;
@@ -372,7 +373,7 @@ window.addEventListener("keydown", function (e) {
               break;
             /// F1 -- Effacement du canvas -- canvas -- clear ///
             case 'F1':
-              switchPersist()
+              switchPersist();
 
               break;
             /// F2 -- Style dessin -- dessin ///
@@ -580,7 +581,7 @@ window.addEventListener("keydown", function (e) {
         			break;
             /// E -- Avatars plein avec bords -- avatar, dessin -- strokeAndFill ///
         		case 'E':
-              activeGlo.strokeAndFill = !activeGlo.strokeAndFill;
+              switchSroke();
         			break;
             /// F -- Modifiers en mode une couleur -- modifier, couleur -- modifiersHaveColor ///
         		case 'F':
@@ -1473,8 +1474,8 @@ function constructHelpDialog(start = false){
       false
     );
   });
-  getById('helpDialogOpacity').value = 0.67;
-  helpDialog.style.opacity           = 0.67;
+  getById('helpDialogOpacity').value = 1
+  helpDialog.style.opacity           = 1;
 
   tuchs = tuchs_save.slice();
 }
