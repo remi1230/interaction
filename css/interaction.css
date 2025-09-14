@@ -1,7 +1,16 @@
 @font-face {
-  font-family: "Noah";
-  src: url("../fonts/Noah/noah_regular_400.otf");
+  font-family: 'Inter';
+  src: url('../fonts/inter/InterVariable.ttf') format('truetype');
+  font-weight: 100 900;
+  font-style: normal;
 }
+@font-face {
+  font-family: 'Inter';
+  src: url('../fonts/inter/InterVariable-Italic.ttf') format('truetype');
+  font-weight: 100 900;
+  font-style: italic;
+}
+
 
 
 :root {
@@ -12,7 +21,7 @@
 
 
 * {
-	font-family: 'Noah', 'New York', sans-serif;
+	font-family: 'Inter', 'Noah', 'New York', sans-serif;
 }
 *:focus {
     outline: none;
@@ -49,6 +58,7 @@ body{
 .interface{
   display: flex;
   flex-direction: column;
+  gap: 6px;
   height: 100%;
   grid-template-columns: repeat(6, 1fr);
   background-color: rgba(238, 238, 238, 0.5);
@@ -113,6 +123,7 @@ body{
   text-align: center;
   padding: 5px;
   border-radius: 5px;
+  transition: background-color 0.3s ease, color 0.7s ease;
 }
 .goInterface:hover{
   background-color: lightgray;
@@ -231,6 +242,13 @@ kbd.keys.on, kbd.keys.helpOn {
   border-radius: 50px;
   border: 2px var(--switchStrokeButtonBd)solid;
 }
+.fileInput{
+  cursor: pointer;
+  font-size: 12px;
+  width: 110px;
+}
+
+
 #uiCanvas-container{
   display: flex;
   flex-direction: row;
@@ -240,7 +258,7 @@ kbd.keys.on, kbd.keys.helpOn {
   display: flex;
   flex-direction: column;
   align-self: flex-end;
-  font-size: 0.777vw;
+  font-size: clamp(10px, calc(9.48px + 0.208vw), 12px);
   z-index: 1;
   opacity: 1;
 }
@@ -251,7 +269,6 @@ kbd.keys.on, kbd.keys.helpOn {
 #canvasContainer{
   position: relative;
   flex: 1 1 auto;
-  align-self: end;
   width: 100%;
   height: 100%;
 }
@@ -274,15 +291,23 @@ kbd.keys.on, kbd.keys.helpOn {
   height: 15px;
   font-family: arial;
 }
+#otherAndInterfacesContainer{
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+}
 #othersInterfaceContainer{
+  flex: 0 0 20px;
   padding: 5px;
   box-sizing: border-box;
-  align-self: flex-end;
   color: var(--txt-color);
   font-size: 12px;
   width:100%;
   font-family: arial;
   background-color: #c0c1df;
+}
+#interfaces-container{
+  flex: 1;
 }
 #showHideInterfaceTxt{
   cursor: nw-resize;
@@ -291,14 +316,14 @@ kbd.keys.on, kbd.keys.helpOn {
 }
 #buttonsUI{
   display: flex;
+  flex-direction: column;
   justify-content: space-evenly;
   align-items: center;
   gap: 10px;
 }
 #toggleHelpTxt{
-  width: 30px;
   border: 1px #ccc solid;
-  padding: 5px 0px;
+  padding: 5px;
   border-radius: 50px;
   background-color: #00ccbb;
   cursor: pointer;
@@ -317,11 +342,48 @@ kbd.keys.on, kbd.keys.helpOn {
 #structure{
   cursor: pointer;
 }
-* Boîte du modal */
+/* Grille des touches F1..Fn */
+#helpDialogGrid {
+  display: grid;
+  grid-template-rows: repeat(66, minmax(0, auto)); /* ou ajuste le nombre */
+  grid-auto-flow: column;              /* remplit par colonnes */
+  grid-auto-columns: max-content;      /* ou 1fr pour colonnes égales */
+  gap: 8px 16px;
+  align-content: start;
+}
+#searchAndOnTuchContainer{
+  display: flex;
+  gap: 10px;
+}
+#colorButtonsContainer{
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+#actionsContainer{
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+#actionsSaveSection{
+  display: grid;
+  grid-template-columns: 50% 50%;
+  gap: 5px;
+  width: 90%;
+}
+button{
+  cursor: pointer;
+}
+
+.actionsTitleSection h4{
+  margin: 5px 0;
+  padding: 0;
+}
+/* Boîte du modal */
 .help-dialog {
   padding: 0;
   border: none;
-  width: min(1100px, 85vw);
+  /*width: min(1100px, 85vw);*/
   max-height: 85vh;          /* limite verticale */
 }
 
@@ -350,7 +412,7 @@ kbd.keys.on, kbd.keys.helpOn {
 
 .header-grid {
   display: grid;
-  grid-template-columns: 210px 210px 210px;
+  grid-template-columns: repeat(3, 1fr);
   justify-content: space-between;
   align-items: center;
   gap: .5rem 1rem;
@@ -364,16 +426,37 @@ kbd.keys.on, kbd.keys.helpOn {
   overflow: auto;   /* le scroll se fait ici */
   min-height: 0;    /* crucial pour que le scroll atteigne le bas */
   padding: .5rem 1rem 1rem;
+  overflow-x: hidden;
 }
 
-/* Grille des touches F1..Fn */
-#helpDialogGrid {
-  display: grid;
-  grid-template-rows: repeat(66, minmax(0, auto)); /* ou ajuste le nombre */
-  grid-auto-flow: column;              /* remplit par colonnes */
-  grid-auto-columns: max-content;      /* ou 1fr pour colonnes égales */
-  gap: 8px 16px;
-  align-content: start;
+.invColorButtonsContainer{
+  display: flex;
+  padding: 5px 0 5px;
+}
+.redSquare{
+  background-color: red;
+  width: 10px;
+  height: 10px;
+}
+.blueSquare{
+  background-color: blue;
+  width: 10px;
+  height: 10px;
+}
+.blackSquare{
+  background-color: black;
+  width: 10px;
+  height: 10px;
+}
+.whiteSquare{
+  background-color: white;
+  width: 10px;
+  height: 10px;
+}
+.graySquare{
+  background-color: gray;
+  width: 10px;
+  height: 10px;
 }
 
 /*=========================================================*/
@@ -390,12 +473,13 @@ input[type=range].input_params {
   background-position: center;
   background-repeat: no-repeat;
   background-size: 100% 25%;
+  margin: 1px 0 1px;
 }
 input[type=range].input_help {
   -webkit-appearance: none;
   color: #FFF;
   background: transparent;
-  background-image: linear-gradient(to bottom, #FFF, #999, #FFF);
+  background-image: linear-gradient(to bottom, #924343, #999, #FFF);
   background-position: center;
   background-repeat: no-repeat;
   background-size: 100% 25%;
@@ -404,18 +488,21 @@ input[type=range].input_help {
 /* le curseur                   */
 /*==============================*/
 input[type=range].input_params::-webkit-slider-thumb {
-  width: .77em;
-  height: 0.5em;
+  -webkit-appearance: none;
+  appearance: none;
+  width: 1em;
+  height: 1em;
   padding: 0.2em;                                              /* largeur du bord */
   border: 1px solid #888;
   border-radius: 50%;
   box-shadow: 0 0 .5em #FFF inset;
   background: linear-gradient(#888, #FFF) content-box,          /* le centre */
               linear-gradient(-90deg, #888, #DDD) border-box;   /* le bord */
+  margin: 1px 0 1px;
 }
 input[type=range].input_params::-moz-range-thumb {
-  width: .77em;
-  height: 0.5em;
+  width: 1em;
+  height: 1em;
   padding: 0.2em;                                              /* largeur du bord */
   border: 1px solid #888;
   border-radius: 50%;
@@ -424,8 +511,8 @@ input[type=range].input_params::-moz-range-thumb {
               linear-gradient(-90deg, #888, #DDD) border-box;   /* le bord */
 }
 input[type=range].input_params::-ms-thumb {
-  width: .77em;
-  height: 0.5em;
+  width: 1em;
+  height: 1em;
   padding: 0.2em;                                              /* largeur du bord */
   border: 1px solid #888;
   border-radius: 50%;
@@ -464,26 +551,26 @@ input[type=range].input_help::-ms-thumb {
 /*=========================================================*/
 
 
-@media only screen and (max-width:1666px) {
+/*@media only screen and (max-width:1666px) {
   #ui {
-    font-size: .9vw;
+    font-size: .777vw;
   }
 }
 @media only screen and (max-width:1250px) {
   #ui {
-    font-size: 1.2vw;
+    font-size: .999vw;
   }
 }
 @media only screen and (max-width:912px) {
   #ui {
-    font-size: 1.5vw;
+    font-size: 1.37vw;
   }
 }
 @media only screen and (max-width:653px) {
   #ui {
-    font-size: 2vw;
+    font-size: 1.66vw;
   }
-}
+}*/
 
 
 

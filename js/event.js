@@ -347,6 +347,7 @@ function defineMinOrMax(obj_param){
 }
 //------------------ RESIZE CANVAS WHEN RESIZE WINDOW ----------------- //
 window.addEventListener('resize', function () {
+  resizeUI();
   if(activeGlo.clear){ allCanvas.forEach(canvas => { fix_dpi(canvas); }); }
 });
 
@@ -365,10 +366,7 @@ window.addEventListener("keydown", function (e) {
         if(!e.altKey){
         	switch (key) {
             case 'Delete':
-              let modsSz = activeGlo.modifiers.length;
-              activeGlo.modifiers = activeGlo.modifiers.filter(mod => !mod.select);
-              if(modsSz == activeGlo.modifiers.length){ activeGlo.modifiers = []; }
-              avatars.forEach(av => { av.nearMod = {}; av.distMinModifiers = 9999; });
+              deteleAllModifiers();
 
               break;
             /// F1 -- Effacement du canvas -- canvas -- clear ///

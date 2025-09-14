@@ -1648,6 +1648,21 @@ function invTint(){
     }
   });
 }
+function invSaturation(){
+  updImage(data => {
+    for (var i  = 0; i < data.length; i += 4) {
+      if(data[i] != 0 || data[i + 1] != 0 || data[i + 2] != 0){
+        let hsla  = RGBAToHSLA(data[i], data[i+1], data[i+2], data[i+3]);
+        hsla.s = 100 - hsla.s;
+        let rbga  = HSLAToRGBA(hsla.h, hsla.s, hsla.l, hsla.a);
+
+        data[i]     = rbga.r;
+        data[i + 1] = rbga.g;
+        data[i + 2] = rbga.b;
+      }
+    }
+  });
+}
 //------------------ MODIFICATION DE LA COULEUR DES AVATARS ----------------- //
 function rotateColor(x = 0.1, y = 0.1, z = 0.1){
   updImage(data => {
@@ -3890,8 +3905,13 @@ function switchSroke(){
   document.getElementById('switchStrokeIcon').classList = !activeGlo.strokeAndFill ? "fillRound" : "fillAndStrokeRound";
 }
 
-function testAll(){
-  activeGlo.modifiers = [];
+function switchModifiersVisibility(){
+  activeGlo.view_modifiers = !activeGlo.view_modifiers;
+  document.getElementById('switchModifiersVisibilityIcon').textContent = !activeGlo.view_modifiers ? '👁‍🗨' : '👁';
+}
+
+function testAll(withMods = true){
+  if(withMods){ activeGlo.modifiers = []; }
               
   if(!activeGlo.randomPointByMod){ window.dispatchEvent(new KeyboardEvent('keydown',  {'key':'V', 'ctrlKey' : false, 'altKey' : false})); }
   keepBreak(glo_params, 'test');
@@ -3899,52 +3919,71 @@ function testAll(){
 
   window.dispatchEvent(new KeyboardEvent('keydown',  {'key':'²', 'ctrlKey' : false, 'altKey' : false}));
   if(!activeGlo.shortcut.alphaVarSize){ window.dispatchEvent(new KeyboardEvent('keydown',  {'key':'F2', 'ctrlKey' : false, 'altKey' : false})); }
-  window.dispatchEvent(new KeyboardEvent('keydown',  {'key':'y', 'ctrlKey' : true, 'altKey' : false}));
+  if(withMods){
+    window.dispatchEvent(new KeyboardEvent('keydown',  {'key':'y', 'ctrlKey' : true, 'altKey' : false}));
+  }
   if(activeGlo.clear){
     activeGlo.clear = !activeGlo.clear;
     document.getElementById('switchPersistButton').textContent = !activeGlo.clear ? '✍️' : '🖐️';
   }
+  
+  if(!withMods){
+    activeGlo.randomPointByMod = true;
+    activeGlo.params.rAleaPos  = 0.2;
+    getSelectedModifiers().forEach(mod => {
+      mod.glo.params.rAleaPos  = 0.2;
+      mod.glo.randomPointByMod = true;
+    });
+  }
+  
+}
+
+function deleteAllModifiers(){
+  let modsSz = activeGlo.modifiers.length;
+  activeGlo.modifiers = activeGlo.modifiers.filter(mod => !mod.select);
+  if(modsSz == activeGlo.modifiers.length){ activeGlo.modifiers = []; }
+  avatars.forEach(av => { av.nearMod = {}; av.distMinModifiers = 9999; });
+  ctx.clearRect(0, 0, ctx.canvas.clientWidth, ctx.canvas.clientHeight);
 }
 
 //------------------ CANVAS DOWNLOAD IMAGE ----------------- //
-function downloadCanvas(){
-  let firstCanvas = canvasContext[0].canvas;
-  let canvasToImg = document.createElement('canvas');
-  let ctxToImg    = get_ctx(canvasToImg);
+function downloadCanvas() {
+  // On prend la taille réelle (pixels) du premier canvas
+  const src = canvasContext[0].canvas;
+  const W = Math.round(src.clientWidth * (window.devicePixelRatio || 1));
+  const H = Math.round(src.clientHeight * (window.devicePixelRatio || 1));
 
-  canvasToImg.width  = canvasContext[0].canvas.clientWidth;
-  canvasToImg.height = canvasContext[0].canvas.clientHeight;
+  // Canvas de sortie aux mêmes dimensions réelles
+  const out = document.createElement('canvas');
+  out.width = W;
+  out.height = H;
+  const octx = out.getContext('2d');
 
-  ctxToImg.fillStyle = firstCanvas.style.backgroundColor == '' ? 'white' : firstCanvas.style.backgroundColor;
-  ctxToImg.fillRect(0, 0, firstCanvas.width, firstCanvas.height);
+  // Fond opaque (ou la couleur du style si définie)
+  const bg = src.style.backgroundColor || '#ffffff';
+  octx.fillStyle = bg;
+  octx.fillRect(0, 0, W, H); // on remplit TOUT le out
 
+  // Dessine chaque calque source dessus
+  // (Si tous tes canvas ont la même taille W×H, simple drawImage)
   canvasContext.forEach(ctxCan => {
-    let can = ctxCan.canvas;
-
-    ctxCan.saveImg = ctxCan.getImageData(0, 0, can.width, can.height);console.log(can.width, can.height);
-
-    ctxCan.globalCompositeOperation = 'destination-over';
-    ctxCan.fillStyle = can.style.backgroundColor == '' ? 'white' : can.style.backgroundColor;
-    ctxCan.fillRect(0, 0, can.width, can.height);
-    ctxCan.putImageData(ctxCan.saveImg, 0, 0);
-    ctxToImg.drawImage(can, 0, 0);
-
-    ctxCan.globalCompositeOperation = 'source-over';
-    //ctxCan.putImageData(ctxCan.saveImg, 0, 0);
-    delete(ctxCan.saveImg);
+    const can = ctxCan.canvas;
+    if (can.width === W && can.height === H) {
+      octx.drawImage(can, 0, 0);
+    } else {
+      // sécurité si un calque a une taille différente
+      octx.drawImage(can, 0, 0, can.width, can.height, 0, 0, W, H);
+    }
   });
 
-  let canvas_href = canvasToImg.toDataURL("image/png");
-
-  //canvasContext.forEach(ctxCan => {ctxCan.globalCompositeOperation = 'source-over'; });
-
-  let a = document.createElement('a');
-
-  a.download = "canvas.png";
-  a.href = canvas_href;
-
+  // Export
+  const href = out.toDataURL('image/png'); // opaque car fond rempli
+  const a = document.createElement('a');
+  a.download = 'canvas.png';
+  a.href = href;
   a.click();
 }
+
 
 function followAvatar(){
   activeGlo.avsToFollow = [];
@@ -4733,14 +4772,10 @@ function resizeUI(cv = structure){
   const canvasHeight = cv.height;
 
   const canvasNormalizeWidth = canvasHeight * SIXTEEN_ON_NINE;
+  const windowWidth          = document.getElementsByTagName('body')[0].clientWidth;
+  const uiWidth              = windowWidth - canvasNormalizeWidth;
 
-  const windowWidth = document.getElementsByTagName('body')[0].clientWidth;
-
-  const uiWidth = windowWidth - canvasNormalizeWidth;
-
-  console.log(canvasHeight, windowWidth, canvasNormalizeWidth, uiWidth);
-
-  ui.style.width = `${Math.abs(uiWidth)}px`;
+  if(uiWidth > 200 && uiWidth < 300){ ui.style.width = `${Math.abs(uiWidth)}px`; }
 }
 
 
