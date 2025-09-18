@@ -1,10 +1,24 @@
 # Interaction (Vanilla JS)
 
-Projet web en JavaScript pur (vanilla), découpé en plusieurs fichiers pour plus de lisibilité.
+### 🎯 Résumé du projet
+
+* **But** : créer une interface interactive où des **avatars** se déplacent sur un **canvas HTML5**, influencés par la souris et divers **modifiers** (attracteurs, grilles, effets, etc.).
+* **Architecture** : découpée en plusieurs petits fichiers JS (`avatars.js`, `canvas.js`, `modifiers.js`, `ui.js`, etc.) pour isoler les responsabilités (calculs, gestion de l’état global, dessin, UI, sauvegarde…).
+* **UI** : un panneau d’interface qui ajuste paramètres et options (par ex. resize, grilles, sauvegarde d’images).
+* **Fonctionnalités principales** :
+
+  * Gestion d’avatars multiples en mouvement.
+  * Interaction avec la souris (déplacements, effets).
+  * Application de grilles ou de modifiers pour transformer les trajectoires.
+  * Animation continue via `requestAnimationFrame`.
+  * Sauvegarde/export possible du canvas en image.
+  * Système modulaire qui peut être étendu avec de nouveaux “modifiers”.
 
 ## 🚀 Utilisation
 
-Par défaut, le site fonctionne en **mode développement**, en important directement chaque fichier JS séparément via des balises `<script defer>`.
+Le projet web est en JavaScript pur (vanilla), découpé en plusieurs fichiers pour plus de lisibilité.
+
+Par défaut, le site fonctionne en **\*\*mode développement\*\***, en important directement chaque fichier JS séparément via des balises \`\<script defer>\`.
 
 ### Mode développement (par défaut)
 
