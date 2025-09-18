@@ -2,7 +2,7 @@
 
 ### 🎯 Résumé du projet
 
-* **But** : Dessiner dans une une interface interactive où des **avatars** se déplacent sur un **canvas HTML5**, influencés par divers **modifiers** (attracteurs, grilles, effets, etc.).
+* **But** : Dessiner dans une une interface interactive où des **avatars** se déplacent sur un **canvas HTML5**, influencés par divers **modifiers** (attracteurs, rotateurs, spiraleurs, etc.).
 * **Architecture** : découpée en plusieurs petits fichiers JS (`avatars.js`, `canvas.js`, `modifiers.js`, `ui.js`, etc.) pour isoler les responsabilités (calculs, gestion de l’état global, dessin, UI, sauvegarde…).
 * **UI** : un panneau d’interface qui ajuste paramètres et options, telles la couleur des avatars, ou la force de modification du mouvement des avatars par les modifiers.
 * **Fonctionnalités principales** :
