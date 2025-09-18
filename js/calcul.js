@@ -224,6 +224,21 @@ function twoPINumber(n){ return cyclicNumber(n, two_pi); }
 
 function flatNumber(n, interval){ return Math.floor(n/interval) * interval; }
 
+//------------------ CALCUL ANGLE BETWEEN 0 & 2PI ----------------- //
+function twoPiAngle(pos, center){
+  let posToCenter = {x: pos.x - center.x, y: pos.y - center.y};
+  let angle = atan(posToCenter.x/posToCenter.y);
+
+  let pos_y = posToCenter.y < 0 ? true : false;
+  let pos_x = posToCenter.x < 0 ? true : false;
+
+  if    (!pos_x && pos_y)  { angle = half_pi + angle; }
+  else if(pos_x && pos_y)  { angle = angle + half_pi; }
+  else                     { angle = 3*half_pi + angle; }
+
+  return angle;
+}
+
 function direction(angle, dist){
   return {
     x:  cos(angle) * dist,

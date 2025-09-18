@@ -1,0 +1,13 @@
+{
+  "name": "interaction",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build": "node build.js",
+    "watch": "chokidar 'js/*.js' -c 'node build.js'"
+  },
+  "devDependencies": {
+    "terser": "^5.36.0",
+    "chokidar-cli": "^3.0.0"
+  }
+}

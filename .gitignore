@@ -1,0 +1,27 @@
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+
+# Build output
+dist/
+!dist/.gitkeep   # garde le dossier vide si besoin
+
+# Logs
+*.log
+logs/
+*.pid
+*.seed
+*.pid.lock
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE / éditeur
+.vscode/
+.idea/
+*.swp
+*.swo

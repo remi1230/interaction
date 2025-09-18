@@ -162,7 +162,7 @@ kbd.keys.on, kbd.keys.helpOn {
     border: 1px rgb(6, 70, 66) solid;
     padding: 3px;
     margin-right: 5px;
-    font-size: 14px;
+    font-size: small;
     cursor: pointer;
     overflow: hidden;
     display: inline-block;
@@ -350,6 +350,7 @@ kbd.keys.on, kbd.keys.helpOn {
   grid-auto-columns: max-content;      /* ou 1fr pour colonnes égales */
   gap: 8px 16px;
   align-content: start;
+  font-size: small; 
 }
 #searchAndOnTuchContainer{
   display: flex;
@@ -371,6 +372,14 @@ kbd.keys.on, kbd.keys.helpOn {
   gap: 5px;
   width: 90%;
 }
+#razParamsButton{
+  font-size: 12px;
+  border: 1px #ccc solid;
+  border-radius: 5px;
+  padding: 4px;
+  background-color: orange;
+}
+
 button{
   cursor: pointer;
 }

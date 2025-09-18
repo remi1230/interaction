@@ -1,16 +1,30 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
     <head>
       <meta charset="UTF-8" />
       <meta name="description" content="Interaction" />
       <title>Interaction</title>
       <link rel="icon" type="image/png" href="img/logo_interaction.png">
       <link rel="stylesheet" href="css/interaction.css">
+      
+      <!-- <script src="dist/app.min.js" defer></script> -->
+
       <script src="js/calcul.js" defer></script>
       <script src="js/glob.js" defer></script>
+      <script src="js/mouse.js" defer></script>
       <script src="js/avatar.js" defer></script>
-      <script src="js/app.js" defer></script>
+      <script src="js/avatars.js" defer></script>
+      <script src="js/canvas.js" defer></script>
+      <script src="js/modifiers.js" defer></script>
+      <script src="js/grids.js" defer></script>
+      <script src="js/img.js" defer></script>
+      <script src="js/ui.js" defer></script>
+      <script src="js/save.js" defer></script>
+      <script src="js/utils.js" defer></script>
+      <script src="js/animation.js" defer></script>
       <script src="js/event.js" defer></script>
+      <script src="js/tests.js" defer></script>
+
     </head>
     <body>
       <div id="uiCanvas-container">
@@ -38,37 +52,42 @@
                   <div>
                     <label for="line_size">Line size</label>
                     <input type="range" id="line_size" name="line_size" class='input_params' oninput="updateGlo(this)" ondblclick="updateScale(this, event)"
-                      min=".01" max="40" value="1" step=".01">
+                      min=".01" max="40" value="0.37" step=".01">
                   </div>
                   <div>
                     <label for="alpha_color">Min alpha color</label>
-                    <input type="range" id="alpha_color" name="alpha_color" class='input_params' oninput="changeModifiersProp(this, 'alpha'); updateGlo(this)" ondblclick="updateScale(this, event)"
+                    <input type="range" id="alpha_color" name="alpha_color" class='input_params updModProp' data-modprop="alpha" oninput="changeModifiersProp(this, 'alpha'); updateGlo(this)" ondblclick="updateScale(this, event)"
                       min="0.002" max="1" value=".1" step=".001">
                   </div>
                   <div>
                     <label for="colorDec">Color dec</label>
-                    <input type="range" id="colorDec" name="colorDec" class='input_params' oninput="changeModifiersProp(this, 'colorDec'); updateGlo(this);"
+                    <input type="range" id="colorDec" name="colorDec" class='input_params updModProp' data-modprop="colorDec" oninput="changeModifiersProp(this, 'colorDec'); updateGlo(this);"
                       min="0" max="360" value="0" step="1" data-playinput='true'>
                   </div>
                   <div>
                     <label for="tint_color">Tint</label>
-                    <input type="range" id="tint_color" name="tint_color" class='input_params' oninput="changeModifiersProp(this, 'tint'); updateGlo(this)" ondblclick="updateScale(this, event)"
+                    <input type="range" id="tint_color" name="tint_color" class='input_params updModProp' data-modprop="tint" oninput="changeModifiersProp(this, 'tint'); updateGlo(this)" ondblclick="updateScale(this, event)"
                       min="0" max="200" value="42" step="1" data-alea_min="20">
                   </div>
                   <div>
                     <label for="saturation">Saturation</label>
-                    <input type="range" id="saturation" name="saturation" class='input_params' oninput="changeModifiersProp(this, 'sat'); updateGlo(this)" ondblclick="updateScale(this, event)"
-                      min="0" max="200" value="77" step="1">
+                    <input type="range" id="saturation" name="saturation" class='input_params updModProp' data-modprop="sat" oninput="changeModifiersProp(this, 'sat'); updateGlo(this)" ondblclick="updateScale(this, event)"
+                      min="0" max="200" value="33" step="1">
                   </div>
                   <div>
                     <label for="colorStrokeDec">Color stroke dec</label>
-                    <input type="range" id="colorStrokeDec" name="colorStrokeDec" class='input_params' oninput="changeModifiersProp(this, 'colorStrokeDec'); updateGlo(this);"
+                    <input type="range" id="colorStrokeDec" name="colorStrokeDec" class='input_params updModProp' data-modprop="colorStrokeDec" oninput="changeModifiersProp(this, 'colorStrokeDec'); updateGlo(this);"
                       min="0" max="360" value="0" step="1" data-playinput='true'>
                   </div>
                   <div>
                     <label for="tint_stroke">Tint stroke</label>
-                    <input type="range" id="tint_stroke" name="tint_stroke" class='input_params' oninput="changeModifiersProp(this, 'tint_stroke'); updateGlo(this);" ondblclick="updateScale(this, event)"
+                    <input type="range" id="tint_stroke" name="tint_stroke" class='input_params updModProp' data-modprop="tint_stroke" oninput="changeModifiersProp(this, 'tint_stroke'); updateGlo(this);" ondblclick="updateScale(this, event)"
                       min="-100" max="100" value="33" step="1" data-alea_min="50">
+                  </div>
+                  <div>
+                    <label for="satStroke">Sat stroke</label>
+                    <input type="range" id="satStroke" name="satStroke" class='input_params updModProp' data-modprop="satStroke" oninput="changeModifiersProp(this, 'satStroke'); updateGlo(this);" ondblclick="updateScale(this, event)"
+                      min="-100" max="100" value="77" step="1" data-alea_min="50">
                   </div>
                   <div>
                     <label for="modifierPos">Modifiers type</label>
@@ -97,7 +116,7 @@
                   </div>
                   <div>
                     <label for="rotModifiersMax">Rot modifiers max</label>
-                    <input type="range" id="rotModifiersMax" name="rotModifiersMax" class='input_params radUnit' oninput="updateGlo(this); changeModifiersProp(this, 'rotMax');" ondblclick="updateScale(this, event)"
+                    <input type="range" id="rotModifiersMax" name="rotModifiersMax" class='input_params radUnit updModProp' data-modprop="rotMax" oninput="updateGlo(this); changeModifiersProp(this, 'rotMax');" ondblclick="updateScale(this, event)"
                       min="0" max="45" value="0" step=".01">
                   </div>
                   <div>
@@ -127,7 +146,7 @@
                   <div class="titleInterface"><h3>Modifiers</h3></div>
                   <div>
                     <label for="polyNbEdges">Poly mod nb edges</label>
-                    <input type="range" id="polyNbEdges" name="polyNbEdges" class='input_params' oninput="updateGlo(this); changeModifiersProp(this, 'nbEdges'); " ondblclick="updateScale(this, event)"
+                    <input type="range" id="polyNbEdges" name="polyNbEdges" class='input_params updModProp' data-modprop="nbEdges" oninput="updateGlo(this); changeModifiersProp(this, 'nbEdges'); " ondblclick="updateScale(this, event)"
                       min="3" max="12" value="3" step="1">
                   </div>
                   <div>
@@ -152,7 +171,7 @@
                   </div>
                   <div>
                     <label for="weightMods">Weight mods</label>
-                    <input type="range" id="weightMods" name="weightMods" class='input_params' oninput="changeModifiersProp(this, 'weight'); updateGlo(this); " ondblclick="updateScale(this, event)"
+                    <input type="range" id="weightMods" name="weightMods" class='input_params updModProp' data-modprop="weight" oninput="changeModifiersProp(this, 'weight'); updateGlo(this); " ondblclick="updateScale(this, event)"
                       min="0" max="12" value="1" step="0.1">
                   </div>
                   <div>
@@ -209,7 +228,7 @@
                   </div>
                   <div>
                     <label for="lim_attract">Modifiers affecting limit</label>
-                    <input type="range" id="lim_attract" name="lim_attract" class='input_params' oninput="updateGlo(this); changeModifiersProp(this, 'lim_attract'); " ondblclick="updateScale(this, event);"
+                    <input type="range" id="lim_attract" name="lim_attract" class='input_params updModProp' data-modprop="lim_attract" oninput="updateGlo(this); changeModifiersProp(this, 'lim_attract'); " ondblclick="updateScale(this, event);"
                       min="0" max="50" value="0" step="1">
                   </div>
                   <div>
@@ -333,11 +352,6 @@
                       min="0.1" max="4" value="1" step=".1">
                   </div>
                   <div>
-                    <label for="satStroke">Sat stroke</label>
-                    <input type="range" id="satStroke" name="satStroke" class='input_params' oninput="changeModifiersProp(this, 'satStroke'); updateGlo(this);" ondblclick="updateScale(this, event)"
-                      min="-100" max="100" value="77" step="1" data-alea_min="50">
-                  </div>
-                  <div>
                     <label for="var_tint">Tint image</label>
                     <input type="range" id="var_tint" name="var_tint" class='input_params' oninput="updateTint(this); updateGlo(this);" ondblclick="updateScale(this, event)"
                       min="0" max="4" value="2" step=".01">
@@ -419,7 +433,7 @@
                   </div>
                   <div>
                     <label for="nearColorPow">near pow color</label>
-                    <input type="range" id="nearColorPow" name="nearColorPow" class='input_params' oninput="updateGlo(this); changeModifiersProp(this, 'powColor');" ondblclick="updateScale(this, event)"
+                    <input type="range" id="nearColorPow" name="nearColorPow" class='input_params updModProp' data-modprop="powColor" oninput="updateGlo(this); changeModifiersProp(this, 'powColor');" ondblclick="updateScale(this, event)"
                       min="0" max="2" value="0.62" step=".01">
                   </div>
                   <div>
@@ -434,8 +448,18 @@
                   </div>
                   <div>
                     <label for="varOneColMod">Var one col mod</label>
-                    <input type="range" id="varOneColMod" name="varOneColMod" class='input_params' oninput="updateGlo(this); changeModifiersProp(this, 'varOneColMod');" ondblclick="updateScale(this, event)"
+                    <input type="range" id="varOneColMod" name="varOneColMod" class='input_params updModProp' data-modprop="varOneColMod" oninput="updateGlo(this); changeModifiersProp(this, 'varOneColMod');" ondblclick="updateScale(this, event)"
                       min="0.1" max="20" value="2" step=".1">
+                  </div>
+                  <div>
+                    <label for="lightByCenter">Light by center</label>
+                    <input type="range" id="lightByCenter" name="lightByCenter" class='input_params' oninput="updateGlo(this); " ondblclick="updateScale(this, event)"
+                      min="-10" max="10" value="0" step="0.1">
+                  </div>
+                  <div>
+                    <label for="lightByDistMod">Ligth by dist mod pow</label>
+                    <input type="range" id="lightByDistMod" name="lightByDistMod" class='input_params' oninput="updateGlo(this); " ondblclick="updateScale(this, event)"
+                      min="-1.01" max="1.01" value="0" step=".01">
                   </div>
                   <div>
                     <label for="lightByDistModCoeff">Ligth by dist mod coeff</label>
@@ -453,11 +477,6 @@
                       min="0.01" max="10" value="1" step=".01">
                   </div>
                   <div>
-                    <label for="lightByDistMod">Ligth by dist mod pow</label>
-                    <input type="range" id="lightByDistMod" name="lightByDistMod" class='input_params' oninput="updateGlo(this); " ondblclick="updateScale(this, event)"
-                      min="-1.01" max="1.01" value="0" step=".01">
-                  </div>
-                  <div>
                     <label for="satByDistMod">Sat by dist mod pow</label>
                     <input type="range" id="satByDistMod" name="satByDistMod" class='input_params' oninput="updateGlo(this);" ondblclick="updateScale(this, event)"
                       min="-1.01" max="1.01" value="0" step=".01">
@@ -469,7 +488,7 @@
                   </div>
                   <div>
                     <label for="colorFunction">Color function</label>
-                    <input type="range" id="colorFunction" name="colorFunction" class='input_params' oninput="activeGlo.colorFunction = activeGlo.colorFunctionLabels[this.value]; updateGlo(this); changeModifiersProp(this, 'colorFunction', activeGlo.colorFunctionLabels[this.value]); "
+                    <input type="range" id="colorFunction" name="colorFunction" class='input_params updModProp' data-modprop="colorFunction" oninput="activeGlo.colorFunction = activeGlo.colorFunctionLabels[this.value]; updateGlo(this); changeModifiersProp(this, 'colorFunction', activeGlo.colorFunctionLabels[this.value]); "
                       min="0" max="3" value="0" step="1" data-labels="colorFunctionLabels">
                   </div>
                   <div>
@@ -506,11 +525,6 @@
                     <label for="attractForce">Attract force</label>
                     <input type="range" id="attractForce" name="attractForce" class='input_params' oninput="updateGlo(this); " ondblclick="updateScale(this, event)"
                       min="-300" max="300" value="0" step="1">
-                  </div>
-                  <div>
-                    <label for="lightByCenter">Light by center</label>
-                    <input type="range" id="lightByCenter" name="lightByCenter" class='input_params' oninput="updateGlo(this); " ondblclick="updateScale(this, event)"
-                      min="-10" max="10" value="0" step="0.1">
                   </div>
                   <div>
                     <label for="alternTintSpeed">Altern tint speed</label>
@@ -581,7 +595,7 @@
 
                 <!-- 7) interface_avForm_1 (flattened groups) -->
                 <div class='interface' id="interface_avForm_1" style='display: none; '>
-                  <div class="titleInterface"><h3>Avatars - suit</h3></div>
+                  <div class="titleInterface"><h3>Tools</h3></div>
                   <div>
                     <label for="avatars_form">Avatars form</label>
                     <input type="range" id="avatars_form" name="avatars_form" class='input_params' oninput="updateGlo(this); updateForm(this.value); "
@@ -1072,7 +1086,7 @@
                   <div><div class="ui-button" id="switchPersistButton" onclick="switchPersist(); ">🖐️</div></div>
                   <div><div class="ui-button" onclick="testAll(); ">🧪</div></div>
                   <div><div class="ui-button" id="switchPauseButton" onclick="switchPause(); ">▶️</div></div>
-                  <div id="switchStrokeIcon" class="fillRound ui-button" onclick="switchSroke(); "></div>
+                  <div id="switchStrokeIcon" class="fillAndStrokeRound ui-button" onclick="switchSroke(); "></div>
                   <div><div class="ui-button" onclick="invColors(); ">
                     <div class="invColorButtonsContainer"><div class="redSquare"></div><div class="blueSquare"></div></div>
                   </div></div>
@@ -1084,6 +1098,11 @@
                   </div></div>
                   <div><div class="ui-button" onclick="sharp(); ">🔎</div></div>
                   <div><div class="ui-button" onclick="deleteAllModifiers(); ">✕</div></div>
+                  <div><div class="ui-button" onclick="razParams(); ">
+                    <div id="razParamsButton">RAZ</div>
+                  </div></div>
+                  <div><div class="ui-button" onclick="location.reload(); ">🔄</div></div>
+                  <div><div class="ui-button" onclick="switchGrid(); " style="color: brown; font-size: 24px; ">🅶</div></div>
                   <div><div id="switchModifiersVisibilityIcon" class="ui-button" onclick="switchModifiersVisibility(); ">👁️‍🗨️</div></div>
                 </div>
               </div>
@@ -1109,12 +1128,12 @@
                   </div>
                 </div>
                 <div style="justify-self: center; ">
-                  <h3>Aide : Les touches de raccourcis</h3>
+                  <h2>Les touches de raccourcis</h2>
                 </div>
                 <div style="justify-self: end; ">
                   <label for="helpDialogOpacity">Opacité</label>
                   <input type="range" id="helpDialogOpacity" name="helpDialogOpacity" class="input_help"
-                        min="0.01" max="1" step=".01" value="1"
+                        min="0.1" max="1" step=".01" value="1"
                         oninput="helpDialogOpacityChange(event);" />
                 </div>
               </div>

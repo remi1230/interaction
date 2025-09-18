@@ -21,7 +21,7 @@ class Glob {
                 alpha_color: 0.1,
                 saturation: 33,
                 lim_line: 32,
-                line_size: 1,
+                line_size: 0.37,
                 tint_color: 50,
                 lightByCenter: 0,
                 alternTintSpeed: 100,
@@ -50,7 +50,7 @@ class Glob {
                 chaos_force: 8,
                 follow_force_x: 1,
                 follow_force_y: 1,
-                tint_stroke: 33,
+                tint_stroke:18,
                 satStroke: 77,
                 ellipse_x: 1,
                 ellipse_y: 1,
@@ -122,7 +122,7 @@ class Glob {
                 colorDec: 0,
                 colorStrokeDec: 0,
                 nearColorPow: 0.62,
-                colorFunction: 0,
+                colorFunction: 'distMod',
                 limSpeedMax: 2,
                 limSpeedMin: 0,
                 alternatorSpeed: 100,
@@ -293,7 +293,20 @@ class Glob {
         this.virtual = {};
         this.shortcut = {};
         this.mods_formule = {};
-        this.grid = { draw: false, type: 'none' };
+        this.grid = { draw: false, type: false };
+        this.gridType = false;
+        this.gridsType = function* (){
+            const grids = ['square', 'third', 'circle', 'hexagone', false];
+            while (true) {
+                for (const grid of grids) {
+                    this.gridType = grid;
+                    this.grid.type = grid
+                    grid ? this.grid.draw = true : this.grid.draw = false;
+                    yield grid;
+                }
+            }
+        };
+        this.gridsType = this.gridsType();
         this.formule = { x: 0, y: 0, error: { x: true, y: true } };
         this.formuleColor = { h: 'h', s: 's', l: 'l', a: 'a' };
         this.formuleColorHisto = { h: 'h', s: 's', l: 'l', a: 'a' };
@@ -343,6 +356,7 @@ class Glob {
         this.sameSizeEllipse = true;
         this.moveOnAlea = true;
         this.rotateBrush = true;
+        this.strokeAndFill = true;
         this.oneColor = {state: false, color: {h: 100, s:77, l:50} };
         this.trans = {};
         this.lineCap = ["butt", "round", "square"];
@@ -433,6 +447,12 @@ let brushDialog           = getById('brushDialog');
 let modPathDialog         = getById('modPathDialog');
 let brushCanvas           = getById('brushCanvas');
 let modPathCanvas         = getById('modPathCanvas');
+
+const inputsUpdModProp = Object.fromEntries(
+  [...document.getElementsByClassName('updModProp')].map(input => 
+    [input.id, input.dataset.modprop]
+  )
+);
 
 let helpDialogVisible      = false;
 let brushDialogVisible     = false;

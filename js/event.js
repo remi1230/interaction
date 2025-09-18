@@ -2,7 +2,7 @@
 document.addEventListener("DOMContentLoaded", function() {
     params_interface();
     createGoInterface();
-    createCheckboxesWithRange(activeGlo.colorFunctionLabels, 'colorCumulContainer', 'qMove', {event: 'onchange', func: 'checkColorFunctions()'});
+    createCheckboxesWithRange(activeGlo.colorFunctionLabels, 'colorCumulContainer', 'qMove', {event: 'onchange', func: 'checkColorFunctions(event)'});
     resizeUI();
     feedHelp();
     switchBg();
@@ -16,8 +16,8 @@ ui.addEventListener('mousedown', () => { activeGlo.uiMouseDown = true; });
 ui.addEventListener('mouseup',   () => { activeGlo.uiMouseDown = false; });
 
 //------------------ UI PREVENTDEFAULT ----------------- //
-ui.addEventListener('contextmenu', () => {
-  event.preventDefault();
+ui.addEventListener('contextmenu', (e) => {
+  e.preventDefault();
   if(!activeGlo.time){ activeGlo.time = new Date().getTime(); }
   else{
     let diffTime = new Date().getTime() - activeGlo.time;
@@ -110,26 +110,26 @@ structure.addEventListener('wheel', (e) => {
   e.preventDefault();
 
   if(e.shiftKey){
-    if(event.deltaY > 0){ scale_avatars('-', event.deltaY); }
-    else{ scale_avatars('+', -event.deltaY); }
+    if(e.deltaY > 0){ scale_avatars('-', e.deltaY); }
+    else{ scale_avatars('+', -e.deltaY); }
   }
   if(e.altKey){
-    if(event.deltaY > 0){ scale_modifiers('-', event.deltaY); }
-    else{ scale_modifiers('+', -event.deltaY); }
+    if(e.deltaY > 0){ scale_modifiers('-', e.deltaY); }
+    else{ scale_modifiers('+', -e.deltaY); }
   }
   else if(activeGlo.simpleMouseDown){
     step = !e.ctrlKey ? 0.0001 : 0.00001;
     activeGlo.showCircle = true;
-    activeGlo.params.circle_size -= event.deltaY * step;
+    activeGlo.params.circle_size -= e.deltaY * step;
 
     if(activeGlo.params.circle_size < 0){ activeGlo.params.circle_size = 0; }
 
     updCtrl('circle_size');
   }
   else{
-    if(!activeGlo.inputToSlideWithMouse ){ getSelectedModifiers().forEach(mod => { mod.attract += Math.sign(mod.attract) * event.deltaY*0.1; }); }
+    if(!activeGlo.inputToSlideWithMouse ){ getSelectedModifiers().forEach(mod => { mod.attract += Math.sign(mod.attract) * e.deltaY*0.1; }); }
     else{
-      activeGlo.inputToSlideWithMouse.value = parseFloat(activeGlo.inputToSlideWithMouse.value) + (parseFloat(activeGlo.inputToSlideWithMouse.step) * Math.sign(event.deltaY));
+      activeGlo.inputToSlideWithMouse.value = parseFloat(activeGlo.inputToSlideWithMouse.value) + (parseFloat(activeGlo.inputToSlideWithMouse.step) * Math.sign(e.deltaY));
       activeGlo.inputToSlideWithMouse.dispatchEvent(new Event('input', { bubbles: true, cancelable: true, }));
     }
   }
@@ -154,7 +154,7 @@ brushDialog.addEventListener('click', () => {
   brushDialogVisible = !brushDialogVisible;
   brushDialog.close();
 });
-helpDialogGrid.addEventListener('click', (event) => event.stopPropagation());
+helpDialogGrid.addEventListener('click', (e) => e.stopPropagation());
 
 
 //*************************************CANVAS POUR LA BROSSE*************************************//
@@ -264,7 +264,7 @@ modPathCanvas.addEventListener('mousemove', e => {
   }
 });
 
-modPathDialog.addEventListener("close", (event) => {
+modPathDialog.addEventListener("close", () => {
   helpToSaveMoveOnModPathCanvas(mouseModPathCanvas, activeGlo.modifiers.length ? getSelectedModifiers()[0].glo.stepsModPath[0] : activeGlo.stepsModPath[0]);
 });
 
@@ -348,7 +348,7 @@ function defineMinOrMax(obj_param){
 //------------------ RESIZE CANVAS WHEN RESIZE WINDOW ----------------- //
 window.addEventListener('resize', function () {
   resizeUI();
-  if(activeGlo.clear){ allCanvas.forEach(canvas => { fix_dpi(canvas); }); }
+  /*if(activeGlo.clear){ allCanvas.forEach(canvas => { fix_dpi(canvas); }); }*/
 });
 
 //------------------ ÉVÈNEMENTS D'APPUI SUR UNE TOUCHE ----------------- //
@@ -366,7 +366,7 @@ window.addEventListener("keydown", function (e) {
         if(!e.altKey){
         	switch (key) {
             case 'Delete':
-              deteleAllModifiers();
+              deleteAllModifiers();
 
               break;
             /// F1 -- Effacement du canvas -- canvas -- clear ///
@@ -628,6 +628,10 @@ window.addEventListener("keydown", function (e) {
         		case 'R':
               activeGlo.clearForm = !activeGlo.clearForm;
         			break;
+            /// S -- Pose des modifiers sur la grille -- modifier, grille -- putOnGrid ///
+            case 'S':
+              activeGlo.putOnGrid = !activeGlo.putOnGrid;
+              break;  
             /// T -- Les modifiers sont placés au centre -- modifier, centre -- attract_center ///
         		case 'T':
               activeGlo.attract_center = !activeGlo.attract_center;
@@ -717,7 +721,7 @@ window.addEventListener("keydown", function (e) {
         		case '°':
               activeGlo.forceByCenter = !activeGlo.forceByCenter;
         			break;
-            /// . -- Pose des modifiers sur les sélectionnés -- modifiers, selection, pose ///
+            /// . -- Pose des modifiers sur les sélectionnés -- modifier, selection, pose ///
         		case '.':
               posModsOnMods();
         			break;
@@ -837,11 +841,6 @@ window.addEventListener("keydown", function (e) {
         else{
           e.preventDefault();
           switch (key) {
-            /// Alt a -- Affiche une grille carrée -- interface, grille ///
-            case 'a':
-              if(activeGlo.grid.type == 'square' || activeGlo.grid.type == 'none'){ activeGlo.grid.draw = !activeGlo.grid.draw; }
-              activeGlo.grid.type = activeGlo.grid.draw ? 'square' : 'none';
-              break;
             /// Alt b -- Incline positivement le canvas verticalement -- canvas, transformation ///
             case 'b':
               tiltCanvas('v', 0.25);
@@ -859,18 +858,9 @@ window.addEventListener("keydown", function (e) {
                 freeTuchsDialog.showModal();
               }
               break;
-            /// Alt e -- Affiche une grille au tiers -- interface, grille ///
-            case 'e':
-              if(activeGlo.grid.type == 'third' || activeGlo.grid.type == 'none'){ activeGlo.grid.draw = !activeGlo.grid.draw; }
-              activeGlo.grid.type = activeGlo.grid.draw ? 'third' : 'none';
-              break;
             /// Alt f -- Incline le négativement canvas verticalement -- canvas, transformation ///
             case 'f':
               tiltCanvas('v', -0.25);
-              break;
-            /// Alt g -- Pose des modifiers sur la grille -- modifier, grille -- putOnGrid ///
-            case 'g':
-              activeGlo.putOnGrid = !activeGlo.putOnGrid;
               break;
             /// Alt h -- Affiche ou cache cette liste de touches -- interface, info ///
             case 'h':
@@ -907,14 +897,9 @@ window.addEventListener("keydown", function (e) {
                 }
               }
               break;
-            /// Alt p -- Déplacement des modifiers sur la grille -- modifier, deplacement, grille ///
-            case 'p':
+            /// Alt g -- Déplacement des modifiers sur la grille -- modifier, deplacement, grille ///
+            case 'g':
               putModsOnGrid();
-              break;
-            /// Alt r -- Affiche une grille héxagonale -- interface, grille ///
-            case 'r':
-              if(activeGlo.grid.type == 'hexagone' || activeGlo.grid.type == 'none'){ activeGlo.grid.draw = !activeGlo.grid.draw; }
-              activeGlo.grid.type = activeGlo.grid.draw ? 'hexagone' : 'none';
               break;
             /// Alt s -- Incline négativement le canvas horizontalement -- canvas, transformation ///
             case 's':
@@ -944,12 +929,7 @@ window.addEventListener("keydown", function (e) {
             case 'y':
               posSquareModifiers();
               break;
-            /// Alt z -- Affiche une grille ronde -- interface, grille ///
-            case 'z':
-              if(activeGlo.grid.type == 'circle' || activeGlo.grid.type == 'none'){ activeGlo.grid.draw = !activeGlo.grid.draw; }
-              activeGlo.grid.type = activeGlo.grid.draw ? 'circle' : 'none';
-              break;
-            /// Alt ç -- Rotation polygonale plus précise -- caslcul -- polyPrecision  ///
+            /// Alt ç -- Rotation polygonale plus précise -- calcul -- polyPrecision  ///
             case 'ç':
               activeGlo.polyPrecision = !activeGlo.polyPrecision;
               break;
@@ -1117,7 +1097,7 @@ window.addEventListener("keydown", function (e) {
               if(infosAvatarsDialog){ infosAvatarsDialog.remove(); }
               else{
                 let infosAvatarsDialog = makeInfosAvatarsDialog();
-                infosAvatarsDialog.addEventListener("close", (event) => {
+                infosAvatarsDialog.addEventListener("close", () => {
                   activeGlo.infosAvatars = false;
                 });
                 infosAvatarsDialog.showModal();
@@ -1207,11 +1187,11 @@ window.addEventListener("keydown", function (e) {
                   let startVal = parseFloat(input.dataset.startValue);
                   if(parseInt(startVal) == startVal){ startVal = parseInt(startVal) ; }
                   input.value = startVal;
-                  let event = new Event('input', {
+                  let ev = new Event('input', {
                     bubbles: true,
                     cancelable: true,
                   });
-                  input.dispatchEvent(event);
+                  input.dispatchEvent(ev);
                   break;
                 }
               }
@@ -1458,16 +1438,16 @@ function constructHelpDialog(start = false){
   [...document.getElementsByClassName('keys')].forEach(key => {
     key.addEventListener(
       "mouseenter",
-      (event) => {
-        event.target.style.color  = "purple";
-        event.target.style.cursor = "pointer";
+      (e) => {
+        e.target.style.color  = "purple";
+        e.target.style.cursor = "pointer";
       },
       false
     );
     key.addEventListener(
       "mouseleave",
-      (event) => {
-        event.target.style.color  = "";
+      (e) => {
+        e.target.style.color  = "";
       },
       false
     );
@@ -1521,10 +1501,10 @@ function applyToSelectedMods(prop){
 }
 
 
-function helpDialogOpacityChange(event){
-  event.stopPropagation();
-  event.preventDefault();
-  helpDialog.style.opacity = event.target.value; 
+function helpDialogOpacityChange(e){
+  e.stopPropagation();
+  e.preventDefault();
+  helpDialog.style.opacity = e.target.value; 
 }
 
 function addClasses(domElem, ...args){
