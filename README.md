@@ -2,14 +2,15 @@
 
 ### 🎯 Résumé du projet
 
-* **But** : créer une interface interactive où des **avatars** se déplacent sur un **canvas HTML5**, influencés par la souris et divers **modifiers** (attracteurs, grilles, effets, etc.).
+* **But** : Dessiner dans une une interface interactive où des **avatars** se déplacent sur un **canvas HTML5**, influencés par divers **modifiers** (attracteurs, grilles, effets, etc.).
 * **Architecture** : découpée en plusieurs petits fichiers JS (`avatars.js`, `canvas.js`, `modifiers.js`, `ui.js`, etc.) pour isoler les responsabilités (calculs, gestion de l’état global, dessin, UI, sauvegarde…).
-* **UI** : un panneau d’interface qui ajuste paramètres et options (par ex. resize, grilles, sauvegarde d’images).
+* **UI** : un panneau d’interface qui ajuste paramètres et options, telles la couleur des avatars, ou la force de modification du mouvement des avatars par les modifiers.
 * **Fonctionnalités principales** :
 
   * Gestion d’avatars multiples en mouvement.
-  * Interaction avec la souris (déplacements, effets).
-  * Application de grilles ou de modifiers pour transformer les trajectoires.
+  * Pose de modifiers pour transformer les trajectoires.
+  * Paramétrage en tant réel au moyen d'un panneau latéral.
+  * Application de grilles pour poser les modifiers.
   * Animation continue via `requestAnimationFrame`.
   * Sauvegarde/export possible du canvas en image.
   * Système modulaire qui peut être étendu avec de nouveaux “modifiers”.
