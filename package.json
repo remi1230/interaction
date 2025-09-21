@@ -4,10 +4,12 @@
   "private": true,
   "scripts": {
     "build": "node build.js",
-    "watch": "chokidar 'js/*.js' -c 'node build.js'"
+    "watch": "chokidar 'js/*.js' -c 'node build.js'",
+    "doc": "for f in js/*.js; do npx documentation build \"$f\" -f html -o \"docs/$(basename \"$f\" .js)\"; done"
   },
   "devDependencies": {
-    "terser": "^5.36.0",
-    "chokidar-cli": "^3.0.0"
+    "chokidar-cli": "^3.0.0",
+    "jsdoc": "^4.0.4",
+    "terser": "^5.36.0"
   }
 }

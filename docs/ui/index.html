@@ -1,0 +1,4373 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset='utf-8'>
+  <title>interaction 1.0.0 | Documentation</title>
+  <meta name='viewport' content='width=device-width,initial-scale=1'>
+  <link href='../assets/bass.css' rel='stylesheet'>
+  <link href='../assets/style.css' rel='stylesheet'>
+  <link href='../assets/github.css' rel='stylesheet'>
+  <link href='../assets/split.css' rel='stylesheet'>
+
+  <script src='../assets/anchor.js' defer></script>
+  <script src='../assets/split.js' defer></script>
+  <script src='../assets/site.js' defer></script>
+</head>
+<body class='documentation m0'>
+    <div class='flex'>
+      <div id='split-left' class='overflow-auto fs0 height-viewport-100'>
+        <div class='py1 px2'>
+          <h3 class='mb0 no-anchor'>interaction</h3>
+          <div class='mb1'><code>1.0.0</code></div>
+          <input
+            placeholder='Filter'
+            id='filter-input'
+            class='col12 block input'
+            spellcheck='false'
+            autocapitalize='off'
+            autocorrect='off'
+            type='text' />
+          <div id='toc'>
+            <ul class='list-reset h5 py1-ul'>
+              
+                
+                <li><a
+                  href='#params_interface'
+                  class="">
+                  params_interface
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#params_interface'
+                  class="">
+                  params_interface
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#param_ctrl'
+                  class="">
+                  param_ctrl
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#updlabel'
+                  class="">
+                  updLabel
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#msg'
+                  class="">
+                  msg
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#createcheckboxeswithrange'
+                  class="">
+                  createCheckboxesWithRange
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#createcheckboxwithrange'
+                  class="">
+                  createCheckboxWithRange
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#razparams'
+                  class="">
+                  razParams
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#creategointerface'
+                  class="">
+                  createGoInterface
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#updateglo'
+                  class="">
+                  updateGlo
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#updateform'
+                  class="">
+                  updateForm
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#updateglorangecmlcolor'
+                  class="">
+                  updateGloRangeCmlColor
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#updctrl'
+                  class="">
+                  updCtrl
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#updatescale'
+                  class="">
+                  updateScale
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#drawlogo'
+                  class="">
+                  drawLogo
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#showcircle'
+                  class="">
+                  showCircle
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#showhideinterface'
+                  class="">
+                  showHideInterface
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#showinfos'
+                  class="">
+                  showInfos
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#showhidectrl'
+                  class="">
+                  showHideCtrl
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#switchbg'
+                  class="">
+                  switchBg
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#switchpersist'
+                  class="">
+                  switchPersist
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#switchpause'
+                  class="">
+                  switchPause
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#switchsroke'
+                  class="">
+                  switchSroke
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#switchgrid'
+                  class="">
+                  switchGrid
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#showinterface'
+                  class="">
+                  showInterface
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#changeinterface'
+                  class="">
+                  changeInterface
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#inputtolinked'
+                  class="">
+                  inputToLinked
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#inputtolinkedto'
+                  class="">
+                  inputToLinkedTo
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#inputtoslidewithmouse'
+                  class="">
+                  inputToSlideWithMouse
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#inputflownbymouse'
+                  class="">
+                  inputFlownByMouse
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#clearcharoninput'
+                  class="">
+                  clearCharOnInput
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#isinhelptuchs'
+                  class="">
+                  isInHelpTuchs
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#makedialog'
+                  class="">
+                  makeDialog
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#makefreetuchsdialog'
+                  class="">
+                  makeFreeTuchsDialog
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#makeinfosarrobjsdialog'
+                  class="">
+                  makeInfosArrObjsDialog
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#infosarrobjs'
+                  class="">
+                  infosArrObjs
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#allinfosarr'
+                  class="">
+                  allInfosArr
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#makeinfosdialog'
+                  class="">
+                  makeInfosDialog
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#makeinfosavatarsdialog'
+                  class="">
+                  makeInfosAvatarsDialog
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#trselect'
+                  class="">
+                  trSelect
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#infosarr'
+                  class="">
+                  infosArr
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#sortinfosarray'
+                  class="">
+                  sortInfosArray
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#resizeui'
+                  class="">
+                  resizeUI
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#drawlimoninput'
+                  class="">
+                  drawLimOnInput
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#drawcharoninput'
+                  class="">
+                  drawCharOnInput
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#testall'
+                  class="">
+                  testAll
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#togglearrobjsdialog'
+                  class="">
+                  toggleArrObjsDialog
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#definecenter'
+                  class="">
+                  defineCenter
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#alea_params'
+                  class="">
+                  alea_params
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#one_alea_param'
+                  class="">
+                  one_alea_param
+                  
+                </a>
+                
+                </li>
+              
+            </ul>
+          </div>
+          <div class='mt1 h6 quiet'>
+            <a href='https://documentation.js.org/reading-documentation.html'>Need help reading this?</a>
+          </div>
+        </div>
+      </div>
+      <div id='split-right' class='relative overflow-auto height-viewport-100'>
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='params_interface'>
+      params_interface
+    </h3>
+    
+    
+  </div>
+  
+
+  
+    <div class='pre p1 fill-light mt0'>params_interface(onLoad: any, objParam: any)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>onLoad</span> <code class='quiet'>(any
+            = <code>true</code>)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>objParam</span> <code class='quiet'>(any
+            = <code>activeGlo.params</code>)</code>
+	    
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='params_interface'>
+      params_interface
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Initialise les contrôles de paramètres pour l'objet de paramètres donné.</p>
+<p>Parcourt chaque paire clé-valeur de l'objet <code>objParam</code> fourni et appelle <code>param_ctrl</code>
+pour configurer le contrôle d'interface utilisateur correspondant. Par défaut, utilise <code>activeGlo.params</code> comme objet de paramètres.</p>
+
+    <div class='pre p1 fill-light mt0'>params_interface(onLoad: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>, objParam: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>onLoad</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>
+            = <code>true</code>)</code>
+	    Indique si la fonction est appelée lors du chargement initial.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>objParam</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>
+            = <code>activeGlo.params</code>)</code>
+	    L'objet de paramètres dont les entrées seront utilisées pour créer les contrôles.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='param_ctrl'>
+      param_ctrl
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Initialise et met à jour un élément de contrôle d'interface utilisateur avec la valeur donnée.</p>
+
+    <div class='pre p1 fill-light mt0'>param_ctrl(val: any, id_ctrl: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, onLoad: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>val</span> <code class='quiet'>(any)</code>
+	    La valeur à affecter au contrôle.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>id_ctrl</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    L'identifiant du contrôle.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>onLoad</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>
+            = <code>true</code>)</code>
+	    Indique si la fonction est appelée lors du chargement initial.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='updlabel'>
+      updLabel
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Met à jour le label associé à un input.</p>
+
+    <div class='pre p1 fill-light mt0'>updLabel(input: <a href="https://developer.mozilla.org/docs/Web/HTML/Element">HTMLElement</a>)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>input</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/HTML/Element">HTMLElement</a>)</code>
+	    L'élément input à mettre à jour.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='msg'>
+      msg
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Affiche un ou plusieurs messages temporaires sur le canvas.</p>
+
+    <div class='pre p1 fill-light mt0'>msg(txts: ...<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>txts</span> <code class='quiet'>(...<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    Les messages à afficher.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='createcheckboxeswithrange'>
+      createCheckboxesWithRange
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Crée des cases à cocher HTML.</p>
+
+    <div class='pre p1 fill-light mt0'>createCheckboxesWithRange(checkboxes: [], containerId: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, checked: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, evtCheck: {event: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, func: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>})</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>checkboxes</span> <code class='quiet'>([])</code>
+	    Tableau des propriétés.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>containerId</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    L'id du conteneur des cases à cocher.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>checked</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    L'id de la case à cocher par défaut.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>evtCheck</span> <code class='quiet'>({event: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, func: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>})</code>
+	    L'événement des cases à cocher HTML.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='createcheckboxwithrange'>
+      createCheckboxWithRange
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Crée un élément div conteneur contenant une case à cocher avec label et un input de type range.</p>
+
+    <div class='pre p1 fill-light mt0'>createCheckboxWithRange(checkTxt: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, id: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, checked: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>, evtCheck: {event: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, func: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>}, evtRange: {event: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, func: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>}): <a href="https://developer.mozilla.org/docs/Web/API/HTMLDivElement">HTMLDivElement</a></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>checkTxt</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    Le texte du label pour la case à cocher.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>id</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    L'id à assigner à l'input checkbox.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>checked</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>
+            = <code>false</code>)</code>
+	    Si la case à cocher doit être cochée par défaut.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>evtCheck</span> <code class='quiet'>({event: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, func: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>}
+            = <code>{event:&#39;onchange&#39;,func:&#39;return false&#39;}</code>)</code>
+	    L'événement et la fonction pour la checkbox.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>evtRange</span> <code class='quiet'>({event: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, func: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>}
+            = <code>{event:&#39;oninput&#39;,func:&#39;updateGloRangeCmlColor(this);&#39;}</code>)</code>
+	    L'événement et la fonction pour le range.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/API/HTMLDivElement">HTMLDivElement</a></code>:
+        Le div conteneur avec la case à cocher et le range.
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='razparams'>
+      razParams
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Réinitialise les paramètres globaux et l'interface utilisateur à leur état initial.</p>
+<p>Cette fonction effectue les actions suivantes :</p>
+<ul>
+<li>Supprime les avatars existants selon les paramètres globaux courants.</li>
+<li>Sauvegarde les modificateurs actuels.</li>
+<li>Réinitialise l'objet global (<code>activeGlo</code>) et les paramètres UI sans déclencher l'événement <code>onLoad</code>.</li>
+<li>Définit le centre de l'objet global au centre du canvas.</li>
+<li>Restaure les modificateurs sauvegardés dans le nouvel objet global.</li>
+<li>Met à jour les propriétés des modificateurs selon les nouveaux paramètres.</li>
+<li>Réinitialise les avatars.</li>
+</ul>
+
+    <div class='pre p1 fill-light mt0'>razParams(): void</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code>void</code>:
+        
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='creategointerface'>
+      createGoInterface
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Crée une interface de navigation entre les éléments HTML de classe "interface".</p>
+
+    <div class='pre p1 fill-light mt0'>createGoInterface(): void</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code>void</code>:
+        
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='updateglo'>
+      updateGlo
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Met à jour un paramètre global et propage la valeur aux modificateurs sélectionnés ainsi qu’aux contrôles liés.</p>
+
+    <div class='pre p1 fill-light mt0'>updateGlo(ctrl: <a href="https://developer.mozilla.org/docs/Web/API/HTMLInputElement">HTMLInputElement</a>): void</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>ctrl</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/API/HTMLInputElement">HTMLInputElement</a>)</code>
+	    L’élément de formulaire dont la valeur est appliquée.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code>void</code>:
+        
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='updateform'>
+      updateForm
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Met à jour la forme active dans le contexte global et la propage aux modificateurs sélectionnés.</p>
+
+    <div class='pre p1 fill-light mt0'>updateForm(val: (<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a> | <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>)): void</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>val</span> <code class='quiet'>((<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a> | <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>))</code>
+	    Identifiant ou index de la forme à appliquer.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code>void</code>:
+        
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='updateglorangecmlcolor'>
+      updateGloRangeCmlColor
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Met à jour la valeur d’un paramètre de couleur cumulée (rangesCmlColor) et la propage aux modificateurs sélectionnés.</p>
+
+    <div class='pre p1 fill-light mt0'>updateGloRangeCmlColor(ctrl: <a href="https://developer.mozilla.org/docs/Web/API/HTMLInputElement">HTMLInputElement</a>): void</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>ctrl</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/API/HTMLInputElement">HTMLInputElement</a>)</code>
+	    L’élément input dont la valeur numérique est utilisée.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code>void</code>:
+        
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='updctrl'>
+      updCtrl
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Met à jour un contrôle HTML à partir des valeurs de <code>activeGlo.params</code> (bornes min/max, valeur, label).</p>
+
+    <div class='pre p1 fill-light mt0'>updCtrl(ctlr_id: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>): void</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>ctlr_id</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    L'id du contrôle à synchroniser.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code>void</code>:
+        
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='updatescale'>
+      updateScale
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Met à l’échelle la plage d’un contrôle (min/max/step) en fonction de sa valeur courante et de son historique, puis met à jour <code>activeGlo.params</code>.</p>
+
+    <div class='pre p1 fill-light mt0'>updateScale(ctrl: <a href="https://developer.mozilla.org/docs/Web/API/HTMLInputElement">HTMLInputElement</a>, e: <a href="https://developer.mozilla.org/docs/Web/API/Event">Event</a>): void</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>ctrl</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/API/HTMLInputElement">HTMLInputElement</a>)</code>
+	    Le contrôle (input range/number) dont on adapte l’échelle.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>e</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/API/Event">Event</a>)</code>
+	    L’événement d’entrée à stopper (propagation).
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code>void</code>:
+        
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='drawlogo'>
+      drawLogo
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Dessine le pictogramme (logo) d’un modificateur sur le canvas de structure selon son type et son état (sélection, paramètres, angle).</p>
+
+    <div class='pre p1 fill-light mt0'>drawLogo(mod: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>, style: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, angle: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>): void</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>mod</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>)</code>
+	    Le modificateur à représenter (ex. { x, y, type, select, nbEdges, attract, params, ... }).
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>style</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    La couleur/stratégie de tracé (strokeStyle) à appliquer.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>angle</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>
+            = <code>0</code>)</code>
+	    Angle de référence (radians) à utiliser pour certains types (director, oscillator, etc.).
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code>void</code>:
+        
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='showcircle'>
+      showCircle
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Affiche un cercle/ellipse indicateur sur le canvas de structure autour d’un centre donné (ou déterminé automatiquement).</p>
+
+    <div class='pre p1 fill-light mt0'>showCircle(cent: {x: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>, y: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>}?): void</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>cent</span> <code class='quiet'>({x: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>, y: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>}?
+            = <code>activeGlo.simpleMouseDown&amp;&amp;activeGlo.showCircle</code>)</code>
+	    Centre de l’ellipse ; s’il est omis, il est déduit du contexte (centre défini, souris, etc.).
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code>void</code>:
+        
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='showhideinterface'>
+      showHideInterface
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Affiche/masque l’interface (UI) et repositionne le conteneur dans le DOM ; met à jour l’icône de bascule.</p>
+
+    <div class='pre p1 fill-light mt0'>showHideInterface(cont: <a href="https://developer.mozilla.org/docs/Web/HTML/Element">HTMLElement</a>?, toggInt: <a href="https://developer.mozilla.org/docs/Web/HTML/Element">HTMLElement</a>?): void</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>cont</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/HTML/Element">HTMLElement</a>?
+            = <code>containerInt</code>)</code>
+	    Conteneur de l’interface à déplacer.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>toggInt</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/HTML/Element">HTMLElement</a>?
+            = <code>toggleInt</code>)</code>
+	    Bouton/élément de bascule dont le texte (▲/▼) est mis à jour.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code>void</code>:
+        
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='showinfos'>
+      showInfos
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Affiche des informations (stats, état) sur le canvas de structure.</p>
+
+    <div class='pre p1 fill-light mt0'>showInfos(): void</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code>void</code>:
+        
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='showhidectrl'>
+      showHideCtrl
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Affiche ou masque un contrôle donné dans le conteneur de contrôles du canvas.</p>
+
+    <div class='pre p1 fill-light mt0'>showHideCtrl(ctrl_var: <a href="https://developer.mozilla.org/docs/Web/HTML/Element">HTMLElement</a>): void</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>ctrl_var</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/HTML/Element">HTMLElement</a>)</code>
+	    Le contrôle HTML à afficher ou masquer.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code>void</code>:
+        
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='switchbg'>
+      switchBg
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Bascule la couleur de fond du canvas entre la couleur sauvegardée et la couleur définie dans <code>activeGlo.canvasLoveBg</code>.</p>
+
+    <div class='pre p1 fill-light mt0'>switchBg(): void</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code>void</code>:
+        
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='switchpersist'>
+      switchPersist
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Active ou désactive la persistance (clear) de l’affichage, met à jour l’UI et déclenche les raccourcis clavier associés.</p>
+
+    <div class='pre p1 fill-light mt0'>switchPersist(): void</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code>void</code>:
+        
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='switchpause'>
+      switchPause
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Met en pause ou relance l’animation (break global), met à jour l’icône correspondante.</p>
+
+    <div class='pre p1 fill-light mt0'>switchPause(): void</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code>void</code>:
+        
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='switchsroke'>
+      switchSroke
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Bascule entre les modes de rendu <code>stroke</code> et <code>stroke+fill</code> pour les modificateurs sélectionnés.</p>
+
+    <div class='pre p1 fill-light mt0'>switchSroke(): void</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code>void</code>:
+        
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='switchgrid'>
+      switchGrid
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Passe au type de grille suivant (rotation cyclique via <code>next()</code>).</p>
+
+    <div class='pre p1 fill-light mt0'>switchGrid(): void</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code>void</code>:
+        
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='showinterface'>
+      showInterface
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Affiche l’interface spécifiée et met à jour la classe <code>active</code> sur le bouton correspondant.</p>
+
+    <div class='pre p1 fill-light mt0'>showInterface(numInterface: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>): void</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>numInterface</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>)</code>
+	    L’index de l’interface à afficher.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code>void</code>:
+        
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='changeinterface'>
+      changeInterface
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Change l’interface active dans un sens donné (+ ou -) et appelle <code>showInterface</code>.</p>
+
+    <div class='pre p1 fill-light mt0'>changeInterface(dir: (<code>"+"</code> | <code>"-"</code>)): void</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>dir</span> <code class='quiet'>((<code>"+"</code> | <code>"-"</code>))</code>
+	    La direction du changement (suivant ou précédent).
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code>void</code>:
+        
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='inputtolinked'>
+      inputToLinked
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Active/désactive le mode “source” d’un input à lier et marque visuellement l’input courant.</p>
+
+    <div class='pre p1 fill-light mt0'>inputToLinked(): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code>:
+        <code>true</code>
+ si une entrée focalisée a été traitée, sinon 
+<code>false</code>
+.
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='inputtolinkedto'>
+      inputToLinkedTo
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Lie l’input “source” courant à un autre input (cible) avec un signe (positif/négatif), ou annule le lien.</p>
+
+    <div class='pre p1 fill-light mt0'>inputToLinkedTo(positive: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>positive</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>
+            = <code>true</code>)</code>
+	    Indique si la liaison est positive (
+<code>true</code>
+) ou négative (
+<code>false</code>
+).
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code>:
+        <code>true</code>
+ si une entrée focalisée a été traitée, sinon 
+<code>false</code>
+.
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='inputtoslidewithmouse'>
+      inputToSlideWithMouse
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Active/désactive le contrôle d’un input sélectionné par le mouvement de la souris.</p>
+
+    <div class='pre p1 fill-light mt0'>inputToSlideWithMouse(): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code>:
+        <code>true</code>
+ si une entrée focalisée a été traitée, sinon 
+<code>false</code>
+.
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='inputflownbymouse'>
+      inputFlownByMouse
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Applique une fonction sur l’input actuellement survolé/focalisé (dataset.focus==='true').</p>
+
+    <div class='pre p1 fill-light mt0'>inputFlownByMouse(func: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function">Function</a>, args: ...any?): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>func</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function">Function</a>)</code>
+	    Fonction callback appelée avec l’input courant (et les arguments supplémentaires).
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>args</span> <code class='quiet'>(...any?)</code>
+	    Arguments additionnels transmis au callback.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code>:
+        <code>true</code>
+ si un input a été trouvé et traité, sinon 
+<code>false</code>
+.
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='clearcharoninput'>
+      clearCharOnInput
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Supprime le caractère/élément décoratif associé à un input (ex. icône de liaison).</p>
+
+    <div class='pre p1 fill-light mt0'>clearCharOnInput(ctrl: <a href="https://developer.mozilla.org/docs/Web/HTML/Element">HTMLElement</a>, endId: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>): void</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>ctrl</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/HTML/Element">HTMLElement</a>)</code>
+	    Contrôle (input) concerné.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>endId</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    Suffixe d’identifiant de l’élément à retirer.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code>void</code>:
+        
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='isinhelptuchs'>
+      isInHelpTuchs
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Calcule les touches libres disponibles (simples, avec Ctrl, avec Alt) pour les raccourcis.</p>
+
+    <div class='pre p1 fill-light mt0'>isInHelpTuchs(): {alt: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>>, ctrl: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>>, simple: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>>}</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code>{alt: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>>, ctrl: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>>, simple: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>>}</code>:
+        Listes d’objets décrivant les touches libres.
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='makedialog'>
+      makeDialog
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Ouvre un dialog listant les touches libres (simples, Ctrl+caractère, Alt+caractère) sous forme de claviers virtuels.</p>
+
+    <div class='pre p1 fill-light mt0'>makeDialog(options: any, content: any, closeOrRemove: any, isOpInput: any): HTMLDialogElement</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>options</span> <code class='quiet'>(any
+            = <code>{style:{width:&#39;50%&#39;,height:&#39;50%&#39;}}</code>)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>content</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>closeOrRemove</span> <code class='quiet'>(any
+            = <code>&#39;remove&#39;</code>)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>isOpInput</span> <code class='quiet'>(any
+            = <code>true</code>)</code>
+	    
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code>HTMLDialogElement</code>:
+        Le dialog créé.
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='makefreetuchsdialog'>
+      makeFreeTuchsDialog
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Génère un dialog (ou met à jour son contenu) affichant un tableau triable d’informations sur un tableau d’objets.</p>
+
+    <div class='pre p1 fill-light mt0'>makeFreeTuchsDialog(arrObjs: (<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>> | <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>), isSorted: (<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a> | <code>false</code>), newDir: (<code>"asc"</code> | <code>"desc"</code> | <code>"none"</code>), idDial: (<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a> | <code>false</code>), title: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>): (HTMLDialogElement | <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>arrObjs</span> <code class='quiet'>((<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>> | <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>))</code>
+	    Tableau d’objets ou chaîne JSON (avec 
+<code>///</code>
+ à la place des guillemets).
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>isSorted</span> <code class='quiet'>((<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a> | <code>false</code>)
+            = <code>false</code>)</code>
+	    Propriété actuellement triée, ou 
+<code>false</code>
+ si aucun tri.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>newDir</span> <code class='quiet'>((<code>"asc"</code> | <code>"desc"</code> | <code>"none"</code>)
+            = <code>&#39;none&#39;</code>)</code>
+	    Direction de tri demandée.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>idDial</span> <code class='quiet'>((<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a> | <code>false</code>)
+            = <code>false</code>)</code>
+	    Id du dialog à mettre à jour ; si falsy, un nouveau dialog est créé.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>title</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    Titre affiché dans le dialog.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code>(HTMLDialogElement | <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>:
+        Le dialog créé (si nouveau), ou la chaîne HTML mise à jour (si on met à jour un dialog existant).
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='makeinfosarrobjsdialog'>
+      makeInfosArrObjsDialog
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Extrait les propriétés présentes dans un tableau d’objets et construit une matrice de valeurs, éventuellement triée.</p>
+
+    <div class='pre p1 fill-light mt0'>makeInfosArrObjsDialog(arrObjs: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>>, isSorted: (<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a> | <code>false</code>), newDir: (<code>"asc"</code> | <code>"desc"</code>), idDial: any, title: any): ({infosObjs: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>>>, propsInObjs: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>>} | <code>false</code>)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>arrObjs</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>>)</code>
+	    Tableau d’objets source.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>isSorted</span> <code class='quiet'>((<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a> | <code>false</code>)
+            = <code>false</code>)</code>
+	    Nom de la propriété sur laquelle trier, ou 
+<code>false</code>
+.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>newDir</span> <code class='quiet'>((<code>"asc"</code> | <code>"desc"</code>)
+            = <code>&#39;none&#39;</code>)</code>
+	    Direction de tri.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>idDial</span> <code class='quiet'>(any
+            = <code>false</code>)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>title</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code>({infosObjs: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>>>, propsInObjs: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>>} | <code>false</code>)</code>:
+        Données structurées et liste des propriétés, ou 
+<code>false</code>
+ si aucune propriété trouvée.
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='infosarrobjs'>
+      infosArrObjs
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Construit une matrice d’infos à partir d’un tableau d’objets et optionnellement la trie.</p>
+
+    <div class='pre p1 fill-light mt0'>infosArrObjs(arrObjs: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>>, isSorted: (<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a> | <code>false</code>), newDir: (<code>"asc"</code> | <code>"desc"</code>)): ({infosObjs: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>>>, propsInObjs: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>>} | <code>false</code>)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>arrObjs</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>>)</code>
+	    Tableau d'objets source.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>isSorted</span> <code class='quiet'>((<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a> | <code>false</code>))</code>
+	    Propriété sur laquelle trier, ou 
+<code>false</code>
+ pour aucun tri.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>newDir</span> <code class='quiet'>((<code>"asc"</code> | <code>"desc"</code>))</code>
+	    Direction de tri.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code>({infosObjs: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>>>, propsInObjs: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>>} | <code>false</code>)</code>:
+        Objet structuré ou 
+<code>false</code>
+ si aucune propriété.
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='allinfosarr'>
+      allInfosArr
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Extrait les paires (prop, val, typeof) d’un objet, limitées à un sous-ensemble de propriétés si fourni.</p>
+
+    <div class='pre p1 fill-light mt0'>allInfosArr(obj: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>, propsInObj: (<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>> | <code>false</code>)): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;{prop: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, val: any, typeof: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>}></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>obj</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>)</code>
+	    Objet source.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>propsInObj</span> <code class='quiet'>((<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>> | <code>false</code>)
+            = <code>false</code>)</code>
+	    Propriétés à conserver, ou 
+<code>false</code>
+ pour toutes.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;{prop: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, val: any, typeof: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>}></code>:
+        Tableau d’infos sur les propriétés.
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='makeinfosdialog'>
+      makeInfosDialog
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Ouvre (ou met à jour) un dialogue listant les infos des modificateurs, avec en-têtes triables.</p>
+
+    <div class='pre p1 fill-light mt0'>makeInfosDialog(isSorted: (<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a> | <code>false</code>), newDir: (<code>"asc"</code> | <code>"desc"</code> | <code>"none"</code>)): (HTMLDialogElement | <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>isSorted</span> <code class='quiet'>((<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a> | <code>false</code>)
+            = <code>false</code>)</code>
+	    Propriété triée ou 
+<code>false</code>
+.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>newDir</span> <code class='quiet'>((<code>"asc"</code> | <code>"desc"</code> | <code>"none"</code>)
+            = <code>&#39;none&#39;</code>)</code>
+	    Direction du tri.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code>(HTMLDialogElement | <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>:
+        Dialog créé (nouveau) ou HTML mis à jour (existant).
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='makeinfosavatarsdialog'>
+      makeInfosAvatarsDialog
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Ouvre (ou met à jour) un dialogue listant les infos des modificateurs, avec en-têtes triables.</p>
+
+    <div class='pre p1 fill-light mt0'>makeInfosAvatarsDialog(isSorted: (<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a> | <code>false</code>), newDir: (<code>"asc"</code> | <code>"desc"</code> | <code>"none"</code>), isJustForContent: any): (HTMLDialogElement | <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>isSorted</span> <code class='quiet'>((<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a> | <code>false</code>)
+            = <code>false</code>)</code>
+	    Propriété triée ou 
+<code>false</code>
+.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>newDir</span> <code class='quiet'>((<code>"asc"</code> | <code>"desc"</code> | <code>"none"</code>)
+            = <code>&#39;none&#39;</code>)</code>
+	    Direction du tri.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>isJustForContent</span> <code class='quiet'>(any
+            = <code>isSorted</code>)</code>
+	    
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code>(HTMLDialogElement | <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>:
+        Dialog créé (nouveau) ou HTML mis à jour (existant).
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='trselect'>
+      trSelect
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Ajoute/enlève la classe de sélection sur une ligne de tableau d’infos.</p>
+
+    <div class='pre p1 fill-light mt0'>trSelect(tr: <a href="https://developer.mozilla.org/docs/Web/API/HTMLTableRowElement">HTMLTableRowElement</a>): void</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>tr</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/API/HTMLTableRowElement">HTMLTableRowElement</a>)</code>
+	    Ligne à (dé)sélectionner.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code>void</code>:
+        
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='infosarr'>
+      infosArr
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Extrait les paires (prop, val) d’un objet pour toutes les propriétés scalaires (ni objet ni fonction).</p>
+
+    <div class='pre p1 fill-light mt0'>infosArr(obj: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>, propsInObj: (<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>> | <code>false</code>)): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;{prop: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, val: any}></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>obj</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>)</code>
+	    Objet source.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>propsInObj</span> <code class='quiet'>((<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>> | <code>false</code>)
+            = <code>false</code>)</code>
+	    Propriétés à conserver, ou 
+<code>false</code>
+ pour toutes.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;{prop: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, val: any}></code>:
+        Tableau (prop, val) filtré.
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='sortinfosarray'>
+      sortInfosArray
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Trie une matrice d'infos (tableau de lignes d’objets {prop,val}) selon une propriété et un sens.</p>
+
+    <div class='pre p1 fill-light mt0'>sortInfosArray(infosMods: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;{prop: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, val: any}>>, prop: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, dir: (<code>"asc"</code> | <code>"desc"</code>)): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;{prop: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, val: any}>></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>infosMods</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;{prop: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, val: any}>>)</code>
+	    Données à trier.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>prop</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    Propriété cible du tri.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>dir</span> <code class='quiet'>((<code>"asc"</code> | <code>"desc"</code>)
+            = <code>&#39;asc&#39;</code>)</code>
+	    Sens du tri.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;{prop: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, val: any}>></code>:
+        Le même tableau trié (in-place).
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='resizeui'>
+      resizeUI
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Ajuste dynamiquement la largeur de l’UI en fonction de la taille du canvas (16:9).</p>
+
+    <div class='pre p1 fill-light mt0'>resizeUI(cv: <a href="https://developer.mozilla.org/docs/Web/API/HTMLCanvasElement">HTMLCanvasElement</a>): void</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>cv</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/API/HTMLCanvasElement">HTMLCanvasElement</a>
+            = <code>structure</code>)</code>
+	    Canvas de référence.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code>void</code>:
+        
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='drawlimoninput'>
+      drawLimOnInput
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Dessine un marqueur visuel (min/max) sur un input selon l’action utilisateur.</p>
+
+    <div class='pre p1 fill-light mt0'>drawLimOnInput(ctrl: <a href="https://developer.mozilla.org/docs/Web/API/HTMLInputElement">HTMLInputElement</a>, e: <a href="https://developer.mozilla.org/docs/Web/API/MouseEvent">MouseEvent</a>): void</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>ctrl</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/API/HTMLInputElement">HTMLInputElement</a>)</code>
+	    Contrôle concerné.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>e</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/API/MouseEvent">MouseEvent</a>)</code>
+	    Événement souris pour positionner le repère.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code>void</code>:
+        
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='drawcharoninput'>
+      drawCharOnInput
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Dessine un caractère/indicateur positionné sur un input (ex. pour marquer un lien).</p>
+
+    <div class='pre p1 fill-light mt0'>drawCharOnInput(ctrl: <a href="https://developer.mozilla.org/docs/Web/HTML/Element">HTMLElement</a>, char: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, endId: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>): void</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>ctrl</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/HTML/Element">HTMLElement</a>)</code>
+	    Contrôle (input) ciblé.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>char</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    Caractère à afficher.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>endId</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    Suffixe d’identifiant de l’élément créé.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code>void</code>:
+        
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='testall'>
+      testAll
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Effectue un test global de l’application (avec ou sans modificateurs), en réinitialisant certains paramètres et déclenchant des raccourcis clavier.</p>
+
+    <div class='pre p1 fill-light mt0'>testAll(withMods: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>): void</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>withMods</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>
+            = <code>true</code>)</code>
+	    Indique si les modificateurs doivent être inclus dans le test.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code>void</code>:
+        
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='togglearrobjsdialog'>
+      toggleArrObjsDialog
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Ouvre/ferme le dialogue d’infos pour un tableau d’objets (avec titre).</p>
+
+    <div class='pre p1 fill-light mt0'>toggleArrObjsDialog(arrObjs: (<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>> | <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>), title: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>): void</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>arrObjs</span> <code class='quiet'>((<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>> | <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>))</code>
+	    Tableau d’objets ou JSON encodé (
+<code>///</code>
+ pour guillemets).
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>title</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    Titre du dialogue.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code>void</code>:
+        
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='definecenter'>
+      defineCenter
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Définit le centre global (par la souris, aléatoire ou centre du canvas) et le propage aux avatars.</p>
+
+    <div class='pre p1 fill-light mt0'>defineCenter(byMouse: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>, define: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>): {x: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>, y: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>}</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>byMouse</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>
+            = <code>true</code>)</code>
+	    Si vrai, utilise la souris (quand 
+<code>define</code>
+ est vrai).
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>define</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>
+            = <code>false</code>)</code>
+	    Si vrai, calcule et fixe un nouveau centre ; sinon centre du canvas.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code>{x: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>, y: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>}</code>:
+        Le centre défini.
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='alea_params'>
+      alea_params
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Applique des valeurs aléatoires aux paramètres actifs (et éventuellement à un avatar).</p>
+
+    <div class='pre p1 fill-light mt0'>alea_params(avatar: (<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a> | <code>false</code>)): void</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>avatar</span> <code class='quiet'>((<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a> | <code>false</code>)
+            = <code>false</code>)</code>
+	    Avatar ciblé ; si falsy, applique au global + met à jour l’UI.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code>void</code>:
+        
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='one_alea_param'>
+      one_alea_param
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Tire au sort une (ou plusieurs) valeur(s) de paramètres marqués aléatoires et déclenche les événements associés.</p>
+
+    <div class='pre p1 fill-light mt0'>one_alea_param(playInput: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>): void</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>playInput</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>
+            = <code>true</code>)</code>
+	    Déclenche l’événement 
+<code>input</code>
+ sur les contrôles concernés.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code>void</code>:
+        
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+      </div>
+    </div>
+</body>
+</html>

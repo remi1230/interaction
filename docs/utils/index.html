@@ -1,0 +1,2374 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset='utf-8'>
+  <title>interaction 1.0.0 | Documentation</title>
+  <meta name='viewport' content='width=device-width,initial-scale=1'>
+  <link href='../assets/bass.css' rel='stylesheet'>
+  <link href='../assets/style.css' rel='stylesheet'>
+  <link href='../assets/github.css' rel='stylesheet'>
+  <link href='../assets/split.css' rel='stylesheet'>
+
+  <script src='../assets/anchor.js' defer></script>
+  <script src='../assets/split.js' defer></script>
+  <script src='../assets/site.js' defer></script>
+</head>
+<body class='documentation m0'>
+    <div class='flex'>
+      <div id='split-left' class='overflow-auto fs0 height-viewport-100'>
+        <div class='py1 px2'>
+          <h3 class='mb0 no-anchor'>interaction</h3>
+          <div class='mb1'><code>1.0.0</code></div>
+          <input
+            placeholder='Filter'
+            id='filter-input'
+            class='col12 block input'
+            spellcheck='false'
+            autocapitalize='off'
+            autocorrect='off'
+            type='text' />
+          <div id='toc'>
+            <ul class='list-reset h5 py1-ul'>
+              
+                
+                <li><a
+                  href='#deleterecurse'
+                  class="">
+                  deleteRecurse
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#replaceavonellipse'
+                  class="">
+                  replaceAvOnEllipse
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#deleterecurse'
+                  class="">
+                  deleteRecurse
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#updformulecolor'
+                  class="">
+                  updFormuleColor
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#replacesinformulecolor'
+                  class="">
+                  replacesInFormuleColor
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#testformule'
+                  class="">
+                  testFormule
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#glo_params'
+                  class="">
+                  glo_params
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#takeshot'
+                  class="">
+                  takeShot
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#gotoshot'
+                  class="">
+                  goToShot
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#fillstyleaccordtobg'
+                  class="">
+                  fillStyleAccordToBg
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#switchhyperalea'
+                  class="">
+                  switchHyperAlea
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#alea_size'
+                  class="">
+                  alea_size
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#updmaxangletonbedges'
+                  class="">
+                  updMaxAngleToNbEdges
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#getrandompoint'
+                  class="">
+                  getRandomPoint
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#getrandompointincircle'
+                  class="">
+                  getRandomPointInCircle
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#keepbreak'
+                  class="">
+                  keepBreak
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#razrotdone'
+                  class="">
+                  razRotDone
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#reg'
+                  class="">
+                  reg
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#importwasm'
+                  class="">
+                  importWasm
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#init'
+                  class="">
+                  init
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#deepcopy'
+                  class="">
+                  deepCopy
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#removeaccents'
+                  class="">
+                  removeAccents
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#sortnumeric'
+                  class="">
+                  sortNumeric
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#getrndchar'
+                  class="">
+                  getRndChar
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#switchobjbools'
+                  class="">
+                  switchObjBools
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#evalnoerror'
+                  class="">
+                  evalNoError
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#evalformulecolor'
+                  class="">
+                  evalFormuleColor
+                  
+                </a>
+                
+                </li>
+              
+            </ul>
+          </div>
+          <div class='mt1 h6 quiet'>
+            <a href='https://documentation.js.org/reading-documentation.html'>Need help reading this?</a>
+          </div>
+        </div>
+      </div>
+      <div id='split-right' class='relative overflow-auto height-viewport-100'>
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='deleterecurse'>
+      deleteRecurse
+    </h3>
+    
+    
+  </div>
+  
+
+  
+    <div class='pre p1 fill-light mt0'>deleteRecurse(obj: any, prop: any, iter: any)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>obj</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>prop</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>iter</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='replaceavonellipse'>
+      replaceAvOnEllipse
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Fait tourner tous les avatars autour d'une ellipse en fonction de la variation de la valeur du contrôle.</p>
+
+    <div class='pre p1 fill-light mt0'>replaceAvOnEllipse(ctrl: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>, avatars: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>>, canvas: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>, rad: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>ctrl</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>)</code>
+	    L'objet de contrôle contenant les valeurs de rotation.
+
+          </div>
+          
+          <table class='mt1 mb2 fixed-table h5 col-12'>
+            <colgroup>
+              <col width='30%' />
+              <col width='70%' />
+            </colgroup>
+            <thead>
+              <tr class='bold fill-light'>
+                <th>Name</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody class='mt1'>
+              
+                <tr>
+  <td class='break-word'><span class='code bold'>ctrl.last_vals</span> <code class='quiet'><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>></code>
+  </td>
+  <td class='break-word'><span>Tableau des valeurs précédentes du contrôle.
+</span></td>
+</tr>
+
+
+              
+                <tr>
+  <td class='break-word'><span class='code bold'>ctrl.value</span> <code class='quiet'><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></code>
+  </td>
+  <td class='break-word'><span>La valeur actuelle du contrôle.
+</span></td>
+</tr>
+
+
+              
+            </tbody>
+          </table>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>avatars</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>>)</code>
+	    Tableau des objets avatar à faire tourner.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>canvas</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>)</code>
+	    L'objet canvas fournissant le point central.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>rad</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>)</code>
+	    Le facteur de conversion des degrés en radians.
+<p>Chaque objet avatar doit avoir :</p>
+<ul>
+<li>{Function} rotateCalc - Fonction pour calculer la position après rotation.</li>
+<li>{Object} [center] - Centre optionnel pour la rotation.</li>
+<li>{number} x - La coordonnée x (sera mise à jour).</li>
+<li>{number} y - La coordonnée y (sera mise à jour).</li>
+</ul>
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='deleterecurse'>
+      deleteRecurse
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Supprime une propriété d'un objet de manière récursive</p>
+
+    <div class='pre p1 fill-light mt0'>deleteRecurse(obj: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>, prop: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, iter: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>obj</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>)</code>
+	    L'objet à modifier
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>prop</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    La propriété à supprimer
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>iter</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>)</code>
+	    Le nombre d'itérations restantes
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='updformulecolor'>
+      updFormuleColor
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Met à jour la formule de couleur de l'objet global ou des modificateurs sélectionnés</p>
+
+    <div class='pre p1 fill-light mt0'>updFormuleColor(ctrl: <a href="https://developer.mozilla.org/docs/Web/HTML/Element">HTMLElement</a>, colorType: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>ctrl</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/HTML/Element">HTMLElement</a>)</code>
+	    L'élément de contrôle à partir duquel la valeur est extraite
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>colorType</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    Le type de couleur à mettre à jour
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='replacesinformulecolor'>
+      replacesInFormuleColor
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Remplace les éléments symboliques d'une formule de couleur par leurs équivalents JavaScript utilisables dans le contexte de l'objet avatar.
+Par exemple, remplace 'H', 'S', 'L', 'A' par 'h', 's', 'l', 'a', et d'autres symboles comme 'D', 'sz', 'cx', 'cy', 'vx', 'vy', 'v', 'x', 'y'
+par des expressions ou propriétés JavaScript correspondantes.
+Utile pour permettre l'évaluation dynamique de formules de couleur personnalisées.</p>
+
+    <div class='pre p1 fill-light mt0'>replacesInFormuleColor(colorElem: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>colorElem</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    La formule de couleur à transformer.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>:
+        La formule transformée, prête à être évaluée en JavaScript.
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='testformule'>
+      testFormule
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Teste une formule mathématique en remplaçant toutes les occurrences de 'x' et 'y' par 1,
+puis évalue le résultat avec evalNoError. Retourne le résultat sous forme de nombre flottant.
+Utile pour vérifier la validité syntaxique et le résultat d'une formule personnalisée.</p>
+
+    <div class='pre p1 fill-light mt0'>testFormule(formule: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>formule</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    La formule mathématique à tester (ex: "2*x+y").
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></code>:
+        Le résultat de l'évaluation de la formule, ou NaN si l'évaluation échoue.
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='glo_params'>
+      glo_params
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Initialise et applique un ensemble de paramètres globaux prédéfinis selon le style choisi (ex : 'gravity', 'test', 'stars').
+Met à jour les contrôles de l'interface et certains états globaux en conséquence.</p>
+
+    <div class='pre p1 fill-light mt0'>glo_params(style: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>): void</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>style</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>
+            = <code>&#39;gravity&#39;</code>)</code>
+	    Le style de paramétrage à appliquer ('gravity', 'test', 'stars', etc.).
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code>void</code>:
+        
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='takeshot'>
+      takeShot
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Réalise une sauvegarde profonde de l'état global actuel (activeGlo) dans la variable gloSave.
+Permet de restaurer ultérieurement cet état avec la fonction goToShot.
+Utile pour créer un "snapshot" de la configuration courante de l'animation.</p>
+
+    <div class='pre p1 fill-light mt0'>takeShot(): void</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code>void</code>:
+        
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='gotoshot'>
+      goToShot
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Restaure l'état global de l'animation à partir du snapshot précédemment sauvegardé avec takeShot.
+Réinitialise les avatars, les paramètres d'interface et le fond selon la configuration sauvegardée.
+Utile pour revenir à un état antérieur de l'animation.</p>
+
+    <div class='pre p1 fill-light mt0'>goToShot(): void</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code>void</code>:
+        
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='fillstyleaccordtobg'>
+      fillStyleAccordToBg
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Met à jour la propriété fillStyle du contexte 2D fourni en fonction de la couleur de fond du canvas donné.
+Convertit la couleur de fond du canvas en objet RGB, l'ajuste si nécessaire, puis la reconvertit en chaîne RGB utilisable par le contexte.
+Utile pour harmoniser la couleur de remplissage avec le fond du canvas lors de dessins.</p>
+
+    <div class='pre p1 fill-light mt0'>fillStyleAccordToBg(canvasVar: <a href="https://developer.mozilla.org/docs/Web/API/HTMLCanvasElement">HTMLCanvasElement</a>, ctxVar: <a href="https://developer.mozilla.org/docs/Web/API/CanvasRenderingContext2D">CanvasRenderingContext2D</a>): void</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>canvasVar</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/API/HTMLCanvasElement">HTMLCanvasElement</a>)</code>
+	    Le canvas dont la couleur de fond est utilisée.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>ctxVar</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/API/CanvasRenderingContext2D">CanvasRenderingContext2D</a>)</code>
+	    Le contexte 2D dont la propriété fillStyle sera modifiée.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code>void</code>:
+        
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='switchhyperalea'>
+      switchHyperAlea
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Active ou désactive le mode "hyperAlea" pour tous les avatars.
+Si hyperAlea est activé dans activeGlo, chaque avatar reçoit une copie profonde de l'état global (hors propriétés spécifiques).
+Sinon, la propriété glo de chaque avatar est supprimée.
+Utile pour appliquer ou retirer dynamiquement des paramètres globaux individualisés à chaque avatar.</p>
+
+    <div class='pre p1 fill-light mt0'>switchHyperAlea(): void</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code>void</code>:
+        
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='alea_size'>
+      alea_size
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Attribue une taille aléatoire à chaque avatar si le mode aléatoire est activé dans activeGlo.
+Si activeGlo.alea_size est vrai, la taille de chaque avatar est calculée aléatoirement selon un niveau de variation.
+Sinon, tous les avatars reçoivent la taille définie dans activeGlo.size.
+Utile pour diversifier visuellement la taille des avatars dans l'animation.</p>
+
+    <div class='pre p1 fill-light mt0'>alea_size(): void</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code>void</code>:
+        
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='updmaxangletonbedges'>
+      updMaxAngleToNbEdges
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Met à jour la valeur et la borne maximale d'un contrôle d'angle en fonction du nombre de côtés spécifié.
+Déclenche un événement 'input' pour notifier les éventuels écouteurs de la modification.
+Utile pour adapter dynamiquement la saisie d'angle lors de la modification du nombre de côtés d'une forme.</p>
+
+    <div class='pre p1 fill-light mt0'>updMaxAngleToNbEdges(idAngle: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, nbEdges: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>): void</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>idAngle</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    L'identifiant de l'élément input qui contrôle l'angle.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>nbEdges</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>)</code>
+	    Le nombre de côtés de la forme.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code>void</code>:
+        
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='getrandompoint'>
+      getRandomPoint
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Génère un point aléatoire à l'intérieur du canvas, biaisé par le coefficient donné.</p>
+
+    <div class='pre p1 fill-light mt0'>getRandomPoint(coeff: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>): {x: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>, y: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>}</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>coeff</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>)</code>
+	    Un coefficient entre 0 et 1 qui contrôle la dispersion du point aléatoire.
+Une valeur proche de 1 permet des points partout sur le canvas,
+tandis qu'une valeur proche de 0 restreint les points vers le centre.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code>{x: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>, y: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>}</code>:
+        Un objet contenant les coordonnées x et y du point aléatoire.
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='getrandompointincircle'>
+      getRandomPointInCircle
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Génère un point aléatoire à l'intérieur d'un cercle, avec des options pour utiliser un modificateur ou suivre un avatar.</p>
+
+    <div class='pre p1 fill-light mt0'>getRandomPointInCircle(coeff: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>, byMod: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>, byAv: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>, avToFollow: {x: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>, y: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>}): {x: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>, y: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>}</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>coeff</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>)</code>
+	    Coefficient déterminant le rayon du cercle.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>byMod</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>
+            = <code>activeGlo.modifiers.length?activeGlo.randomPointByMod:false</code>)</code>
+	    Utiliser un modificateur comme centre et rayon.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>byAv</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>
+            = <code>activeGlo.followAvatar</code>)</code>
+	    Utiliser l'avatar comme centre.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>avToFollow</span> <code class='quiet'>({x: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>, y: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>}
+            = <code>false</code>)</code>
+	    L'objet avatar à suivre, si précisé.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code>{x: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>, y: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>}</code>:
+        Un point aléatoire {x, y} à l'intérieur du cercle spécifié.
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='keepbreak'>
+      keepBreak
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Désactive temporairement les indicateurs <code>activeGlo.break</code> et <code>activeGlo.totalBreak</code>,
+exécute la fonction fournie, puis positionne des indicateurs temporaires pour signaler
+si des pauses étaient actives avant l'exécution.</p>
+
+    <div class='pre p1 fill-light mt0'>keepBreak(func: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function">Function</a>, param: any): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>func</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function">Function</a>)</code>
+	    La fonction à exécuter pendant que les pauses sont désactivées.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>param</span> <code class='quiet'>(any
+            = <code>null</code>)</code>
+	    Paramètre optionnel à passer à la fonction.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code>:
+        Retourne toujours false.
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='razrotdone'>
+      razRotDone
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Réinitialise la propriété <code>numsMod</code> de tous les avatars à un tableau vide si la valeur donnée est 0.</p>
+
+    <div class='pre p1 fill-light mt0'>razRotDone(val: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>val</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>)</code>
+	    La valeur à vérifier. Si 0, la réinitialisation est effectuée.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='reg'>
+      reg
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Transforme la représentation sous forme de chaîne de chaque valeur de propriété dans l'objet <code>f</code>
+Applique diverses substitutions pour convertir des notations mathématiques personnalisées en expressions JavaScript valides.</p>
+
+    <div class='pre p1 fill-light mt0'>reg(f: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>f</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>)</code>
+	    L'objet dont les propriétés sont à transformer
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='importwasm'>
+      importWasm
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Récupère, compile et instancie de façon asynchrone un module WebAssembly à partir du chemin donné.</p>
+
+    <div class='pre p1 fill-light mt0'>importWasm(path: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;WebAssembly.Instance></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>path</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    L’URL ou le chemin du fichier binaire WebAssembly (.wasm).
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;WebAssembly.Instance></code>:
+        Une promesse résolue avec l’instance WebAssembly.
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='init'>
+      init
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Initialise un module WebAssembly et configure le calculateur.</p>
+
+    <div class='pre p1 fill-light mt0'>init(path: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;void></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>path</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    Le chemin du fichier WebAssembly (.wasm)
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;void></code>:
+        
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='deepcopy'>
+      deepCopy
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Crée une copie profonde de l'objet ou du tableau donné, en excluant éventuellement certaines propriétés.</p>
+
+    <div class='pre p1 fill-light mt0'>deepCopy</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>inObject</span> <code class='quiet'>((<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a> | <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>))</code>
+	    L'objet ou le tableau à copier
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>propNoCopy</span> <code class='quiet'>(...<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    Les propriétés à ne pas copier (exclure)
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a> | <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>)</code>:
+        La copie profonde de l'objet ou du tableau
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='removeaccents'>
+      removeAccents
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Supprime les accents d'une chaîne de caractères</p>
+
+    <div class='pre p1 fill-light mt0'>removeAccents</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>str</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    La chaîne de caractères à traiter
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>:
+        La chaîne de caractères sans accents
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='sortnumeric'>
+      sortNumeric
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Trie un tableau de nombres</p>
+
+    <div class='pre p1 fill-light mt0'>sortNumeric(arr: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>arr</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>>)</code>
+	    Le tableau à trier
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>></code>:
+        Le tableau trié
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='getrndchar'>
+      getRndChar
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Génère un caractère aléatoire entre deux valeurs Unicode</p>
+
+    <div class='pre p1 fill-light mt0'>getRndChar</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>min</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>)</code>
+	    La valeur Unicode minimale
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>max</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>)</code>
+	    La valeur Unicode maximale
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>:
+        Un caractère aléatoire
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='switchobjbools'>
+      switchObjBools
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Inverse l'état d'une propriété booléenne d'un objet</p>
+
+    <div class='pre p1 fill-light mt0'>switchObjBools(obj: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>, propToUpd: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>, cumulation: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">Boolean</a>)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>obj</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>
+            = <code>{}</code>)</code>
+	    L'objet à modifier
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>propToUpd</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>
+            = <code>&#39;&#39;</code>)</code>
+	    La propriété à mettre à jour
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>cumulation</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">Boolean</a>
+            = <code>true</code>)</code>
+	    Si vrai, les autres propriétés sont mises à false
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='evalnoerror'>
+      evalNoError
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Teste si une expression ne renvoie pas d'erreur avec eval</p>
+
+    <div class='pre p1 fill-light mt0'>evalNoError(expression: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>): any</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>expression</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    L'expression JavaScript à tester.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code>any</code>:
+        Soit le résultat de l'exécution, soit 'nok'
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='evalformulecolor'>
+      evalFormuleColor
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Teste si une expression ne renvoie pas d'erreur avec eval</p>
+
+    <div class='pre p1 fill-light mt0'>evalFormuleColor(expression: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>expression</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    L'expression JavaScript à tester.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code>:
+        <code>true</code>
+ si l'évaluation réussit, 
+<code>false</code>
+ si une erreur est levée.
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+      </div>
+    </div>
+</body>
+</html>

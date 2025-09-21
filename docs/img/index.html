@@ -1,0 +1,1673 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset='utf-8'>
+  <title>interaction 1.0.0 | Documentation</title>
+  <meta name='viewport' content='width=device-width,initial-scale=1'>
+  <link href='../assets/bass.css' rel='stylesheet'>
+  <link href='../assets/style.css' rel='stylesheet'>
+  <link href='../assets/github.css' rel='stylesheet'>
+  <link href='../assets/split.css' rel='stylesheet'>
+
+  <script src='../assets/anchor.js' defer></script>
+  <script src='../assets/split.js' defer></script>
+  <script src='../assets/site.js' defer></script>
+</head>
+<body class='documentation m0'>
+    <div class='flex'>
+      <div id='split-left' class='overflow-auto fs0 height-viewport-100'>
+        <div class='py1 px2'>
+          <h3 class='mb0 no-anchor'>interaction</h3>
+          <div class='mb1'><code>1.0.0</code></div>
+          <input
+            placeholder='Filter'
+            id='filter-input'
+            class='col12 block input'
+            spellcheck='false'
+            autocapitalize='off'
+            autocorrect='off'
+            type='text' />
+          <div id='toc'>
+            <ul class='list-reset h5 py1-ul'>
+              
+                
+                <li><a
+                  href='#imageprocessor'
+                  class="">
+                  ImageProcessor
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#updimage'
+                  class="">
+                  updImage
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#simplearr'
+                  class="">
+                  simpleArr
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#updatetint'
+                  class="">
+                  updateTint
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#updatesaturation'
+                  class="">
+                  updateSaturation
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#coloroffsetimg'
+                  class="">
+                  ColorOffsetImg
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#greycolor'
+                  class="">
+                  greyColor
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#invtint'
+                  class="">
+                  invTint
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#invsaturation'
+                  class="">
+                  invSaturation
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#rotatecolor'
+                  class="">
+                  rotateColor
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#rotate_image'
+                  class="">
+                  rotate_image
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#grey_color'
+                  class="">
+                  grey_color
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#updshell'
+                  class="">
+                  updShell
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#blur'
+                  class="">
+                  blur
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#sharp'
+                  class="">
+                  sharp
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#invcolors'
+                  class="">
+                  invColors
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#exchangetonecolor'
+                  class="">
+                  exchangeToneColor
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#updbgtoavcolor'
+                  class="">
+                  updBgToAvColor
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#bginterfaceopacity'
+                  class="">
+                  bgInterfaceOpacity
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#getstyleproperty'
+                  class="">
+                  getStyleProperty
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#arrcolors'
+                  class="">
+                  arrColors
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#updcolorfunction'
+                  class="">
+                  updColorFunction
+                  
+                </a>
+                
+                </li>
+              
+            </ul>
+          </div>
+          <div class='mt1 h6 quiet'>
+            <a href='https://documentation.js.org/reading-documentation.html'>Need help reading this?</a>
+          </div>
+        </div>
+      </div>
+      <div id='split-right' class='relative overflow-auto height-viewport-100'>
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='imageprocessor'>
+      ImageProcessor
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Décrit la fonction de transformation de pixels passée à updImage.</p>
+
+    <div class='pre p1 fill-light mt0'>ImageProcessor(data: (<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Uint8ClampedArray">Uint8ClampedArray</a> | <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>>)): void</div>
+  
+    <p>
+      Type:
+      <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function">Function</a>
+    </p>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>data</span> <code class='quiet'>((<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Uint8ClampedArray">Uint8ClampedArray</a> | <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>>))</code>
+	    Tableau RGBA brut des pixels
+(par blocs de 4 valeurs : [R,G,B,A, R,G,B,A, ...])
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code>void</code>:
+        
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='updimage'>
+      updImage
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Mise à jour des données de l'image</p>
+
+    <div class='pre p1 fill-light mt0'>updImage(func: <a href="#imageprocessor">ImageProcessor</a>, simple: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>, clear: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>func</span> <code class='quiet'>(<a href="#imageprocessor">ImageProcessor</a>)</code>
+	    La fonction de modification des données
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>simple</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>
+            = <code>true</code>)</code>
+	    Utilise un tableau simple ou un tableau d'objets
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>clear</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>
+            = <code>false</code>)</code>
+	    Effacement du canevas
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='simplearr'>
+      simpleArr
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Transforme un tableau de couleurs en données d'image</p>
+
+    <div class='pre p1 fill-light mt0'>simpleArr(data: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>, imgData: ImageData)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>data</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>)</code>
+	    Tableau de couleurs
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>imgData</span> <code class='quiet'>(ImageData)</code>
+	    Données d'image à mettre à jour
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='updatetint'>
+      updateTint
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Met à jour la teinte des pixels de l'image</p>
+
+    <div class='pre p1 fill-light mt0'>updateTint(ctrl: <a href="https://developer.mozilla.org/docs/Web/HTML/Element">HTMLElement</a>, col: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>ctrl</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/HTML/Element">HTMLElement</a>)</code>
+	    Le contrôle d'interface utilisateur
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>col</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>
+            = <code>&#39;all&#39;</code>)</code>
+	    La couleur à modifier (par défaut 'all')
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='updatesaturation'>
+      updateSaturation
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Met à jour la saturation des pixels de l'image</p>
+
+    <div class='pre p1 fill-light mt0'>updateSaturation(ctrl: <a href="https://developer.mozilla.org/docs/Web/HTML/Element">HTMLElement</a>)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>ctrl</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/HTML/Element">HTMLElement</a>)</code>
+	    Le contrôle d'interface utilisateur
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='coloroffsetimg'>
+      ColorOffsetImg
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Applique un décalage de couleur à l'image</p>
+
+    <div class='pre p1 fill-light mt0'>new ColorOffsetImg(ctrl: <a href="https://developer.mozilla.org/docs/Web/HTML/Element">HTMLElement</a>)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>ctrl</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/HTML/Element">HTMLElement</a>)</code>
+	    Le contrôle d'interface utilisateur
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='greycolor'>
+      greyColor
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Applique un filtre de niveaux de gris à l'image</p>
+
+    <div class='pre p1 fill-light mt0'>greyColor(ctrl: <a href="https://developer.mozilla.org/docs/Web/HTML/Element">HTMLElement</a>)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>ctrl</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/HTML/Element">HTMLElement</a>)</code>
+	    Le contrôle d'interface utilisateur
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='invtint'>
+      invTint
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Inverse la teinte des pixels de l'image</p>
+
+    <div class='pre p1 fill-light mt0'>invTint()</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='invsaturation'>
+      invSaturation
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Inverse la saturation des pixels de l'image</p>
+
+    <div class='pre p1 fill-light mt0'>invSaturation()</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='rotatecolor'>
+      rotateColor
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Applique une rotation de couleur à l'image</p>
+
+    <div class='pre p1 fill-light mt0'>rotateColor(x: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>, y: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>, z: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>x</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>
+            = <code>0.1</code>)</code>
+	    L'angle de rotation autour de l'axe X
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>y</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>
+            = <code>0.1</code>)</code>
+	    L'angle de rotation autour de l'axe Y
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>z</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>
+            = <code>0.1</code>)</code>
+	    L'angle de rotation autour de l'axe Z
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='rotate_image'>
+      rotate_image
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Applique une rotation au canvas de l'image</p>
+
+    <div class='pre p1 fill-light mt0'>rotate_image(angle: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>angle</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>)</code>
+	    L'angle de rotation en degrés
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='grey_color'>
+      grey_color
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Transforme l'image en niveaux de gris</p>
+
+    <div class='pre p1 fill-light mt0'>grey_color()</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='updshell'>
+      updShell
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Ajoute des écailles à l'image</p>
+
+    <div class='pre p1 fill-light mt0'>updShell(ctrl: <a href="https://developer.mozilla.org/docs/Web/HTML/Element">HTMLElement</a>)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>ctrl</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/HTML/Element">HTMLElement</a>)</code>
+	    Le contrôle à utiliser pour mettre à jour l'image
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='blur'>
+      blur
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Applique un flou à l'image</p>
+
+    <div class='pre p1 fill-light mt0'>blur()</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='sharp'>
+      sharp
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Applique un filtre de netteté à l'image</p>
+
+    <div class='pre p1 fill-light mt0'>sharp()</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='invcolors'>
+      invColors
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Inverse les couleurs de l'image</p>
+
+    <div class='pre p1 fill-light mt0'>invColors()</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='exchangetonecolor'>
+      exchangeToneColor
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Échange les couleurs de l'image en fonction de leur teinte</p>
+
+    <div class='pre p1 fill-light mt0'>exchangeToneColor()</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='updbgtoavcolor'>
+      updBgToAvColor
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Met à jour l'arrière-plan pour correspondre à la couleur moyenne des avatars</p>
+
+    <div class='pre p1 fill-light mt0'>updBgToAvColor(inv: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">Boolean</a>)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>inv</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">Boolean</a>
+            = <code>false</code>)</code>
+	    Renvoie la couleur moyenne inverse ou non
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='bginterfaceopacity'>
+      bgInterfaceOpacity
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Met à jour l'opacité de l'arrière-plan de l'interface</p>
+
+    <div class='pre p1 fill-light mt0'>bgInterfaceOpacity(ctrl: <a href="https://developer.mozilla.org/docs/Web/HTML/Element">HTMLElement</a>)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>ctrl</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/HTML/Element">HTMLElement</a>)</code>
+	    L'élément de contrôle de l'interface
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='getstyleproperty'>
+      getStyleProperty
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Retourne la valeur d'une propriété CSS d'une classe ou d'un id</p>
+
+    <div class='pre p1 fill-light mt0'>getStyleProperty(classOrId: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, property: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>classOrId</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    classe (avec un .) ou id (avec un #) de l'élément
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>property</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    la propriété dont on veut récupérer la valeur dans la règle CSS
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>:
+        la valeur de la propriété CSS
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='arrcolors'>
+      arrColors
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Transforme les données d'image en un tableau de couleurs</p>
+
+    <div class='pre p1 fill-light mt0'>arrColors(data: ImageData): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>data</span> <code class='quiet'>(ImageData)</code>
+	    
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a></code>:
+        tableau d'objets de couleurs
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='updcolorfunction'>
+      updColorFunction
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Met à jour la fonction de couleur en fonction de l'élément de contrôle</p>
+
+    <div class='pre p1 fill-light mt0'>updColorFunction(ctrl: <a href="https://developer.mozilla.org/docs/Web/HTML/Element">HTMLElement</a>)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>ctrl</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/HTML/Element">HTMLElement</a>)</code>
+	    L'élément de contrôle de l'interface
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+      </div>
+    </div>
+</body>
+</html>

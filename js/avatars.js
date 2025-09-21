@@ -1,4 +1,8 @@
-//------------------ CRÉATION D'AVATARS ----------------- //
+/**
+ * @description Crée de nouveaux avatars
+ * @param {Object} options - Options de l'avatar
+ * @memberof module:avatars
+ */
 function createAvatar(options = {}){
   crossPoints = [];
   let nb = typeof(options.nb) == 'undefined' ? activeGlo.params.nb  : options.nb;
@@ -117,12 +121,14 @@ function createAvatar(options = {}){
 }
 
 /**
-*@description Pos an avatar
-*@param {number} x the x pos of avatar
-*@param {number} y the y pos of avatar
-*@param {{x: number, y: number}} cent the center pos of avatar
-*@param {number} size the size of avatar
-*@returns {{Avatar}} Avatar
+*@description Pose un avatar sur le canvas
+*@param {number} x - Position en x
+*@param {number} y - Position en y
+*@param {number} size - Taille de l'avatar
+*@param {Object} cent - Centre de l'avatar
+*@param {boolean} virtual - Indique si l'avatar est virtuel (par défaut : false)
+*@returns {Avatar} - L'avatar créé
+*@memberof module:avatars
 */
 function posAvatar(x, y, size, cent, virtual = false){
   return new Avatar({
@@ -135,9 +141,18 @@ function posAvatar(x, y, size, cent, virtual = false){
   });
 }
 
+/**
+ * Dessine les avatars
+ * @memberof module:avatars
+ */
 function draw_avatars(){ avatars.forEach(avatar => { avatar.draw_avatar(); }); }
 
-//------------------ SUPPRESSION D'AVATARS ----------------- //
+
+/**
+ * @description Supprime des avatars
+ * @param {number} nb - Nombre d'avatars à supprimer ('all' pour tout supprimer)
+ * @memberof module:avatars
+ */
 function deleteAvatar(nb){
   if(nb == 'all'){ avatars = []; activeGlo.params.nb = 0; }
   else{
@@ -146,6 +161,10 @@ function deleteAvatar(nb){
   }
 }
 
+/**
+ * @description Positionne les avatars en fonction de leurs vitesses, accélérations et modificateurs
+ * @memberof module:avatars
+ */
 function positionAvatars(){
   if(activeGlo.clear){ ctx.clearRect(0, 0, canvas.width, canvas.height); }
 
@@ -220,7 +239,10 @@ function positionAvatars(){
   if(activeGlo.total_pause_tmp){ activeGlo.totalBreak = true; activeGlo.total_pause_tmp = false; }
 }
 
-//------------------ SELECT AVATARS BY RECTANGLE ----------------- //
+/**
+ * @description Sélectionne les avatars en dessinant un rectangle avec la souris
+ * @memberof module:avatars
+ */
 function modifierSelectByRectangle(){
   if(activeGlo.mousedown){
     ctxStructure.fillStyle = 'rgba(0, 125, 125, 0.2)';
@@ -238,15 +260,26 @@ function modifierSelectByRectangle(){
   }
 }
 
+/**
+ * @description Vérifie et met à jour le nombre d'avatars si nécessaire
+ * @memberof module:avatars
+ */
 function verif_nb(){
   let nb = parseInt(getById('nb').value);
   if(nb != activeGlo.params.nb){ nbAvatars(nb); }
 }
 
-//------------------ LES AVATARS DANS LE RAYON D'ATTRACTION ----------------- //
+/**
+ * @description Met à jour les avatars proches pour chaque avatar
+ * @memberof module:avatars
+ */
 function all_nearsAvatars(){  avatars.forEach(avatar => { avatar.nearAvatars(); });  }
 
-//------------------ AJOUT OU SUPPRESSION D'ÉLÉMENT DE DESSIN ----------------- //
+/**
+ * @description Ajout ou suppression d'éléments de dessin pour atteindre le nombre spécifié
+ * @param {*} callback
+ * @memberof module:avatars
+ */
 function nbAvatars(callback = verif_nb){
   let nb = parseInt(getById('nb').value);
   if(nb > activeGlo.params.nb){ createAvatar({nb: nb - activeGlo.params.nb, w: activeGlo.size}); }
@@ -255,7 +288,13 @@ function nbAvatars(callback = verif_nb){
   verif_nb();
 }
 
-//------------------ MODIFICATION PROPRIÉTE DES MODIFIEURS ----------------- //
+/**
+ * @description Modifie les propriétés des avatars
+ * @param {string|number} val - Nouvelle valeur de la propriété
+ * @param {string} prop - Propriété à modifier
+ * @param {boolean} toRad - Indique si la valeur doit être convertie en radians (par défaut : false)
+ * @memberof module:avatars
+ */
 function changeAvatarsProp(val, prop, toRad = false){
   val = parseFloat(val);
   if(toRad){ val*=rad; }
@@ -263,7 +302,12 @@ function changeAvatarsProp(val, prop, toRad = false){
   avatars.forEach(av => { av[prop]  = val; });
 }
 
-//------------------ CHANGE L'ÉCHELLE ----------------- //
+/**
+ * @description Modifie la taille des avatars
+ * @param {string} sign - Signe de l'opération ('+' pour augmenter, '-' pour diminuer)
+ * @param {number} div - Diviseur pour ajuster le changement de taille (par défaut : 10)
+ * @memberof module:avatars
+ */
 function scale_avatars(sign, div = 10){
   let center = { x: canvas.width / 2, y: canvas.height / 2 };
   if(sign == '+'){
@@ -284,10 +328,17 @@ function scale_avatars(sign, div = 10){
   }
 }
 
-//------------------ VITESSE À ZÉRO DES AVATARS ----------------- //
+/**
+ * @description Arrête les avatars en mettant leurs vitesses à zéro
+ * @memberof module:avatars
+ */
 function stop_avatars(){ avatars.forEach(avatar => { avatar.vx = 0; avatar.vy  = 0; } ); }
 
-//------------------ SUPPRIME ET RECRÉE LES AVATARS ----------------- //
+
+/**
+ * @description Réinitialise les avatars en supprimant tous les avatars existants et en créant un nouveau
+ * @memberof module:avatars
+ */
 function raz_avatars(){
   var nb = activeGlo.params.nb;
   deleteAvatar(nb);
@@ -296,7 +347,10 @@ function raz_avatars(){
   createAvatar();
 }
 
-//------------------ SAVE OR RESTORE STATE OF AVATARS ----------------- //
+/**
+ * @description Gère la pause et la reprise des avatars en sauvegardant et restaurant leurs vitesses
+ * @memberof module:avatars
+ */
 function dealBreakAvatars(){
   if(activeGlo.break){
     avatars.forEach(av => {
@@ -314,6 +368,10 @@ function dealBreakAvatars(){
   }
 }
 
+/**
+ * @description Sélectionne des avatars à suivre en fonction d'un pourcentage spécifié
+ * @memberof module:avatars
+ */
 function followAvatar(){
   activeGlo.avsToFollow = [];
   avatars.forEach(av => {
@@ -325,6 +383,11 @@ function followAvatar(){
   });
 }
 
+/**
+ * @description Compte le nombre d'avatars visibles à l'écran
+ * @returns {number} - Nombre d'avatars visibles à l'écran
+ * @memberof module:avatars
+ */
 function nbAvatarsInScreen(){
   let nb = 0;
   avatars.forEach(av => {
@@ -333,14 +396,28 @@ function nbAvatarsInScreen(){
   return nb;
 }
 
+/**
+ * @description Sélectionne un avatar pour afficher ses informations
+ * @param {HTMLElement} tr - Élément de la ligne de tableau
+ * @param {number} numAv - Numéro de l'avatar
+ */
 function selectAvatarToInfos(tr, numAv){
   avatars[numAv].infoSelect = tr.classList.contains('trSelect'); 
 }
 
+/**
+ * @description Sélectionne une classe d'avatar pour afficher ses informations
+ * @param {number} numAv - Numéro de l'avatar
+ * @returns {string} - Classe CSS à appliquer
+ */
 function selectClassAvatarToInfos(numAv){
   return avatars[numAv].infoSelect ? 'trSelect' : ''; 
 }
 
+/**
+ * @description Calcule le point moyen entre tous les avatars
+ * @memberof module:avatars
+ */
 function avatarsMeanPoint(){
   let x = 0, y = 0, avLength = avatars.length;
   avatars.forEach((av) => {
@@ -351,6 +428,14 @@ function avatarsMeanPoint(){
   activeGlo.noAvToAv.meanPoint = {x: x/avLength, y: y/avLength};
 }
 
+/**
+ * @description Récupère les informations des avatars
+ * @param {boolean} isSorted - Indique si les informations doivent être triées
+ * @param {string} dir - Direction du tri ('asc' ou 'desc')
+ * @param {number} limNbProps - Limite du nombre de propriétés à récupérer
+ * @returns {Object} - Informations des avatars
+ * @memberof module:avatars
+ */
 function infosAvatars(isSorted = false, dir = 'asc', limNbProps = 19){
   let infosAvs = [];
   let propsInAvs = infosArr(avatars[0]).map(p => p.prop);
@@ -371,7 +456,11 @@ function infosAvatars(isSorted = false, dir = 'asc', limNbProps = 19){
   return false;
 }
 
-//------------------ MODIFICATION DE LA TAILLE DES AVATARS ----------------- //
+/**
+ * @description Met à jour la taille des avatars en fonction d'un contrôle
+ * @param {HTMLElement} ctrl - Élément de contrôle (input)
+ * @memberof module:avatars
+ */
 function updateSize(ctrl){
   if(!activeGlo.updByVal){
     let upd_val = calcUpdVal(ctrl);
@@ -386,7 +475,13 @@ function updateSize(ctrl){
     getSelectedModifiers().forEach(mod => { mod.size = val; mod.glo.size = val; });
   }
 }
-//------------------ A TESTER ----------------- //
+
+/**
+ * @description Calcule la valeur de mise à jour en fonction du contrôle
+ * @param {HTMLElement} ctrl - Élément de contrôle (input)
+ * @returns {number} - Valeur de mise à jour
+ * @memberof module:avatars
+ */
 function calcUpdVal(ctrl){
   let last_val = parseFloat(ctrl.dataset.last_value);
   let val      = parseFloat(ctrl.value);
@@ -396,6 +491,11 @@ function calcUpdVal(ctrl){
   return val > last_val ? diff_val : 1 / diff_val;
 }
 
+/**
+ * @description Supprime une propriété spécifique de tous les avatars
+ * @param {string} prop - Propriété à supprimer
+ * @memberof module:avatars
+ */
 function deleteAvatarsProp(prop){
   let i = 0;
   for(; i < avatars.length; i++){ delete avatars[i][prop]; }

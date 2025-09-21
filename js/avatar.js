@@ -1,6 +1,8 @@
 //------------------ CLASSE POUR INSTANCIER CHAQUE ÉLÉMENT DE DESSIN----------------- //
 /**
- * @description Creates a new Avatar
+ * @description Classe pour instancier chaque élément de dessin
+ * @param {Object} options - Options de l'avatar
+ * @memberof module:avatar
  */
 class Avatar {
 
@@ -47,9 +49,24 @@ class Avatar {
     num_avatar++;
   }
 
+  /**
+   * @description Renvoie la limite en x pour la collision avec les bords
+   * @returns {number} La limite maximale en X.
+   */
   lim_x(){ let dec = activeGlo.far_rebound ? this.size * 2 : 0; return canvas.width - this.size + dec; }
+
+  /**
+   * @description Renvoie la limite en y pour la collision avec les bords
+   * @returns {number} La limite maximale en Y.
+   */
   lim_y(){ let dec = activeGlo.far_rebound ? this.size * 2 : 0; return canvas.height - this.size + dec; }
 
+  /**
+   * @description Renvoie les coordonnées d'un vecteur à partir d'un angle et d'une distance
+   * @param {number} angle - L'angle du vecteur
+   * @param {number} dist - La distance du vecteur
+   * @returns {Object} - Un objet représentant les coordonnées du vecteur
+   */
   direct(angle, dist){
     return {
       x:  cos(angle) * dist,
@@ -57,6 +74,9 @@ class Avatar {
     };
   }
 
+  /**
+   * @description Modifie la direction de l'avatar
+   */
   gloDir(){
     let angle, force;
     if(this.nearMod.params){
@@ -76,6 +96,9 @@ class Avatar {
     this.modifiersValues.y += dec.y;
   }
 
+  /**
+   * @description Attire l'avatar vers le centre du canvas
+   */
   gloAttract(){
     let force;
     if(this.nearMod.params){
@@ -97,6 +120,10 @@ class Avatar {
     this.modifiersValues.y += dec.y;
   }
 
+  /**
+   * @description Calcule la vitesse de l'avatar
+   * @returns {{x: number, y: number, v: number}} - Un objet représentant la vitesse de l'avatar en x, y et la vitesse totale
+   */
   vit(){
     let vx = this.x - this.last_x;
     let vy = this.y - this.last_y;
@@ -105,6 +132,10 @@ class Avatar {
     return {x: vx, y: vy, v: v};
   }
 
+  /**
+   * @description Modifie la taille de l'avatar
+   * @param {*} obj - L'objet contenant les paramètres de taille : soit le nearMod.glo (modifier le plus proche), soit activeGlo qui contient les variables globales du canvas actif 
+   */
   sizeIt(obj = this.nearMod.num_modifier ? this.nearMod.glo : activeGlo){
     let size, size_x, size_y;
 
@@ -158,16 +189,6 @@ class Avatar {
 
     if(obj.sizeDirCoeff && this.lasts[this.lasts.length - 2]){ size *= this.dirSizeCoeff; }
 
-    /*if(obj.growDecrease){
-      if(zeroOneCycle(this.it, obj.params.growDecrease)){
-        obj.params.line_size += obj.params.growLineDecreaseCoeff*obj.params.growDecreaseCoeff;
-      }
-      else if(ctx.lineWidth - obj.params.growDecreaseCoeff >= 0){
-        obj.params.line_size -= obj.params.growLineDecreaseCoeff*obj.params.growDecreaseCoeff;
-      }
-      ctx.lineWidth = obj.params.line_size;
-    }*/
-
     if(obj.perm_var_size){
       let lvs = obj.params.level_var_size;
       if(rnd() > 0.5){
@@ -187,6 +208,11 @@ class Avatar {
     this.nearMod.size = size;
   }
 
+  /**
+   * @description Dessine l'avatar sur le canvas
+   * @param {string} form - La forme de l'avatar
+   * @param {object} objGlo - Les paramètres globaux de l'avatar
+   */
   draw_avatar(form = this.nearMod.glo ? this.nearMod.glo.form : activeGlo.form, objGlo = this.nearMod.glo ? this.nearMod.glo : activeGlo){
     let size   = this.sizeCalc.s;
     let size_x = this.sizeCalc.x;
@@ -349,6 +375,11 @@ class Avatar {
     }
   }
 
+  /**
+   * @description Limite la vitesse maximale d'un vecteur
+   * @param {{x: number, y: number}} v - Le vecteur à limiter
+   * @param {number} lim - La limite de vitesse
+   */
   limSpeedMax(v = this.modifiersValues, lim = this.nearMod.params ? this.nearMod.params.limSpeedMax : activeGlo.params.limSpeedMax){
     if(lim > 0){
       let d = h(v.x, v.y);
@@ -360,6 +391,12 @@ class Avatar {
       }
     }
   }
+
+  /**
+   * @description Limite la vitesse minimale d'un vecteur
+   * @param {{x: number, y: number}} v - Le vecteur à limiter
+   * @param {number} lim - La limite de vitesse
+   */
   limSpeedMin(v = this.modifiersValues, lim = this.nearMod.params ? this.nearMod.params.limSpeedMin : activeGlo.params.limSpeedMin){
     if(lim > 0){
       let d = h(v.x, v.y);
@@ -371,6 +408,12 @@ class Avatar {
       }
     }
   }
+
+  /**
+   * @description Limite la vitesse d'un vecteur en fonction de sa taille
+   * @param {{x: number, y: number}} v - Le vecteur à limiter
+   * @param {number} lim - La limite de vitesse
+   */
   limSpeedBySize(v = this.modifiersValues, lim = this.sizeCalc.x * 2){
       let d     = h(v.x, v.y);
       let lim_d = lim/d;
@@ -379,6 +422,9 @@ class Avatar {
       v.y *= lim_d;
   }
 
+  /**
+   * @description Dessine la queue de l'avatar
+   */
   drawTail(){
     let lastsSz = this.lasts.length;
     let tailDec = -activeGlo.params.tailDec;
@@ -388,7 +434,7 @@ class Avatar {
     if((this.nearMod.glo && this.nearMod.glo.form === 'ellipse') || activeGlo.form === 'ellipse'){
       dec = {x: tailDec * this.sizeCalc.x * cos(this.direction), y: tailDec * this.sizeCalc.x * sin(this.direction)}; 
     }
-
+    
     if(lastsSz){
       ctx.beginPath();
       ctx.strokeStyle = this.fillStyle;
@@ -399,6 +445,9 @@ class Avatar {
     }
   }
 
+  /**
+   * @description Calcule la position secondaire de l'avatar pour un mouvement additionnel
+   */
   secondMove(){
     if(this.secondMovePos){
       this.lastSm = {x: this.secondMovePos.x, y: this.secondMovePos.y};
@@ -415,23 +464,38 @@ class Avatar {
     this.secondMovePos = {x: this.x + dir.x, y: this.y + dir.y};
   }
 
+  /**
+   * Vérifie si l'avatar est proche de la souris
+   * @param {number} dist - La distance à vérifier
+   * @returns {number|boolean} La distance entre l'avatar et la souris ou false si l'avatar n'est pas proche de la souris
+   */
   nearMouse(dist){
     if(this.x < mouse.x + dist && this.x > mouse.x - dist && this.y < mouse.y + dist && this.y > mouse.y - dist){ return h(this.x - mouse.x, this.y - mouse.y); }
 
     return false;
   }
 
+  /**
+   * @description Calcule le coefficient de taille en fonction de la vitesse de direction
+   */
   coeffDirSize(){
     this.speedDir();
     this.dirSizeCoeff = pow(pow(1 - this.dirSpeed/two_pi, activeGlo.params.sizeDirCoeff), abs(activeGlo.params.sizeDirCoeff));
   }
 
+  /**
+   * @description Calcule la vitesse de changement de direction de l'avatar
+   */
   speedDir(){
     if(!this.direction){ this.dir(); }
     let dirAv = atan2piZ(this.x - this.lasts[this.lasts.length - 2].x, this.y - this.lasts[this.lasts.length - 2].y);
     this.dirSpeed = abs(this.direction - dirAv);
   }
 
+  /**
+   * @description Calcule un coefficient de taille en fonction de la distance de l'avatar par rapport au centre
+   * @returns {number} Le coefficient de taille
+   */
   coeffSizeCenter(){
     let center = !this.center ? {x: canvas.width/2, y: canvas.height/2} : this.center;
     let dist_to_center = this.dist_to_center(center) + 1;
@@ -443,10 +507,12 @@ class Avatar {
     return pow(coeff,k);
   }
 
+  /**
+   * @description Calcule un coefficient de taille en fonction de la distance minimale aux modifiers
+   * @returns {number} Le coefficient de taille
+   */
   coeffSizeMinMod(){
     let coeff = 1;
-
-    //this.distMinMods();
 
     if(this.distMinModifiers < activeGlo.params.distNearDrawMods){
       coeff = this.distMinModifiers / activeGlo.params.distNearDrawMods;
@@ -454,6 +520,9 @@ class Avatar {
     return coeff;
   }
 
+  /**
+   * @description Met à jour la liste des avatars proches de cet avatar
+   */
   nearAvatars(){
     this.nears = []; let lim = activeGlo.lim_dist;
     for(let i = 0; i < avatars.length; i++){
@@ -461,6 +530,9 @@ class Avatar {
     }
   }
 
+  /**
+   * @description Change la direction de l'avatar en cas de collision avec les bords du canvas
+   */
   collidBorder(){
     let x = this.x;
     let y = this.y;
@@ -482,6 +554,10 @@ class Avatar {
     this.y = y;
   }
 
+  /**
+   * @description Inverse la direction de la vitesse de l'avatar en cas de collision
+   * @param {boolean} axe_x - Si vrai, inverse la direction sur l'axe X, sinon sur l'axe Y
+   */
   invDir(axe_x = true){
     if(!activeGlo.normalCollid){
       this.vx = -this.vx;
@@ -493,6 +569,11 @@ class Avatar {
     }
   }
 
+  /**
+   * @description Calcule la distance entre cet avatar et le modifier le plus proche
+   * @param {...string} args - Types de modifiers à prendre en compte (optionnel)
+   * @returns {number} La distance minimale du modifier le plus proche
+   */
   distMinMods(...args){
     this.distMinModifiers = 9999;
 
@@ -516,6 +597,10 @@ class Avatar {
     return this.distMinModifiers;
   }
 
+  /**
+   * @description Trouve le second modifier le plus proche de l'avatar
+   * @returns {Object} Le second modifier le plus proche et sa distance
+   */
   secondNearMod(){
     let nearMod, nearModSecond;
     let distMinModifiers = 9999;
@@ -535,6 +620,11 @@ class Avatar {
     return {secondNearMod: nearModSecond, secondDistMinModifiers: distMinModifiers};
   }
 
+  /**
+   * @description Calcule et applique les forces d’interaction entre cet avatar et ses voisins proches
+   * @param {Object} [obj] - Contexte de paramètres à utiliser.
+   * Par défaut, prend `activeGlo` si `activeGlo.hyperAlea` est désactivé, sinon `this.glo`.
+   */
   interaction(obj = !activeGlo.hyperAlea ? activeGlo : this.glo){
     let attract        = obj.params.attract/100;
     let lim_attract    = obj.params.lim_attract;
@@ -630,11 +720,9 @@ class Avatar {
           this.ax += addX;
           this.ay += addY;
 
-          //let modsDevForce = this.nearMod.params ? this.nearMod.params.modsDevForce : activeGlo.params.modsDevForce;
           let modsDevForce = activeGlo.params.modsDevForce;
           modsDevForce = this.n_avatars%2 ? modsDevForce : -modsDevForce;
           if(modsDevForce != '0'){
-            //let modsDevDir = this.nearMod.params ? this.nearMod.params.modsDevDir : activeGlo.params.modsDevDir;
             let modsDevDir = activeGlo.params.modsDevDir;
 
             let dist = h(addX, addY);
@@ -659,6 +747,9 @@ class Avatar {
     }
   }
 
+  /**
+   * @description Déplace l'avatar à une position aléatoire dans un cercle de rayon défini
+   */
   moveOnAlea(){
     this.draw    = false;
     this.draw_ok = false;
@@ -674,6 +765,10 @@ class Avatar {
     this.y = point.y;
   }
 
+  /**
+   * Applique une force d'attraction vers la souris
+   * @param {boolean} [pause=false] - Si vrai, met en pause l'attraction (réinitialise l'accélération)
+   */
   mouse_attract(pause = false){
     let brake_pow = activeGlo.params.brake_pow;
     let mouseG    = activeGlo.params.wheel_force;
@@ -694,6 +789,9 @@ class Avatar {
     }
   }
 
+  /**
+   * @description Applique une force de rotation autour de la souris
+   */
   mouse_rotate(){
     let angle  = activeGlo.params.wheel_force / (this.mouse_dist()**2);
 
@@ -702,11 +800,26 @@ class Avatar {
     this.rotate(angle, mouse, {x: 1, y:1});
   }
 
+  /**
+   * @description Applique une force de croissance autour de la souris
+   */
   mouse_growing(){ this.grow = activeGlo.params.wheel_force/(2+ pow(this.mouse_dist(), 0.7)); }
+
+  /**
+   * @description Applique une force d'assombrissement autour de la souris
+   */
   mouse_darking(){ this.dark = activeGlo.params.wheel_force/(2+ pow(this.mouse_dist(), 0.7)); }
 
+  /**
+   * @description Calcule la distance entre l'avatar et la souris
+   * @returns {number} La distance entre l'avatar et la souris
+   */
   mouse_dist(){ return pow(pow(mouse.x - this.x, 2) + pow(mouse.y - this.y, 2), 0.5); }
 
+  /**
+   * @description Applique une translation à l'avatar
+   * @param {string} dir - La direction de la translation ('left', 'right', 'up', 'down')
+   */
   trans(dir){
     switch (dir) {
       case 'left':
@@ -724,6 +837,9 @@ class Avatar {
     }
   }
 
+  /**
+   * @description Fait suivre un avatar par un autre
+   */
   follow(){
     if(activeGlo.style == 0){
       if(this.nears.length > 0){
@@ -744,14 +860,6 @@ class Avatar {
       let x = this.x, y = this.y;
       let cx = cos(x*rad);
       let cy = cos(y*rad);
-      let sx = sin(x*rad);
-      let sy = sin(y*rad);
-
-      let cxcy = cx*cy, cxPcy = cx + cy, cxMcy = cx - cy;
-      let sxsy = sx*sy, sxPsy = sx + sy, sxMsy = sx - sy;
-
-      let sxPcy = sx+cy > 0.1 ? sx+cy : sx+abs(cy);
-      let cxPsy = cx+sy > 0.1 ? cx+sy : abs(cx)+sy;
 
       let x_val = cy, y_val = cx;
 
@@ -772,6 +880,9 @@ class Avatar {
     }
   }
 
+  /**
+   * @description Fait orbiter l'avatar autour d'un autre avatar
+   */
   orbite(){
     let avToOrbite;
     if(activeGlo.style == 1){
@@ -794,6 +905,9 @@ class Avatar {
     }
   }
 
+  /**
+   * @description Fait attirer l'avatar par un autre avatar pris au hasard parmi les voisins proches
+   */
   attractByOne(){
     let avToGo;
     if(this.it%activeGlo.params.keep_dir==0) {
@@ -814,10 +928,24 @@ class Avatar {
     }
   }
 
+  /**
+   * Applique une transformation matricielle à un point
+   * @param {{x: number, y: number}} pt - Le point à transformer
+   * @param {number[][]} mat - La matrice de transformation
+   * @returns {{x: number, y: number}} Le point transformé
+   */
   matrix(pt, mat){
     return { x: pt.x * mat[0][0] + pt.y * mat[0][1], y: pt.x * mat[1][0] + pt.y * mat[1][1] };
   }
 
+  /**
+   * @description Applique une rotation éventuellement elliptique et/ou spiralée à l'avatar
+   * @param {number} angle - L'angle de rotation
+   * @param {{x: number, y: number}} center - Le centre de rotation
+   * @param {{x: number, y: number}} ellipse - Les paramètres de l'ellipse
+   * @param {number} spiral - La force de la spirale
+   * @param {{force: number, dir: number}} modsDev - Les modifications à appliquer par les modifiers
+   */
   rotate(angle   = activeGlo.params.rotate_angle, center = { x: canvas.width/2, y: canvas.height/2 },
          ellipse = {x: activeGlo.params.ellipse_x, y: activeGlo.params.ellipse_y}, spiral = activeGlo.params.spiral_force, modsDev = {force: 0, dir: 0}) {
     let xM, yM;
@@ -852,6 +980,15 @@ class Avatar {
     }
   }
 
+  /**
+   * @description Applique une rotation elliptique à l'avatar, éventuellement orientée par le modifier le plus proche
+   * @param {number} angle - L'angle de rotation
+   * @param {{x: number, y: number}} center - Le centre de rotation
+   * @param {{x: number, y: number}} ellipse - Les paramètres de l'ellipse
+   * @param {number} angleEllipse - L'angle de l'ellipse
+   * @param {number} spiral - La force de la spirale
+   * @param {boolean} fromMod - Indique si la rotation provient d'un modificateur
+   */
   rotateEllipse(angle = activeGlo.params.rotate_angle, center = { x: canvas.width/2, y: canvas.height/2 },
          ellipse = {x: activeGlo.params.ellipse_x, y: activeGlo.params.ellipse_y}, angleEllipse = 0, spiral = activeGlo.params.spiral_force, fromMod = true) {
    let xM, yM;
@@ -892,36 +1029,15 @@ class Avatar {
    this.modifiersValues.x += (pt.x - this.x);
    this.modifiersValues.y += (pt.y - this.y);
   }
-
-  rotateEllipseSave(angle = activeGlo.params.rotate_angle, center = { x: canvas.width/2, y: canvas.height/2 },
-         ellipse = {x: activeGlo.params.ellipse_x, y: activeGlo.params.ellipse_y}, angleEllipse = 0, spiral = activeGlo.params.spiral_force, numMod = false) {
-   let xM, yM;
-   let k = ellipse.x/ellipse.y;
-
-   let mat = [
-     [cos(angle),     -k*sin(angle)],
-     [1/k*sin(angle),    cos(angle)]
-   ];
-
-   let pt;
-   xM = (this.x - center.x) / spiral;
-   yM = (this.y - center.y) / spiral;
-
-   pt = this.matrix({x: xM, y: yM}, mat);
-   pt = {x: pt.x + center.x, y: pt.y + center.y};
-
-   let vect = {x: pt.x - this.x, y: pt.y - this.y};
-
-   let matR = [
-     [cos(angleEllipse), -sin(angleEllipse)],
-     [sin(angleEllipse),  cos(angleEllipse)]
-   ];
-   vect = this.matrix(vect, matR);
-
-   this.modifiersValues.x += vect.x;
-   this.modifiersValues.y += vect.y;
-  }
-
+  
+  /**
+   * @description Applique une rotation éventuellement elliptique à l'avatar, mais ne modifie rien et renvoie la nouvelle position calculée
+   * @param {number} angle - L'angle de rotation
+   * @param {{x: number, y: number}} center - Le centre de rotation
+   * @param {{x: number, y: number}} ellipse - Les paramètres de l'ellipse
+   * @param {number} spiral - La force de la spirale
+   * @returns {{x: number, y: number}} La nouvelle position calculée
+   */
   rotateCalc(angle   = activeGlo.params.rotate_angle, center = { x: canvas.width/2, y: canvas.height/2 },
          ellipse = {x: activeGlo.params.ellipse_x, y: activeGlo.params.ellipse_y}, spiral = activeGlo.params.spiral_force) {
     let xM, yM;
@@ -940,6 +1056,16 @@ class Avatar {
     return {x: pt.x + center.x, y: pt.y + center.y};
   }
 
+  /**
+   * @description Applique une rotation polygonale à l'avatar
+   * @param {number} speed  
+   * @param {{x: number, y: number}} center 
+   * @param {boolean} noAvCenter 
+   * @param {number} nbEdges 
+   * @param {boolean} brake 
+   * @param {number} polyRotAngle 
+   * @param {{force: number, dir: number}} modsDev
+   */
   rotPoly(speed = activeGlo.params.trirotate_angle, center = { x: canvas.width/2, y: canvas.height/2 },
     noAvCenter = false, nbEdges = activeGlo.params.polyRotNbEdges, brake = false, polyRotAngle = activeGlo.params.polyRotAngle, modsDev = {force: 0, dir: 0}){
     if(this.center && !noAvCenter){ center = this.center; }
@@ -962,8 +1088,6 @@ class Avatar {
     let midR    = abs(d*cos(a + firstAngle - angle));
     let r       = midR/cos(firstAngle);
 
-    //let nextSide = {x: center.x + r * cos(two_pi * numSide / nbEdges), y: center.y + r * sin(two_pi * numSide / nbEdges)};
-
     if(brake){ speed /= pow(r, brake/1.18); }
     speed*=midR;
 
@@ -972,11 +1096,6 @@ class Avatar {
     x =  speed * cos(k);
     y = -speed * sin(k);
 
-    /*if(activeGlo.polyPrecision){
-      let newD = roundStepsPro(x, y, r, 0.1);
-      x = newD.dx;
-      y = newD.dy;
-    }*/
     if(activeGlo.polyPrecision){
       let nextSide = {x: center.x + r * cos(two_pi * numSide / nbEdges), y: center.y + r * sin(two_pi * numSide / nbEdges)};
 
@@ -987,27 +1106,6 @@ class Avatar {
         x = nextSide.x - this.x;
         y = nextSide.y - this.y;
       }
-
-      //this.rotPoly(speed, center, noAvCenter, nbEdges, brake, polyRotAngle, modsDev);
-
-      /*let new_d = h(this.x + x - this.center.x, this.y + y - this.center.y);
-      let distToSom   = pow((r*r) - (midR*midR), 0.5);
-      let distToNewPt = pow((new_d*new_d) - (midR*midR), 0.5);
-
-      if(distToNewPt > distToSom){
-        let coeff = distToSom/distToNewPt;
-
-        if(coeff != 0){
-          x*=coeff;
-          y*=coeff;
-
-          this.speedBf = true;
-          this.modifiersValues.x += x;
-          this.modifiersValues.y += y;
-
-          this.rotPoly(speed, center, noAvCenter, nbEdges, brake, polyRotAngle, modsDev);
-        }
-      }*/
     }
 
     this.modifiersValues.x -= x;
@@ -1023,26 +1121,10 @@ class Avatar {
     }
   }
 
-  /*nextIsBlank(){
-    let next = {x: this.x, y: this.y};
-    let now  = {x: this.lasts[this.lasts.length - 1].x, y: this.lasts[this.lasts.length - 1].y};
-    let dist = {x: next.x - now.x, y: next.y - now.y, d: h(next.x - now.x, next.y - now.y)};
-
-    let dir  = atan2piZ(dist.x, dist.y);
-    let c    = 2*this.size/dist.d;
-    next.x   = now.x + dist.x * cos(dir) * c;
-    next.y   = now.y - dist.y * sin(dir) * c;
-
-    if(!ctx.isBlank({x: ceil(next.x), y: ceil(next.y)}, img)){
-      this.draw    = false;
-      this.draw_ok = false;
-
-      let point  = getRandomPoint(1);
-
-      this.x = point.x;
-      this.y = point.y;
-    }
-  }*/
+  /**
+   * @description Vérifie si la prochaine position de l'avatar est dans une zone blanche (sans dessin)
+   * @returns {boolean} Vrai si la prochaine position de l'avatar est dans une zone blanche (sans dessin), sinon faux
+   */
   nextIsBlank(){
     let obj = this.nearMod.num_modifier ? this.nearMod.glo : activeGlo;
 
@@ -1057,58 +1139,9 @@ class Avatar {
     return true;
   }
 
-  moveFishesSave(){
-    this.fishGroup.children.each(function( fish ) {
-        let speed       = {x: 0, y: 0};
-        const baseSpeed = 50;
-
-        if(!fish.nbMoves){
-            fish.nbMoves   = 1;
-            fish.proba     = (rnd() + 0.5) / 2;
-            speed          = {x: baseSpeed * rnd_sign(), y: baseSpeed * rnd_sign()};
-        }
-        else{
-            if(fish.nbMoves%(2*NB_FPS)==0) { fish.proba = 0.75 - fish.proba; }
-            if(fish.nbMoves%(8*NB_FPS)==0) { fish.proba = (rnd() + 0.5) / 2; }
-            if(fish.nbMoves%(16*NB_FPS)==0){ fish.proba = 0.5; }
-            
-            speed = direction(fish.rotation + (rnd_sign(fish.proba)/10), baseSpeed);
-        } 
-
-        fish.body.setVelocityX(speed.x);
-        fish.body.setVelocityY(speed.y);
-
-        let angle = Math.atan2(fish.body.velocity.y, fish.body.velocity.x);
-
-        fish.rotation = angle;
-
-        fish.nbMoves++;
-    });
-  }
-
-  moveFishes(){
-    let speed       = {x: 0, y: 0};
-    const baseSpeed = 50;
-
-    if(!this.curve.nbMoves){
-        this.curve.nbMoves = 1;
-        this.curve.proba   = (rnd() + 0.5) / 2;
-        speed              = {x: baseSpeed * rnd_sign(), y: baseSpeed * rnd_sign()};
-    }
-    else{
-        if(this.curve.nbMoves%(2*NB_FPS)==0) { this.curve.proba = 0.75 - this.curve.proba; }
-        if(this.curve.nbMoves%(8*NB_FPS)==0) { this.curve.proba = (rnd() + 0.5) / 2; }
-        if(this.curve.nbMoves%(16*NB_FPS)==0){ this.curve.proba = 0.5; }
-        
-        speed = direction(this.direction + (rnd_sign(this.curve.proba)/10), baseSpeed);
-    } 
-
-    this.modifiersValues.curve.x += speed.x;
-    this.modifiersValues.curve.y += speed.y;
-
-    this.curve.nbMoves++;
-  }
-
+  /**
+   * @description Courbe la trajectoire de l'avatar
+   */
   curve(){
     let speed       = {x: 0, y: 0};
     const baseSpeed = 1;
@@ -1132,33 +1165,10 @@ class Avatar {
     this.curveInfos.nbMoves++;
   }
 
-  curveSave(){
-    let pos    = {x: this.x, y: this.y};
-    let rCurve = activeGlo.params.rCurve / 3;
-
-    let dir = this.direction ? this.direction + half_pi : 0.0001 + half_pi;
-    let rCurveX = rCurve * cos(dir);
-    let rCurveY = rCurve * sin(dir);
-
-    rCurve *= cos(this.it);
-
-    if(!this.curveRot){
-      this.curveAngle = activeGlo.params.curveAngle;
-      this.sw         = Math.sign(rnd_sign());
-    }
-
-    let angle = this.curveAngle;
-    if(this.it%activeGlo.params.changeCurve==0 || !this.curveRot){
-      this.curveRot = {x: pos.x + rCurve, y: pos.y + rCurve};
-      this.sw = Math.sign(rnd_sign());
-    }
-
-    let pt = this.rotateCalc(angle, this.curveRot);
-    let addVal = {x: pt.x - pos.x, y: pt.y - pos.y};
-    this.modifiersValues.curve.x += addVal.x * this.sw;
-    this.modifiersValues.curve.y += addVal.y * this.sw;
-  }
-
+  /**
+   * @description Récupère la vitesse de l'avatar avant le dernier mouvement
+   * @returns {number} La vitesse de l'avatar avant le dernier mouvement
+   */
   speedBefore(){
     let lastsSz = this.lasts.length;
     if(lastsSz > 1){
@@ -1169,6 +1179,22 @@ class Avatar {
     }
   }
 
+  /**
+   * @description Calcule la distance entre cet avatar et un autre avatar
+   * @param {Object} avatar - L'autre avatar
+   * @returns {number} La distance entre les deux avatars
+   */
+  distanceTo(avatar){
+    let dx = this.x - avatar.x;
+    let dy = this.y - avatar.y;
+    return Math.sqrt(dx * dx + dy * dy);
+  }
+
+  /**
+   * @description Calcule l'arête opposée d'un polygone régulier
+   * @param {number} nbEdges - Le nombre d'arêtes du polygone
+   * @returns {number} L'arête opposée
+   */
   oppositeEdge(nbEdges){
     let angle = (PI * (nbEdges - 2)) / (2 * nbEdges);
     let coeff = pow((1/sin(angle))**2 - 1, 0.5);
@@ -1178,6 +1204,9 @@ class Avatar {
     return coeff;
   }
 
+  /**
+   * @description Fait osciller l'avatar selon une trajectoire circulaire
+   */
   oscille(){
     let y = this.y;
     this.x += cos(this.it*rad);
@@ -1185,7 +1214,14 @@ class Avatar {
     this.rotate(this.direction, {x: this.x, y: y}, true);
   }
 
+  /**
+   * @description Calcule la direction de l'avatar en fonction de sa position actuelle et de sa dernière position
+   */
   dir(){ this.direction = atan2piZ(this.x - this.last_x, this.y - this.last_y); }
+
+  /**
+   * @description Calcule la direction de l'avatar lors de son dernier second mouvement
+   */
   dirSecond(){
     if(this.lastsSm.length > 0){
       let last = this.lastSm;
@@ -1196,8 +1232,16 @@ class Avatar {
       this.dirSecMove = 0;
     }
   }
+
+  /**
+   * @description Calcule l'angle entre l'avatar et son centre de rotation
+   */
   angle(){ this.angle   = atan2piZ(this.x - this.center.x, this.y - this.center.y); }
 
+  /**
+   * @description Calcule une trajectoire en spirale vers le centre ou en spirale inversée
+   * @param {boolean} [inv_spiral=false] - Si vrai, fait une spirale inversée (éloignement du centre)
+   */
   spiral(inv_spiral = activeGlo.inv_spiral){
     let center = !this.center ? { x: canvas.width/2, y: canvas.height/2 } : { x: this.center.x, y: this.center.y };
     let dx     = center.x - this.x, dy = center.y - this.y;
@@ -1229,6 +1273,9 @@ class Avatar {
     if(activeGlo.cos_spiral){ activeGlo.nb_spirals+=dev_angle; }
   }
 
+  /**
+   * @description Calcule une trajectoire en spirale vers un avatar voisin pris au hasard
+   */
   spiralToAvatar(){
     if(typeof(this.avToSpiral) == 'undefined') {
       this.avToSpiral = this.nears[getRandomIntInclusive(0, this.nears.length - 1, true)];
@@ -1263,8 +1310,17 @@ class Avatar {
     }
   }
 
+  /**
+   * @description Calcule la distance entre cet avatar et le centre du canvas ou un point central donné
+   * @param {{x: number, y: number}} center - Le point central
+   * @returns {number} La distance entre l'avatar et le point central
+   */
   dist_to_center(center = {x: canvas.width/2, y: canvas.height/2}){ return pow(pow(center.x - this.x, 2) + pow(center.y - this.y, 2), 0.5); }
 
+  /**
+   * @description Calcule la longueur de la queue de l'avatar (distance totale entre les positions enregistrées)
+   * @returns {number} La longueur de la queue de l'avatar (distance totale entre les positions enregistrées)
+   */
   tail_length(){
     let dist_tail = 0;
     let avLastLength = this.lasts.length;
@@ -1276,6 +1332,12 @@ class Avatar {
     return dist_tail;
   }
 
+  /**
+   * @description Ajuste un angle en fonction du quadrant défini par un vecteur directionnel
+   * @param {number} angle - L'angle de rotation
+   * @param {{x: number, y: number}} d - La direction
+   * @returns {number} L'angle de rotation ajusté
+   */
   turnAngle(angle, d){
     let pos_y = d.y < 0 ? true : false;
     let pos_x = d.x < 0 ? true : false;
@@ -1287,7 +1349,16 @@ class Avatar {
     return angle;
   }
 
+  /**
+   * @description Calcule la vitesse actuelle de l'avatar
+   * @returns {number} La vitesse actuelle de l'avatar
+   */
   speed_avatar(){ return pow(pow(this.x - this.last_x, 2) + pow(this.y - this.last_y, 2), 0.5); }
+
+  /**
+   * @description Calcule l'accélération actuelle de l'avatar
+   * @returns {number} L'accélération actuelle de l'avatar
+   */
   accel_avatar(){
     if(this.lasts[this.lasts.length - 1] && this.lasts[this.lasts.length - 2]){
       let last       = this.lasts[this.lasts.length - 1];
@@ -1300,25 +1371,59 @@ class Avatar {
     return pow(pow(this.ax, 2) + pow(this.ay, 2), 0.5);
   }
 
+  /**
+   * @description Calcule la distance entre cet avatar et un autre avatar
+   * @param {*} av - L'autre avatar
+   * @returns {number} La distance entre les deux avatars
+   */
   dist_av(av){ return pow(pow(this.x - av.x, 2) + pow(this.y - av.y, 2), 0.5); }
 
+  /**
+   * @description Calcule la composante hue de la couleur de l'avatar en fonction de sa distance au centre
+   * @param {*} var_cent_col - La variable de couleur centrée
+   * @returns {number} La couleur de l'avatar en fonction de sa distance au centre
+   */
   colorByCenter(var_cent_col){
     let d_max = pow(pow(canvas.width/2, 2) + pow(canvas.height/2, 2), 0.5);
     let center = !this.center ? {x: canvas.width/2, y: canvas.height/2} : this.center;
     return 360 * this.dist_to_center(center)/(d_max/var_cent_col);
   }
+
+  /**
+   * @description Calcule la composante hue de la couleur de l'avatar en fonction de sa direction
+   * @param {*} v - Le vecteur directionnel
+   * @returns {number} La couleur de l'avatar en fonction de sa direction
+   */
   colorByDir(v = this.vit()){
     return activeGlo.params.dirColorCoeff * 180 * atan2pi(v.x, v.y) / PI;
   }
 
+  /**
+   * @description Calcule la composante hue de la couleur de l'avatar en fonction de la distance aux modificateurs
+   * @returns {number} La couleur de l'avatar en fonction de la distance aux modificateurs
+   */
   colorByDistMod(){
     return activeGlo.params.varColDistModifs  * PI * this.distMinModifiers / canvas.width;
   }
 
+  /**
+   * @description Calcule la composante hue de la couleur de l'avatar en fonction de sa vitesse ou de son accélération
+   * @param {number} move - La valeur de mouvement (vitesse ou accélération)
+   * @param {boolean} relOrAbs - Indique si la valeur est relative ou absolue
+   * @param {boolean} moyOrMax - Indique si la valeur est la moyenne ou le maximum
+   * @param {number} move_moy - La valeur de mouvement moyenne
+   * @param {number} move_max - La valeur de mouvement maximale
+   * @param {number} maxCol - La valeur maximale de couleur
+   * @param {number} varCol - La variable de couleur
+   * @returns {number} La couleur de l'avatar en fonction de sa vitesse ou de son accélération
+   */
   colorBySpeedOrAccel(move, relOrAbs, moyOrMax, move_moy, move_max, maxCol, varCol){
     return 360-(360*move/move_max);
   }
 
+  /**
+   * @description Modifie la couleur de l'avatar en fonction de la couleur d'un avatar suivi
+   */
   colorByFollow(){
     this.colorHsl();
 
@@ -1336,8 +1441,46 @@ class Avatar {
     this.hsl       = {h: newFillH, s: newFillS, l: newFillL, a: this.hsl.a, p: 1};
   }
 
+  /**
+   * @description Calcule la couleur de l'avatar en fonction de sa vitesse ou de son accélération
+   * @param {number} move - La valeur de mouvement (vitesse ou accélération)
+   * @param {boolean} relOrAbs - Indique si la valeur est relative ou absolue
+   * @param {boolean} moyOrMax - Indique si la valeur est la moyenne ou le maximum
+   * @param {number} move_moy - La valeur de mouvement moyenne
+   * @param {number} move_max - La valeur de mouvement maximale
+   * @param {number} maxCol - La valeur maximale de couleur
+   * @param {number} varCol - La variable de couleur
+   * @returns {number} La couleur de l'avatar en fonction de sa vitesse ou de son accélération
+   */
+  colorBySpeedOrAccel(move, relOrAbs, moyOrMax, move_moy, move_max, maxCol, varCol){
+    return 360-(360*move/move_max);
+  }
+
+  /**
+   * @description Modifie la couleur de l'avatar en fonction de la couleur d'un avatar suivi
+   */
+  colorByFollow(){
+    this.colorHsl();
+
+    let newStrokeH =  this.hslStroke.h + (rnd_sign() * activeGlo.params.avToFollowColorStrokeH);
+    let newFillH   =  this.hsl.h + (rnd_sign() * activeGlo.params.avToFollowColorH);
+    let newStrokeS =  this.hslStroke.s + (rnd_sign() * activeGlo.params.avToFollowColorStrokeS);
+    let newFillS   =  this.hsl.s + (rnd_sign() * activeGlo.params.avToFollowColorS);
+    let newStrokeL =  this.hslStroke.l + (rnd_sign() * activeGlo.params.avToFollowColorStrokeL);
+    let newFillL   =  this.hsl.l + (rnd_sign() * activeGlo.params.avToFollowColorL);
+
+    this.strokeStyle = 'hsla(' + newStrokeH + ', ' + newStrokeS + '%, ' + newStrokeL + '%, ' + this.hslStroke.a +')';
+    this.fillStyle   = 'hsla(' + newFillH + ', ' + newFillS + '%, ' + newFillL + '%, ' + this.hsl.a +')';
+
+    this.hslStroke = {h: newStrokeH, s: newStrokeS, l: newStrokeL, a: this.hslStroke.a, p: 1};
+    this.hsl       = {h: newFillH, s: newFillS, l: newFillL, a: this.hsl.a, p: 1};
+  }
+
+  /**
+   * @description Calcule la couleur courante de l’avatar en HSL/OKLCH selon de multiples critères
+   * @param {{}} obj
+   */
   colorHsl(obj = this.nearMod.num_modifier ? this.nearMod.glo : activeGlo){
-    //if(activeGlo.params.formule_param && activeGlo.params.formule_param != '0'){ formule_param(obj, this); }
     if(obj.hyperAlea){ obj = this.glo; }
 
     let params = this.nearMod.params ? this.nearMod.params : obj.params;
@@ -1448,10 +1591,7 @@ class Avatar {
 
     if(colorSum){ move = colorSum.h; sat = colorSum.s; tint = colorSum.l; }
 
-    //let tint_save        = tint;
-    //let tint_stroke_save = tint_stroke;
     if(this.nearMod.haveColor){
-      //tint = this.nearMod.color.l;
       if(obj.addWithTint){
         let t         = this.nearMod.color.l * move;
         let ts        = this.nearMod.tint_stroke * move;
@@ -1479,9 +1619,6 @@ class Avatar {
             let k = 1;
             let d = mod.params.lightByDistMod >=0 ? 1+(dist*k) : 1/(1+(dist*k));
             let c = mod.params.lightByDistMod >=0 ? mod.params.lightByDistModCoeff / 100 : mod.params.lightByDistModCoeff * 100;
-            //c = mod.params.lightByDistModCoeff / 100;
-            //let c = mod.params.lightByDistMod >=0 ? mod.params.lightByDistModCoeff : 1/mod.params.lightByDistModCoeff;
-            //let coeff = pow(mod.params.lightByDistModCoeff * d, abs(mod.params.lightByDistMod));
             let coeff = c * d;
             tint        *= coeff;
             tint_stroke *= coeff;
@@ -1500,10 +1637,6 @@ class Avatar {
 
         move = color.h;
         sat  = color.s;
-        //tint = color.l;
-
-        //tint        = obj.addWithTint ? color.l : tint_save;
-        //tint_stroke = obj.addWithTint ? color.ls : tint_stroke_save;
       }
     }
 
@@ -1578,12 +1711,9 @@ class Avatar {
     if(satStroke < 0 || isNaN(satStroke)){ satStroke = 0; }
     if(sat < 0 || isNaN(sat)){ sat = 0; }
 
-    //if(obj.oneColor.state){ move = activeGlo.oneColor.color.h; sat = activeGlo.oneColor.color.s; tint = activeGlo.oneColor.color.l;  }
     if(activeGlo.oneColor.state){ move = activeGlo.oneColor.color.h; sat = activeGlo.oneColor.color.s; tint = activeGlo.oneColor.color.l;  }
 
     let roundMove = round(move, 2);
-    /*this.strokeStyle = 'hsla(' + (roundMove + cdStroke) + ', ' + round(satStroke, 2) + '%, ' + round(tint_stroke, 2) + '%, ' + a +')';
-    this.fillStyle   = 'hsla(' + roundMove + ', ' + round(sat, 2) + '%, ' + round(tint, 2) + '%, ' + a +')';*/
 
     let avatarColor = {
       strokeStyle: {
@@ -1607,7 +1737,17 @@ class Avatar {
     this.hslStroke = {h: move + cdStroke, s: satStroke, l: tint_stroke, a: a, p: 1};
   }
 
-  // Convert HSLA to OKLCH string
+  /**
+   * @description Convertit les valeurs HSL/HSLA en chaîne de caractères OKLCH pour CSS
+   * @param {number} h 
+   * @param {number} s 
+   * @param {number} l 
+   * @param {number} a 
+   * @returns {string} Chaîne de caractères OKLCH pour CSS
+   * @see {@link https://bottosson.github.io/posts/oklab/}
+   * @see {@link https://bottosson.github.io/posts/colorpicker/}
+   * @see {@link https://en.wikipedia.org/wiki/HSL_and_HSV}
+   */
   hslaToOklch(h, s, l, a = 1) {
     // --- 1) HSL → RGB ---
     s /= 100;
@@ -1649,6 +1789,15 @@ class Avatar {
     return `oklch(${(L*100).toFixed(2)}% ${(C).toFixed(4)} ${H.toFixed(2)} / ${a})`;
   }
 
+  /**
+   * @description Calcule un coefficient en fonction de la taille de l'avatar et de sa distance au centre
+   * @param {number} h - Composante hue
+   * @param {number} s - Composante saturation
+   * @param {number} l - Composante lightness
+   * @param {number} a - Composante alpha
+   * @param {{h: string, s: string, l: string, a: string}} formuleColor - Formules pour chaque composante
+   * @returns {{move: number, sat: number, tint: number, a: number}} Objet contenant les nouvelles composantes de couleur
+   */
   formuleColor(h, s, l, a, formuleColor){
     return {
       move : eval(formuleColor.h),
@@ -1660,7 +1809,13 @@ class Avatar {
 }
 
 /**
- * @description Creates a new Brush Movement
+ * Classe pour gérer le mouvement des pinceaux
+ * @constructor
+ * @param {Object} options - Options pour configurer le mouvement du pinceau.
+ * @param {{x: number, y: number}} options.vector - Vecteur de mouvement.
+ * @param {string} options.type - Le type de brosse.
+ * @param {Object} options.formType - Le forme de la brosse.
+ * @param {number} options.size - La taille de la brosse.
  */
 class BrushMovement {
   constructor(options = {}){

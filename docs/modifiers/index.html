@@ -1,0 +1,3279 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset='utf-8'>
+  <title>interaction 1.0.0 | Documentation</title>
+  <meta name='viewport' content='width=device-width,initial-scale=1'>
+  <link href='../assets/bass.css' rel='stylesheet'>
+  <link href='../assets/style.css' rel='stylesheet'>
+  <link href='../assets/github.css' rel='stylesheet'>
+  <link href='../assets/split.css' rel='stylesheet'>
+
+  <script src='../assets/anchor.js' defer></script>
+  <script src='../assets/split.js' defer></script>
+  <script src='../assets/site.js' defer></script>
+</head>
+<body class='documentation m0'>
+    <div class='flex'>
+      <div id='split-left' class='overflow-auto fs0 height-viewport-100'>
+        <div class='py1 px2'>
+          <h3 class='mb0 no-anchor'>interaction</h3>
+          <div class='mb1'><code>1.0.0</code></div>
+          <input
+            placeholder='Filter'
+            id='filter-input'
+            class='col12 block input'
+            spellcheck='false'
+            autocapitalize='off'
+            autocorrect='off'
+            type='text' />
+          <div id='toc'>
+            <ul class='list-reset h5 py1-ul'>
+              
+                
+                <li><a
+                  href='#modisnearmouse'
+                  class="">
+                  modIsNearMouse
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#modisnearmouse'
+                  class="">
+                  modIsNearMouse
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#getmodnearestmouse'
+                  class="">
+                  getModNearestMouse
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#modssymtocenter'
+                  class="">
+                  modsSymToCenter
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#modsformule'
+                  class="">
+                  modsFormule
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#modstozero'
+                  class="">
+                  modsToZero
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#updatemodifiersforce'
+                  class="">
+                  updateModifiersForce
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#changemodifiersprop'
+                  class="">
+                  changeModifiersProp
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#putmodsongrid'
+                  class="">
+                  putModsOnGrid
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#pos_modifier'
+                  class="">
+                  pos_modifier
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#makemodifierfunction'
+                  class="">
+                  makeModifierFunction
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#posmodifiers'
+                  class="">
+                  posModifiers
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#posmodifiersbytype'
+                  class="">
+                  posModifiersByType
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#poscirclemodifiers'
+                  class="">
+                  posCircleModifiers
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#pospolymodifiers'
+                  class="">
+                  posPolyModifiers
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#possquaremodifiers'
+                  class="">
+                  posSquareModifiers
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#posrectmodifiers'
+                  class="">
+                  posRectModifiers
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#pastemodifiers'
+                  class="">
+                  pasteModifiers
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#findtopleftmodifiers'
+                  class="">
+                  findTopLeftModifiers
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#rotate_modifiers'
+                  class="">
+                  rotate_modifiers
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#translatemodifiers'
+                  class="">
+                  translateModifiers
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#getselectedmodifiers'
+                  class="">
+                  getSelectedModifiers
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#turnmodifiers'
+                  class="">
+                  turnModifiers
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#updformulemodifiers'
+                  class="">
+                  updFormuleModifiers
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#modifier_select'
+                  class="">
+                  modifier_select
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#changeparamsbymod'
+                  class="">
+                  changeParamsByMod
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#isonemodselected'
+                  class="">
+                  isOneModSelected
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#modsselected'
+                  class="">
+                  modsSelected
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#scale_modifiers'
+                  class="">
+                  scale_modifiers
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#view_modifiers'
+                  class="">
+                  view_modifiers
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#showmodsinfos'
+                  class="">
+                  showModsInfos
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#modifierscolor_upd'
+                  class="">
+                  modifiersColor_upd
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#switchmodifiersvisibility'
+                  class="">
+                  switchModifiersVisibility
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#deleteallmodifiers'
+                  class="">
+                  deleteAllModifiers
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#posmodsonmods'
+                  class="">
+                  posModsOnMods
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#infosmodifiers'
+                  class="">
+                  infosModifiers
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#checkcolorfunctions'
+                  class="">
+                  checkColorFunctions
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#radius_attract'
+                  class="">
+                  radius_attract
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#updmodsangle'
+                  class="">
+                  updModsAngle
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#updmodangle'
+                  class="">
+                  updModAngle
+                  
+                </a>
+                
+                </li>
+              
+            </ul>
+          </div>
+          <div class='mt1 h6 quiet'>
+            <a href='https://documentation.js.org/reading-documentation.html'>Need help reading this?</a>
+          </div>
+        </div>
+      </div>
+      <div id='split-right' class='relative overflow-auto height-viewport-100'>
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='modisnearmouse'>
+      modIsNearMouse
+    </h3>
+    
+    
+  </div>
+  
+
+  
+    <div class='pre p1 fill-light mt0'>modIsNearMouse(mod: any, dist: any)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>mod</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>dist</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='modisnearmouse'>
+      modIsNearMouse
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Vérifie si un modificateur est proche de la souris</p>
+
+    <div class='pre p1 fill-light mt0'>modIsNearMouse</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>mod</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>)</code>
+	    Le modificateur à vérifier
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>dist</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>)</code>
+	    La distance à laquelle considérer le modificateur comme proche
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a> | <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>)</code>:
+        La distance au modificateur si proche, sinon false
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='getmodnearestmouse'>
+      getModNearestMouse
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Récupère le modificateur le plus proche de la souris</p>
+
+    <div class='pre p1 fill-light mt0'>getModNearestMouse(dist: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>): (<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a> | <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>dist</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>)</code>
+	    La distance à laquelle considérer le modificateur comme proche
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a> | <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>)</code>:
+        Le modificateur le plus proche si trouvé, sinon false
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='modssymtocenter'>
+      modsSymToCenter
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Duplique les modificateurs sélectionnés par symétrie selon l'axe spécifié</p>
+
+    <div class='pre p1 fill-light mt0'>modsSymToCenter(sym: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>sym</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>
+            = <code>&#39;vhAxe&#39;</code>)</code>
+	    
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='modsformule'>
+      modsFormule
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Applique les formules de modificateurs à un modificateur et un avatar donnés</p>
+
+    <div class='pre p1 fill-light mt0'>modsFormule(mod: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>, av: Avatar)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>mod</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>)</code>
+	    Le modificateur à modifier
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>av</span> <code class='quiet'>(Avatar)</code>
+	    L'avatar
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='modstozero'>
+      modsToZero
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>L'attraction des modificateurs sélectionnés est mise à zéro ou restaurée</p>
+
+    <div class='pre p1 fill-light mt0'>modsToZero()</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='updatemodifiersforce'>
+      updateModifiersForce
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Met à jour la force des modificateurs</p>
+
+    <div class='pre p1 fill-light mt0'>updateModifiersForce(ctrl: <a href="https://developer.mozilla.org/docs/Web/HTML/Element">HTMLElement</a>, prop: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, sprop: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, min: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>, max: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>, p: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>ctrl</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/HTML/Element">HTMLElement</a>)</code>
+	    L'élément de contrôle (input range) de l'interface
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>prop</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>
+            = <code>&#39;attract&#39;</code>)</code>
+	    La propriété à mettre à jour
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>sprop</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>
+            = <code>false</code>)</code>
+	    La sous-propriété à mettre à jour
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>min</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>
+            = <code>-Infinity</code>)</code>
+	    La valeur minimale
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>max</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>
+            = <code>Infinity</code>)</code>
+	    La valeur maximale
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>p</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>
+            = <code>0.5</code>)</code>
+	    Le facteur d'exponentiation
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='changemodifiersprop'>
+      changeModifiersProp
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Change la propriété des modificateurs sélectionnés</p>
+
+    <div class='pre p1 fill-light mt0'>changeModifiersProp(ctrl: <a href="https://developer.mozilla.org/docs/Web/HTML/Element">HTMLElement</a>, prop: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, byVal: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>ctrl</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/HTML/Element">HTMLElement</a>)</code>
+	    L'élément de contrôle (input range) de l'interface
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>prop</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    La propriété à mettre à jour
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>byVal</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>
+            = <code>false</code>)</code>
+	    Indique si la valeur doit être utilisée directement
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='putmodsongrid'>
+      putModsOnGrid
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Place les modificateurs sélectionnés sur la grille si elle est activée</p>
+
+    <div class='pre p1 fill-light mt0'>putModsOnGrid()</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='pos_modifier'>
+      pos_modifier
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Positionne un modificateur</p>
+
+    <div class='pre p1 fill-light mt0'>pos_modifier(type: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, pos: {x: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>, y: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>}, inv: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>, groupe: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>, virtual: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>type</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>
+            = <code>&#39;attractor&#39;</code>)</code>
+	    Le type de modificateur
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>pos</span> <code class='quiet'>({x: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>, y: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>}
+            = <code>mouse</code>)</code>
+	    La position du modificateur
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>inv</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>
+            = <code>false</code>)</code>
+	    Indique si le modificateur est inversé (propriétés comme la force de gravité...)
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>groupe</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>
+            = <code>0</code>)</code>
+	    Le groupe auquel appartient le modificateur
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>virtual</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>
+            = <code>false</code>)</code>
+	    Indique si le modificateur est virtuel
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='makemodifierfunction'>
+      makeModifierFunction
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Génère la fonction de modification d'un modificateur en fonction de son type</p>
+
+    <div class='pre p1 fill-light mt0'>makeModifierFunction(modifierType: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>modifierType</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    Le type de modificateur, ex: 'attractor', 'rotator', ...
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='posmodifiers'>
+      posModifiers
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Positionne les modificateurs sur la grille si elle est activée</p>
+
+    <div class='pre p1 fill-light mt0'>posModifiers(type: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, inv: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>type</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>
+            = <code>activeGlo.pos_modifiers</code>)</code>
+	    Le type de modificateur
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>inv</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>
+            = <code>activeGlo.invModifiersAtt</code>)</code>
+	    Indique si le modificateur est inversé
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='posmodifiersbytype'>
+      posModifiersByType
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Positionne les modificateurs en fonction de leur type</p>
+
+    <div class='pre p1 fill-light mt0'>posModifiersByType(cent: {x: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>, y: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>}, type: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>cent</span> <code class='quiet'>({x: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>, y: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>})</code>
+	    La position centrale
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>type</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>
+            = <code>activeGlo.formModTypes[activeGlo.params.formModType]</code>)</code>
+	    Le type de modificateur
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='poscirclemodifiers'>
+      posCircleModifiers
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Positionne un cercle de modificateurs</p>
+
+    <div class='pre p1 fill-light mt0'>posCircleModifiers(cent: {x: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>, y: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>}, type: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, inv: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>, rot: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>cent</span> <code class='quiet'>({x: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>, y: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>}
+            = <code>false</code>)</code>
+	    La position centrale
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>type</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>
+            = <code>activeGlo.pos_modifiers</code>)</code>
+	    Le type de modificateur
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>inv</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>
+            = <code>activeGlo.invModifiersAtt</code>)</code>
+	    Indique si le modificateur est inversé
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>rot</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>
+            = <code>activeGlo.params.rotCircleModifiers</code>)</code>
+	    La rotation du modificateur
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='pospolymodifiers'>
+      posPolyModifiers
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Positionne un polygone de modificateurs</p>
+
+    <div class='pre p1 fill-light mt0'>posPolyModifiers(cent: {x: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>, y: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>}, type: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, nb: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>, inv: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>, rot: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>, nbEdges: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>cent</span> <code class='quiet'>({x: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>, y: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>}
+            = <code>false</code>)</code>
+	    La position centrale
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>type</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>
+            = <code>activeGlo.pos_modifiers</code>)</code>
+	    Le type de modificateur
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>nb</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>
+            = <code>activeGlo.params.nb_modifiers</code>)</code>
+	    Le nombre de modificateurs
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>inv</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>
+            = <code>activeGlo.invModifiersAtt</code>)</code>
+	    Indique si le modificateur est inversé
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>rot</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>
+            = <code>activeGlo.params.rotCircleModifiers</code>)</code>
+	    La rotation du modificateur
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>nbEdges</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>
+            = <code>activeGlo.params.posModsNbEdges</code>)</code>
+	    Le nombre de côtés du polygone
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='possquaremodifiers'>
+      posSquareModifiers
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Positionne un carré de modificateurs</p>
+
+    <div class='pre p1 fill-light mt0'>posSquareModifiers(cent: {x: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>, y: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>}, type: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, inv: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>, rot: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>cent</span> <code class='quiet'>({x: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>, y: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>}
+            = <code>false</code>)</code>
+	    La position centrale
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>type</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>
+            = <code>activeGlo.pos_modifiers</code>)</code>
+	    Le type de modificateur
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>inv</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>
+            = <code>activeGlo.invModifiersAtt</code>)</code>
+	    Indique si le modificateur est inversé
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>rot</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>
+            = <code>activeGlo.params.rotCircleModifiers</code>)</code>
+	    La rotation du modificateur
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='posrectmodifiers'>
+      posRectModifiers
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Positionne un rectangle de modificateurs</p>
+
+    <div class='pre p1 fill-light mt0'>posRectModifiers(cent: {x: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>, y: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>}, type: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, inv: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>, rot: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>cent</span> <code class='quiet'>({x: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>, y: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>}
+            = <code>false</code>)</code>
+	    La position centrale
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>type</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>
+            = <code>activeGlo.pos_modifiers</code>)</code>
+	    Le type de modificateur
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>inv</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>
+            = <code>activeGlo.invModifiersAtt</code>)</code>
+	    Indique si le modificateur est inversé
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>rot</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>
+            = <code>activeGlo.params.rotCircleModifiers</code>)</code>
+	    La rotation du modificateur
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='pastemodifiers'>
+      pasteModifiers
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Colle les modificateurs copiés</p>
+
+    <div class='pre p1 fill-light mt0'>pasteModifiers()</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='findtopleftmodifiers'>
+      findTopLeftModifiers
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Trouve le modificateur en haut à gauche parmi les modificateurs sélectionnés</p>
+
+    <div class='pre p1 fill-light mt0'>findTopLeftModifiers(): (modifier | <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code>(modifier | <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>)</code>:
+        Le modificateur en haut à gauche ou false s'il n'y a pas de modificateur sélectionné
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='rotate_modifiers'>
+      rotate_modifiers
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Fait pivoter les modificateurs sélectionnés</p>
+
+    <div class='pre p1 fill-light mt0'>rotate_modifiers(rotAngle: any)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>rotAngle</span> <code class='quiet'>(any
+            = <code>-999</code>)</code>
+	    
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='translatemodifiers'>
+      translateModifiers
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Translate les modificateurs sélectionnés</p>
+
+    <div class='pre p1 fill-light mt0'>translateModifiers(x: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>, y: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>x</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>y</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>)</code>
+	    
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='getselectedmodifiers'>
+      getSelectedModifiers
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Retourne les modificateurs sélectionnés ou tous les modificateurs si aucun n'est sélectionné</p>
+
+    <div class='pre p1 fill-light mt0'>getSelectedModifiers(allForZero: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>allForZero</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>
+            = <code>true</code>)</code>
+	    Si vrai, retourne soitt les modificateurs sélectionnés, soit tous les modificateurs si aucun n'est sélectionné. Si faux, retourne uniquement les modificateurs sélectionnés.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a></code>:
+        Les modificateurs sélectionnés, tous les modificateurs ou aucun.
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='turnmodifiers'>
+      turnModifiers
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Modifie le type des modificateurs sélectionnés</p>
+
+    <div class='pre p1 fill-light mt0'>turnModifiers(ctrl: <a href="https://developer.mozilla.org/docs/Web/HTML/Element">HTMLElement</a>)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>ctrl</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/HTML/Element">HTMLElement</a>)</code>
+	    Le contrôle HTML (select) contenant le type
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='updformulemodifiers'>
+      updFormuleModifiers
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Met à jour la formule des modificateurs sélectionnés</p>
+
+    <div class='pre p1 fill-light mt0'>updFormuleModifiers(ctrl: <a href="https://developer.mozilla.org/docs/Web/HTML/Element">HTMLElement</a>, coordType: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>ctrl</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/HTML/Element">HTMLElement</a>)</code>
+	    Le contrôle HTML (input) contenant la formule
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>coordType</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    'x' ou 'y'
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='modifier_select'>
+      modifier_select
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Sélectionne les modificateurs en fonction de la souris ou d'un contrôle</p>
+
+    <div class='pre p1 fill-light mt0'>modifier_select(byMouse: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>, ctrl: <a href="https://developer.mozilla.org/docs/Web/HTML/Element">HTMLElement</a>)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>byMouse</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>
+            = <code>true</code>)</code>
+	    Si vrai, sélectionne le modificateur sous la souris. Si faux, sélectionne les modificateurs en fonction du contrôle.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>ctrl</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/HTML/Element">HTMLElement</a>
+            = <code>null</code>)</code>
+	    Le contrôle HTML (select) contenant le type de modificateur à sélectionner.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='changeparamsbymod'>
+      changeParamsByMod
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Synchronise les paramètres de l'interface en fonction du modificateur passé en paramètre</p>
+
+    <div class='pre p1 fill-light mt0'>changeParamsByMod(mod: modifier)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>mod</span> <code class='quiet'>(modifier)</code>
+	    Le modificateur à utiliser pour la synchronisation
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='isonemodselected'>
+      isOneModSelected
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Retourne vrai si un seul modificateur est sélectionné</p>
+
+    <div class='pre p1 fill-light mt0'>isOneModSelected(): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">Boolean</a></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">Boolean</a></code>:
+        
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='modsselected'>
+      modsSelected
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Retourne le nombre de modificateurs sélectionnés</p>
+
+    <div class='pre p1 fill-light mt0'>modsSelected(): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></code>:
+        
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='scale_modifiers'>
+      scale_modifiers
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Change l'échelle des modificateurs sélectionnés</p>
+
+    <div class='pre p1 fill-light mt0'>scale_modifiers(sign: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, div: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>sign</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    Le signe '+' pour agrandir ou '-' pour réduire
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>div</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>
+            = <code>10</code>)</code>
+	    Le diviseur pour contrôler la vitesse de l'échelle
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='view_modifiers'>
+      view_modifiers
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Affiche les modificateurs sur le canevas</p>
+
+    <div class='pre p1 fill-light mt0'>view_modifiers(arr: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>arr</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>
+            = <code>activeGlo.modifiers</code>)</code>
+	    Le tableau des modificateurs à afficher
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='showmodsinfos'>
+      showModsInfos
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Affiche les informations des modificateurs sur le canevas sous forme de texte</p>
+
+    <div class='pre p1 fill-light mt0'>showModsInfos()</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='modifierscolor_upd'>
+      modifiersColor_upd
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Met à jour la couleur des modificateurs sélectionnés</p>
+
+    <div class='pre p1 fill-light mt0'>modifiersColor_upd(ctrl: <a href="https://developer.mozilla.org/docs/Web/HTML/Element">HTMLElement</a>)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>ctrl</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/HTML/Element">HTMLElement</a>)</code>
+	    L'élément de contrôle de la couleur
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='switchmodifiersvisibility'>
+      switchModifiersVisibility
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Switch la visibilité des modificateurs</p>
+
+    <div class='pre p1 fill-light mt0'>switchModifiersVisibility()</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='deleteallmodifiers'>
+      deleteAllModifiers
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Supprime tous les modificateurs</p>
+
+    <div class='pre p1 fill-light mt0'>deleteAllModifiers()</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='posmodsonmods'>
+      posModsOnMods
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Ajoute un modificateurs du type choisi pour chaque modificateur sélectionné</p>
+
+    <div class='pre p1 fill-light mt0'>posModsOnMods()</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='infosmodifiers'>
+      infosModifiers
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Récupère les informations des modificateurs</p>
+
+    <div class='pre p1 fill-light mt0'>infosModifiers(isSorted: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>, dir: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>): (<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a> | <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>isSorted</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>
+            = <code>false</code>)</code>
+	    Indique si le tableau doit être trié
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>dir</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>
+            = <code>&#39;asc&#39;</code>)</code>
+	    La direction du tri ('asc' ou 'desc')
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a> | <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>)</code>:
+        Un objet contenant les informations des modificateurs et les propriétés dans les modificateurs, ou false si aucun modificateur n'existe
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='checkcolorfunctions'>
+      checkColorFunctions
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Vérifie les fonctions de couleur cochées et met à jour les modificateurs sélectionnés</p>
+
+    <div class='pre p1 fill-light mt0'>checkColorFunctions(e: <a href="https://developer.mozilla.org/docs/Web/API/Event">Event</a>)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>e</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/API/Event">Event</a>)</code>
+	    L'événement de changement de la case à cocher
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='radius_attract'>
+      radius_attract
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Met à jour la distance maximale d'attraction des modificateurs en fonction du paramètre radius_attract</p>
+
+    <div class='pre p1 fill-light mt0'>radius_attract()</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='updmodsangle'>
+      updModsAngle
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Mise à jour des formules pour les modificateurs</p>
+
+    <div class='pre p1 fill-light mt0'>updModsAngle(ctrl: <a href="https://developer.mozilla.org/docs/Web/HTML/Element">HTMLElement</a>, prop: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>ctrl</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/HTML/Element">HTMLElement</a>)</code>
+	    L'élément de contrôle (input text) de l'interface
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>prop</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    La propriété à mettre à jour dans les modificateurs
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='updmodangle'>
+      updModAngle
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Mise à jour de l'angle des modificateurs sélectionnés</p>
+
+    <div class='pre p1 fill-light mt0'>updModAngle(ctrl: <a href="https://developer.mozilla.org/docs/Web/HTML/Element">HTMLElement</a>, prop: any): void</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>ctrl</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/HTML/Element">HTMLElement</a>)</code>
+	    L'élément de contrôle (input range) de l'interface
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>prop</span> <code class='quiet'>(any
+            = <code>&#39;dblAngle&#39;</code>)</code>
+	    
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code>void</code>:
+        
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+      </div>
+    </div>
+</body>
+</html>

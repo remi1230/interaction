@@ -1,4 +1,7 @@
-//------------------ EXPORT JSON ----------------- //
+/**
+ * @description Exporte les données de la simulation dans un fichier .json
+ * @memberof module:save
+ */
 function expt_json(){
   let exp_json = getById('export_json');
 
@@ -10,22 +13,22 @@ function expt_json(){
       filename += "." + exportFormat;
   }
 
-  /*glos.forEach((gl,i) => { gl.backgroundColor = canvasContext[i].canvas.style.backgroundColor; });
-  canvasContext.forEach(ct => { delete(ct.saveImage); });
-  let meta = {glos: glos, canvasContext: canvasContext};*/
-
 	var strMesh = JSON.stringify(glos);
 
 	var blob = new Blob ( [ strMesh ], { type : "octet/stream" } );
 	objectUrl = (window.webkitURL || window.URL).createObjectURL(blob);
 
-  //let dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(blob);
   let linkElement = document.createElement('a');
   linkElement.setAttribute('href', objectUrl);
   linkElement.setAttribute('download', filename);
   linkElement.click();
 }
+
 //------------------ IMPORT JSON ----------------- //
+/**
+ * @description Importe les données de la simulation à partir d'un fichier .json
+ * @memberof module:save
+ */
 function impt_json(){
   var file_to_read = getById("import_json").files[0];
   var fileread = new FileReader();
@@ -68,9 +71,12 @@ function impt_json(){
   fileread.readAsText(file_to_read);
   activeGlo.import_json = false;
 }
-//------------------ IMPORT JSON ----------------- //
+
+/**
+ * @description Importe une image en fond d'écran
+ * @memberof module:save
+ */
 function impt_image(event){
-  //if(!activeGlo.break){ button_check('pause'); }
   var fileread = new FileReader();
   fileread.onload = function(e) {
     var img = new Image();
@@ -81,19 +87,30 @@ function impt_image(event){
   };
   fileread.readAsDataURL(event.target.files[0]);
   activeGlo.import_image = false;
-  //showHideCtrl(import_image);
 }
 
+/**
+ * @description Sauvegarde dans le localStorage l'état de la simulation et une image du canvas
+ * @memberof module:save
+ */
 function flash(){
   localStorage.clear();
   localStorage.setItem('glo', JSON.stringify(activeGlo));
   localStorage.setItem('img', canvas.toDataURL());
 }
 
+/**
+ * @description Supprime la sauvegarde locale
+ * @memberof module:save
+ */
 function unflash(){
   localStorage.clear();
 }
 
+/**
+ * @description Restaure l'état de la simulation et une image du canvas à partir du localStorage
+ * @memberof module:save
+ */
 function restoreFlash(){
   glos          = [];
   canvasContext = [];

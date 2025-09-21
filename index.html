@@ -10,6 +10,7 @@
       <!-- <script src="dist/app.min.js" defer></script> -->
 
       <script src="js/calcul.js" defer></script>
+      <script src="js/color.js" defer></script>
       <script src="js/glob.js" defer></script>
       <script src="js/mouse.js" defer></script>
       <script src="js/avatar.js" defer></script>
@@ -47,7 +48,7 @@
                   <div>
                     <label for="upd_size">Size</label>
                     <input type="range" id="upd_size" name="upd_size" class='input_params' oninput="updateSize(this); updateGlo(this); " ondblclick="updateScale(this, event)"
-                      min="1" max="11" value="6" step=".1">
+                      min="0" max="30" value="2" step=".1">
                   </div>
                   <div>
                     <label for="line_size">Line size</label>
@@ -134,16 +135,16 @@
                     <input type="range" id="rot_spi_upd" name="rot_spi_upd" class='input_params' oninput="updateModifiersForce(this, 'rot_spi'); updateGlo(this)" ondblclick="updateScale(this, event)"
                       min="1" max="11" value="6" step=".01">
                   </div>
-                  <div>
-                    <label for="nb_modifiers">Nb modifiers</label>
-                    <input type="range" id="nb_modifiers" name="nb_modifiers" class='input_params' oninput="updateGlo(this); " ondblclick="updateScale(this, event)"
-                      min="1" max="32" value="12" step="1">
-                  </div>
                 </div>
 
                 <!-- 2) interface_modifiers_2 -->
                 <div style='display: none; ' class='interface' id="interface_modifiers_2">
                   <div class="titleInterface"><h3>Modifiers</h3></div>
+                  <div>
+                    <label for="nb_modifiers">Nb modifiers</label>
+                    <input type="range" id="nb_modifiers" name="nb_modifiers" class='input_params' oninput="updateGlo(this); " ondblclick="updateScale(this, event)"
+                      min="1" max="32" value="12" step="1">
+                  </div>
                   <div>
                     <label for="polyNbEdges">Poly mod nb edges</label>
                     <input type="range" id="polyNbEdges" name="polyNbEdges" class='input_params updModProp' data-modprop="nbEdges" oninput="updateGlo(this); changeModifiersProp(this, 'nbEdges'); " ondblclick="updateScale(this, event)"
@@ -1080,12 +1081,12 @@
               <div id="othersInterfaceContainer">
                 <div id="buttonsUI">  
                   <div id="toggleHelp"><div id="toggleHelpTxt" onclick="toggleHelpDialog(); ">❔</div></div>
+                  <div><div class="ui-button" id="switchPauseButton" onclick="switchPause(); ">▶️</div></div>
                   <div><div class="ui-button" onclick="downloadCanvas(); ">📸</div></div>
                   <div><div class="ui-button" id="switchBgButton" onclick="switchBg(); ">☀️</div></div>
                   <div><div class="ui-button" id="drawButton" onclick="testAll(false); ">🖌</div></div>
                   <div><div class="ui-button" id="switchPersistButton" onclick="switchPersist(); ">🖐️</div></div>
                   <div><div class="ui-button" onclick="testAll(); ">🧪</div></div>
-                  <div><div class="ui-button" id="switchPauseButton" onclick="switchPause(); ">▶️</div></div>
                   <div id="switchStrokeIcon" class="fillAndStrokeRound ui-button" onclick="switchSroke(); "></div>
                   <div><div class="ui-button" onclick="invColors(); ">
                     <div class="invColorButtonsContainer"><div class="redSquare"></div><div class="blueSquare"></div></div>

@@ -1,4 +1,60 @@
-//------------------ MODIFICATION DE LA TEINTE DES AVATARS ----------------- //
+/**
+ * Décrit la fonction de transformation de pixels passée à updImage.
+ * 
+ * @callback ImageProcessor
+ * @param {Uint8ClampedArray|Array<number>} data - Tableau RGBA brut des pixels
+ *   (par blocs de 4 valeurs : [R,G,B,A, R,G,B,A, ...])
+ * @returns {void}
+ */
+
+
+/**
+ * @description Mise à jour des données de l'image  
+ * @param {ImageProcessor} func La fonction de modification des données
+ * @param {boolean} simple Utilise un tableau simple ou un tableau d'objets
+ * @param {boolean} clear Effacement du canevas
+ * @memberof img
+ */
+function updImage(func, simple = true, clear = false){
+  var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+  var data = simple ? imageData.data : arrColors(imageData.data);
+
+  if(typeof(func) == 'function'){ func(data); }
+
+  if(!simple){ simpleArr(data, imageData.data); }
+
+  if(clear){ ctx.clearRect(0, 0, canvas.width, canvas.height); }
+
+  ctx.putImageData(imageData, 0, 0);
+}
+function simpleUpdImage(ctxVar, func, arg){
+  var imageData = ctxVar.getImageData(0, 0, canvas.width, canvas.height);
+
+  if(typeof(func) == 'function'){ func(arg); }
+
+  ctxVar.putImageData(imageData, 0, 0);
+}
+
+/**
+ * @description Transforme un tableau de couleurs en données d'image
+ * @param {Array} data - Tableau de couleurs
+ * @param {ImageData} imgData - Données d'image à mettre à jour
+ * @memberof module img
+ */
+function simpleArr(data, imgData){
+  n = 0;
+  data.forEach(color => {
+    imgData[n] = color.r; imgData[n + 1] = color.g; imgData[n + 2] = color.b; imgData[n + 3] = color.a;
+    n+=4;
+  });
+}
+
+/**
+ * @description Met à jour la teinte des pixels de l'image
+ * @param {HTMLElement} ctrl - Le contrôle d'interface utilisateur
+ * @param {string} col - La couleur à modifier (par défaut 'all')
+ * @memberof module img
+ */
 function updateTint(ctrl, col = 'all'){
   let last_val = ctrl.dataset.last_value;
   let val      = ctrl.value;
@@ -53,6 +109,12 @@ function updateTint(ctrl, col = 'all'){
 
   ctrl.dataset.last_value = val;
 }
+
+/**
+ * @description Met à jour la saturation des pixels de l'image
+ * @param {HTMLElement} ctrl - Le contrôle d'interface utilisateur
+ * @memberof module img
+ */
 function updateSaturation(ctrl){
   let last_val = ctrl.dataset.last_value;
   let val      = ctrl.value;
@@ -76,6 +138,12 @@ function updateSaturation(ctrl){
 
   ctrl.dataset.last_value = val;
 }
+
+/**
+ * @description Applique un décalage de couleur à l'image
+ * @param {HTMLElement} ctrl - Le contrôle d'interface utilisateur
+ * @memberof module img
+ */
 function ColorOffsetImg(ctrl){
   let last_val = ctrl.dataset.last_value;
   let val      = ctrl.value;
@@ -99,6 +167,12 @@ function ColorOffsetImg(ctrl){
 
   ctrl.dataset.last_value = val;
 }
+
+/**
+ * @description Applique un filtre de niveaux de gris à l'image
+ * @param {HTMLElement} ctrl - Le contrôle d'interface utilisateur
+ * @memberof module img
+ */
 function greyColor(ctrl){
   let last_val = ctrl.dataset.last_value;
   let val      = ctrl.value;
@@ -125,6 +199,11 @@ function greyColor(ctrl){
 
   ctrl.dataset.last_value = val;
 }
+
+/**
+ * @description Inverse la teinte des pixels de l'image
+ * @memberof module img
+ */
 function invTint(){
   updImage(data => {
     for (var i  = 0; i < data.length; i += 4) {
@@ -140,6 +219,11 @@ function invTint(){
     }
   });
 }
+
+/**
+ * @description Inverse la saturation des pixels de l'image
+ * @memberof module img
+ */
 function invSaturation(){
   updImage(data => {
     for (var i  = 0; i < data.length; i += 4) {
@@ -155,7 +239,14 @@ function invSaturation(){
     }
   });
 }
-//------------------ MODIFICATION DE LA COULEUR DES AVATARS ----------------- //
+
+/**
+ * @description Applique une rotation de couleur à l'image
+ * @param {number} x - L'angle de rotation autour de l'axe X
+ * @param {number} y - L'angle de rotation autour de l'axe Y
+ * @param {number} z - L'angle de rotation autour de l'axe Z
+ * @memberof module img
+ */
 function rotateColor(x = 0.1, y = 0.1, z = 0.1){
   updImage(data => {
     for (var i = 0; i < data.length; i += 4) {
@@ -172,14 +263,23 @@ function rotateColor(x = 0.1, y = 0.1, z = 0.1){
     }
   });
 }
-//------------------ MODIFICATION DE LA COULEUR DES AVATARS ----------------- //
+
+/**
+ * @description Applique une rotation au canvas de l'image
+ * @param {number} angle - L'angle de rotation en degrés
+ * @memberof module img
+ */
 function rotate_image(angle){
   let center = canvas.getCenter();
   ctx.translate(center.x, center.y);
   ctx.rotate(angle * Math.PI / 180);
   ctx.translate(-center.x, -center.y);
 }
-//------------------ NIVEAUX DE GRIS DES AVATARS ----------------- //
+
+/**
+ * @description Transforme l'image en niveaux de gris
+ * @memberof module img
+ */
 function grey_color(){
   updImage(data => {
     for (var i = 0; i < data.length; i += 4) {
@@ -190,7 +290,12 @@ function grey_color(){
     }
   });
 }
-//------------------ SHELL IMAGE ----------------- //
+
+/**
+ * @description Ajoute des écailles à l'image
+ * @param {HTMLElement} ctrl - Le contrôle à utiliser pour mettre à jour l'image
+ * @memberof module img
+ */
 function updShell(ctrl){
   let upd_val = calcUpdVal(ctrl);
   let k = 0;
@@ -210,27 +315,12 @@ function updShell(ctrl){
     }
   });
 }
-//------------------ TEST COLOR ----------------- //
-function test_color(){
-  let w = canvas.width * 4;
-  updImage(data => {
-    col = {r: rnd()*255, g: rnd()*255, b: rnd()*255};
-    for (var i = 0; i < data.length; i += 4) {
-      let new_line = i%w == 0;
-      if(((data[i] == 255 && data[i + 1] == 255 && data[i + 2] == 255 && data[i + 3] == 255) ||
-         (data[i] == 0 && data[i + 1] == 0 && data[i + 2] == 0 && data[i + 3] == 0)) && !new_line){
-        data[i]     = col.r;
-        data[i + 1] = col.g;
-        data[i + 2] = col.b;
-        data[i + 3] = 255;
-      }
-      else{
-        col = {r: rnd()*255, g: rnd()*255, b: rnd()*255};
-      }
-    }
-  });
-}
-//------------------ BLUR ----------------- //
+
+/**
+ * @description Applique un flou à l'image
+ * @function blur
+ * @memberof module img
+ */
 function blur(){
   updImage(data => { let new_data = [], i;
     for (i = 4; i < data.length; i += 4) {
@@ -251,6 +341,11 @@ function blur(){
     }
   });
 }
+
+/**
+ * @description Applique un filtre de netteté à l'image
+ * @memberof module img
+ */
 function sharp(){
   updImage(data => { let new_data = [], i;
     for (i = 4; i < data.length; i += 4) {
@@ -271,6 +366,11 @@ function sharp(){
     }
   });
 }
+
+/**
+ * @description Inverse les couleurs de l'image
+ * @memberof module img
+ */
 function invColors(){
   updImage(data => {
     for (i = 4; i < data.length; i += 4) {
@@ -280,6 +380,11 @@ function invColors(){
     }
   });
 }
+
+/**
+ * @description Échange les couleurs de l'image en fonction de leur teinte
+ * @memberof module img
+ */
 function exchangeToneColor(){
   updImage(data => {
     let arrCol = [];
@@ -304,46 +409,11 @@ function exchangeToneColor(){
 
   }, false);
 }
-//------------------ MODIFICATION DE L'IMAGE ----------------- //
-function updImage(func, simple = true, clear = false){
-  var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-  var data = simple ? imageData.data : arrColors(imageData.data);
-
-  if(typeof(func) == 'function'){ func(data); }
-
-  if(!simple){ simpleArr(data, imageData.data); }
-
-  if(clear){ ctx.clearRect(0, 0, canvas.width, canvas.height); }
-
-  ctx.putImageData(imageData, 0, 0);
-}
-function simpleUpdImage(ctxVar, func, arg){
-  var imageData = ctxVar.getImageData(0, 0, canvas.width, canvas.height);
-
-  if(typeof(func) == 'function'){ func(arg); }
-
-  ctxVar.putImageData(imageData, 0, 0);
-}
-
-//------------------ TURN ARRAY COLORS TO DATA IMAGE ----------------- //
-function simpleArr(data, imgData){
-  n = 0;
-  data.forEach(color => {
-    imgData[n] = color.r; imgData[n + 1] = color.g; imgData[n + 2] = color.b; imgData[n + 3] = color.a;
-    n+=4;
-  });
-}
 
 /**
- * @description Update the color function
- * @param {HTMLInputElement} ctrl The input range in interface
- * @returns {void}
- */
-
-/**
- * @description Update background to avatars average color
- * @param {Boolean}  inv inverse background color
- * @returns {void}
+ * Met à jour l'arrière-plan pour correspondre à la couleur moyenne des avatars
+ * @param {Boolean} inv - Renvoie la couleur moyenne inverse ou non
+ * @memberof module img
  */
 function updBgToAvColor(inv = false){
   let dataImage   = ctx.getImageData(0, 0, canvas.width, canvas.height);
@@ -374,9 +444,9 @@ function updBgToAvColor(inv = false){
 }
 
 /**
- * @description Update Background interface alpha color
- * @param {float} val alpha value
- * @returns {void}
+ * Met à jour l'opacité de l'arrière-plan de l'interface
+ * @param {HTMLElement} ctrl - L'élément de contrôle de l'interface
+ * @memberof module img
  */
 function bgInterfaceOpacity(ctrl){
   if(!activeGlo.interfaceBg){
@@ -390,14 +460,15 @@ function bgInterfaceOpacity(ctrl){
 
   activeGlo.interfaceBg = strCol;
 
-  interfaces.forEach(interface => { interface.style.backgroundColor = strCol; });
+  interfaces.forEach(it => { it.style.backgroundColor = strCol; });
 }
 
 /**
- * @description Get property of a css rule by id or class
- * @param {string} classOrId class or id of the css rule
- * @param {string} property the property to return the value in the css rule
- * @returns {void}
+ * @description Retourne la valeur d'une propriété CSS d'une classe ou d'un id
+ * @param {string} classOrId classe (avec un .) ou id (avec un #) de l'élément
+ * @param {string} property la propriété dont on veut récupérer la valeur dans la règle CSS
+ * @returns {string} la valeur de la propriété CSS
+ * @memberof module img
  */
 function getStyleProperty(classOrId, property)
 {
@@ -408,7 +479,11 @@ function getStyleProperty(classOrId, property)
     return window.getComputedStyle(elem, null).getPropertyValue(property);
 }
 
-//------------------ TURN DATA IMAGE TO ARRAY COLORS ----------------- //
+/**
+ * Transforme les données d'image en un tableau de couleurs
+ * @param {ImageData} data 
+ * @returns {Array} tableau d'objets de couleurs
+ */
 function arrColors(data){
   arrayColors = []; dataLength = data.length;
   for (var i = 0; i < dataLength; i += 4) {
@@ -416,9 +491,11 @@ function arrColors(data){
   }
   return arrayColors;
 }
+
+/**
+ * @description Met à jour la fonction de couleur en fonction de l'élément de contrôle
+ * @param {HTMLElement} ctrl - L'élément de contrôle de l'interface
+ */
 function updColorFunction(ctrl){
   switchObjBools(activeGlo.colorFunctions, activeGlo.colorFunctionLabels[ctrl.value], activeGlo.colorCumul);
-  /*if(!activeGlo.mode.colorCumul.state){
-    switchObjBools(activeGlo.colorFunctions, activeGlo.colorFunctionLabels[ctrl.dataset.last_value], activeGlo.mode.colorCumul.state);
-  }*/
 }

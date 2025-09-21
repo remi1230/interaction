@@ -1,9 +1,26 @@
+/**
+ * @typedef {import('./avatar.js').Avatar} Avatar
+ */
+
+/**
+ * Vérifie si un modificateur est proche de la souris
+ * @param {Object} mod - Le modificateur à vérifier
+ * @param {number} dist - La distance à laquelle considérer le modificateur comme proche
+ * @returns {number|boolean} La distance au modificateur si proche, sinon false
+ * @member 
+ */
 function modIsNearMouse(mod, dist){
   if(mod.x < mouse.x + dist && mod.x > mouse.x - dist && mod.y < mouse.y + dist && mod.y > mouse.y - dist){ return h(mod.x - mouse.x, mod.y - mouse.y); }
 
   return false;
 }
 
+/**
+ * Récupère le modificateur le plus proche de la souris
+ * @param {number} dist - La distance à laquelle considérer le modificateur comme proche
+ * @returns {Object|boolean} Le modificateur le plus proche si trouvé, sinon false
+ * @memberof modifiers
+ */
 function getModNearestMouse(dist){
   let modsNearestMouse = [];
   activeGlo.modifiers.forEach(mod => {
@@ -20,6 +37,11 @@ function getModNearestMouse(dist){
   return nearModToReturn;
 }
 
+/**
+ * @description Duplique les modificateurs sélectionnés par symétrie selon l'axe spécifié
+ * @param {string} sym
+ * @memberof modifiers
+ */
 function modsSymToCenter(sym = 'vhAxe'){
   getSelectedModifiers().forEach(mod => {
     let p      = symToCenter({x: mod.x, y: mod.y});
@@ -47,39 +69,12 @@ function modsSymToCenter(sym = 'vhAxe'){
   });
 }
 
-function testModsFormule(){
-  let mod         = activeGlo.modifiers.length > 0 ? activeGlo.modifiers[0] : undefined;
-  let av          = avatars[0] ? avatars[0] : undefined;
-
-  let formules = activeGlo.params.mods_formule.split(',');
-
-  if(activeGlo.modifiers.length > 0 && av){
-    activeGlo.mods_formule.formules = [];
-
-    activeGlo.mods_formule.state = true;
-    formules.forEach(formule => {
-      let prop = formule.substr(0, formule.indexOf('=')).trim();
-      let val  = formule.substr(formule.indexOf('=') + 1).trim();
-
-      let thisFormule = true; let ev;
-      try{
-        ev = eval(val);
-        if(ev == av || isNaN(ev)){ activeGlo.mods_formule.state = false; }
-      }
-      catch(e){
-        thisFormule = false;
-        activeGlo.mods_formule.state = false;
-      }
-      if(thisFormule){
-        activeGlo.mods_formule.formules.push({prop, val});
-      }
-    });
-  }
-  else{
-    activeGlo.mods_formule.state = false;
-  }
-}
-
+/**
+ * @description Applique les formules de modificateurs à un modificateur et un avatar donnés
+ * @param {Object} mod Le modificateur à modifier
+ * @param {Avatar} av L'avatar
+ * @memberof modifiers
+ */
 function modsFormule(mod, av){
   if(activeGlo.mods_formule.state){
     activeGlo.mods_formule.formules.forEach(formule => {
@@ -88,6 +83,10 @@ function modsFormule(mod, av){
   }
 }
 
+/**
+ * @description L'attraction des modificateurs sélectionnés est mise à zéro ou restaurée
+ * @memberof modifiers
+ */
 function modsToZero(){
   activeGlo.modsToZero = !activeGlo.modsToZero;
   if(activeGlo.modsToZero){
@@ -100,6 +99,16 @@ function modsToZero(){
 }
 
 //------------------ MODIFICATION DE LA FORCE DES MODIFIEURS ----------------- //
+/**
+ * @description Met à jour la force des modificateurs
+ * @param {HTMLElement} ctrl L'élément de contrôle (input range) de l'interface
+ * @param {string} prop La propriété à mettre à jour 
+ * @param {string} sprop La sous-propriété à mettre à jour
+ * @param {number} min La valeur minimale
+ * @param {number} max La valeur maximale
+ * @param {number} p Le facteur d'exponentiation
+ * @memberof modifiers
+ */
 function updateModifiersForce(ctrl, prop = 'attract', sprop = false, min = -Infinity, max = Infinity, p = 0.5){
   let upd_val = calcUpdVal(ctrl);
 
@@ -113,7 +122,15 @@ function updateModifiersForce(ctrl, prop = 'attract', sprop = false, min = -Infi
   if(!sprop){ getSelectedModifiers().forEach(mod => { mod[prop]  = changeProp(mod[prop], upd_val); }); }
   else{ getSelectedModifiers().forEach(mod => { mod[prop][sprop] = changeProp(mod[prop][sprop], upd_val); }); }
 }
+
 //------------------ MODIFICATION PROPRIÉTE DES MODIFIEURS ----------------- //
+/**
+ * @description Change la propriété des modificateurs sélectionnés
+ * @param {HTMLElement} ctrl L'élément de contrôle (input range) de l'interface
+ * @param {string} prop La propriété à mettre à jour
+ * @param {boolean} byVal Indique si la valeur doit être utilisée directement
+ * @memberof modifiers
+ */
 function changeModifiersProp(ctrl, prop, byVal = false){
   let val = !byVal ? ctrl.value : byVal;
 
@@ -123,11 +140,11 @@ function changeModifiersProp(ctrl, prop, byVal = false){
 
   getSelectedModifiers().forEach(mod => { mod[prop]  = val; });
 }
+
 /**
- * @description Update prop param angle of modifiers
- * @param {HTMLElement}  ctrl ctrl input range of interface
- * @param {string}  prop the prop in modifiers to update
- * @returns {void}
+ * @description Mise à jour des formules pour les modificateurs
+ * @param {HTMLElement}  ctrl L'élément de contrôle (input text) de l'interface
+ * @param {string}  prop La propriété à mettre à jour dans les modificateurs
  */
 function updModsAngle(ctrl, prop){
   let last_val = parseFloat(ctrl.dataset.last_value);
@@ -154,8 +171,8 @@ function updModsAngle(ctrl, prop){
   });
 }
 /**
- * @description Update prop param dbl angle of modifiers
- * @param {HTMLElement}  ctrl ctrl input range of interface
+ * @description Mise à jour de l'angle des modificateurs sélectionnés
+ * @param {HTMLElement}  ctrl L'élément de contrôle (input range) de l'interface
  * @returns {void}
  */
 function updModAngle(ctrl, prop = 'dblAngle'){
@@ -167,7 +184,10 @@ function updModAngle(ctrl, prop = 'dblAngle'){
   getSelectedModifiers().forEach(mod => { mod[prop] = twoPINumber(mod[prop] + upd_val); });
 }
 
-//------------------ CALCUL POS ON GRID ----------------- //
+/**
+ * @description Place les modificateurs sélectionnés sur la grille si elle est activée
+ * @memberof modifiers
+ */
 function putModsOnGrid(){
   if(activeGlo.grid.draw){
     getSelectedModifiers().forEach(mod => {
@@ -177,7 +197,16 @@ function putModsOnGrid(){
     });
   }
 }
-//------------------ POS A MODIFIER ----------------- //
+
+/**
+ * @description Positionne un modificateur
+ * @param {string} type Le type de modificateur
+ * @param {{x: number, y: number}} pos La position du modificateur
+ * @param {boolean} inv Indique si le modificateur est inversé (propriétés comme la force de gravité...)
+ * @param {number} groupe Le groupe auquel appartient le modificateur
+ * @param {boolean} virtual Indique si le modificateur est virtuel
+ * @memberof modifiers
+ */
 function pos_modifier(type = 'attractor', pos = mouse, inv = false, groupe = 0, virtual = false){
   let invAtt     = !inv ? 1 : -1;
   let random     = !activeGlo.pos_rnd_modifiers ? 1 : rnd();
@@ -263,9 +292,9 @@ function pos_modifier(type = 'attractor', pos = mouse, inv = false, groupe = 0, 
 }
 
 /**
-*@description Make the modify function to modify the pos of avatars
-*@param {string} modifierType The type of modifier, ex: 'attractor', 'rotator', ...
-*@returns {void}
+* @description Génère la fonction de modification d'un modificateur en fonction de son type
+* @param {string} modifierType Le type de modificateur, ex: 'attractor', 'rotator', ...
+* @memberof modifiers
 */
 function makeModifierFunction(modifierType){
   switch (modifierType) {
@@ -706,7 +735,12 @@ function makeModifierFunction(modifierType){
   }
 }
 
-//------------------ POS ATTRACTORS OR ROTATORS ----------------- //
+/**
+ * @description Positionne les modificateurs sur la grille si elle est activée
+ * @param {string} type Le type de modificateur
+ * @param {boolean} inv Indique si le modificateur est inversé
+ * @memberof modifiers
+ */
 function posModifiers(type = activeGlo.pos_modifiers, inv = activeGlo.invModifiersAtt){
   let invAtt = inv;
   if(type != 'all'){
@@ -726,6 +760,12 @@ function posModifiers(type = activeGlo.pos_modifiers, inv = activeGlo.invModifie
   }
 }
 
+/**
+ * Positionne les modificateurs en fonction de leur type
+ * @param {{x: number, y: number}} cent La position centrale
+ * @param {string} type Le type de modificateur
+ * @memberof modifiers
+ */
 function posModifiersByType(cent, type = activeGlo.formModTypes[activeGlo.params.formModType]){
   switch(type){
     case 'circle':
@@ -743,7 +783,14 @@ function posModifiersByType(cent, type = activeGlo.formModTypes[activeGlo.params
   }
 }
 
-//------------------ POS CIRCLES MODIFIERS ----------------- //
+/**
+ * @description Positionne un cercle de modificateurs
+ * @param {{x: number, y: number}} cent La position centrale
+ * @param {string} type Le type de modificateur
+ * @param {boolean} inv Indique si le modificateur est inversé
+ * @param {number} rot La rotation du modificateur
+ * @memberof modifiers
+ */
 function posCircleModifiers(cent = false, type = activeGlo.pos_modifiers, inv = activeGlo.invModifiersAtt, rot = activeGlo.params.rotCircleModifiers){
   let pt, n = 0;
   let invAtt = inv;
@@ -775,7 +822,17 @@ function posCircleModifiers(cent = false, type = activeGlo.pos_modifiers, inv = 
     }
   }
 }
-//------------------ POS POLYGONE(S) MODIFIERS ----------------- //
+
+/**
+ * Positionne un polygone de modificateurs
+ * @param {{x: number, y: number}} cent La position centrale
+ * @param {string} type Le type de modificateur
+ * @param {number} nb Le nombre de modificateurs
+ * @param {boolean} inv Indique si le modificateur est inversé
+ * @param {number} rot La rotation du modificateur
+ * @param {number} nbEdges Le nombre de côtés du polygone
+ * @memberof modifiers
+ */
 function posPolyModifiers(cent = false, type = activeGlo.pos_modifiers, nb = activeGlo.params.nb_modifiers, inv = activeGlo.invModifiersAtt,
   rot = activeGlo.params.rotCircleModifiers, nbEdges = activeGlo.params.posModsNbEdges){
   let n = 0;
@@ -796,7 +853,15 @@ function posPolyModifiers(cent = false, type = activeGlo.pos_modifiers, nb = act
     pointsStar(cent, nbEdges, nb, r*(i/nb_circles), 0, cent, mod);
   }
 }
-//------------------ POS SQUARE MODIFIERS ----------------- //
+
+/**
+ * @description Positionne un carré de modificateurs
+ * @param {{x: number, y: number}} cent La position centrale
+ * @param {string} type Le type de modificateur
+ * @param {boolean} inv Indique si le modificateur est inversé
+ * @param {number} rot La rotation du modificateur
+ * @memberof modifiers
+ */
 function posSquareModifiers(cent = false, type = activeGlo.pos_modifiers, inv = activeGlo.invModifiersAtt, rot = activeGlo.params.rotCircleModifiers){
   let x, y, pt, n = 0;
   let invAtt = inv;
@@ -825,7 +890,15 @@ function posSquareModifiers(cent = false, type = activeGlo.pos_modifiers, inv = 
     x+=step;
   }
 }
-//------------------ POS RECTANGLE MODIFIERS ----------------- //
+
+/**
+ * @description Positionne un rectangle de modificateurs
+ * @param {{x: number, y: number}} cent La position centrale
+ * @param {string} type Le type de modificateur
+ * @param {boolean} inv Indique si le modificateur est inversé
+ * @param {number} rot La rotation du modificateur
+ * @memberof modifiers
+ */
 function posRectModifiers(cent = false, type = activeGlo.pos_modifiers, inv = activeGlo.invModifiersAtt, rot = activeGlo.params.rotCircleModifiers){
   let x, y, pt, n = 0;
   let invAtt = inv;
@@ -857,8 +930,8 @@ function posRectModifiers(cent = false, type = activeGlo.pos_modifiers, inv = ac
   }
 }
 /**
- * @description Paste the selected modifiers
- * @returns {void}
+ * @description Colle les modificateurs copiés
+ * @memberof modifiers
  */
 function pasteModifiers(){
   if(activeGlo.modifiers.length > 0){
@@ -897,33 +970,10 @@ function pasteModifiers(){
   }
 }
 
-function diffParamsModsGloParams(){
-  let diffColor = 'blue';
-
-  getSelectedModifiers().forEach(mod => {
-    for(let propParams in activeGlo.params){
-      for(let propModParams in mod.params){
-        if(propParams == propModParams){
-          if(activeGlo.params[propParams] != mod.params[propModParams]){
-            let $propParamsLabel = document.querySelector('[for="' + propParams + '"]');
-            if($propParamsLabel.style.color != diffColor){
-              $propParamsLabel.style.color = diffColor;
-              getById(propParams).value    = mod.params[propModParams];
-              updLabel(updLabel(getById('tint_color')));
-            }
-            else{
-
-            }
-          }
-        }
-      }
-    }
-  });
-}
-
 /**
- * @description Find the more top left modifier
- * @returns {void}
+ * @description Trouve le modificateur en haut à gauche parmi les modificateurs sélectionnés
+ * @returns {modifier|boolean} Le modificateur en haut à gauche ou false s'il n'y a pas de modificateur sélectionné
+ * @memberof modifiers
  */
 function findTopLeftModifiers(){
   if(activeGlo.modifiers.length == 0){ return false; }
@@ -932,7 +982,12 @@ function findTopLeftModifiers(){
     return h(prev.x, prev.y) < h(curr.x, curr.y) ? prev : curr;
   });
 }
-//------------------ ROTATE MODIFIERS ----------------- //
+
+/**
+ * @description Fait pivoter les modificateurs sélectionnés
+ * @param {*} rotAngle
+ * @memberof modifiers
+ */
 function rotate_modifiers(rotAngle = -999){
   let angle  = rotAngle == -999 ? activeGlo.params.modifiers_angle / 100 : rotAngle;
   let center = !activeGlo.center ? canvas.getCenter() : activeGlo.center;
@@ -959,21 +1014,37 @@ function rotate_modifiers(rotAngle = -999){
     }
   });
 }
-//------------------ ROTATE MODIFIERS ----------------- //
+
+/**
+ * @description Translate les modificateurs sélectionnés
+ * @param {number} x 
+ * @param {number} y
+ * @memberof modifiers 
+ */
 function translateModifiers(x, y){
   getSelectedModifiers().forEach(mod => {
     mod.x += x;
     mod.y += y;
   });
-  //if(activeGlo.grid.draw){ putModsOnGrid(); }
 }
-//------------------ ROTATE MODIFIERS ----------------- //
+
+/**
+ * @description Retourne les modificateurs sélectionnés ou tous les modificateurs si aucun n'est sélectionné
+ * @param {boolean} allForZero - Si vrai, retourne soitt les modificateurs sélectionnés, soit tous les modificateurs si aucun n'est sélectionné. Si faux, retourne uniquement les modificateurs sélectionnés.
+ * @returns {Array} Les modificateurs sélectionnés, tous les modificateurs ou aucun.
+ * @memberof modifiers
+ */
 function getSelectedModifiers(allForZero = true){
   let selectedMods = activeGlo.modifiers.filter(mod => mod.select);
   if(selectedMods.length > 0){ return selectedMods; }
   return allForZero ? activeGlo.modifiers : [];
 }
-//------------------ TURN MODIFIERS ----------------- //
+
+/**
+ * @description Modifie le type des modificateurs sélectionnés
+ * @param {HTMLElement} ctrl Le contrôle HTML (select) contenant le type
+ * @memberof modifiers
+ */
 function turnModifiers(ctrl){
   let modNum = ctrl.value;
   getSelectedModifiers().forEach((mod) => {
@@ -984,7 +1055,13 @@ function turnModifiers(ctrl){
   if(!activeGlo.modifiers.some(mod => mod.type == 'magnetor' || mod.type == 'mimagnetor' || mod.double)){ activeGlo.magnetors = false; }
   else{ activeGlo.magnetors = true; }
 }
-//------------------ UPD FORMULE MODIFIERS ----------------- //
+
+/**
+ * @description Met à jour la formule des modificateurs sélectionnés
+ * @param {HTMLElement} ctrl Le contrôle HTML (input) contenant la formule
+ * @param {string} coordType - 'x' ou 'y'
+ * @memberof modifiers
+ */
 function updFormuleModifiers(ctrl, coordType){
   let formule = ctrl.value;
 
@@ -997,7 +1074,12 @@ function updFormuleModifiers(ctrl, coordType){
   }
 }
 
-//------------------ SELECT MODIFIER ----------------- //
+/**
+ * @description Sélectionne les modificateurs en fonction de la souris ou d'un contrôle
+ * @param {boolean} byMouse - Si vrai, sélectionne le modificateur sous la souris. Si faux, sélectionne les modificateurs en fonction du contrôle.
+ * @param {HTMLElement} ctrl - Le contrôle HTML (select) contenant le type de modificateur à sélectionner.
+ * @memberof modifiers
+ */
 function modifier_select(byMouse = true, ctrl = null){
   if(byMouse){
     let nearestModToMouse = getModNearestMouse(10);
@@ -1005,7 +1087,6 @@ function modifier_select(byMouse = true, ctrl = null){
     if(nearestModToMouse){
       if(!activeGlo.modifierSelect.byGroup){
         nearestModToMouse.select = !nearestModToMouse.select;
-        //changeParamsByMod(nearestModToMouse);
       }
       else{
         activeGlo.modifiers.forEach(mod => {
@@ -1025,9 +1106,9 @@ function modifier_select(byMouse = true, ctrl = null){
   }
 }
 /**
- * @description Set params interface accord to the mod @param
- * @param  {modifier} mod
- * @return {void}
+ * @description Synchronise les paramètres de l'interface en fonction du modificateur passé en paramètre
+ * @param  {modifier} mod Le modificateur à utiliser pour la synchronisation
+ * @memberof modifiers
  */
 function changeParamsByMod(mod){
   if(isOneModSelected()){
@@ -1041,18 +1122,29 @@ function changeParamsByMod(mod){
 }
 
 /**
- * @description Return true if only one modifier is selected
+ * @description Retourne vrai si un seul modificateur est sélectionné
  * @return {Boolean}
+ * @memberof modifiers
  */
 function isOneModSelected(){
   return getSelectedModifiers(false).length === 1;
 }
 
+/**
+ * @description Retourne le nombre de modificateurs sélectionnés
+ * @return {number}
+ * @memberof modifiers
+ */
 function modsSelected(){
   return getSelectedModifiers(false).length;
 }
 
-//------------------ CHANGE L'ÉCHELLE DES MODIFIEURS ----------------- //
+/**
+ * @description Change l'échelle des modificateurs sélectionnés
+ * @param {string} sign - Le signe '+' pour agrandir ou '-' pour réduire
+ * @param {number} div - Le diviseur pour contrôler la vitesse de l'échelle
+ * @memberof modifiers
+ */
 function scale_modifiers(sign, div = 10){
   let center = { x: canvas.width / 2, y: canvas.height / 2 };
   let mods = getSelectedModifiers();
@@ -1070,7 +1162,11 @@ function scale_modifiers(sign, div = 10){
   }
 }
 
-//------------------ VIEW ATTRACTORS ----------------- //
+/**
+ * @description Affiche les modificateurs sur le canevas
+ * @param {Array} arr - Le tableau des modificateurs à afficher
+ * @memberof modifiers
+ */
 function view_modifiers(arr = activeGlo.modifiers){
   arr.forEach(mod => {
     let g_mod = mod.attract;
@@ -1096,7 +1192,10 @@ function view_modifiers(arr = activeGlo.modifiers){
   });
 }
 
-//------------------ SHOW MODIFIERS INFOS ----------------- //
+/**
+ * @description Affiche les informations des modificateurs sur le canevas sous forme de texte
+ * @memberof modifiers
+ */
 function showModsInfos(){
   let canvasBg = canvas.style.backgroundColor;
   if(canvasBg != ""){
@@ -1123,7 +1222,11 @@ function showModsInfos(){
   txts.map(txt => ctxStructure.fillText(txt.txt, pos_x, txt.pos_y));
 }
 
-//------------------ MODS COLOR PICKER COLOR UPD AVATARS & MODS COLOR ----------------- //
+/**
+ * @description Met à jour la couleur des modificateurs sélectionnés
+ * @param {HTMLElement} ctrl - L'élément de contrôle de la couleur
+ * @memberof modifiers
+ */
 function modifiersColor_upd(ctrl) {
   let col = hexToHSL(ctrl.value);
   getSelectedModifiers().forEach(mod => {
@@ -1133,11 +1236,19 @@ function modifiersColor_upd(ctrl) {
   });
 }
 
+/**
+ * @description Switch la visibilité des modificateurs
+ * @memberof modifiers
+ */
 function switchModifiersVisibility(){
   activeGlo.view_modifiers = !activeGlo.view_modifiers;
   document.getElementById('switchModifiersVisibilityIcon').textContent = !activeGlo.view_modifiers ? '👁‍🗨' : '👁';
 }
 
+/**
+ * @description Supprime tous les modificateurs
+ * @memberof modifiers
+ */
 function deleteAllModifiers(){
   let modsSz = activeGlo.modifiers.length;
   activeGlo.modifiers = activeGlo.modifiers.filter(mod => !mod.select);
@@ -1146,6 +1257,10 @@ function deleteAllModifiers(){
   ctx.clearRect(0, 0, ctx.canvas.clientWidth, ctx.canvas.clientHeight);
 }
 
+/**
+ * @description Ajoute un modificateurs du type choisi pour chaque modificateur sélectionné
+ * @memberof modifiers
+ */
 function posModsOnMods(){
   getSelectedModifiers().forEach(mod => {
     let newMod     = deepCopy(mod, 'modifiers');
@@ -1157,6 +1272,13 @@ function posModsOnMods(){
   });
 }
 
+/**
+ * @description Récupère les informations des modificateurs
+ * @param {boolean} isSorted - Indique si le tableau doit être trié
+ * @param {string} dir - La direction du tri ('asc' ou 'desc')
+ * @returns {Object|boolean} Un objet contenant les informations des modificateurs et les propriétés dans les modificateurs, ou false si aucun modificateur n'existe
+ * @memberof modifiers
+ */
 function infosModifiers(isSorted = false, dir = 'asc'){
   let infosMods = [];
   let propsInMods = infosArr(activeGlo.modifiers[0]).map(p => p.prop);
@@ -1169,6 +1291,11 @@ function infosModifiers(isSorted = false, dir = 'asc'){
   return false;
 }
 
+/**
+ * @description Vérifie les fonctions de couleur cochées et met à jour les modificateurs sélectionnés
+ * @param {Event} e - L'événement de changement de la case à cocher
+ * @memberof modifiers
+ */
 function checkColorFunctions(e){
   activeGlo.colorFunctions[e.target.id] = !activeGlo.colorFunctions[e.target.id];
 
@@ -1183,6 +1310,10 @@ function checkColorFunctions(e){
   getSelectedModifiers().forEach(mod => { mod.glo.colorCumul = activeGlo.colorCumul; mod.glo.colorFunctions[e.target.id] = activeGlo.colorFunctions[e.target.id]; });
 }
 
+/**
+ * @description Met à jour la distance maximale d'attraction des modificateurs en fonction du paramètre radius_attract
+ * @memberof modifiers
+ */
 function radius_attract(){
   activeGlo.lim_dist = pow(pow(canvas.width, 2) + pow(canvas.height, 2), 0.5) / (256 / activeGlo.params.radius_attract);
   getSelectedModifiers().forEach(mod => { mod.glo.lim_dist = activeGlo.lim_dist; });

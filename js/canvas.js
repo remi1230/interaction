@@ -7,9 +7,20 @@
   dataCanvas = new Uint8Array(canvas.width * canvas.height);
 })();
 
-//------------------ CLEAR CANVAS ----------------- //
+/**
+ * @description Nettoie le canvas en utilisant la méthode
+ * ctx.clearRect(0, 0, canvas.width, canvas.height)
+ * @memberof module:canvas
+ */
 function clear(){ ctx.clearRect(0, 0, canvas.width, canvas.height); }
 
+/**
+ * @description Ajoute un nouveau canvas
+ * @param {boolean} start - Indique si c'est le canvas de départ
+ * @param {boolean} duplicate - Indique si c'est un duplicata
+ * @param {boolean} toImport - Indique si c'est un canvas à importer
+ * @memberof module:canvas
+ */
 function addCanvas(start = false, duplicate = false, toImport = false){
   let arenaCanvas      = [...document.getElementsByClassName('arenaCanvas')];
   let newCanvas        = document.createElement("canvas");
@@ -74,10 +85,10 @@ giveFuncToCanvas(brushCanvas, ctxBrush);
 giveFuncToCanvas(modPathCanvas, ctxModPath);
 
 /**
- * @description Gives function to a canvas variable and to a ctx variable
- * @param {HTMLCanvasElement} varCanvas The canvas variable
- * @param {CanvasRenderingContext2D} varCtx The ctx variable
- * @returns {void}
+ * @description Ajoute des fonctions au canvas et au contexte
+ * @param {HTMLCanvasElement} varCanvas variable canvas
+ * @param {CanvasRenderingContext2D} varCtx variable contexte
+ * @memberof module:canvas
  */
 function giveFuncToCanvas(varCanvas, varCtx){
   //------------------ GET CENTER OF CANVAS ----------------- //
@@ -320,18 +331,38 @@ function giveFuncToCanvas(varCanvas, varCtx){
   varCtx.font = "30px Comic Sans MS";
 }
 
+/**
+ * @description Renvoie le tableau RGBA d'un pixel dans un ImageData
+ * @param {ImageData} imgData Les données de l'image  
+ * @param {number} x La position x du pixel
+ * @param {number} y La position y du pixel
+ * @param {number} width La largeur de l'image
+ * @returns {Array<number>} RGBA array
+ * @memberof module:canvas
+ */
 function getPosInImageData(imgData, x, y, width) {
   var p = 4 * (x + y * width);
   return imgData.slice(p, p + 4);
 }
 
-//**************************BRUSH**************************//
+/**
+ * @description Sauvegarde un point sur le canvas de la brosse
+ * @param {{x: number, y: number, size: number}} pt Le point à sauvegarder
+ * @memberof module:canvas
+ */
 function savePtOnBrushCanvas(pt){
   pt.size = activeGlo.params.brushSize;
   if(activeGlo.modifiers.length){ getSelectedModifiers().forEach(mod => { mod.glo.firstPtBrush = pt; }); }
   else{ activeGlo.firstPtBrush = pt; }
 }
 
+/**
+ * @description Sauvegarde un déplacement sur le canvas de modPath
+ * @param {{stepsModPath: Array<{x: number, y: number, angleToCenter: number}>}} objGlo
+ * @param {{x: number, y: number}} lastPt Le dernier point
+ * @param {{x: number, y: number}} pt Le point actuel
+ * @memberof module:canvas 
+ */
 function saveMoveOnModPathCanvas(objGlo, lastPt, pt){
   let center        = modPathCanvas.getCenter();
   let distToCenter  = {x: pt.x - center.x, y: pt.y - center.y};
@@ -340,6 +371,11 @@ function saveMoveOnModPathCanvas(objGlo, lastPt, pt){
   objGlo.stepsModPath.push({x: pt.x - lastPt.x, y: pt.y - lastPt.y, angleToCenter});
 }
 
+/**
+ * @description Sauvegarde un déplacement sur le canvas de la brosse
+ * @param {{x: number, y: number, size: number}} pt Le point à sauvegarder
+ * @memberof module:canvas
+ */
 function saveMoveOnBrushCanvas(pt){
   if(activeGlo.modifiers.length){ getSelectedModifiers().forEach(mod => { pushVector(mod.glo); }); }
   else{ pushVector(activeGlo); }
@@ -358,6 +394,13 @@ function saveMoveOnBrushCanvas(pt){
   }
 }
 
+/**
+ * @description Sauvegarde un déplacement ou un point sur le canvas de la brosse
+ * @param {{formType: string, first: boolean, size: number}} mouseCanvas Le canvas de la souris
+ * @param {{type: string, formType: string, size: number}} brushType Le type de brosse
+ * @param {string} eventType Le type d'événement
+ * @param {boolean} brushCanvasMouseUp Indique si la souris est relâchée
+ */
 function saveMoveOrPtOnBrushCanvas(mouseCanvas, brushType, eventType, brushCanvasMouseUp){
   mouseCanvas.form      = brushType !== 'manual' && brushType !== 'line';
   mouseCanvas.first     = false;
@@ -392,6 +435,11 @@ function saveMoveOrPtOnBrushCanvas(mouseCanvas, brushType, eventType, brushCanva
   }
 }
 
+/** 
+ * @description Dessine sur le canvas de la brosse selon le type de brosse
+ * @param {string} brushType Le type de brosse
+ * @memberof module:canvas
+ */
 function drawOnBrushCanvas(brushType = activeGlo.brushType){
   switch(brushType){
     case 'manual':
@@ -408,6 +456,12 @@ function drawOnBrushCanvas(brushType = activeGlo.brushType){
     break;
   }
 }
+
+/**
+ * Dessine un carré sur le canvas de la brosse
+ * @param {{x: number, y: number, size: number}} pt Le point à dessiner
+ * @memberof module:canvas
+ */
 function drawSquareOnBrushCanvas(pt = mouseCanvas){
   ctxBrush.beginPath();
   ctxBrush.strokeStyle = '#cc0000';
@@ -416,6 +470,12 @@ function drawSquareOnBrushCanvas(pt = mouseCanvas){
   ctxBrush.rect(pt.x - sz/2, pt.y - sz/2, sz, sz);
   ctxBrush.stroke();
 }
+
+/**
+ * Dessine un cercle sur le canvas de la brosse
+ * @param {{x: number, y: number, size: number}} pt Le point à dessiner
+ * @memberof module:canvas
+ */
 function drawCircleOnBrushCanvas(pt = mouseCanvas){
   ctxBrush.beginPath();
   ctxBrush.strokeStyle = '#cc0000';
@@ -423,6 +483,12 @@ function drawCircleOnBrushCanvas(pt = mouseCanvas){
   ctxBrush.arc(pt.x, pt.y, pt.size/2, 0, two_pi, true);
   ctxBrush.stroke();
 }
+
+/**
+ * Dessine un point sur le canvas de la brosse
+ * @param {{x: number, y: number, size: number}} pt Le point à dessiner
+ * @memberof module:canvas
+ */
 function drawPtOnBrushCanvas(pt = mouseCanvas){
   ctxBrush.beginPath();
   ctxBrush.fillStyle = '#cc0000';
@@ -430,39 +496,54 @@ function drawPtOnBrushCanvas(pt = mouseCanvas){
   ctxBrush.arc(pt.x, pt.y, 1, 0, two_pi, true);
   ctxBrush.fill();
 }
+
+/**
+ * Dessine une lignesur le canvas de la brosse
+ * @param {{x: number, y: number}} ptStart Le point de départ
+ * @param {{x: number, y: number}} ptEnd Le point de fin
+ * @memberof module:canvas
+ */
 function drawLineOnBrushCanvas(ptStart = mouseCanvasLast, ptEnd = mouseCanvas){
   ctxBrush.strokeStyle = '#cc0000';
   ctxBrush.lineWidth = 1;
   ctxBrush.line({ start: {x: ptStart.x, y: ptStart.y}, end: {x: ptEnd.x, y: ptEnd.y} });
 }
-//*********************************************************//
-
 
 /**
-*@description Stroke a draw function on ctxVar
-*@param {CanvasRenderingContext2D} ctxVar The ctx var
-*@param {function} func The func
-*/
+ * @description Exécute une fonction de dessin avec stroke() sur un contexte donné
+ * @param {CanvasRenderingContext2D} ctxVar Le contexte sur lequel dessiner 
+ * @param {function} func La fonction de dessin à exécuter
+ */
 function strokeOnCanvas(ctxVar, func){
   ctxVar.beginPath();
   func();
   ctxVar.stroke();
 }
 
-//------------------ TAILLE DU CANVAS ADAPTÉE À LA RÉSOLUTION D'ÉCRAN ----------------- //
+/**
+ * @description Fixe le DPI du canvas pour une meilleure résolution
+ * @param {HTMLCanvasElement} varCanvas Le canvas à fixer
+ * @memberof module:canvas
+ */
 function fix_dpi(varCanvas) {
-let style = {
-    height() {
-      return +getComputedStyle(varCanvas).getPropertyValue('height').slice(0,-2);
-    },
-    width() {
-      return +getComputedStyle(varCanvas).getPropertyValue('width').slice(0,-2);
-    }
-  };
-  varCanvas.setAttribute('width', style.width() * dpi);
-  varCanvas.setAttribute('height', style.height() * dpi);
+  let style = {
+      height() {
+        return +getComputedStyle(varCanvas).getPropertyValue('height').slice(0,-2);
+      },
+      width() {
+        return +getComputedStyle(varCanvas).getPropertyValue('width').slice(0,-2);
+      }
+    };
+    varCanvas.setAttribute('width', style.width() * dpi);
+    varCanvas.setAttribute('height', style.height() * dpi);
 }
 
+/**
+ * @description Met à l'échelle le canvas
+ * @param {number} scale Le facteur d'échelle
+ * @param {Array<CanvasRenderingContext2D>} ctxVars Les contextes à mettre à l'échelle
+ * @memberof module:canvas
+ */
 function scaleCanvas(scale, ctxVars = [ctx, ctxStructure]){
   ctxVars.forEach(ctxVar => {
     ctxVar.scale(scale, scale);
@@ -471,6 +552,12 @@ function scaleCanvas(scale, ctxVars = [ctx, ctxStructure]){
   });
 }
 
+/**
+ * @description Fait pivoter le canvas
+ * @param {number} angle L'angle de rotation en radians
+ * @param {Array<CanvasRenderingContext2D>} ctxVars Les contextes à faire pivoter
+ * @memberof module:canvas
+ */
 function rotateCanvas(angle, ctxVars = [ctx, ctxStructure]){
   ctxVars.forEach(ctxVar => {
     ctxVar.translate(canvas.width / 2,canvas.height / 2);
@@ -479,16 +566,30 @@ function rotateCanvas(angle, ctxVars = [ctx, ctxStructure]){
   });
 }
 
+/**
+ * @description Incline le canvas selon un axe
+ * @param {'h'|'v'} axe L'axe d'inclinaison ('h' pour horizontal, 'v' pour vertical)
+ * @param {number} angle L'angle d'inclinaison
+ * @param {Array<CanvasRenderingContext2D>} ctxVars Les contextes à incliner
+ * @memberof module:canvas
+ */
 function tiltCanvas(axe, angle, ctxVars = [ctx, ctxStructure]){
   ctxVars.forEach(ctxVar => {
     axe === 'h' ? ctxVar.transform(1, angle, 0, 1, 0, 0): ctxVar.transform(1, 0, angle, 1, 0, 0);;
   });
 }
 
-//------------------ CANVAS PICKER COLOR UPD CANVAS BG----------------- //
+/**
+ * Met à jour la couleur de fond du canvas
+ * @param {HTMLInputElement} ctrl L'élément de contrôle de la couleur
+ * @memberof module:canvas
+ */
 function canvas_bg_upd(ctrl){ canvas.style.backgroundColor = ctrl.value; activeGlo.backgroundColor = ctrl.value;}
 
-//------------------ CANVAS DOWNLOAD IMAGE ----------------- //
+/**
+ * @description Télécharge le contenu de tous les canvas en une seule image PNG
+ * @memberof module:canvas
+ */
 function downloadCanvas() {
   // On prend la taille réelle (pixels) du premier canvas
   const src = canvasContext[0].canvas;
@@ -526,6 +627,11 @@ function downloadCanvas() {
   a.click();
 }
 
+/**
+ * @description Sélectionne un canvas parmi plusieurs
+ * @param {number} numCanvas Le numéro du canvas à sélectionner
+ * @memberof module:canvas
+ */
 function selectCanvas(numCanvas){
   ctx.saveImage = ctx.getImageData(0, 0, canvas.width, canvas.height);
 
@@ -543,13 +649,19 @@ function selectCanvas(numCanvas){
   ctx.globalCompositeOperation = activeGlo.ctxCompositions[activeGlo.params.ctxComposition];
 }
 
-//------------------ VIEW CENTER OF CANVAS ----------------- //
+/**
+ * @description Affiche le centre du canvas
+ * @memberof module:canvas
+ */
 function view_center(){
   let center = activeGlo.center ? activeGlo.center : { x: canvas.width / 2, y: canvas.height / 2 };
   drawLogo({x:center.x, y: center.y, type: 'center'}, 'rgb(255,0,0,1)');
 }
 
-//------------------ DRAW THE CROSS POINTS ----------------- //
+/**
+ * @description Affiche les points d'intersection définis dans crossPoints
+ * @memberof module:canvas
+ */
 function drawCrossPoints(){
   let lineWidth = 0.03;
   crossPoints.forEach(crossPoint => {
@@ -568,7 +680,11 @@ function drawCrossPoints(){
     ctx.stroke();
   });
 }
-//------------------ DRAW BEETWEEN THE CROSS POINTS ----------------- //
+
+/**
+ * @description Relie les points d'intersection définis dans crossPoints
+ * @memberof module:canvas
+ */
 function lineCrossPoints(){
   let lineWidth = 0.5;
   crossPoints.forEach((crossPoint, i) => {
@@ -589,5 +705,10 @@ function lineCrossPoints(){
   });
 }
 
-//------------------ PLACEMENT SELON UNE FORME DES AVATARS ----------------- //
+/**
+ * @description Placement selon une forme des avatars
+ * @param {object} opt Les options de la forme
+ * @returns {boolean} false
+ * @memberof module:canvas
+ */
 function createForm(opt){ keepBreak(function(){ var nb = activeGlo.params.nb; deleteAvatar('all'); activeGlo.params.nb = nb; createAvatar(opt); }); return false; }

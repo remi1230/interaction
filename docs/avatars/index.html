@@ -1,0 +1,1730 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset='utf-8'>
+  <title>interaction 1.0.0 | Documentation</title>
+  <meta name='viewport' content='width=device-width,initial-scale=1'>
+  <link href='../assets/bass.css' rel='stylesheet'>
+  <link href='../assets/style.css' rel='stylesheet'>
+  <link href='../assets/github.css' rel='stylesheet'>
+  <link href='../assets/split.css' rel='stylesheet'>
+
+  <script src='../assets/anchor.js' defer></script>
+  <script src='../assets/split.js' defer></script>
+  <script src='../assets/site.js' defer></script>
+</head>
+<body class='documentation m0'>
+    <div class='flex'>
+      <div id='split-left' class='overflow-auto fs0 height-viewport-100'>
+        <div class='py1 px2'>
+          <h3 class='mb0 no-anchor'>interaction</h3>
+          <div class='mb1'><code>1.0.0</code></div>
+          <input
+            placeholder='Filter'
+            id='filter-input'
+            class='col12 block input'
+            spellcheck='false'
+            autocapitalize='off'
+            autocorrect='off'
+            type='text' />
+          <div id='toc'>
+            <ul class='list-reset h5 py1-ul'>
+              
+                
+                <li><a
+                  href='#createavatar'
+                  class="">
+                  createAvatar
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#posavatar'
+                  class="">
+                  posAvatar
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#draw_avatars'
+                  class="">
+                  draw_avatars
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#deleteavatar'
+                  class="">
+                  deleteAvatar
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#positionavatars'
+                  class="">
+                  positionAvatars
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#modifierselectbyrectangle'
+                  class="">
+                  modifierSelectByRectangle
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#verif_nb'
+                  class="">
+                  verif_nb
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#all_nearsavatars'
+                  class="">
+                  all_nearsAvatars
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#nbavatars'
+                  class="">
+                  nbAvatars
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#changeavatarsprop'
+                  class="">
+                  changeAvatarsProp
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#scale_avatars'
+                  class="">
+                  scale_avatars
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#stop_avatars'
+                  class="">
+                  stop_avatars
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#raz_avatars'
+                  class="">
+                  raz_avatars
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#dealbreakavatars'
+                  class="">
+                  dealBreakAvatars
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#followavatar'
+                  class="">
+                  followAvatar
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#nbavatarsinscreen'
+                  class="">
+                  nbAvatarsInScreen
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#avatarsmeanpoint'
+                  class="">
+                  avatarsMeanPoint
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#infosavatars'
+                  class="">
+                  infosAvatars
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#updatesize'
+                  class="">
+                  updateSize
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#calcupdval'
+                  class="">
+                  calcUpdVal
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#deleteavatarsprop'
+                  class="">
+                  deleteAvatarsProp
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#selectavatartoinfos'
+                  class="">
+                  selectAvatarToInfos
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#selectclassavatartoinfos'
+                  class="">
+                  selectClassAvatarToInfos
+                  
+                </a>
+                
+                </li>
+              
+            </ul>
+          </div>
+          <div class='mt1 h6 quiet'>
+            <a href='https://documentation.js.org/reading-documentation.html'>Need help reading this?</a>
+          </div>
+        </div>
+      </div>
+      <div id='split-right' class='relative overflow-auto height-viewport-100'>
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='createavatar'>
+      createAvatar
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Crée de nouveaux avatars</p>
+
+    <div class='pre p1 fill-light mt0'>createAvatar(options: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>options</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>
+            = <code>{}</code>)</code>
+	    Options de l'avatar
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='posavatar'>
+      posAvatar
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Pose un avatar sur le canvas</p>
+
+    <div class='pre p1 fill-light mt0'>posAvatar(x: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>, y: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>, size: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>, cent: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>, virtual: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>): Avatar</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>x</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>)</code>
+	    Position en x
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>y</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>)</code>
+	    Position en y
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>size</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>)</code>
+	    Taille de l'avatar
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>cent</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>)</code>
+	    Centre de l'avatar
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>virtual</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>
+            = <code>false</code>)</code>
+	    Indique si l'avatar est virtuel (par défaut : false)
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code>Avatar</code>:
+        L'avatar créé
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='draw_avatars'>
+      draw_avatars
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Dessine les avatars</p>
+
+    <div class='pre p1 fill-light mt0'>draw_avatars()</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='deleteavatar'>
+      deleteAvatar
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Supprime des avatars</p>
+
+    <div class='pre p1 fill-light mt0'>deleteAvatar(nb: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>nb</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>)</code>
+	    Nombre d'avatars à supprimer ('all' pour tout supprimer)
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='positionavatars'>
+      positionAvatars
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Positionne les avatars en fonction de leurs vitesses, accélérations et modificateurs</p>
+
+    <div class='pre p1 fill-light mt0'>positionAvatars()</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='modifierselectbyrectangle'>
+      modifierSelectByRectangle
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Sélectionne les avatars en dessinant un rectangle avec la souris</p>
+
+    <div class='pre p1 fill-light mt0'>modifierSelectByRectangle()</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='verif_nb'>
+      verif_nb
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Vérifie et met à jour le nombre d'avatars si nécessaire</p>
+
+    <div class='pre p1 fill-light mt0'>verif_nb()</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='all_nearsavatars'>
+      all_nearsAvatars
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Met à jour les avatars proches pour chaque avatar</p>
+
+    <div class='pre p1 fill-light mt0'>all_nearsAvatars()</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='nbavatars'>
+      nbAvatars
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Ajout ou suppression d'éléments de dessin pour atteindre le nombre spécifié</p>
+
+    <div class='pre p1 fill-light mt0'>nbAvatars(callback: any)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>callback</span> <code class='quiet'>(any
+            = <code>verif_nb</code>)</code>
+	    
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='changeavatarsprop'>
+      changeAvatarsProp
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Modifie les propriétés des avatars</p>
+
+    <div class='pre p1 fill-light mt0'>changeAvatarsProp(val: (<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a> | <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>), prop: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, toRad: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>val</span> <code class='quiet'>((<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a> | <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>))</code>
+	    Nouvelle valeur de la propriété
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>prop</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    Propriété à modifier
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>toRad</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>
+            = <code>false</code>)</code>
+	    Indique si la valeur doit être convertie en radians (par défaut : false)
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='scale_avatars'>
+      scale_avatars
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Modifie la taille des avatars</p>
+
+    <div class='pre p1 fill-light mt0'>scale_avatars(sign: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, div: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>sign</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    Signe de l'opération ('+' pour augmenter, '-' pour diminuer)
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>div</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>
+            = <code>10</code>)</code>
+	    Diviseur pour ajuster le changement de taille (par défaut : 10)
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='stop_avatars'>
+      stop_avatars
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Arrête les avatars en mettant leurs vitesses à zéro</p>
+
+    <div class='pre p1 fill-light mt0'>stop_avatars()</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='raz_avatars'>
+      raz_avatars
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Réinitialise les avatars en supprimant tous les avatars existants et en créant un nouveau</p>
+
+    <div class='pre p1 fill-light mt0'>raz_avatars()</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='dealbreakavatars'>
+      dealBreakAvatars
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Gère la pause et la reprise des avatars en sauvegardant et restaurant leurs vitesses</p>
+
+    <div class='pre p1 fill-light mt0'>dealBreakAvatars()</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='followavatar'>
+      followAvatar
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Sélectionne des avatars à suivre en fonction d'un pourcentage spécifié</p>
+
+    <div class='pre p1 fill-light mt0'>followAvatar()</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='nbavatarsinscreen'>
+      nbAvatarsInScreen
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Compte le nombre d'avatars visibles à l'écran</p>
+
+    <div class='pre p1 fill-light mt0'>nbAvatarsInScreen(): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></code>:
+        Nombre d'avatars visibles à l'écran
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='avatarsmeanpoint'>
+      avatarsMeanPoint
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Calcule le point moyen entre tous les avatars</p>
+
+    <div class='pre p1 fill-light mt0'>avatarsMeanPoint()</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='infosavatars'>
+      infosAvatars
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Récupère les informations des avatars</p>
+
+    <div class='pre p1 fill-light mt0'>infosAvatars(isSorted: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>, dir: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, limNbProps: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>isSorted</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>
+            = <code>false</code>)</code>
+	    Indique si les informations doivent être triées
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>dir</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>
+            = <code>&#39;asc&#39;</code>)</code>
+	    Direction du tri ('asc' ou 'desc')
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>limNbProps</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>
+            = <code>19</code>)</code>
+	    Limite du nombre de propriétés à récupérer
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></code>:
+        Informations des avatars
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='updatesize'>
+      updateSize
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Met à jour la taille des avatars en fonction d'un contrôle</p>
+
+    <div class='pre p1 fill-light mt0'>updateSize(ctrl: <a href="https://developer.mozilla.org/docs/Web/HTML/Element">HTMLElement</a>)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>ctrl</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/HTML/Element">HTMLElement</a>)</code>
+	    Élément de contrôle (input)
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='calcupdval'>
+      calcUpdVal
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Calcule la valeur de mise à jour en fonction du contrôle</p>
+
+    <div class='pre p1 fill-light mt0'>calcUpdVal(ctrl: <a href="https://developer.mozilla.org/docs/Web/HTML/Element">HTMLElement</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>ctrl</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/HTML/Element">HTMLElement</a>)</code>
+	    Élément de contrôle (input)
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></code>:
+        Valeur de mise à jour
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='deleteavatarsprop'>
+      deleteAvatarsProp
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Supprime une propriété spécifique de tous les avatars</p>
+
+    <div class='pre p1 fill-light mt0'>deleteAvatarsProp(prop: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>prop</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    Propriété à supprimer
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='selectavatartoinfos'>
+      selectAvatarToInfos
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Sélectionne un avatar pour afficher ses informations</p>
+
+    <div class='pre p1 fill-light mt0'>selectAvatarToInfos(tr: <a href="https://developer.mozilla.org/docs/Web/HTML/Element">HTMLElement</a>, numAv: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>tr</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/HTML/Element">HTMLElement</a>)</code>
+	    Élément de la ligne de tableau
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>numAv</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>)</code>
+	    Numéro de l'avatar
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='selectclassavatartoinfos'>
+      selectClassAvatarToInfos
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Sélectionne une classe d'avatar pour afficher ses informations</p>
+
+    <div class='pre p1 fill-light mt0'>selectClassAvatarToInfos(numAv: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>numAv</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>)</code>
+	    Numéro de l'avatar
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>:
+        Classe CSS à appliquer
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+      </div>
+    </div>
+</body>
+</html>

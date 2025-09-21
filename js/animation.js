@@ -1,4 +1,15 @@
 //------------------ DÉPLACEMENTS D'AVATARS ----------------- //
+
+/**
+ * Fonction principale d'animation
+ * Appelée en boucle par requestAnimationFrame
+ * - Met à jour les positions et vitesses des avatars en fonction des paramètres globaux et de leurs interactions.
+ * - Applique forces, rotations, limites de vitesse et affiche la structure (grille, modificateurs...).
+ * - Incrémente le compteur global et se rappelle récursivement.
+ * 
+ * @returns {void}
+ * @memberof module:animation
+ */
 function animation(){
   if(!activeGlo.totalBreak){
     let attract_mouse = activeGlo.attract_mouse.state && activeGlo.attract_mouse.mousedown;

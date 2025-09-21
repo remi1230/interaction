@@ -1,7 +1,29 @@
-//------------------ INITIALISATION DES CONTRÔLES D'INTERFACE AVEC LES VARIABLES GLOBALES ----------------- //
+
+/**
+ * @typedef {import('./avatar.js').Avatar} Avatar
+ */
+
+/**
+ * @description Initialise les contrôles de paramètres pour l'objet de paramètres donné.
+ *
+ * Parcourt chaque paire clé-valeur de l'objet `objParam` fourni et appelle `param_ctrl`
+ * pour configurer le contrôle d'interface utilisateur correspondant. Par défaut, utilise `activeGlo.params` comme objet de paramètres.
+ *
+ * @param {boolean} [onLoad=true] - Indique si la fonction est appelée lors du chargement initial.
+ * @param {Object} [objParam=activeGlo.params] - L'objet de paramètres dont les entrées seront utilisées pour créer les contrôles.
+ * @memberof module:ui
+ */
 function params_interface(onLoad = true, objParam = activeGlo.params){
   Object.entries(objParam).forEach(([key, val]) => { param_ctrl(val, key, onLoad); });
 }
+
+/**
+ * @description Initialise et met à jour un élément de contrôle d'interface utilisateur avec la valeur donnée.
+ * @param {*} val - La valeur à affecter au contrôle.
+ * @param {string} id_ctrl - L'identifiant du contrôle.
+ * @param {boolean} [onLoad=true] - Indique si la fonction est appelée lors du chargement initial.
+ * @memberof module:ui
+ */
 function param_ctrl(val, id_ctrl, onLoad = true){
   var ctrl = getById(id_ctrl);
   if(ctrl){
@@ -22,6 +44,12 @@ function param_ctrl(val, id_ctrl, onLoad = true){
     if(!noLabel){ updLabel(ctrl); }
   }
 }
+
+/**
+ * @description Met à jour le label associé à un input.
+ * @param {HTMLElement} input - L'élément input à mettre à jour.
+ * @memberof module:ui
+ */
 function updLabel(input){
   let label = document.querySelector('[for="' + input.id + '"]');
   if(label){
@@ -31,7 +59,12 @@ function updLabel(input){
   }
 }
 
-//------------------ AfFICHE UN MESSAGE TEMPORAIRE SUR LE CANVAS ----------------- //
+//------------------ AFFICHE UN MESSAGE TEMPORAIRE SUR LE CANVAS ----------------- //
+/**
+ * @description Affiche un ou plusieurs messages temporaires sur le canvas.
+ * @param {...string} txts - Les messages à afficher.
+ * @memberof module:ui
+ */
 function msg(...txts){
   let canvasBg = canvas.style.backgroundColor;
 
@@ -52,27 +85,38 @@ function msg(...txts){
 }
 
 /**
-*@description Create HTML checkboxes
-*@param {[]} checkboxes Array of prop
-*@param {string} containerId The id of div container of HTML checkboxes
-*@param {string} checked The id of the default checkbox to be checked
-*@param {{event:string, func: string}} evtCheck The event of HTML checkboxes
-*/
+ * @description Crée des cases à cocher HTML.
+ * @param {[]} checkboxes - Tableau des propriétés.
+ * @param {string} containerId - L'id du conteneur des cases à cocher.
+ * @param {string} checked - L'id de la case à cocher par défaut.
+ * @param {{event:string, func: string}} evtCheck - L'événement des cases à cocher HTML.
+ * @memberof module:ui
+ */
 function createCheckboxesWithRange(checkboxes, containerId, checked, evtCheck){
   let container = getById(containerId);
   checkboxes.forEach(checkbox => {
     container.appendChild(createCheckboxWithRange(checkbox, checkbox, checkbox != checked ? false : true, evtCheck));
   });
 }
+
 /**
-*@description Create a HTML checkbox
-*@param {string} checkTxt The text of the checkbox
-*@param {string} id The id of the checkbox
-*@param {{event:string, func: string}} evtCheck The event of HTML checkboxes
-*@param {{event:string, func: string}} evtRange The event of HTML range
-*/
-function createCheckboxWithRange(checkTxt, id, checked = false, evtCheck = {event: 'onchange', func: 'return false'},
-                                 evtRange = {event: 'oninput', func: 'updateGloRangeCmlColor(this);'}){
+ * @description Crée un élément div conteneur contenant une case à cocher avec label et un input de type range.
+ *
+ * @param {string} checkTxt - Le texte du label pour la case à cocher.
+ * @param {string} id - L'id à assigner à l'input checkbox.
+ * @param {boolean} [checked=false] - Si la case à cocher doit être cochée par défaut.
+ * @param {{event: string, func: string}} [evtCheck={event: 'onchange', func: 'return false'}] - L'événement et la fonction pour la checkbox.
+ * @param {{event: string, func: string}} [evtRange={event: 'oninput', func: 'updateGloRangeCmlColor(this);'}] - L'événement et la fonction pour le range.
+ * @returns {HTMLDivElement} Le div conteneur avec la case à cocher et le range.
+ * @memberof module:ui
+ */
+function createCheckboxWithRange(
+  checkTxt,
+  id,
+  checked = false,
+  evtCheck = {event: 'onchange', func: 'return false'},
+  evtRange = {event: 'oninput', func: 'updateGloRangeCmlColor(this);'}
+) {
   let divContainer = document.createElement("div");
   let divC         = document.createElement("div");
   let divR         = document.createElement("div");
@@ -117,13 +161,43 @@ function createCheckboxWithRange(checkTxt, id, checked = false, evtCheck = {even
   return divContainer;
 }
 
+
+/**
+ * @description
+ * Réinitialise les paramètres globaux et l'interface utilisateur à leur état initial.
+ * 
+ * Cette fonction effectue les actions suivantes :
+ * - Supprime les avatars existants selon les paramètres globaux courants.
+ * - Sauvegarde les modificateurs actuels.
+ * - Réinitialise l'objet global (`activeGlo`) et les paramètres UI sans déclencher l'événement `onLoad`.
+ * - Définit le centre de l'objet global au centre du canvas.
+ * - Restaure les modificateurs sauvegardés dans le nouvel objet global.
+ * - Met à jour les propriétés des modificateurs selon les nouveaux paramètres.
+ * - Réinitialise les avatars.
+ *
+ * @returns {void}
+ * @memberof module:ui
+ */
 function razParams(){
+  // Supprime les avatars existants
   deleteAvatar(activeGlo.params.nb);
+
+  // Sauvegarde les modificateurs actuels
   let modifiersSave = activeGlo.modifiers;
+
+  // Réinitialise l'objet global
   activeGlo = new Glob();
+
+  // Réinitialise l'interface des paramètres sans déclencher onLoad
   params_interface(false);
+
+  // Redéfinit le centre sur le canvas
   activeGlo.center = canvas.getCenter();
+
+  // Restaure les modificateurs sauvegardés
   activeGlo.modifiers = modifiersSave;
+
+  // Met à jour les propriétés des modificateurs selon les nouveaux paramètres
   for(let prop in activeGlo.params){
     if(inputsUpdModProp[prop]){
       getSelectedModifiers().forEach(mod => {
@@ -133,12 +207,19 @@ function razParams(){
       });
     }
   }
+
+  // Réinitialise les avatars
   raz_avatars();
 }
 
+/**
+ * @description Crée une interface de navigation entre les éléments HTML de classe "interface".
+ * @returns {void}
+ * @memberof module:ui
+ */
 function createGoInterface(){
   let interfaces = [...document.getElementsByClassName('interface')];
-  interfaces.forEach((interface, i) => {
+  interfaces.forEach((it, i) => {
     let div = document.createElement("div");
     let txt = document.createTextNode(i+1);
     div.appendChild(txt);
@@ -154,7 +235,12 @@ function createGoInterface(){
   });
 }
 
-//------------------ MODIFICATION DE VARIABLES GLOBALES SUITE À ÉVÈNEMENT INPUT----------------- //
+/**
+ * @description Met à jour un paramètre global et propage la valeur aux modificateurs sélectionnés ainsi qu’aux contrôles liés.
+ * @param {HTMLInputElement} ctrl - L’élément de formulaire dont la valeur est appliquée.
+ * @returns {void}
+ * @memberof module:ui
+ */
 function updateGlo(ctrl){
   let val = parseFloat(ctrl.value) ? parseFloat(ctrl.value) : ctrl.value;
 
@@ -206,9 +292,10 @@ function updateGlo(ctrl){
 }
 
 /**
- * Update the form of avatar
- * @param  {String} val
- * @return {undefined}
+ * @description Met à jour la forme active dans le contexte global et la propage aux modificateurs sélectionnés.
+ * @param {string|number} val - Identifiant ou index de la forme à appliquer.
+ * @returns {void}
+ * @memberof module:ui
  */
 function updateForm(val){
   let form       = activeGlo.forms[val];
@@ -217,7 +304,12 @@ function updateForm(val){
   getSelectedModifiers().forEach(mod => { mod.glo.form = form; });
 }
 
-//------------------ MODIFICATION DE VARIABLES GLOBALES SUITE À ÉVÈNEMENT INPUT RANGE COLOR CUMUL ----------------- //
+/**
+ * @description Met à jour la valeur d’un paramètre de couleur cumulée (rangesCmlColor) et la propage aux modificateurs sélectionnés.
+ * @param {HTMLInputElement} ctrl - L’élément input dont la valeur numérique est utilisée.
+ * @returns {void}
+ * @memberof module:ui
+ */
 function updateGloRangeCmlColor(ctrl){
   let val = parseFloat(ctrl.value);
 
@@ -227,6 +319,12 @@ function updateGloRangeCmlColor(ctrl){
   getSelectedModifiers().forEach(mod => { mod.glo.rangesCmlColor[ctrl.id] = val; mod.glo.fromUpdGlo = true; });
 }
 
+/**
+ * @description Met à jour un contrôle HTML à partir des valeurs de `activeGlo.params` (bornes min/max, valeur, label).
+ * @param {string} ctlr_id - L'id du contrôle à synchroniser.
+ * @returns {void}
+ * @memberof module:ui
+ */
 function updCtrl(ctlr_id){
   let ctrl = getById(ctlr_id);
   if(ctrl.max < activeGlo.params[ctlr_id]){ ctrl.max = 2 * activeGlo.params[ctlr_id]; }
@@ -235,6 +333,13 @@ function updCtrl(ctlr_id){
   updLabel(ctrl);
 }
 
+/**
+ * @description Met à l’échelle la plage d’un contrôle (min/max/step) en fonction de sa valeur courante et de son historique, puis met à jour `activeGlo.params`.
+ * @param {HTMLInputElement} ctrl - Le contrôle (input range/number) dont on adapte l’échelle.
+ * @param {Event} e - L’événement d’entrée à stopper (propagation).
+ * @returns {void}
+ * @memberof module:ui
+ */
 function updateScale(ctrl, e){
   let last_val = parseFloat(ctrl.last_vals[ctrl.last_vals.length - 1]);
   let curval   = parseFloat(ctrl.value);
@@ -263,7 +368,14 @@ function updateScale(ctrl, e){
   if(activeGlo.params[ctrl.id]){ activeGlo.params[ctrl.id] = ctrl.value; }
 }
 
-//------------------ DRAW A CROSS ----------------- //
+/**
+ * @description Dessine le pictogramme (logo) d’un modificateur sur le canvas de structure selon son type et son état (sélection, paramètres, angle).
+ * @param {Object} mod - Le modificateur à représenter (ex. { x, y, type, select, nbEdges, attract, params, ... }).
+ * @param {string} style - La couleur/stratégie de tracé (strokeStyle) à appliquer.
+ * @param {number} [angle=0] - Angle de référence (radians) à utiliser pour certains types (director, oscillator, etc.).
+ * @returns {void}
+ * @memberof module:ui
+ */
 function drawLogo(mod, style, angle = 0){
   let point           = {x: mod.x, y: mod.y};
   let type            = mod.type;
@@ -375,7 +487,12 @@ function drawLogo(mod, style, angle = 0){
   ctxStructure.lineWidth = lineW;
 }
 
-//------------------ SHOW CIRCLE ----------------- //
+/**
+ * @description Affiche un cercle/ellipse indicateur sur le canvas de structure autour d’un centre donné (ou déterminé automatiquement).
+ * @param {{x:number, y:number}} [cent] - Centre de l’ellipse ; s’il est omis, il est déduit du contexte (centre défini, souris, etc.).
+ * @returns {void}
+ * @memberof module:ui
+ */
 function showCircle(cent = activeGlo.simpleMouseDown && activeGlo.showCircle){
   if(!cent){
     cent = !activeGlo.defineCenter ? defineCenter(false) :
@@ -393,7 +510,13 @@ function showCircle(cent = activeGlo.simpleMouseDown && activeGlo.showCircle){
   ctxStructure.stroke();
 }
 
-//------------------ SHOW / HIDE INTERFACE ----------------- //
+/**
+ * @description Affiche/masque l’interface (UI) et repositionne le conteneur dans le DOM ; met à jour l’icône de bascule.
+ * @param {HTMLElement} [cont] - Conteneur de l’interface à déplacer.
+ * @param {HTMLElement} [toggInt] - Bouton/élément de bascule dont le texte (▲/▼) est mis à jour.
+ * @returns {void}
+ * @memberof module:ui
+ */
 function showHideInterface(cont = containerInt, toggInt = toggleInt){
   activeGlo.uiDisplay = !activeGlo.uiDisplay;
   ui.style.display    = !activeGlo.uiDisplay ? 'none' : '';
@@ -405,7 +528,11 @@ function showHideInterface(cont = containerInt, toggInt = toggleInt){
   toggInt.textContent = !activeGlo.uiDisplay ? "▼" : "▲";
 }
 
-//------------------ SHOW INFOS ----------------- //
+/**
+ * @description Affiche des informations (stats, état) sur le canvas de structure.
+ * @returns {void}
+ * @memberof module:ui
+ */
 function showInfos(){
   let canvasBg = canvas.style.backgroundColor;
   if(canvasBg != ""){
@@ -431,7 +558,12 @@ function showInfos(){
   txts.map(txt => ctxStructure.fillText(txt.txt, pos_x, txt.pos_y));
 }
 
-//------------------ SHOW/HIDE CTRL ----------------- //
+/**
+ * @description Affiche ou masque un contrôle donné dans le conteneur de contrôles du canvas.
+ * @param {HTMLElement} ctrl_var - Le contrôle HTML à afficher ou masquer.
+ * @returns {void}
+ * @memberof module:ui
+ */
 function showHideCtrl(ctrl_var){
   [...ctrl_canvas_container.children].forEach(ctrl_canvas => {
     if(ctrl_canvas.id != ctrl_var.id){ ctrl_canvas.style.display   = 'none'; }
@@ -449,6 +581,11 @@ function showHideCtrl(ctrl_var){
   }
 }
 
+/**
+ * @description Bascule la couleur de fond du canvas entre la couleur sauvegardée et la couleur définie dans `activeGlo.canvasLoveBg`.
+ * @returns {void}
+ * @memberof module:ui
+ */
 function switchBg(){
   activeGlo.canvasLoveBg.state = !activeGlo.canvasLoveBg.state;
   if(activeGlo.canvasLoveBg.state){
@@ -462,6 +599,11 @@ function switchBg(){
   document.getElementById('switchBgButton').textContent = !activeGlo.canvasLoveBg.state ? '☀️' : '🌙';
 }
 
+/**
+ * @description Active ou désactive la persistance (clear) de l’affichage, met à jour l’UI et déclenche les raccourcis clavier associés.
+ * @returns {void}
+ * @memberof module:ui
+ */
 function switchPersist(){
   activeGlo.clear = !activeGlo.clear;
   window.dispatchEvent(new KeyboardEvent('keydown',  {'key':'²', 'ctrlKey' : false, 'altKey' : false}));
@@ -469,21 +611,42 @@ function switchPersist(){
   document.getElementById('switchPersistButton').textContent = !activeGlo.clear ? '✍️' : '🖐️';
 }
 
+/**
+ * @description Met en pause ou relance l’animation (break global), met à jour l’icône correspondante.
+ * @returns {void}
+ * @memberof module:ui
+ */
 function switchPause(){
   activeGlo.totalBreak = !activeGlo.totalBreak;
   document.getElementById('switchPauseButton').textContent = !activeGlo.totalBreak ? '▶️' : '⏸️';
 }
 
+/**
+ * @description Bascule entre les modes de rendu `stroke` et `stroke+fill` pour les modificateurs sélectionnés.
+ * @returns {void}
+ * @memberof module:ui
+ */
 function switchSroke(){
   activeGlo.strokeAndFill = !activeGlo.strokeAndFill;
   getSelectedModifiers().forEach(mod => { mod.glo.strokeAndFill = activeGlo.strokeAndFill; } );
   document.getElementById('switchStrokeIcon').classList = !activeGlo.strokeAndFill ? "fillRound" : "fillAndStrokeRound";
 }
 
+/**
+ * @description Passe au type de grille suivant (rotation cyclique via `next()`).
+ * @returns {void}
+ * @memberof module:ui
+ */
 function switchGrid(){
   activeGlo.gridsType.next();
 }
 
+/**
+ * @description Effectue un test global de l’application (avec ou sans modificateurs), en réinitialisant certains paramètres et déclenchant des raccourcis clavier.
+ * @param {boolean} [withMods=true] - Indique si les modificateurs doivent être inclus dans le test.
+ * @returns {void}
+ * @memberof module:test
+ */
 function testAll(withMods = true){
   if(withMods){ activeGlo.modifiers = []; }
               
@@ -512,15 +675,14 @@ function testAll(withMods = true){
 }
 
 /**
- * @description Show an interface by num in activeGlo.num_interface
- * @param {number} numInterface The numero of interface
+ * @description Affiche l’interface spécifiée et met à jour la classe `active` sur le bouton correspondant.
+ * @param {number} numInterface - L’index de l’interface à afficher.
  * @returns {void}
+ * @memberof module:ui
  */
 function showInterface(numInterface){
   let interfacesLength = interfaces.length;
   let numTxt           = numInterface + 1;
-
-  //getById('num_interface').textContent = numTxt + "-►";
 
   for(let i = 0; i < interfacesLength; i++){
     let goInterface = getById('goInterface_' + i);
@@ -536,9 +698,10 @@ function showInterface(numInterface){
 }
 
 /**
- * @description Change the interface by increment or decrement
- * @param {string} dir '+' for increment, '-' for decrement
+ * @description Change l’interface active dans un sens donné (+ ou -) et appelle `showInterface`.
+ * @param {'+'|'-'} dir - La direction du changement (suivant ou précédent).
  * @returns {void}
+ * @memberof module:ui
  */
 function changeInterface(dir){
   if(dir == '+'){
@@ -552,6 +715,11 @@ function changeInterface(dir){
   showInterface(activeGlo.num_params);
 }
 
+/**
+ * @description Active/désactive le mode “source” d’un input à lier et marque visuellement l’input courant.
+ * @returns {boolean} - `true` si une entrée focalisée a été traitée, sinon `false`.
+ * @memberof module:ui
+ */
 function inputToLinked(){
   return inputFlownByMouse(input => {
     if(typeof input.dataset.toLinked === 'undefined'){
@@ -578,6 +746,13 @@ function inputToLinked(){
     }
   });
 }
+
+/**
+ * @description Lie l’input “source” courant à un autre input (cible) avec un signe (positif/négatif), ou annule le lien.
+ * @param {boolean} [positive=true] - Indique si la liaison est positive (`true`) ou négative (`false`).
+ * @returns {boolean} - `true` si une entrée focalisée a été traitée, sinon `false`.
+ * @memberof module:ui
+ */
 function inputToLinkedTo(positive = true){
   return inputFlownByMouse((input, positive) => {
     let sign = positive ? 'positive' : 'negative';
@@ -597,6 +772,13 @@ function inputToLinkedTo(positive = true){
     }
   }, positive);
 }
+
+/**
+ * @description Active/désactive le contrôle d’un input sélectionné par le mouvement de la souris.
+ * @returns {boolean} - `true` si une entrée focalisée a été traitée, sinon `false`.
+ * @memberof module:ui
+ */
+
 function inputToSlideWithMouse(){
   return inputFlownByMouse(input => {
     if(activeGlo.inputToSlideWithMouse){ removeClasses(activeGlo.inputToSlideWithMouse, 'toSlideWithMouse'); }
@@ -610,6 +792,13 @@ function inputToSlideWithMouse(){
   });
 }
 
+/**
+ * @description Applique une fonction sur l’input actuellement survolé/focalisé (dataset.focus==='true').
+ * @param {Function} func - Fonction callback appelée avec l’input courant (et les arguments supplémentaires).
+ * @param {...*} [args] - Arguments additionnels transmis au callback.
+ * @returns {boolean} - `true` si un input a été trouvé et traité, sinon `false`.
+ * @memberof module:ui
+ */
 function inputFlownByMouse(func, ...args){
   let inputsSz = input_params.length;
   for(let i = 0; i < inputsSz; i++){
@@ -623,10 +812,22 @@ function inputFlownByMouse(func, ...args){
   return false;
 }
 
+/**
+ * @description Supprime le caractère/élément décoratif associé à un input (ex. icône de liaison).
+ * @param {HTMLElement} ctrl - Contrôle (input) concerné.
+ * @param {string} endId - Suffixe d’identifiant de l’élément à retirer.
+ * @returns {void}
+ * @memberof module:ui
+ */
 function clearCharOnInput(ctrl, endId){
   getById(ctrl.id + '_' + endId).remove();
 }
 
+/**
+ * @description Calcule les touches libres disponibles (simples, avec Ctrl, avec Alt) pour les raccourcis.
+ * @returns {{alt: Array<Object>, ctrl: Array<Object>, simple: Array<Object>}} - Listes d’objets décrivant les touches libres.
+ * @memberof module:ui
+ */
 function isInHelpTuchs(){
   let frees = {alt: [], ctrl: [], simple: []};
 
@@ -655,6 +856,11 @@ function isInHelpTuchs(){
   return frees;
 }
 
+/**
+ * @description Ouvre un dialog listant les touches libres (simples, Ctrl+caractère, Alt+caractère) sous forme de claviers virtuels.
+ * @returns {HTMLDialogElement} - Le dialog créé.
+ * @memberof module:ui
+ */
 function makeDialog(options = { style: {width: '50%', height: '50%'} }, content, closeOrRemove = 'remove', isOpInput = true){
   let dialogContainer = getById('dialogContainer');
 
@@ -692,6 +898,16 @@ function makeDialog(options = { style: {width: '50%', height: '50%'} }, content,
   return dialog;
 }
 
+/**
+ * @description Génère un dialog (ou met à jour son contenu) affichant un tableau triable d’informations sur un tableau d’objets.
+ * @param {Object[]|string} arrObjs - Tableau d’objets ou chaîne JSON (avec `///` à la place des guillemets).
+ * @param {string|false} [isSorted=false] - Propriété actuellement triée, ou `false` si aucun tri.
+ * @param {'asc'|'desc'|'none'} [newDir='none'] - Direction de tri demandée.
+ * @param {string|false} [idDial=false] - Id du dialog à mettre à jour ; si falsy, un nouveau dialog est créé.
+ * @param {string} title - Titre affiché dans le dialog.
+ * @returns {HTMLDialogElement|string} - Le dialog créé (si nouveau), ou la chaîne HTML mise à jour (si on met à jour un dialog existant).
+ * @memberof module:ui
+ */
 function makeFreeTuchsDialog(){
   let freeTuchs = isInHelpTuchs();
 
@@ -796,6 +1012,14 @@ function makeFreeTuchsDialog(){
   return freeTuchsDialog;
 }
 
+/**
+ * @description Extrait les propriétés présentes dans un tableau d’objets et construit une matrice de valeurs, éventuellement triée.
+ * @param {Object[]} arrObjs - Tableau d’objets source.
+ * @param {string|false} isSorted - Nom de la propriété sur laquelle trier, ou `false`.
+ * @param {'asc'|'desc'} newDir - Direction de tri.
+ * @returns {{infosObjs: Array<Array<Object>>, propsInObjs: string[]}|false} - Données structurées et liste des propriétés, ou `false` si aucune propriété trouvée.
+ * @memberof module:ui
+ */
 function makeInfosArrObjsDialog(arrObjs, isSorted = false, newDir = 'none', idDial = false, title){
   if(typeof arrObjs === 'string'){
     arrObjs = arrObjs.replaceAll('///', '\"');
@@ -842,6 +1066,14 @@ function makeInfosArrObjsDialog(arrObjs, isSorted = false, newDir = 'none', idDi
   return content;
 }
 
+/**
+ * @description Construit une matrice d’infos à partir d’un tableau d’objets et optionnellement la trie.
+ * @param {Object[]} arrObjs - Tableau d'objets source.
+ * @param {string|false} isSorted - Propriété sur laquelle trier, ou `false` pour aucun tri.
+ * @param {'asc'|'desc'} newDir - Direction de tri.
+ * @returns {{infosObjs: Array<Array<Object>>, propsInObjs: string[]}|false} Objet structuré ou `false` si aucune propriété.
+ * @memberof module:ui
+ */
 function infosArrObjs(arrObjs, isSorted, newDir){
   let infosObjs   = [];
   let propsInObjs = allInfosArr(arrObjs[0]).map(p => p.prop);
@@ -854,6 +1086,13 @@ function infosArrObjs(arrObjs, isSorted, newDir){
   return false;
 }
 
+/**
+ * @description Extrait les paires (prop, val, typeof) d’un objet, limitées à un sous-ensemble de propriétés si fourni.
+ * @param {Object} obj - Objet source.
+ * @param {string[]|false} [propsInObj=false] - Propriétés à conserver, ou `false` pour toutes.
+ * @returns {Array<{prop:string, val:*, typeof:string}>} Tableau d’infos sur les propriétés.
+ * @memberof module:ui
+ */
 function allInfosArr(obj, propsInObj = false){
   if(obj){
     let props = [];
@@ -868,6 +1107,13 @@ function allInfosArr(obj, propsInObj = false){
   return [];
 }
 
+/**
+ * @description Ouvre (ou met à jour) un dialogue listant les infos des modificateurs, avec en-têtes triables.
+ * @param {string|false} [isSorted=false] - Propriété triée ou `false`.
+ * @param {'asc'|'desc'|'none'} [newDir='none'] - Direction du tri.
+ * @returns {HTMLDialogElement|string} Dialog créé (nouveau) ou HTML mis à jour (existant).
+ * @memberof module:ui
+ */
 function makeInfosDialog(isSorted = false, newDir = 'none'){
   let infsModifiers = infosModifiers(isSorted, newDir);
 
@@ -904,6 +1150,13 @@ function makeInfosDialog(isSorted = false, newDir = 'none'){
   return content;
 }
 
+/**
+ * @description Ouvre (ou met à jour) un dialogue listant les infos des modificateurs, avec en-têtes triables.
+ * @param {string|false} [isSorted=false] - Propriété triée ou `false`.
+ * @param {'asc'|'desc'|'none'} [newDir='none'] - Direction du tri.
+ * @returns {HTMLDialogElement|string} Dialog créé (nouveau) ou HTML mis à jour (existant).
+ * @memberof module:ui
+ */
 function makeInfosAvatarsDialog(isSorted = false, newDir = 'none', isJustForContent = isSorted){
   let limNbProps  = 19;
   let infsAvatars = infosAvatars(isSorted, newDir, 20);
@@ -948,10 +1201,23 @@ function makeInfosAvatarsDialog(isSorted = false, newDir = 'none', isJustForCont
   return content;
 }
 
+/**
+ * @description Ajoute/enlève la classe de sélection sur une ligne de tableau d’infos.
+ * @param {HTMLTableRowElement} tr - Ligne à (dé)sélectionner.
+ * @returns {void}
+ * @memberof module:ui
+ */
 function trSelect(tr){
   !tr.classList.contains('trSelect') ? addClasses(tr, 'trSelect') : removeClasses(tr, 'trSelect');
 }
 
+/**
+ * @description Extrait les paires (prop, val) d’un objet pour toutes les propriétés scalaires (ni objet ni fonction).
+ * @param {Object} obj - Objet source.
+ * @param {string[]|false} [propsInObj=false] - Propriétés à conserver, ou `false` pour toutes.
+ * @returns {Array<{prop:string, val:*}>} Tableau (prop, val) filtré.
+ * @memberof module:ui
+ */
 function infosArr(obj, propsInObj = false){
   if(obj){
     let props = [];
@@ -965,6 +1231,14 @@ function infosArr(obj, propsInObj = false){
   return [];
 }
 
+/**
+ * @description Trie une matrice d'infos (tableau de lignes d’objets {prop,val}) selon une propriété et un sens.
+ * @param {Array<Array<{prop:string, val:*}>>} infosMods - Données à trier.
+ * @param {string} prop - Propriété cible du tri.
+ * @param {'asc'|'desc'} [dir='asc'] - Sens du tri.
+ * @returns {Array<Array<{prop:string, val:*}>>} Le même tableau trié (in-place).
+ * @memberof module:ui
+ */
 function sortInfosArray(infosMods, prop, dir = 'asc'){
   let numProp = 0;
   for(let i = 0; i < infosMods[0].length; i++){
@@ -985,6 +1259,13 @@ function sortInfosArray(infosMods, prop, dir = 'asc'){
                        }) 
 }
 
+/**
+ * @description Ouvre/ferme le dialogue d’infos pour un tableau d’objets (avec titre).
+ * @param {Object[]|string} arrObjs - Tableau d’objets ou JSON encodé (`///` pour guillemets).
+ * @param {string} title - Titre du dialogue.
+ * @returns {void}
+ * @memberof module:help
+ */
 function toggleArrObjsDialog(arrObjs, title){
   let infosObjsDialog = getById('infosObjsDialog');
   if(infosObjsDialog){ infosObjsDialog.remove(); }
@@ -997,6 +1278,12 @@ function toggleArrObjsDialog(arrObjs, title){
   }
 }
 
+/**
+ * @description Ajuste dynamiquement la largeur de l’UI en fonction de la taille du canvas (16:9).
+ * @param {HTMLCanvasElement} [cv=structure] - Canvas de référence.
+ * @returns {void}
+ * @memberof module:ui
+ */
 function resizeUI(cv = structure){
   const canvasHeight = cv.height;
 
@@ -1007,7 +1294,13 @@ function resizeUI(cv = structure){
   if(uiWidth > 200 && uiWidth < 300){ ui.style.width = `${Math.abs(uiWidth)}px`; }
 }
 
-//------------------ DEFINE CENTER ----------------- //
+/**
+ * @description Définit le centre global (par la souris, aléatoire ou centre du canvas) et le propage aux avatars.
+ * @param {boolean} [byMouse=true] - Si vrai, utilise la souris (quand `define` est vrai).
+ * @param {boolean} [define=false] - Si vrai, calcule et fixe un nouveau centre ; sinon centre du canvas.
+ * @returns {{x:number,y:number}} Le centre défini.
+ * @memberof module:glo
+ */
 function defineCenter(byMouse = true, define = false){
   let cent;
   if(define){
@@ -1030,7 +1323,12 @@ function defineCenter(byMouse = true, define = false){
   return cent;
 }
 
-//------------------ ATTRIBUE DES VALEURS ALÉATOIRES AUX PARAMÉTRES ----------------- //
+/**
+ * @description Applique des valeurs aléatoires aux paramètres actifs (et éventuellement à un avatar).
+ * @param {Object|false} [avatar=false] - Avatar ciblé ; si falsy, applique au global + met à jour l’UI.
+ * @returns {void}
+ * @memberof module:glo
+ */
 function alea_params(avatar = false){
   for(var param in activeGlo.params){
     if(activeGlo.alea[param]){
@@ -1064,7 +1362,13 @@ function alea_params(avatar = false){
     }
   }
 }
-//------------------ ATTRIBUE DES VALEURS ALÉATOIRES AUX PARAMÉTRES DÉCLENCHEMENT CLICK DROIT ----------------- //
+
+/**
+ * @description Tire au sort une (ou plusieurs) valeur(s) de paramètres marqués aléatoires et déclenche les événements associés.
+ * @param {boolean} [playInput=true] - Déclenche l’événement `input` sur les contrôles concernés.
+ * @returns {void}
+ * @memberof module:glo
+ */
 function one_alea_param(playInput = true){
   for(var param in activeGlo.params_alea){
     if(activeGlo.params_alea[param]){
@@ -1097,7 +1401,13 @@ function one_alea_param(playInput = true){
   }
 }
 
-//------------------ DRAW LIM ON INPUT FOR RANDOM MODE ----------------- //
+/**
+ * @description Dessine un marqueur visuel (min/max) sur un input selon l’action utilisateur.
+ * @param {HTMLInputElement} ctrl - Contrôle concerné.
+ * @param {MouseEvent} e - Événement souris pour positionner le repère.
+ * @returns {void}
+ * @memberof module:ui
+ */
 function drawLimOnInput(ctrl, e){
   let limType = ctrl.dataset.defineMin == 'true' ? 'min' : 'max';
   let lim_id  = ctrl.id + '_lim_' + limType;
@@ -1120,7 +1430,15 @@ function drawLimOnInput(ctrl, e){
 
   ctrl.parentElement.appendChild(div);
 }
-//------------------ DRAW CHAR ON INPUT ----------------- //
+
+/**
+ * @description Dessine un caractère/indicateur positionné sur un input (ex. pour marquer un lien).
+ * @param {HTMLElement} ctrl - Contrôle (input) ciblé.
+ * @param {string} char - Caractère à afficher.
+ * @param {string} endId - Suffixe d’identifiant de l’élément créé.
+ * @returns {void}
+ * @memberof module:ui
+ */
 function drawCharOnInput(ctrl, char, endId){
   let posCtrl        = ctrl.getClientRects()[0];
   let div            = document.createElement("div");

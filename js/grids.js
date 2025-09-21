@@ -1,4 +1,8 @@
-//------------------ DRAW A GRID ----------------- //
+/**
+ * @description Dessine une grille carrée sur le canvas de structure
+ * @param {number} step - pas de la grille
+ * @memberof module:grids
+ */
 function drawGrid(step = activeGlo.params.gridStep){
   let n = 0;
   let w = structure.width;
@@ -41,6 +45,11 @@ function drawGrid(step = activeGlo.params.gridStep){
   }
 }
 
+/**
+ * @description Dessine une grille héxagonale sur le canvas de structure
+ * @param {number} step - pas de la grille
+ * @memberof module:grids
+ */
 function drawEquiGrid(){
   let w = structure.width;
   let h = structure.height;
@@ -78,8 +87,12 @@ function drawEquiGrid(){
   }
 }
 
-//------------------ DRAW A THIRD GRID ----------------- //
-function drawThridGrid(step = activeGlo.params.thirdGridStep){
+/**
+ * @description Dessine une grille à rectangulaire au proportion 1/3 sur le canvas de structure
+ * @param {number} step - pas de la grille
+ * @memberof module:grids
+ */
+function drawThirdGrid(step = activeGlo.params.thirdGridStep){
   let n = 1;
   let w = structure.width;
   let h = structure.height;
@@ -110,7 +123,11 @@ function drawThridGrid(step = activeGlo.params.thirdGridStep){
   }
 }
 
-//------------------ DRAW A CIRCLE GRID ----------------- //
+/**
+ * @description Dessine une grille circulaire sur le canvas de structure
+ * @param {number} step - pas de la grille
+ * @memberof module:grids
+ */
 function drawCircleGrid(step = activeGlo.params.circleGridStep){
   let n   = 0, m = 0;
   let w   = structure.width;
@@ -152,7 +169,47 @@ function drawCircleGrid(step = activeGlo.params.circleGridStep){
   }
 }
 
-//------------------ DRAW A SPIRAL GRID ----------------- //
+/**
+ * @description Dessine une grille à rectangulaire au proportion 1/3 sur le canvas de structure
+ * @param {number} step Le pas de la grille
+ * @memberof module:grids
+ */
+function drawThridGrid(step = activeGlo.params.thirdGridStep){
+  let n = 1;
+  let w = structure.width;
+  let h = structure.height;
+
+  ctxStructure.strokeStyle = '#223351';
+
+  let frac = activeGlo.params.thirdGridFrac;
+
+  let powStep = pow(frac, step);
+
+  let stepH = w / powStep;
+  for(i = stepH; i < w; i+=stepH){
+    ctxStructure.lineWidth = 1;
+    if(n%(powStep/frac)==0){ ctxStructure.lineWidth = 3; }
+    else if(n%(frac)==0){ ctxStructure.lineWidth = 2; }
+    ctxStructure.line({start: {x: i, y: 0}, end: {x: i, y: h}});
+    n++;
+  }
+
+  n = 1;
+  let stepW = h / powStep;
+  for(i = stepW; i < h; i+=stepW){
+    ctxStructure.lineWidth = 1;
+    if(n%(powStep/frac)==0){ ctxStructure.lineWidth = 3; }
+    else if(n%(frac)==0){ ctxStructure.lineWidth = 2; }
+    ctxStructure.line({start: {x: 0, y: i}, end: {x: w, y: i}});
+    n++;
+  }
+}
+
+/**
+ * Dessine une grille spirale sur le canvas de structure
+ * @param {number} step - pas de la grille
+ * @memberof module:grids
+ */
 function drawSpiralGrid(step = activeGlo.params.circleGridStep){
   let n   = 0;
   let w   = structure.width;
@@ -191,7 +248,13 @@ function drawSpiralGrid(step = activeGlo.params.circleGridStep){
   }
 }
 
-//------------------ ROTATE A LINE TO RETURNS ROTATED LINES ON PI ----------------- //
+/**
+ * @description Fait pivoter une ligne autour d'un centre
+ * @param {Object} ln  ligne à faire pivoter
+ * @param {number} step angle de rotation
+ * @param {{x: number, y: number}} center centre de rotation
+ * @returns {Array} lignes pivotées
+ */
 function rotateLn(ln, step, center){
   let linesRotated = [], lnRotated;
   let k = activeGlo.params.ellipse_x / activeGlo.params.ellipse_y;
@@ -205,7 +268,12 @@ function rotateLn(ln, step, center){
   return linesRotated;
 }
 
-//------------------ CALCUL POS ON GRID ----------------- //
+/**
+ * @description Ajuste une position donnée pour qu'elle corresponde à l'intersection la plus proche de la la grille choisie
+ * @param {{x: number, y: number}} pos position à ajuster
+ * @param {string} gridType type de grille
+ * @returns {{x: number, y: number}} position ajustée
+ */
 function posOnGrid(pos, gridType = 'square'){
   let w = canvas.width, h = canvas.height;
   let c = {x: w/2, y: h/2};

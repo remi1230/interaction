@@ -1,3 +1,4 @@
+
 //------------------ LANCEMENT DE LA BOUCLE DE DESSIN ----------------- //
 document.addEventListener("DOMContentLoaded", function() {
     params_interface();
@@ -764,7 +765,7 @@ window.addEventListener("keydown", function (e) {
         			break;
             /// Esp -- Pause -- divers ///
         		case ' ':
-              activeGlo.totalBreak = !activeGlo.totalBreak;
+              switchPause();
         			break;
             /// ▼ -- Exécution pas à pas -- divers ///
         		case 'PageDown':
@@ -841,7 +842,10 @@ window.addEventListener("keydown", function (e) {
         else{
           e.preventDefault();
           switch (key) {
-            /// Alt b -- Incline positivement le canvas verticalement -- canvas, transformation ///
+            /// Alt a -- Ouvre la documentation sur le code JavaScript du projet -- info ///
+            case 'a':
+              window.open("docs/index.html", "_blank");
+              break;/// Alt b -- Incline positivement le canvas verticalement -- canvas, transformation ///
             case 'b':
               tiltCanvas('v', 0.25);
               break;
