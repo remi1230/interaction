@@ -235,6 +235,11 @@ function createGoInterface(){
   });
 }
 
+function switchAvatarsFormules(){
+  window.dispatchEvent(new KeyboardEvent('keydown',  {'key':'I', 'ctrlKey' : false, 'altKey' : false})); 
+  getById('switchAvFormulesButton').textContent = activeGlo.formuleColorMode ? 'ON' : 'OFF';
+}
+
 /**
  * @description Met à jour un paramètre global et propage la valeur aux modificateurs sélectionnés ainsi qu’aux contrôles liés.
  * @param {HTMLInputElement} ctrl - L’élément de formulaire dont la valeur est appliquée.
@@ -643,12 +648,11 @@ function switchGrid(){
 
 /**
  * @description Effectue un test global de l’application (avec ou sans modificateurs), en réinitialisant certains paramètres et déclenchant des raccourcis clavier.
- * @param {boolean} [withMods=true] - Indique si les modificateurs doivent être inclus dans le test.
  * @returns {void}
  * @memberof module:test
  */
-function testAll(withMods = true){
-  if(withMods){ activeGlo.modifiers = []; }
+function testAll(){
+  activeGlo.modifiers = [];
               
   if(!activeGlo.randomPointByMod){ window.dispatchEvent(new KeyboardEvent('keydown',  {'key':'V', 'ctrlKey' : false, 'altKey' : false})); }
   keepBreak(glo_params, 'test');
@@ -656,22 +660,49 @@ function testAll(withMods = true){
 
   window.dispatchEvent(new KeyboardEvent('keydown',  {'key':'²', 'ctrlKey' : false, 'altKey' : false}));
   if(!activeGlo.shortcut.alphaVarSize){ window.dispatchEvent(new KeyboardEvent('keydown',  {'key':'F2', 'ctrlKey' : false, 'altKey' : false})); }
-  if(withMods){
-    window.dispatchEvent(new KeyboardEvent('keydown',  {'key':'y', 'ctrlKey' : true, 'altKey' : false}));
-  }
+  window.dispatchEvent(new KeyboardEvent('keydown',  {'key':'y', 'ctrlKey' : true, 'altKey' : false}));
+
   if(activeGlo.clear){
     activeGlo.clear = !activeGlo.clear;
     document.getElementById('switchPersistButton').textContent = !activeGlo.clear ? '✍️' : '🖐️';
   }
   
-  if(!withMods){
-    activeGlo.randomPointByMod = true;
-    activeGlo.params.rAleaPos  = 0.2;
-    getSelectedModifiers().forEach(mod => {
-      mod.glo.params.rAleaPos  = 0.2;
-      mod.glo.randomPointByMod = true;
-    });
-  } 
+  activeGlo.randomPointByMod = true;
+  activeGlo.params.rAleaPos  = 0.2;
+  getSelectedModifiers().forEach(mod => {
+    mod.glo.params.rAleaPos  = 0.2;
+    mod.glo.randomPointByMod = true;
+  });
+}
+
+/**
+ * @description Déclenche une séquence de commandes pour préparer et lancer le mode "peinture".
+ * @fires KeyboardEvent - Déclenche des événements `keydown` simulant
+ * les touches `V`, `²` et `F2`.
+ *
+ * @see keepBreak
+ * @see clear
+ * @see getSelectedModifiers
+ */
+function paint(){ 
+  switchPersist();
+  posAvMod();
+  keepBreak(glo_params, 'test');
+  clear();
+}
+
+/**
+ * @description Switch entre un mode avec les avatars autour des modifers uniquement ou non.
+ * @see updateGlo
+ */
+function posAvMod(dispatch = true){
+  activeGlo.posAvMod = !activeGlo.posAvMod;
+
+  let rAleaPos = getById('rAleaPos');
+  rAleaPos.value = activeGlo.posAvMod ? 0.2 : rAleaPos.startValue;
+  updateGlo(rAleaPos);
+
+  if(dispatch){ window.dispatchEvent(new KeyboardEvent('keydown',  {'key':'V', 'ctrlKey' : false, 'altKey' : false})); }
 }
 
 /**
@@ -1291,7 +1322,10 @@ function resizeUI(cv = structure){
   const windowWidth          = document.getElementsByTagName('body')[0].clientWidth;
   const uiWidth              = windowWidth - canvasNormalizeWidth;
 
-  if(uiWidth > 200 && uiWidth < 300){ ui.style.width = `${Math.abs(uiWidth)}px`; }
+  if(uiWidth > 200 && uiWidth < 300){
+    ui.style.width = `${Math.abs(uiWidth)}px`;
+    getById('actionsContainer').style.width = `${Math.abs(uiWidth) - 72}px`;
+  }
 }
 
 /**

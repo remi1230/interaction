@@ -28,6 +28,8 @@ function addCanvas(start = false, duplicate = false, toImport = false){
 
   newCanvas.id        = 'arenaCanvas-' + numCanvas;
   newCanvas.className = 'canvas arenaCanvas';
+  
+  newCanvas.style.opacity = 1;
 
   newCanvas.dataset.numCanvas = numCanvas;
 

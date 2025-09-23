@@ -334,6 +334,7 @@ if(getById('avatars_form')){ getById('avatars_form').max = activeGlo.forms.lengt
 
 let int = parseInt;
 
+let z     = Math.random;
 let rnd   = Math.random;
 let abs   = Math.abs;
 let pow   = Math.pow;

@@ -207,7 +207,7 @@ function putModsOnGrid(){
  * @param {boolean} virtual Indique si le modificateur est virtuel
  * @memberof modifiers
  */
-function pos_modifier(type = 'attractor', pos = mouse, inv = false, groupe = 0, virtual = false){
+function pos_modifier(type = 'attractor', pos = mouse, inv = activeGlo.positiveForce, groupe = 0, virtual = false){
   let invAtt     = !inv ? 1 : -1;
   let random     = !activeGlo.pos_rnd_modifiers ? 1 : rnd();
   let force      = !activeGlo.modsToZero ? invAtt * 100 * random : 0;

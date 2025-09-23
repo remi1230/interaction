@@ -114,7 +114,7 @@ structure.addEventListener('wheel', (e) => {
     if(e.deltaY > 0){ scale_avatars('-', e.deltaY); }
     else{ scale_avatars('+', -e.deltaY); }
   }
-  if(e.altKey){
+  else if(e.altKey){
     if(e.deltaY > 0){ scale_modifiers('-', e.deltaY); }
     else{ scale_modifiers('+', -e.deltaY); }
   }
@@ -598,6 +598,7 @@ window.addEventListener("keydown", function (e) {
             /// I -- Les couleurs sont calculées à partir des formules -- formule, couleur -- formuleColorMode ///
         		case 'I':
               activeGlo.formuleColorMode = !activeGlo.formuleColorMode;
+              getById('switchAvFormulesButton').textContent = activeGlo.formuleColorMode ? 'ON' : 'OFF';
         			break;
             /// J -- Les modifiers affectent les avatars tour à tour -- modifier, calcul -- asyncModify ///
         		case 'J':

@@ -714,12 +714,6 @@
                       min="0.01" max="1" value="1" step=".01">
                   </div>
                   <div>
-                    <label for="bgInterfaceOpacity">Bg interface opacity</label>
-                    <input type="range" id="bgInterfaceOpacity" name="bgInterfaceOpacity" class='input_params' oninput="updateGlo(this); bgInterfaceOpacity(this); "
-                      min="0" max="1" value=".5" step=".01">
-                  </div>
-
-                  <div>
                     <label for="gridStep">Rectangular grid step</label>
                     <input type="range" id="gridStep" name="gridStep" class='input_params' oninput="updateGlo(this); " ondblclick="updateScale(this, event)"
                       min="1" max="300" value="96" step="1">
@@ -763,16 +757,16 @@
                     <input type="range" id="selectCanvas" name="selectCanvas" class='input_params' oninput="updateGlo(this); selectCanvas(this.value); "
                       min="0" max="0" value="0" step="1" data-labels="selectCanvas">
                   </div>
-                  <div style="margin-top: 7px; ">Canvas operations :</div>
-                  <div style="display: grid; grid-template-columns: 33% 33% 33%; margin-top: 7px; ">
+                  <div style="margin-top: 32px; text-align: center; ">Canvas operations :</div>
+                  <div id="canvasOperationButtonContainer">
                     <div>
-                      <button id="addCanvas" style="width: 66px; " onclick="addCanvas()">Add</button>
+                      <button id="addCanvas" class="canvasOperationButton" onclick="addCanvas()">Add</button>
                     </div>
                     <div>
-                      <button id="duplicateCanvas" style="width: 66px; " onclick="addCanvas(false, true)">Duplicate</button>
+                      <button id="duplicateCanvas" class="canvasOperationButton" onclick="addCanvas(false, true)">Duplicate</button>
                     </div>
                     <div>
-                      <button id="deleteCanvas" style="width: 66px; " onclick="deleteCanvas()">Delete</button>
+                      <button id="deleteCanvas" class="canvasOperationButton" onclick="deleteCanvas()">Delete</button>
                     </div>
                   </div>
                 </div>
@@ -986,9 +980,9 @@
                   <div class=""><h3>Actions</h3></div>
                   <div id="actionsContainer">
                     <div>
-                      <div class="actionsTitleSection"><h4>Colors</h4></div>
+                      <div class="actionsTitleSection"><h4>Couleurs</h4></div>
                       <div id="colorButtonsContainer">
-                        <label for="canvas_bg">Background</label>
+                        <label for="canvas_bg">Fond</label>
                         <label for="modifiersColor">Modifiers</label>
                         <label for="oneColor">One</label>
                         <div class="">
@@ -1004,16 +998,6 @@
                     </div>
 
                     <div>
-                      <div class="actionsTitleSection"><h4>Save</h4></div>
-                      <div id="actionsSaveSection">
-                        <button id="flash" name="flash" onclick="flash();">Flash</button>
-                        <button id="unflash" name="unflash" onclick="unflash();">Unflash</button>
-                        <input type="text" id="export_json" class="stopWindowEvents" name="export_json">
-                        <button id="exportButton" onclick="expt_json()">Export JSON</button>
-                      </div>
-                    </div>
-                    
-                    <div>
                       <div>
                         <div class="actionsTitleSection"><h4>Import</h4></div>
                         <label for="import_json" class="labelImport">Import JSON</label>
@@ -1024,13 +1008,22 @@
                         <input class="fileInput" type="file" accept="image/*" id="import_image" name="import_image" onChange="impt_image(event)">
                       </div>
                     </div>
-                    
+
+                    <div>
+                      <div class="actionsTitleSection"><h4>Export</h4></div>
+                      <div id="actionsSaveSection">
+                        <button id="flash" name="flash" onclick="flash();">Flash</button>
+                        <button id="unflash" name="unflash" onclick="unflash();">Unflash</button>
+                        <input type="text" id="export_json" class="stopWindowEvents" name="export_json">
+                        <button id="exportButton" onclick="expt_json()">Expt JSON</button>
+                      </div>
+                    </div>
                   
                     <div>
                       <!-- Table "Color formule" laissée telle quelle (pas de <label> associés aux <input>) -->
                     <div style="margin-bottom: 3px; ">
-                      <div class="actionsTitleSection"><h4>Formules</h4></div>
-                      <div>Color formule</div>
+                        <h4 class="actionsTitleSection">Formules</h4>
+                      <div class="flex-actionsTitleSection">Color formule<button id="switchAvFormulesButton" onclick="switchAvatarsFormules(); ">OFF</button></div>
                       <table style="width: 80%; margin-bottom: 10px; ">
                         <tbody>
                           <tr>
@@ -1084,9 +1077,11 @@
                   <div><div class="ui-button" id="switchPauseButton" onclick="switchPause(); ">▶️</div></div>
                   <div><div class="ui-button" onclick="downloadCanvas(); ">📸</div></div>
                   <div><div class="ui-button" id="switchBgButton" onclick="switchBg(); ">☀️</div></div>
-                  <div><div class="ui-button" id="drawButton" onclick="testAll(false); ">🖌</div></div>
+                 <!-- <div><div class="ui-button" id="drawButton" onclick="paint(); ">🖌</div></div> -->
+                  <div><div class="ui-button" id="posAvModButton" onclick="posAvMod(); ">🎯</div></div>
                   <div><div class="ui-button" id="switchPersistButton" onclick="switchPersist(); ">🖐️</div></div>
                   <div><div class="ui-button" onclick="testAll(); ">🧪</div></div>
+                  <div><div class="ui-button text-xs" style="padding: 5px 0 5px; " onclick="activeGlo.positiveForce = !activeGlo.positiveForce; ">➕ ➖</div></div>
                   <div id="switchStrokeIcon" class="fillAndStrokeRound ui-button" onclick="switchSroke(); "></div>
                   <div><div class="ui-button" onclick="invColors(); ">
                     <div class="invColorButtonsContainer"><div class="redSquare"></div><div class="blueSquare"></div></div>

@@ -33,7 +33,7 @@ function updFormuleColor(ctrl, colorType){
 
     let formuleColorTest = false;
 
-    let valToTests = ['H', 'S', 'L', 'A', 'D', 'sz', 'cx', 'cy', 'vx', 'vy', 'v', 'x', 'y'];
+    let valToTests = ['H', 'S', 'L', 'A', 'D', 'sz', 'cx', 'cy', 'vx', 'vy', 'v', 'r', 'x', 'y', 'z'];
 
     let form = objGlo.formuleColor[colorType];
     valToTests.forEach(valToTest => {
@@ -52,6 +52,7 @@ function updFormuleColor(ctrl, colorType){
       });
       if(!form.match('undefined')){
         form = form.replaceAll('this', 'avatars[0]');
+        form = form.replaceAll('h', 'H');
         formuleColorTest = evalFormuleColor(form);
       }
     }
@@ -117,6 +118,29 @@ function evalFormuleColor(expression){
   }
 }
 
+// Utilitaire : échappe les caractères spéciaux pour construire une RegExp sûre
+function escapeRegExp(s) {
+  return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+/**
+ * Applique une liste de règles de remplacement.
+ * - type: 'word'  -> remplace uniquement le MOT ENTIER (\\bfoo\\b)
+ * - type: 'regex' -> utilise la RegExp fournie telle quelle
+ */
+function applyReplacements(input, rules) {
+  let out = String(input);
+  for (const r of rules) {
+    if (r.type === 'word') {
+      const re = new RegExp(`\\b${escapeRegExp(r.from)}\\b`, 'g');
+      out = out.replace(re, r.to);
+    } else if (r.type === 'regex') {
+      out = out.replace(r.re, r.to);
+    }
+  }
+  return out;
+}
+
 /**
  * @description
  * Remplace les éléments symboliques d'une formule de couleur par leurs équivalents JavaScript utilisables dans le contexte de l'objet avatar.
@@ -128,23 +152,36 @@ function evalFormuleColor(expression){
  * @returns {string} - La formule transformée, prête à être évaluée en JavaScript.
  * @memberof module:utils
  */
-function replacesInFormuleColor(colorElem){
-  let colorElemTest = colorElem.replaceAll('H', 'h');
+function replacesInFormuleColor(colorElem) {
+  const rules = [
+    // Normalisations simples (mots entiers)
+    { type: 'word', from: 'H',  to: 'h' },
+    { type: 'word', from: 'S',  to: 's' },
+    { type: 'word', from: 'L',  to: 'l' },
 
-  colorElemTest = colorElemTest.replaceAll('S', 's');
-  colorElemTest = colorElemTest.replaceAll('L', 'l');
+    // Tokens multi-lettres d'abord (pour éviter que 'v' touche 'vx', etc.)
+    { type: 'word', from: 'D',  to: 'this.distMinModifiers' },
+    { type: 'word', from: 'sz', to: 'this.sizeCalc.s' },
+    { type: 'word', from: 'cx', to: '100*cos(this.x)' },
+    { type: 'word', from: 'cy', to: '100*cos(this.y)' },
+    { type: 'word', from: 'vx', to: '100*this.vit().x' },
+    { type: 'word', from: 'vy', to: '100*this.vit().y' },
 
-  colorElemTest = colorElemTest.replaceAll('D', 'this.distMinModifiers');
-  colorElemTest = colorElemTest.replaceAll('sz', 'this.sizeCalc.s');
-  colorElemTest = colorElemTest.replaceAll('cx', '100*cos(this.x)');
-  colorElemTest = colorElemTest.replaceAll('cy', '100*cos(this.y)');
-  colorElemTest = colorElemTest.replaceAll('vx', '100*this.vit().x');
-  colorElemTest = colorElemTest.replaceAll('vy', '100*this.vit().y');
-  colorElemTest = colorElemTest.replaceAll('v', '100*this.vit().v');
-  colorElemTest = colorElemTest.replace(/(?<!\.)x/g, 'this.x');
-  colorElemTest = colorElemTest.replace(/(?<!\.)y/g, 'this.y');
+    // Les variables 'v' et 'r' seules (mot entier uniquement)
+    { type: 'word', from: 'v',  to: '100*this.vit().v' },
+    { type: 'word', from: 'r',  to: '100*this.r()' },
+    { type: 'word', from: 'z',  to: '360*z()' },
 
-  return colorElemTest.replaceAll('A', 'a');
+    // x / y : uniquement si ce ne sont PAS des accès membres (pas précédés de '.')
+    // et en tant que mots entiers pour éviter 'cx', 'vx', etc.
+    { type: 'regex', re: /(?<!\.)\bx\b/g, to: 'this.x' },
+    { type: 'regex', re: /(?<!\.)\by\b/g, to: 'this.y' },
+
+    // En dernier, 'A' (mot entier)
+    { type: 'word', from: 'A',  to: 'a' },
+  ];
+
+  return applyReplacements(colorElem, rules);
 }
 
 /**

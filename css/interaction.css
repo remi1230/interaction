@@ -42,6 +42,9 @@ body{
   user-select: none;
 }
 
+button{
+  cursor: pointer;
+}
 
 .input_params + label{
   display: inline-block;
@@ -359,17 +362,19 @@ kbd.keys.on, kbd.keys.helpOn {
 #colorButtonsContainer{
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
+  column-gap: 18px;
+  row-gap: 10px;
 }
 #actionsContainer{
   display: flex;
   flex-direction: column;
-  gap: 30px;
+  gap: 40px;
+  padding-left: 5px;
 }
 #actionsSaveSection{
   display: grid;
   grid-template-columns: 50% 50%;
-  gap: 5px;
+  gap: 10px;
   width: 90%;
 }
 #razParamsButton{
@@ -379,14 +384,32 @@ kbd.keys.on, kbd.keys.helpOn {
   padding: 4px;
   background-color: orange;
 }
-
-button{
-  cursor: pointer;
+#canvasOperationButtonContainer{
+  display: flex;
+  flex-direction: column;
+  margin-top: 7px;
+  gap: 8px;
+  text-align: center;
+}
+.canvasOperationButton{
+  width: 66%;
+  padding: 5px 0 5px;
 }
 
+
+
+.text-xs{
+  font-size: 12px;
+}
 .actionsTitleSection h4{
   margin: 5px 0;
   padding: 0;
+}
+.flex-actionsTitleSection{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 82.45%;
 }
 /* Boîte du modal */
 .help-dialog {

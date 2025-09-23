@@ -7,6 +7,9 @@
 class Avatar {
 
   constructor(options = {}){
+    this.__colorFns = null;   // {h?,s?,l?,a?, __src}
+    this.__exprFns  = new Map(); // cache optionnel pour d’autres formules
+ 
     this.n_avatars    = avatars.length;
     this.x            = options.x;
     this.y            = options.y;
@@ -48,6 +51,54 @@ class Avatar {
 
     num_avatar++;
   }
+
+  __ensureCompiledColorFormulas = function(formuleColor) {
+      let __COLOR_PARAMS__ = ['h','s','l','a'];
+      if (!formuleColor) { this.__colorFns = null; return; }
+      if (!this.__colorFns || this.__colorFns.__src !== formuleColor) {
+        this.__colorFns = {
+          __src: formuleColor,
+          h: formuleColor.h ? createEvalFunctionWithThis(formuleColor.h, __COLOR_PARAMS__) : null,
+          s: formuleColor.s ? createEvalFunctionWithThis(formuleColor.s, __COLOR_PARAMS__) : null,
+          l: formuleColor.l ? createEvalFunctionWithThis(formuleColor.l, __COLOR_PARAMS__) : null,
+          a: formuleColor.a ? createEvalFunctionWithThis(formuleColor.a, __COLOR_PARAMS__) : null,
+        };
+      }
+    };
+
+    __GEN_PARAMS__ = ['x','y','vx','vy','ax','ay','dir','size','speed','accel','it','id','rand'];
+
+    eval_formule = function(expr, overrides = {}) {
+      if (!expr) return 0;
+
+      // compile 1x
+      let fn = this.__exprFns.get(expr);
+      if (!fn) {
+        const compiled = new Function(...__GEN_PARAMS__, `return (${expr});`);
+        fn = (...args) => compiled.apply(this, args); // `this` utilisable dans l'expression
+        this.__exprFns.set(expr, fn);
+      }
+
+      // args depuis l’instance, surchargés par overrides si fournis
+      const args = [
+        overrides.x ?? this.x,
+        overrides.y ?? this.y,
+        overrides.vx ?? this.vx,
+        overrides.vy ?? this.vy,
+        overrides.ax ?? this.ax,
+        overrides.ay ?? this.ay,
+        overrides.dir ?? this.direction,
+        overrides.size ?? (this.sizeCalc?.s ?? this.size),
+        overrides.speed ?? (this.speed_avatar ? this.speed_avatar() : 0),
+        overrides.accel ?? (this.accel_avatar ? this.accel_avatar() : 0),
+        overrides.it ?? this.it,
+        overrides.id ?? this.id,
+        overrides.rand ?? Math.random(),
+      ];
+      return fn(...args);
+    };
+
+
 
   /**
    * @description Renvoie la limite en x pour la collision avec les bords
@@ -118,6 +169,14 @@ class Avatar {
 
     this.modifiersValues.x += dec.x;
     this.modifiersValues.y += dec.y;
+  }
+
+  /**
+   * @description Retourne la distance de l'avatar avec le centre
+   * @returns {number} La distance depuis le centre
+   */
+  r(){
+    return ((this.x - this.center.x)**2 + (this.y - this.center.y)**2)**0.5;
   }
 
   /**
@@ -1798,14 +1857,22 @@ class Avatar {
    * @param {{h: string, s: string, l: string, a: string}} formuleColor - Formules pour chaque composante
    * @returns {{move: number, sat: number, tint: number, a: number}} Objet contenant les nouvelles composantes de couleur
    */
-  formuleColor(h, s, l, a, formuleColor){
-    return {
-      move : eval(formuleColor.h),
-      sat  : eval(formuleColor.s),
-      tint : eval(formuleColor.l),
-      a    : eval(formuleColor.a)
-    };
-  }
+  formuleColor = function(h, s, l, a, formuleColor) {
+    // compile/charge les fonctions pour cet objet {h,s,l,a}
+    this.__ensureCompiledColorFormulas(formuleColor);
+
+    // Si pas de formules, on renvoie tel quel
+    if (!this.__colorFns) return { move: h, sat: s, tint: l, a };
+
+    // Appel ultra-rapide : (this, h,s,l,a)
+    const f = this.__colorFns;
+    const move  = f.h ? f.h(this, h, s, l, a) : h;
+    const sat   = f.s ? f.s(this, h, s, l, a) : s;
+    const tint  = f.l ? f.l(this, h, s, l, a) : l;
+    const alpha = f.a ? f.a(this, h, s, l, a) : a;
+
+    return { move, sat, tint, a: alpha };
+  };
 }
 
 /**
@@ -1824,6 +1891,47 @@ class BrushMovement {
     this.formType = options.formType;
     this.size     = options.size;
   }
+}
+
+// ====== HELPERS GÉNÉRIQUES (AUCUNE SÉCURITÉ) ======
+
+const __FN_CACHE__ = new Map();
+
+/**
+ * Compile une expression en fonction rapide.
+ *   - Pas de "use strict"
+ *   - Pas de shadow
+ *   - Accès total aux globals
+ * @param {string} expr        ex: "h + this.x * 0.05"
+ * @param {string[]} params    noms des paramètres positionnels
+ * @returns {Function}         (...args) => any
+ */
+function createEvalFunction(expr, params) {
+  if (!expr) return null;
+  const key = `NO_THIS::${expr}::${params.join(',')}`;
+  let fn = __FN_CACHE__.get(key);
+  if (!fn) {
+    fn = new Function(...params, `return (${expr});`);
+    __FN_CACHE__.set(key, fn);
+  }
+  return fn;
+}
+
+/**
+ * Variante liée au `this` courant.
+ *   - Appel : fnWithThis(thisArg, ...args)
+ *   - Permet d’utiliser `this.x`, `this.y`, etc. dans l’expression.
+ */
+function createEvalFunctionWithThis(expr, params) {
+  if (!expr) return null;
+  const key = `WITH_THIS::${expr}::${params.join(',')}`;
+  let runner = __FN_CACHE__.get(key);
+  if (!runner) {
+    const compiled = new Function(...params, `return (${expr});`);
+    runner = (thisArg, ...args) => compiled.apply(thisArg, args);
+    __FN_CACHE__.set(key, runner);
+  }
+  return runner;
 }
 
 

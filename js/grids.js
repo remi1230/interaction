@@ -9,7 +9,7 @@ function drawGrid(step = activeGlo.params.gridStep){
   let h = structure.height;
   let c = {x: w/2, y: h/2};
 
-  ctxStructure.strokeStyle = '#0000cc';
+  ctxStructure.strokeStyle = activeGlo.canvasLoveBg.state ? (canvas.style.opacity > 0.77 ? '#fff' : '#0000cc') : '#0000cc';
 
   step = w / step;
 
@@ -72,7 +72,7 @@ function drawEquiGrid(){
       let ptLeft  = point(c.x - (step*n + dec), c.y + j);
       let ptRight = point(c.x + (step*n + dec), c.y - j);
 
-      let gridColor = activeGlo.thirdGridColor;
+      const gridColor = activeGlo.canvasLoveBg.state ? (canvas.style.opacity > 0.77 ? '#fff' : '#cc0000') : '#cc0000';
 
       ctxStructure.beginPath();
       ctxStructure.polygone({pos: ptLeft, size: size, nb_edges: 6, color: gridColor});
@@ -83,42 +83,6 @@ function drawEquiGrid(){
 
       k++;
     }
-    n++;
-  }
-}
-
-/**
- * @description Dessine une grille à rectangulaire au proportion 1/3 sur le canvas de structure
- * @param {number} step - pas de la grille
- * @memberof module:grids
- */
-function drawThirdGrid(step = activeGlo.params.thirdGridStep){
-  let n = 1;
-  let w = structure.width;
-  let h = structure.height;
-
-  ctxStructure.strokeStyle = '#223351';
-
-  let frac = activeGlo.params.thirdGridFrac;
-
-  let powStep = pow(frac, step);
-
-  let stepH = w / powStep;
-  for(i = stepH; i < w; i+=stepH){
-    ctxStructure.lineWidth = 1;
-    if(n%(powStep/frac)==0){ ctxStructure.lineWidth = 3; }
-    else if(n%(frac)==0){ ctxStructure.lineWidth = 2; }
-    ctxStructure.line({start: {x: i, y: 0}, end: {x: i, y: h}});
-    n++;
-  }
-
-  n = 1;
-  let stepW = h / powStep;
-  for(i = stepW; i < h; i+=stepW){
-    ctxStructure.lineWidth = 1;
-    if(n%(powStep/frac)==0){ ctxStructure.lineWidth = 3; }
-    else if(n%(frac)==0){ ctxStructure.lineWidth = 2; }
-    ctxStructure.line({start: {x: 0, y: i}, end: {x: w, y: i}});
     n++;
   }
 }
@@ -135,7 +99,9 @@ function drawCircleGrid(step = activeGlo.params.circleGridStep){
   let c   = {x: w/2, y: h/2};
   let rep = activeGlo.params.circleRep;
 
-  ctxStructure.strokeStyle = '#cc0000';
+  const loveBg = activeGlo.canvasLoveBg.state;
+
+  ctxStructure.strokeStyle = loveBg ? (canvas.style.opacity > 0.77 ? '#fff' : '#cc0000') : '#cc0000';
 
   let sx = activeGlo.params.ellipse_x, sy = activeGlo.params.ellipse_y;
 
@@ -163,7 +129,9 @@ function drawCircleGrid(step = activeGlo.params.circleGridStep){
     let stepMark = PI/rep;
     rotateLn(first_ln, stepMark, c).forEach((mark, i) => {
       ctxStructure.lineWidth   = (i%2 == 0 && rep%2 == 0) || rep <= 3 ? 2 : 1;
-      ctxStructure.strokeStyle = (i%2 == 0 && rep%2 == 0) || rep <= 3 ? '#aa0000' : '#cc0000';
+      ctxStructure.strokeStyle = (i%2 == 0 && rep%2 == 0) || rep <= 3 ? 
+      (loveBg ? (canvas.style.opacity > 0.77 ? '#fff' : '#cc0000') : '#cc0000') : 
+      (loveBg ? (canvas.style.opacity > 0.77 ? '#fff' : '#cc0000') : '#cc0000');
       ctxStructure.line(mark);
     });
   }
@@ -179,7 +147,7 @@ function drawThridGrid(step = activeGlo.params.thirdGridStep){
   let w = structure.width;
   let h = structure.height;
 
-  ctxStructure.strokeStyle = '#223351';
+  ctxStructure.strokeStyle = activeGlo.canvasLoveBg.state ? (canvas.style.opacity > 0.77 ? '#fff' : '#15156eff') : '#15156eff';
 
   let frac = activeGlo.params.thirdGridFrac;
 
@@ -216,7 +184,7 @@ function drawSpiralGrid(step = activeGlo.params.circleGridStep){
   let h   = structure.height;
   let c   = {x: w/2, y: h/2};
 
-  ctxStructure.strokeStyle = '#cc0000';
+  ctxStructure.strokeStyle = activeGlo.canvasLoveBg.state ? '#fff' : '#cc0000';
 
   let sx = activeGlo.params.ellipse_x, sy = activeGlo.params.ellipse_y;
 
