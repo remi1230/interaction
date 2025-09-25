@@ -23,6 +23,7 @@
       <script src="js/save.js" defer></script>
       <script src="js/utils.js" defer></script>
       <script src="js/animation.js" defer></script>
+      <script src="js/dialog.js" defer></script>
       <script src="js/event.js" defer></script>
       <script src="js/tests.js" defer></script>
 
@@ -1022,9 +1023,10 @@
                     <div>
                       <!-- Table "Color formule" laissée telle quelle (pas de <label> associés aux <input>) -->
                     <div style="margin-bottom: 3px; ">
-                        <h4 class="actionsTitleSection">Formules</h4>
+                      <h4 class="actionsTitleSection" style="margin: 0 0 5px; padding: 0; ">Formules</h4>
                       <div class="flex-actionsTitleSection">Color formule<button id="switchAvFormulesButton" onclick="switchAvatarsFormules(); ">OFF</button></div>
-                      <table style="width: 80%; margin-bottom: 10px; ">
+                      <div style="padding-left: 1rem; ">Fill</div>
+                      <table style="width: 80%; margin-bottom: 5px; ">
                         <tbody>
                           <tr>
                             <td>H</td>
@@ -1041,6 +1043,27 @@
                           <tr>
                             <td>A</td>
                             <td><input style="width: 100%;" type="text" id="colorFormule_A" class="stopWindowEvents noLabel colorFormule" name="colorFormuleA" value="A" oninput="updFormuleColor(this, 'a'); updateGlo(this);"></td>
+                          </tr>
+                        </tbody>
+                      </table>
+                      <div style="padding-left: 1rem; ">Stroke</div>
+                      <table style="width: 80%; margin-bottom: 10px; ">
+                        <tbody>
+                          <tr>
+                            <td>H</td>
+                            <td><input style="width: 100%;" type="text" id="colorFormuleStroke_H" class="stopWindowEvents noLabel colorFormule" name="colorFormuleStrokeH" value="H" oninput="updFormuleColor(this, 'h', 'formuleColorStroke', activeGlo.formuleColorHisto); updateGlo(this);"></td>
+                          </tr>
+                          <tr>
+                            <td>S</td>
+                            <td><input style="width: 100%;" type="text" id="colorFormuleStroke_S" class="stopWindowEvents noLabel colorFormule" name="colorFormuleStrokeS" value="S" oninput="updFormuleColor(this, 's', 'formuleColorStroke', activeGlo.formuleColorHisto); updateGlo(this);"></td>
+                          </tr>
+                          <tr>
+                            <td>L</td>
+                            <td><input style="width: 100%;" type="text" id="colorFormuleStroke_L" class="stopWindowEvents noLabel colorFormule" name="colorFormuleStrokeL" value="L" oninput="updFormuleColor(this, 'l', 'formuleColorStroke', activeGlo.formuleColorHisto); updateGlo(this);"></td>
+                          </tr>
+                          <tr>
+                            <td>A</td>
+                            <td><input style="width: 100%;" type="text" id="colorFormuleStroke_A" class="stopWindowEvents noLabel colorFormule" name="colorFormuleStrokeA" value="A" oninput="updFormuleColor(this, 'a', 'formuleColorStroke', activeGlo.formuleColorHisto); updateGlo(this);"></td>
                           </tr>
                         </tbody>
                       </table>
@@ -1080,6 +1103,7 @@
                  <!-- <div><div class="ui-button" id="drawButton" onclick="paint(); ">🖌</div></div> -->
                   <div><div class="ui-button" id="posAvModButton" onclick="posAvMod(); ">🎯</div></div>
                   <div><div class="ui-button" id="switchPersistButton" onclick="switchPersist(); ">🖐️</div></div>
+                  <div><div class="ui-button" id="switchMoveOnAleaButton" onclick="switchMoveOnAlea(); ">🎲</div></div>
                   <div><div class="ui-button" onclick="testAll(); ">🧪</div></div>
                   <div><div class="ui-button text-xs" style="padding: 5px 0 5px; " onclick="activeGlo.positiveForce = !activeGlo.positiveForce; ">➕ ➖</div></div>
                   <div id="switchStrokeIcon" class="fillAndStrokeRound ui-button" onclick="switchSroke(); "></div>
@@ -1133,15 +1157,17 @@
                         oninput="helpDialogOpacityChange(event);" />
                 </div>
               </div>
-
               <div id="HelpTags"></div>
             </header>
 
             <!-- Contenu : DÉFILE ici -->
             <div id="helpDialogScroll" class="help-dialog__scroll">
               <div id="helpDialogGrid"></div>
+              <hr class="lineSep">
+              <div id="helpOnControlContainer">
+                <h2>Les contôles</h2>
+              </div>
             </div>
-
           </div>
         </dialog>
         <dialog id="brushDialog" style="width: 50%; height: 70%; position: absolute; top: 130px; padding-bottom: 23px; border: none; border-radius: 5px; overflow: hidden; ">

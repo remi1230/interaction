@@ -1425,7 +1425,13 @@ class Avatar {
       let last_vit   = {x: last.x - av_last.x, y: last.y - av_last.y};
       let vit        = {x: this.x - last.x, y: this.y - last.y};
 
-      return pow(pow(vit.x - last_vit.x, 2) + pow(vit.y - last_vit.y, 2), 0.5);
+      const ax = vit.x - last_vit.x;
+      const ay = vit.y - last_vit.y;
+
+      this.ax = ax;
+      this.ay = ay;
+
+      return (ax**2 + ay**2)**0.5;
     }
     return pow(pow(this.ax, 2) + pow(this.ay, 2), 0.5);
   }
@@ -1761,8 +1767,10 @@ class Avatar {
     if(obj.alphaRnd){ a /= (1 + rnd()); }
 
     if(obj.formuleColorMode){
-      let color = this.formuleColor(move, sat, tint, a, obj.formuleColor);
+      const color       = this.formuleColor(move, sat, tint, a, obj.formuleColor);
+      const colorStroke = this.formuleColor(cdStroke, satStroke, tint_stroke, a, obj.formuleColorStroke);
       move = color.move; sat = color.sat; tint = color.tint; a = color.a;
+      cdStroke = colorStroke.move; satStroke = colorStroke.sat; tint_stroke = colorStroke.tint; a = colorStroke.a;
     }
 
     if(tint < 0 || isNaN(tint)){ tint = 0; }

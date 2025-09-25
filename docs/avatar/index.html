@@ -1,8 +1,8 @@
 <!doctype html>
-<html lang="en">
+<html lang="fr">
 <head>
   <meta charset='utf-8'>
-  <title>interaction 1.0.0 | Documentation</title>
+  <title>interaction 1.0.0 | Documentation de avatar.js</title>
   <meta name='viewport' content='width=device-width,initial-scale=1'>
   <link href='../assets/bass.css' rel='stylesheet'>
   <link href='../assets/style.css' rel='stylesheet'>
@@ -72,6 +72,12 @@
                         href='#avatargloattract'
                         class='regular pre-open'>
                         #gloAttract
+                      </a></li>
+                      
+                      <li><a
+                        href='#avatarr'
+                        class='regular pre-open'>
+                        #r
                       </a></li>
                       
                       <li><a
@@ -458,6 +464,26 @@
                 
                 </li>
               
+                
+                <li><a
+                  href='#createevalfunction'
+                  class="">
+                  createEvalFunction
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#createevalfunctionwiththis'
+                  class="">
+                  createEvalFunctionWithThis
+                  
+                </a>
+                
+                </li>
+              
             </ul>
           </div>
           <div class='mt1 h6 quiet'>
@@ -799,6 +825,63 @@
 
   
 
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='avatarr'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>r()</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Retourne la distance de l'avatar avec le centre</p>
+
+    <div class='pre p1 fill-light mt0'>r(): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></code>:
+        La distance depuis le centre
+
+      
+    
   
 
   
@@ -4757,7 +4840,7 @@ Par défaut, prend
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>formuleColor(h, s, l, a, formuleColor)</span>
+            <span class='code strong strong truncate'>formuleColor</span>
         </div>
       </div>
       <div class="clearfix display-none toggle-target">
@@ -4767,7 +4850,7 @@ Par défaut, prend
 
   <p>Calcule un coefficient en fonction de la taille de l'avatar et de sa distance au centre</p>
 
-    <div class='pre p1 fill-light mt0'>formuleColor(h: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>, s: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>, l: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>, a: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>, formuleColor: {h: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, s: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, l: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, a: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>}): {move: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>, sat: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>, tint: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>, a: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>}</div>
+    <div class='pre p1 fill-light mt0'>formuleColor</div>
   
   
 
@@ -4961,6 +5044,167 @@ Par défaut, prend
               
             </tbody>
           </table>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='createevalfunction'>
+      createEvalFunction
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Compile une expression en fonction rapide.</p>
+<ul>
+<li>Pas de "use strict"</li>
+<li>Pas de shadow</li>
+<li>Accès total aux globals</li>
+</ul>
+
+    <div class='pre p1 fill-light mt0'>createEvalFunction(expr: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, params: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function">Function</a></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>expr</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    ex: "h + this.x * 0.05"
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>params</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>>)</code>
+	    noms des paramètres positionnels
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function">Function</a></code>:
+        (...args) => any
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='createevalfunctionwiththis'>
+      createEvalFunctionWithThis
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Variante liée au <code>this</code> courant.</p>
+<ul>
+<li>Appel : fnWithThis(thisArg, ...args)</li>
+<li>Permet d’utiliser <code>this.x</code>, <code>this.y</code>, etc. dans l’expression.</li>
+</ul>
+
+    <div class='pre p1 fill-light mt0'>createEvalFunctionWithThis(expr: any, params: any)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>expr</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>params</span> <code class='quiet'>(any)</code>
+	    
+          </div>
           
         </div>
       

@@ -1,0 +1,953 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset='utf-8'>
+  <title>interaction 1.0.0 | Documentation de dialog.js</title>
+  <meta name='viewport' content='width=device-width,initial-scale=1'>
+  <link href='../assets/bass.css' rel='stylesheet'>
+  <link href='../assets/style.css' rel='stylesheet'>
+  <link href='../assets/github.css' rel='stylesheet'>
+  <link href='../assets/split.css' rel='stylesheet'>
+
+  <script src='../assets/anchor.js' defer></script>
+  <script src='../assets/split.js' defer></script>
+  <script src='../assets/site.js' defer></script>
+</head>
+<body class='documentation m0'>
+    <div class='flex'>
+      <div id='split-left' class='overflow-auto fs0 height-viewport-100'>
+        <div class='py1 px2'>
+          <h3 class='mb0 no-anchor'>interaction</h3>
+          <div class='mb1'><code>1.0.0</code></div>
+          <input
+            placeholder='Filter'
+            id='filter-input'
+            class='col12 block input'
+            spellcheck='false'
+            autocapitalize='off'
+            autocorrect='off'
+            type='text' />
+          <div id='toc'>
+            <ul class='list-reset h5 py1-ul'>
+              
+                
+                <li><a
+                  href='#dialog'
+                  class="">
+                  dialog
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#point'
+                  class="">
+                  Point
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#togglemodpathdialog'
+                  class="">
+                  toggleModPathDialog
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#togglebrushdialog'
+                  class="">
+                  toggleBrushDialog
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#helptosavemoveonmodpathcanvas'
+                  class="">
+                  helpToSaveMoveOnModPathCanvas
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#feedhelp'
+                  class="">
+                  feedHelp
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#togglehelpdialog'
+                  class="">
+                  toggleHelpDialog
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#constructhelpdialog'
+                  class="">
+                  constructHelpDialog
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#filterhelparray'
+                  class="">
+                  filterHelpArray
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#togglehelpontuch'
+                  class="">
+                  toggleHelpOnTuch
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#checkhelpprop'
+                  class="">
+                  checkHelpProp
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#helpdialogopacitychange'
+                  class="">
+                  helpDialogOpacityChange
+                  
+                </a>
+                
+                </li>
+              
+            </ul>
+          </div>
+          <div class='mt1 h6 quiet'>
+            <a href='https://documentation.js.org/reading-documentation.html'>Need help reading this?</a>
+          </div>
+        </div>
+      </div>
+      <div id='split-right' class='relative overflow-auto height-viewport-100'>
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='dialog'>
+      dialog
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Ce module gère l’ouverture, la fermeture et la construction
+des boîtes de dialogue liées aux canvases (brosse, modificateurs, aide).
+Il fournit également des utilitaires pour la gestion des interactions souris
+et la présentation de l’aide contextuelle.</p>
+
+    <div class='pre p1 fill-light mt0'>dialog</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='point'>
+      Point
+    </h3>
+    
+    
+  </div>
+  
+
+  
+    <div class='pre p1 fill-light mt0'>Point</div>
+  
+    <p>
+      Type:
+      <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>
+    </p>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Properties</div>
+    <div>
+      
+        <div class='space-bottom0'>
+          <span class='code bold'>x</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>)</code>
+          : Coordonnée horizontale.
+
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <span class='code bold'>y</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>)</code>
+          : Coordonnée verticale.
+
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <span class='code bold'>form</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>?)</code>
+          : Indique si le point appartient à une forme.
+
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <span class='code bold'>first</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>?)</code>
+          : Indique s’il s’agit du premier point d’une séquence.
+
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='togglemodpathdialog'>
+      toggleModPathDialog
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Ouvre ou ferme la boÃ®te de dialogue du canvas de tracé des modificateurs,
+initialise l'état de la souris et réinitialise les chemins.</p>
+
+    <div class='pre p1 fill-light mt0'>toggleModPathDialog()</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='togglebrushdialog'>
+      toggleBrushDialog
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Ouvre ou ferme la boîte de dialogue du canvas pour la brosse,
+réinitialise les états de la souris (clics, mouvements) et prépare le canvas.</p>
+
+    <div class='pre p1 fill-light mt0'>toggleBrushDialog(mouseCanvasClick: <a href="#point">Point</a>?, mouseCanvasLastClick: <a href="#point">Point</a>?, mouseCanvas: <a href="#point">Point</a>?, mouseCanvasLast: <a href="#point">Point</a>?)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>mouseCanvasClick</span> <code class='quiet'>(<a href="#point">Point</a>?)</code>
+	    Coordonnées du clic courant.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>mouseCanvasLastClick</span> <code class='quiet'>(<a href="#point">Point</a>?)</code>
+	    Coordonnées du dernier clic.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>mouseCanvas</span> <code class='quiet'>(<a href="#point">Point</a>?)</code>
+	    État courant de la souris (mouvement).
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>mouseCanvasLast</span> <code class='quiet'>(<a href="#point">Point</a>?)</code>
+	    Dernier état enregistré de la souris.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='helptosavemoveonmodpathcanvas'>
+      helpToSaveMoveOnModPathCanvas
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Sauvegarde un mouvement de la souris sur le canvas des modificateurs,
+soit pour l’objet global actif, soit pour chaque modificateur sélectionné.</p>
+
+    <div class='pre p1 fill-light mt0'>helpToSaveMoveOnModPathCanvas(lastPt: <a href="#point">Point</a>, pt: <a href="#point">Point</a>)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>lastPt</span> <code class='quiet'>(<a href="#point">Point</a>
+            = <code>mouseModPathCanvasLast</code>)</code>
+	    Dernier point enregistré.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>pt</span> <code class='quiet'>(<a href="#point">Point</a>
+            = <code>mouseModPathCanvas</code>)</code>
+	    Point actuel capturé.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='feedhelp'>
+      feedHelp
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Charge le fichier <code>event.js</code>, extrait les commentaires spéciaux
+pour construire l’aide, et génère les tags associés.</p>
+
+    <div class='pre p1 fill-light mt0'>feedHelp(): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;void></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;void></code>:
+        Promise résolue une fois l’aide construite.
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='togglehelpdialog'>
+      toggleHelpDialog
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Ouvre ou ferme la boîte de dialogue d’aide.</p>
+
+    <div class='pre p1 fill-light mt0'>toggleHelpDialog()</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='constructhelpdialog'>
+      constructHelpDialog
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Construit l’interface de la boîte de dialogue d’aide,
+génère dynamiquement les touches et leurs actions associées.</p>
+
+    <div class='pre p1 fill-light mt0'>constructHelpDialog(start: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>start</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>
+            = <code>false</code>)</code>
+	    Indique si la construction est initiale (reset complet).
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='filterhelparray'>
+      filterHelpArray
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Filtre la liste des touches d’aide en fonction du texte recherché
+et des tags sélectionnés.</p>
+
+    <div class='pre p1 fill-light mt0'>filterHelpArray()</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='togglehelpontuch'>
+      toggleHelpOnTuch
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Active ou désactive l’état d’aide sur un élément visuel (touche).</p>
+
+    <div class='pre p1 fill-light mt0'>toggleHelpOnTuch(domHelpTuch: <a href="https://developer.mozilla.org/docs/Web/HTML/Element">HTMLElement</a>)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>domHelpTuch</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/HTML/Element">HTMLElement</a>)</code>
+	    Élément DOM représentant une touche d’aide.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='checkhelpprop'>
+      checkHelpProp
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Vérifie si une propriété est active et met à jour
+l’état visuel de la touche correspondante dans le dialogue d’aide.</p>
+
+    <div class='pre p1 fill-light mt0'>checkHelpProp(tuchId: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, property: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>tuchId</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    Identifiant DOM de la touche.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>property</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    Nom de la propriété à vérifier dans activeGlo.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='helpdialogopacitychange'>
+      helpDialogOpacityChange
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Met à jour l’opacité de la boîte de dialogue d’aide
+en fonction de la valeur saisie.</p>
+
+    <div class='pre p1 fill-light mt0'>helpDialogOpacityChange(e: <a href="https://developer.mozilla.org/docs/Web/API/InputEvent">InputEvent</a>)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>e</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/API/InputEvent">InputEvent</a>)</code>
+	    Événement de changement de l’élément input.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+      </div>
+    </div>
+</body>
+</html>

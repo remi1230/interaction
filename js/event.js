@@ -1,5 +1,25 @@
 
-//------------------ LANCEMENT DE LA BOUCLE DE DESSIN ----------------- //
+/**
+ * @module events
+ * @description Ce module gère tous les événements utilisateur (clavier, souris, interface)
+ * liés aux canvases et aux contrôles. Il définit le comportement des interactions,
+ * la gestion des modificateurs et avatars, ainsi que la navigation dans l’interface.
+ */
+
+/**
+ * @typedef {Object} Point
+ * @property {number} x - Coordonnée horizontale.
+ * @property {number} y - Coordonnée verticale.
+ * @property {boolean} [form=false] - Indique si le point appartient à une forme.
+ * @property {boolean} [first=false] - Indique s’il s’agit du premier point d’une séquence.
+ */
+
+/**
+ * @event DOMContentLoaded
+ * @description Initialise l’interface et les contrôles à la fin du chargement du DOM.
+ * Configure l’UI, restaure l’état global et lance l’animation principale.
+ * @memberof module:events
+ */
 document.addEventListener("DOMContentLoaded", function() {
     params_interface();
     createGoInterface();
@@ -13,10 +33,27 @@ document.addEventListener("DOMContentLoaded", function() {
     animation();
 });
 
+/**
+ * @event ui.mousedown @memberof module:events
+ * @description Indique que la souris est pressée sur l’interface UI.
+ * @memberof module:events
+ */
 ui.addEventListener('mousedown', () => { activeGlo.uiMouseDown = true; });
+
+/**
+ * @event ui.mouseup @memberof module:events
+ * @description Indique que la souris est relâchée sur l’interface UI.
+ * @memberof module:events
+ */
 ui.addEventListener('mouseup',   () => { activeGlo.uiMouseDown = false; });
 
-//------------------ UI PREVENTDEFAULT ----------------- //
+/**
+ * @event ui.contextmenu @memberof module:events
+ * @description Intercepte le clic droit sur l’UI
+ * empêche le menu contextuel natif et déclenche un changement d’interface.
+ * @param {MouseEvent} e - Événement souris.
+ * @memberof module:events
+ */
 ui.addEventListener('contextmenu', (e) => {
   e.preventDefault();
   if(!activeGlo.time){ activeGlo.time = new Date().getTime(); }
@@ -28,7 +65,12 @@ ui.addEventListener('contextmenu', (e) => {
   activeGlo.time = new Date().getTime();
 });
 
-//------------------ ClICK SUR LE CANVAS POUR SWITCHER L'AFFICHAGE DES PARAMÉTRES ----------------- //
+/**
+ * @event structure.click
+ * @description Sur le canvas structure : permet de poser des avatars, coller des modificateurs,
+ * définir un centre ou basculer l’affichage de l’interface selon le contexte.
+ * @memberof module:events
+ */
 structure.addEventListener('click', () => {
   if(!activeGlo.virtual.modifier && !activeGlo.virtual.avatar){
     let posOnMouse = activeGlo.posOnMouse;
@@ -65,13 +107,33 @@ structure.addEventListener('click', () => {
     }
   }
 });
-//------------------ ClICK DROIT SUR LE CANVAS POUR MODIFIER DES PARAMÉTRES ----------------- //
+
+/**
+ * @event structure.contextmenu
+ * @description Intercepte le clic droit sur le canvas structure,
+ * empêche le menu contextuel natif et déclenche la sélection rectangulaire de modificateurs.
+ * @param {MouseEvent} e - Événement souris.
+ * @memberof module:events
+ */
 structure.addEventListener('contextmenu', (e) => {
   activeGlo.modifierSelectbyRectangleOnRClick = true;
   e.preventDefault();
   modifier_select();
 });
-//------------------ MOUSE MOVEMENT ----------------- //
+
+/**
+ * @event structure.mousedown
+ * @description (sur le canvas `structure`) Capture la position du clic, active les drapeaux de souris,
+ * et gère deux cas :
+ * 1) **Sélection rectangulaire** (clic droit ou mode `modifierSelectbyRectangleOnRClick`) : active `activeGlo.mousedown`
+ *    pour commencer le tracé de sélection.
+ * 2) **Mode attraction actif** (`activeGlo.attract_mouse.state` et clic ≠ droit) : passe en mode "placement virtuel" :
+ *    - si `activeGlo.virtual.modifier` → pose un **modifier virtuel** via `pos_modifier(...)` et active `activeGlo.posVirtualMod`.
+ *    - sinon (`activeGlo.virtual.avatar`) → supprime les avatars virtuels existants, crée un **avatar virtuel** à la souris
+ *      via `posAvatar(...)`, désactive son dessin (`draw`, `draw_ok`) et initialise son historique (`lasts`).
+ * @memberof module:events
+ * @param {MouseEvent} e - Événement souris.
+ */
 structure.addEventListener('mousedown', (e) => {
   mouse.click = {x: mouse.x, y: mouse.y};
 
@@ -91,6 +153,17 @@ structure.addEventListener('mousedown', (e) => {
     }
   }
 });
+
+/**
+  * @event structure.mouseup
+  * @description (sur le canvas `structure`) Termine l’action en cours :
+  * - Réinitialise les drapeaux (`simpleMouseDown`, `showCircle`, `mousedown`).
+  * - Désactive `selectByRectangle` pour tous les modifiers.
+  * - Si le **mode attraction** est actif : relâche `attract_mouse.mousedown`.
+  *   Si un **placement virtuel** était en cours (`posVirtualMod`) :
+  *   - le clôture et **retire** l’entité virtuelle créée (modifier virtuel ou avatar virtuel) de leurs listes respectives.
+  * @memberof module:events
+  */
 structure.addEventListener('mouseup',   () => {
   activeGlo.simpleMouseDown = false;
   activeGlo.showCircle      = false;
@@ -107,6 +180,17 @@ structure.addEventListener('mouseup',   () => {
     }
   }
 });
+
+/**
+ * @event structure.wheel
+ * @description Gère la molette de la souris :
+ * - avec Shift : zoom avatars
+ * - avec Alt : zoom modificateurs
+ * - avec Ctrl : ajuste la taille du cercle
+ * - par défaut : ajuste attraction/modificateurs ou sliders.
+ * @param {WheelEvent} e
+ * @memberof module:events
+ */
 structure.addEventListener('wheel', (e) => {
   e.preventDefault();
 
@@ -135,6 +219,14 @@ structure.addEventListener('wheel', (e) => {
     }
   }
 });
+
+/**
+ * @event structure.mousemove
+ * @description Met à jour la position de la souris sur le canvas structure.
+ * Gère l’affichage d’infos, le déplacement de modificateurs ou d’avatars virtuels.
+ * @param {MouseEvent} e
+ * @memberof module:events
+ */
 structure.addEventListener('mousemove', (e) => {
   mouse = getMousePos(e, canvas, mouse);
 
@@ -145,71 +237,60 @@ structure.addEventListener('mousemove', (e) => {
   }
 });
 
-// Fermeture des modaux
+/**
+ * @event goInterFaceContainer.wheel
+ * @description (sur `#goInterFaceContainer`) Permet de changer l’interface
+ * en fonction du sens de la molette.
+ * @param {WheelEvent} e
+ * @memberof module:events
+ */
+getById('goInterFaceContainer').addEventListener('wheel', (e) => {
+  e.preventDefault();
+  changeInterface(e.deltaY < 0 ? '+' : '-');
+});
+
+/**
+ * @event click:helpDialog
+ * @description (sur `helpDialog`) Ferme le dialogue d’aide quand on clique dessus,
+ * et inverse l’état de visibilité.
+ * @memberof module:events
+ */
 helpDialog.addEventListener('click', () => {
   helpDialogVisible = !helpDialogVisible;
   helpDialog.close();
 });
+
+/**
+ * @event click:brushDialog
+ * @description (sur `brushDialog`) Ferme le dialogue de la brosse, réinitialise
+ * l’état de la souris (mousedown = false) et inverse la visibilité.
+ * @memberof module:events
+ */
 brushDialog.addEventListener('click', () => {
   brushCanvasMouseDown = false;
   brushDialogVisible = !brushDialogVisible;
   brushDialog.close();
 });
+
+/**
+ * @event click
+ * @description (sur `helpDialogGrid`) Empêche la propagation des clics à la boîte
+ * de dialogue parente, pour éviter une fermeture involontaire.
+ * @param {MouseEvent} e
+ * @memberof module:events
+ */
 helpDialogGrid.addEventListener('click', (e) => e.stopPropagation());
 
-
-//*************************************CANVAS POUR LA BROSSE*************************************//
-function toggleModPathDialog(){
-  brushDialogVisible = !brushDialogVisible;
-
-  if(brushDialogVisible){
-    ctxModPath.clearRect(0, 0, modPathCanvas.width, modPathCanvas.height);
-
-    if(activeGlo.modifiers.length){ getSelectedModifiers().forEach(mod => { mod.glo.stepsModPath = []; }); }
-    else{ activeGlo.stepsModPath = []; }
-
-    mouseModPathCanvas     =  { x: 0, y: 0, first: true, form: false};
-    mouseModPathCanvasLast =  { x: 0, y: 0, first: true, form: false};
-    modPathCanvasMouseDown = false;
-    modPathCanvasMouseUp   = false;
-    
-    modPathDialog.showModal();
-    fix_dpi(modPathCanvas);
-
-    ctxModPath.strokeStyle = '#cc0000';
-    strokeOnCanvas(ctxModPath, function(){ctxModPath.crossDiag(modPathCanvas.getCenter(), 10);});
-  }
-  else{ modPathDialog.close(); }
-}
-
-function toggleBrushDialog(){
-  brushModPathVisible = !brushModPathVisible;
-
-  if(brushModPathVisible){
-    ctxBrush.clearRect(0, 0, brushCanvas.width, brushCanvas.height);
-    
-    if(activeGlo.modifiers.length){ getSelectedModifiers().forEach(mod => { mod.glo.stepsBrush = []; }); }
-    else{ activeGlo.stepsBrush = []; }
-
-    mouseCanvasClick     =  { x: 0, y: 0, form: false};
-    mouseCanvasLastClick =  { x: 0, y: 0, form: false};
-    mouseCanvas          =  { x: 0, y: 0, first: true, form: false};
-    mouseCanvasLast      =  { x: 0, y: 0, first: true, form: false};
-
-    mouseCanvasChangeToLine = false;
-    brushCanvasMouseDown    = false;
-    brushCanvasMouseUp      = false;
-
-    if(getById('brushFormType_1').checked){
-      savePtOnBrushCanvas({x: 0, y: 0});
-    }
-    
-    brushDialog.showModal();
-    fix_dpi(brushCanvas);
-  }
-  else{ brushDialog.close(); }
-}
-
+/**
+ * @event mousedown
+ * @description (sur `brushCanvas`) Active le dessin de la brosse :
+ * - initialise les positions de clic (`mouseCanvasClick`, `mouseCanvasLastClick`),
+ * - enregistre un point ou mouvement via `saveMoveOrPtOnBrushCanvas`,
+ * - déclenche un tracé (`drawOnBrushCanvas`),
+ * - gère le passage en mode ligne si activé (`mouseCanvasChangeToLine`).
+ * @param {MouseEvent} e
+ * @memberof module:events
+ */
 brushCanvas.addEventListener('mousedown', e => {
   brushCanvasMouseDown = true;
   mouseCanvasLastClick = mouseCanvasClick;
@@ -223,6 +304,16 @@ brushCanvas.addEventListener('mousedown', e => {
   brushCanvasMouseUp      = false;
 });
 
+/**
+ * @event mousedown
+ * @description (sur `modPathCanvas`) Démarre un tracé de chemin de modificateurs :
+ * - active `modPathCanvasMouseDown`,
+ * - enregistre la position courante (`mouseModPathCanvas`),
+ * - sauvegarde le mouvement via `helpToSaveMoveOnModPathCanvas`,
+ * - trace une ligne rouge entre le dernier point et le nouveau.
+ * @param {MouseEvent} e
+ * @memberof module:events
+ */
 modPathCanvas.addEventListener('mousedown', e => {
   modPathCanvasMouseDown = true;
   mouseModPathCanvasLast = mouseModPathCanvas;
@@ -238,11 +329,14 @@ modPathCanvas.addEventListener('mousedown', e => {
   modPathCanvasMouseUp = false;
 });
 
-function helpToSaveMoveOnModPathCanvas(lastPt = mouseModPathCanvasLast, pt = mouseModPathCanvas){
-  if(!activeGlo.modifiers.length){ saveMoveOnModPathCanvas(activeGlo, lastPt, pt); }
-  else{ getSelectedModifiers().forEach(mod => { saveMoveOnModPathCanvas(mod.glo, lastPt, pt); }); }
-}
-
+/**
+ * @event mouseup
+ * @description (sur `modPathCanvas`) Termine un tracé de chemin de modificateurs :
+ * - désactive `modPathCanvasMouseDown`,
+ * - dessine un petit cercle rouge à la position du relâchement.
+ * @param {MouseEvent} _event
+ * @memberof module:events
+ */
 modPathCanvas.addEventListener('mouseup', _event => {
   modPathCanvasMouseDown = false;
   modPathCanvasMouseUp   = true;
@@ -253,6 +347,13 @@ modPathCanvas.addEventListener('mouseup', _event => {
   ctxModPath.stroke();
 });
 
+/**
+ * @event mousemove
+ * @description (sur `modPathCanvas`) En mode mousedown actif, trace des segments rouges
+ * entre les positions successives de la souris et sauvegarde les mouvements.
+ * @param {MouseEvent} e
+ * @memberof module:events
+ */
 modPathCanvas.addEventListener('mousemove', e => {
   if(modPathCanvasMouseDown){
     mouseModPathCanvasLast = mouseModPathCanvas;
@@ -265,19 +366,49 @@ modPathCanvas.addEventListener('mousemove', e => {
   }
 });
 
+/**
+ * @event close
+ * @description (sur `modPathDialog`) À la fermeture du dialogue, sauvegarde
+ * le dernier mouvement du chemin en cours (soit sur l’objet global, soit
+ * sur le premier modificateur sélectionné).
+ * @memberof module:events
+ */
 modPathDialog.addEventListener("close", () => {
   helpToSaveMoveOnModPathCanvas(mouseModPathCanvas, activeGlo.modifiers.length ? getSelectedModifiers()[0].glo.stepsModPath[0] : activeGlo.stepsModPath[0]);
 });
 
+/**
+ * @event change
+ * @description (sur `#brushFormType_1`) Active ou désactive le mode de dessin en ligne
+ * pour la brosse (`mouseCanvasChangeToLine`).
+ * @param {Event} _event
+ * @memberof module:events
+ */
 getById('brushFormType_1').addEventListener('change', _event => {
   mouseCanvasChangeToLine = getById('brushFormType_1').checked;
 });
 
+/**
+ * @event mouseup
+ * @description (sur `brushCanvas`) Termine le dessin de la brosse, désactive
+ * `brushCanvasMouseDown` et active `brushCanvasMouseUp`.
+ * @param {MouseEvent} _event
+ * @memberof module:events
+ */
 brushCanvas.addEventListener('mouseup', _event => {
   brushCanvasMouseDown = false;
   brushCanvasMouseUp   = true;
 } );
 
+/**
+ * @event mousemove
+ * @description (sur `brushCanvas`) Met à jour la position de la souris.
+ * Si la brosse est en mode manuel et mousedown actif :
+ * - sauvegarde le mouvement via `saveMoveOrPtOnBrushCanvas`,
+ * - trace une ligne via `drawLineOnBrushCanvas`.
+ * @param {MouseEvent} e
+ * @memberof module:events
+ */
 brushCanvas.addEventListener('mousemove', e => {
   mouseCanvasLast = mouseCanvas;
   mouseCanvas     = getMousePos(e, brushCanvas);
@@ -290,8 +421,15 @@ brushCanvas.addEventListener('mousemove', e => {
 //***********************************************************************************************//
 
 
-//------------------ WHEEL ON INPUTS ----------------- //
 input_params.forEach(() => {
+  /**
+ * @event mouseover
+ * @description (sur chaque input `.input_params`) Gère le focus visuel et logique :
+ * tous les autres inputs sont désactivés (`dataset.focus = false`),
+ * l’input survolé est activé et reçoit le focus.
+ * @param {MouseEvent} e
+ * @memberof module:events
+ */
   addEventListener('mouseover', (e) => {
     let target = e.target;
     if(target.classList.contains('input_params')){
@@ -299,17 +437,41 @@ input_params.forEach(() => {
       target.dataset.focus = 'true'; target.focus();
     }
   });
+  /**
+ * @event mouseout
+ * @description (sur chaque input `.input_params`) Supprime le flag `dataset.focus`
+ * quand la souris sort de l’input.
+ * @param {MouseEvent} e
+ * @memberof module:events
+ */
   addEventListener('mouseout', (e) => {
     if(e.target.classList.contains('input_params')){  e.target.dataset.focus = 'false'; }
   });
 });
 //------------------ STOP WINDOW KEYS EVENTS ON INPUTS ----------------- //
  stopWindowEvents.forEach(ctrl => {
+  /**
+ * @event focus
+ * @description (sur chaque contrôle `stopWindowEvents`) Active le blocage
+ * des raccourcis clavier globaux (`activeGlo.stopWindowEvents = true`).
+ * @memberof module:events
+ */
    ctrl.addEventListener('focus', () => { activeGlo.stopWindowEvents = true; });
+   /**
+ * @event blur
+ * @description (sur chaque contrôle `stopWindowEvents`) Désactive le blocage
+ * des raccourcis clavier globaux (`activeGlo.stopWindowEvents = false`).
+ * @memberof module:events
+ */
    ctrl.addEventListener('blur', () => { activeGlo.stopWindowEvents = false; });
  });
-//------------------ ClICK DROIT SUR CTRL PARAMÉTRE ----------------- //
-aleaOnRightClick(activeGlo.params);
+
+/**
+ * @function aleaOnRightClick
+ * @description Active/désactive le mode aléatoire d’un paramètre via un clic droit.
+ * @memberof module:events
+ * @param {Object} obj_param - Objet contenant les paramètres contrôlés.
+ */
 function aleaOnRightClick(obj_param){
   for(var p in obj_param){
     let param = getById(p);
@@ -325,8 +487,15 @@ function aleaOnRightClick(obj_param){
     }
   }
 }
-//------------------ ClICK GAUCHE SUR CTRL PARAMÉTRE QUAND ALEA ----------------- //
-defineMinOrMax(activeGlo.params);
+aleaOnRightClick(activeGlo.params);
+
+/**
+ * @function defineMinOrMax
+ * @description Définit une valeur minimale ou maximale pour un paramètre
+ * lorsqu’il est activé en mode aléatoire et cliqué.
+ * @memberof module:events
+ * @param {Object} obj_param - Objet contenant les paramètres contrôlés.
+ */
 function defineMinOrMax(obj_param){
   for(var p in obj_param){
     let param = getById(p);
@@ -346,13 +515,28 @@ function defineMinOrMax(obj_param){
     }
   }
 }
-//------------------ RESIZE CANVAS WHEN RESIZE WINDOW ----------------- //
+defineMinOrMax(activeGlo.params);
+
+/**
+ * @event resize
+ * @description Réadapte les canvases et l’interface lors du redimensionnement de la fenêtre.
+ * @memberof module:events
+ */
 window.addEventListener('resize', function () {
   resizeUI();
   /*if(activeGlo.clear){ allCanvas.forEach(canvas => { fix_dpi(canvas); }); }*/
 });
 
-//------------------ ÉVÈNEMENTS D'APPUI SUR UNE TOUCHE ----------------- //
+
+/**
+ * @event keydown
+ * @description Gère les raccourcis clavier complexes :
+ * - touches simples (F1, a, b, …)
+ * - combinaisons Ctrl, Alt, Shift
+ * Chaque touche active/désactive des propriétés dans `activeGlo` ou déclenche des actions.
+ * @param {KeyboardEvent} e
+ * @memberof module:events
+ */
 window.addEventListener("keydown", function (e) {
   let inputsSz;
   if(!activeGlo.stopWindowEvents && e.key != 'Shift'){
@@ -1327,212 +1511,3 @@ window.addEventListener("keydown", function (e) {
     activeGloSave = null;
   }
 });
-
-function alphaVarSize(obj, buttonCk = true){
-  obj.shortcut.alphaVarSize = !obj.shortcut.alphaVarSize;
-  obj.perm_var_size         = obj.shortcut.alphaVarSize;
-  obj.growDecrease          = obj.shortcut.alphaVarSize;
-  obj.alphaAbs              = !obj.alphaAbs;
-
-
-  if(obj.growDecrease){ obj.sizeLineSave = obj.params.line_size; }
-  else{ obj.params.line_size = obj.sizeLineSave; }
-}
-
-async function feedHelp(){
-  fetch('./js/event.js').then(res => res.text()).then(text => {
-    const regex = /\/\/\/(.*?)\/\/\//g;
-    tuchs = text.match(regex);
-    tuchs = tuchs.map( tuch => {
-      let infos = tuch.substring(4, tuch.length - 4).split(' -- ');
- 
-      let tags     = infos[2] ? infos[2].replace(/\s/g, '').toLowerCase().split(',') : '';
-      let property = infos[3] ? infos[3].replace(/\s/g, '') : '';
-
-      if(tags){ tags.forEach(tag => { HTags.push(tag); }); }
-
-      return {ctrl: infos[0].toLowerCase().includes("ctrl"), alt: infos[0].toLowerCase().includes("alt"), tuch: infos[0], action: infos[1], tags: tags, property: property};
-    });
-
-    if(HTags.length){ HTags = [...new Set(HTags)]; HTags.sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase())); }
-
-    constructHelpDialog(true);
-  });
-}
-
-function toggleHelpDialog(){
-  helpDialogVisible = !helpDialogVisible;
-
-  if(helpDialogVisible){ helpDialog.showModal(); }
-  else{ helpDialog.close(); }
-}
-
-function constructHelpDialog(start = false){
-  let tuchs_save = tuchs.slice();
-  if(!start){
-    helpDialogGrid.innerHTML = "";
-    filterHelpArray();
-  }
-  else{
-    getById('searchInHelp').value = "";
-  }
-
-  tuchs.forEach((tuch, i) => {
-    let divContainer = document.createElement("div");
-    let kbdTuch      = document.createElement("kbd");
-    let divAction    = document.createElement("div");
-
-    let tuchId = 'helpTuch_' + i;
-
-    tuch.id             = tuchId;
-    kbdTuch.id          = tuchId;
-    kbdTuch.className   = 'keys';
-    divAction.className = 'helpTxt';
-
-    let txtTuch   = document.createTextNode(tuch.tuch);
-    let txtAction = document.createTextNode(tuch.action);
-
-    kbdTuch.appendChild(txtTuch);
-    divAction.appendChild(txtAction);
-
-    let tuchToTrigger = tuch.ctrl || tuch.alt ? tuch.tuch.substr(-1) : tuch.tuch;
-
-    tuchToTrigger = tuchToTrigger.replace('←', 'ArrowLeft');
-    tuchToTrigger = tuchToTrigger.replace('→', 'ArrowRight');
-    tuchToTrigger = tuchToTrigger.replace('↑', 'ArrowUp');
-    tuchToTrigger = tuchToTrigger.replace('↓', 'ArrowDown');
-
-    kbdTuch.title = tuch.property;
-    kbdTuch.setAttribute('onclick', 
-      `window.dispatchEvent(new KeyboardEvent('keydown',  {'key':'${tuchToTrigger}', 'ctrlKey' : ${tuch.ctrl}, 'altKey' : ${tuch.alt}})); checkHelpProp('${kbdTuch.id}', '${tuch.property}'); `
-    );
-
-    if(activeGlo[tuch.property]){ addClasses(kbdTuch, 'on'); }
-
-    kbdTuch.style.textAlign      = 'center';
-    divAction.style.paddingRight = '30px';
-
-    divContainer.style.display             = 'grid';
-    divContainer.style.gridTemplateColumns = '50px 100%';
-    divContainer.style.columnGap           = '5px';
-    divContainer.dataset.tags              = '';
-
-    divContainer.appendChild(kbdTuch);
-    divContainer.appendChild(divAction);
-
-    if(Array.isArray(tuch.tags)){ divContainer.dataset.tags = tuch.tags.join(','); }
-
-    helpDialogGrid.appendChild(divContainer);
-  });
-
-  if(start){ 
-    HTags.forEach(HTag => {
-      let spanTag = document.createElement("span");
-      let txtTag  = document.createTextNode(HTag);
-
-      spanTag.className  = 'helpTag';
-      spanTag.dataset.on = 'false';
-      spanTag.appendChild(txtTag);
-
-      spanTag.setAttribute('onclick', "this.dataset.on = this.dataset.on === 'false' ? 'true' : 'false'; this.classList.toggle('helpTagOn'); constructHelpDialog(); ");
-
-      getById('HelpTags').appendChild(spanTag);
-    });
-  }
-
-  [...document.getElementsByClassName('keys')].forEach(key => {
-    key.addEventListener(
-      "mouseenter",
-      (e) => {
-        e.target.style.color  = "purple";
-        e.target.style.cursor = "pointer";
-      },
-      false
-    );
-    key.addEventListener(
-      "mouseleave",
-      (e) => {
-        e.target.style.color  = "";
-      },
-      false
-    );
-  });
-  getById('helpDialogOpacity').value = 1
-  helpDialog.style.opacity           = 1;
-
-  tuchs = tuchs_save.slice();
-}
-
-function filterHelpArray(){
-  let searchTxt = getById('searchInHelp').value;
-
-  if(searchTxt){
-    tuchs = tuchs.filter(tuch => removeAccents(tuch.action.toLowerCase()).includes(removeAccents(searchTxt.toLowerCase()))); 
-  }
-
-  let onTags   = [];
-  let spanTags = [...document.getElementsByClassName('helpTag')];
-  spanTags.forEach(spanTag => {
-    if(spanTag.dataset.on === 'true'){ onTags.push(spanTag.textContent); }
-  });
-  
-  if(onTags.length){
-    tuchs = tuchs.filter( tuch => {
-        let on = true;
-        onTags.forEach(onTag => {
-            if( !tuch.tags.includes(removeAccents(onTag.toLowerCase())) ){ on = false; }
-        });
-        return on;
-      });
-  }
-  if([...getById('helpTuch_On').classList].includes('helpOn')){
-    tuchs = tuchs.filter( tuch => tuch.property && activeGlo[tuch.property]);
-  }
-}
-
-function toggleHelpOnTuch(domHelpTuch){
-  [...domHelpTuch.classList].includes('helpOn') ? removeClasses(domHelpTuch, 'helpOn') : addClasses(domHelpTuch, 'helpOn');
-  constructHelpDialog();
-}
-
-function checkHelpProp(tuchId, property){
-  if(property){
-    activeGlo[property] ? addClasses(getById(tuchId), 'on') : removeClasses(getById(tuchId), 'on');
-  } 
-}
-
-function applyToSelectedMods(prop){
-  getSelectedModifiers().forEach(mod => { mod.glo[prop] = activeGlo[prop]; } );
-}
-
-
-function helpDialogOpacityChange(e){
-  e.stopPropagation();
-  e.preventDefault();
-  helpDialog.style.opacity = e.target.value; 
-}
-
-function addClasses(domElem, ...args){
-  if(domElem){
-    args.forEach(arg => {
-      domElem.classList.add(arg);
-    });
-  }
-}
-function removeClasses(domElem, ...args){
-  if(domElem){
-    args.forEach(arg => {
-      domElem.classList.remove(arg);
-    });
-  }
-}
-
-
-
-
-
-
-
-
-
-//END

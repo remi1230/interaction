@@ -1,8 +1,8 @@
 <!doctype html>
-<html lang="en">
+<html lang="fr">
 <head>
   <meta charset='utf-8'>
-  <title>interaction 1.0.0 | Documentation</title>
+  <title>interaction 1.0.0 | Documentation de utils?js</title>
   <meta name='viewport' content='width=device-width,initial-scale=1'>
   <link href='../assets/bass.css' rel='stylesheet'>
   <link href='../assets/style.css' rel='stylesheet'>
@@ -32,9 +32,9 @@
               
                 
                 <li><a
-                  href='#deleterecurse'
+                  href='#addclasses'
                   class="">
-                  deleteRecurse
+                  addClasses
                   
                 </a>
                 
@@ -300,6 +300,16 @@
                 
                 </li>
               
+                
+                <li><a
+                  href='#applyreplacements'
+                  class="">
+                  applyReplacements
+                  
+                </a>
+                
+                </li>
+              
             </ul>
           </div>
           <div class='mt1 h6 quiet'>
@@ -315,8 +325,8 @@
   
   <div class='clearfix'>
     
-    <h3 class='fl m0' id='deleterecurse'>
-      deleteRecurse
+    <h3 class='fl m0' id='addclasses'>
+      addClasses
     </h3>
     
     
@@ -324,7 +334,7 @@
   
 
   
-    <div class='pre p1 fill-light mt0'>deleteRecurse(obj: any, prop: any, iter: any)</div>
+    <div class='pre p1 fill-light mt0'>addClasses(domElem: any, args: ...any)</div>
   
   
 
@@ -341,7 +351,7 @@
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>obj</span> <code class='quiet'>(any)</code>
+            <span class='code bold'>domElem</span> <code class='quiet'>(any)</code>
 	    
           </div>
           
@@ -349,15 +359,7 @@
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>prop</span> <code class='quiet'>(any)</code>
-	    
-          </div>
-          
-        </div>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>iter</span> <code class='quiet'>(any)</code>
+            <span class='code bold'>args</span> <code class='quiet'>(...any)</code>
 	    
           </div>
           
@@ -617,7 +619,7 @@
 
   <p>Met à jour la formule de couleur de l'objet global ou des modificateurs sélectionnés</p>
 
-    <div class='pre p1 fill-light mt0'>updFormuleColor(ctrl: <a href="https://developer.mozilla.org/docs/Web/HTML/Element">HTMLElement</a>, colorType: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</div>
+    <div class='pre p1 fill-light mt0'>updFormuleColor(ctrl: <a href="https://developer.mozilla.org/docs/Web/HTML/Element">HTMLElement</a>, colorType: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, formuleType: any, histo: any)</div>
   
   
 
@@ -646,6 +648,24 @@
             <span class='code bold'>colorType</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
 	    Le type de couleur à mettre à jour
 
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>formuleType</span> <code class='quiet'>(any
+            = <code>&#39;formuleColor&#39;</code>)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>histo</span> <code class='quiet'>(any
+            = <code>activeGlo.formuleColorHisto</code>)</code>
+	    
           </div>
           
         </div>
@@ -2349,6 +2369,81 @@ Applique diverses substitutions pour convertir des notations mathématiques pers
 
       
     
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='applyreplacements'>
+      applyReplacements
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Applique une liste de règles de remplacement.</p>
+<ul>
+<li>type: 'word'  -> remplace uniquement le MOT ENTIER (\bfoo\b)</li>
+<li>type: 'regex' -> utilise la RegExp fournie telle quelle</li>
+</ul>
+
+    <div class='pre p1 fill-light mt0'>applyReplacements(input: any, rules: any)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>input</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>rules</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
   
 
   

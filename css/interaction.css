@@ -368,7 +368,7 @@ kbd.keys.on, kbd.keys.helpOn {
 #actionsContainer{
   display: flex;
   flex-direction: column;
-  gap: 40px;
+  gap: 30px;
   padding-left: 5px;
 }
 #actionsSaveSection{
@@ -384,6 +384,12 @@ kbd.keys.on, kbd.keys.helpOn {
   padding: 4px;
   background-color: orange;
 }
+#switchAvFormulesButton{
+  font-size: 10px;
+}
+#helpOnControlContainer{
+  text-align: center;
+}
 #canvasOperationButtonContainer{
   display: flex;
   flex-direction: column;
@@ -397,12 +403,18 @@ kbd.keys.on, kbd.keys.helpOn {
 }
 
 
-
+.lineSep{
+  margin-top: 75px;
+  margin-bottom: 75px;
+  width: 50%;
+  height: 0px;
+  color: #fff;
+}
 .text-xs{
   font-size: 12px;
 }
 .actionsTitleSection h4{
-  margin: 5px 0;
+  margin: 0 0 5px;
   padding: 0;
 }
 .flex-actionsTitleSection{

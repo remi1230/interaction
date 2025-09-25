@@ -2,6 +2,21 @@
  * @typedef {import('./avatar.js').Avatar} Avatar
  */
 
+function addClasses(domElem, ...args){
+  if(domElem){
+    args.forEach(arg => {
+      domElem.classList.add(arg);
+    });
+  }
+}
+function removeClasses(domElem, ...args){
+  if(domElem){
+    args.forEach(arg => {
+      domElem.classList.remove(arg);
+    });
+  }
+}
+
 /**
  * @description Supprime une propriété d'un objet de manière récursive
  * @param {Object} obj - L'objet à modifier
@@ -18,54 +33,63 @@ function deleteRecurse(obj, prop, iter){
   });
 }
 
+function isFormulaValid(formula) {
+  try {
+    // Nettoyage
+    let s = String(formula).trim();
+    
+    // Vérifier caractères autorisés
+    if (/[^0-9+\-*/()., HSLADszcxyvra]/i.test(s)) {
+      return false;
+    }
+
+    // Interdire collages nombre/symbole
+    if (/\d+(H|S|L|A|D|sz|cx|cy|vx|vy|ax|ay|v|r|x|y|z|a)/i.test(s)) return false;
+    if (/(H|S|L|A|D|sz|cx|cy|vx|vy|ax|ay|v|r|x|y|z|a)\d+/i.test(s)) return false;
+
+    // Parenthèses équilibrées
+    let bal = 0;
+    for (const ch of s) {
+      if (ch === "(") bal++;
+      if (ch === ")") bal--;
+      if (bal < 0) return false;
+    }
+    if (bal !== 0) return false;
+
+    // Essayer un eval de test sécurisé
+    const testEnv = {H:1,S:1,L:1,A:1,D:1,sz:1,cx:1,cy:1,vx:1,vy:1,ax:1,ay:1,v:1,r:1,x:1,y:1,z:1,a:1};
+    const expr = s.replace(/\b(H|S|L|A|D|sz|cx|cy|vx|vy|ax|ay|v|r|x|y|z|a)\b/g, m => testEnv[m]);
+    // eslint-disable-next-line no-new-func
+    const val = Function('"use strict";return (' + expr + ')')();
+    return Number.isFinite(val);
+  } catch {
+    return false;
+  }
+}
+
 /**
  * @description Met à jour la formule de couleur de l'objet global ou des modificateurs sélectionnés
  * @param {HTMLElement} ctrl - L'élément de contrôle à partir duquel la valeur est extraite
  * @param {string} colorType - Le type de couleur à mettre à jour
  * @memberof module:utils
  */
-function updFormuleColor(ctrl, colorType){
+function updFormuleColor(ctrl, colorType, formuleType = 'formuleColor', histo = activeGlo.formuleColorHisto){
   if(!activeGlo.modifiers.length){ updateColor(activeGlo); }
   else{ getSelectedModifiers().forEach(mod => { updateColor(mod.glo); }); }
 
   function updateColor(objGlo){
-    objGlo.formuleColor[colorType] = ctrl.value;
+    objGlo[formuleType][colorType] = ctrl.value;
 
-    let formuleColorTest = false;
-
-    let valToTests = ['H', 'S', 'L', 'A', 'D', 'sz', 'cx', 'cy', 'vx', 'vy', 'v', 'r', 'x', 'y', 'z'];
-
-    let form = objGlo.formuleColor[colorType];
-    valToTests.forEach(valToTest => {
-      let reg = new RegExp("\\d+" + valToTest, "g");
-      if(!form.match('undefined')){ form = form.replaceAll(reg, undefined); }
-      reg = new RegExp(valToTest + "\\d+", "g");
-      if(!form.match('undefined')){ form = form.replaceAll(reg, undefined); }
-    });
-
-    if(!form.match('undefined')){
-      valToTests.forEach(valToTest => {
-        valToTests.forEach(valToTest2 => {
-          if(!form.match('undefined')){ form = form.replaceAll(valToTest + valToTest2, undefined); }
-        });
-        if(!form.match('undefined')){ form = form.replaceAll(valToTest, 1); }
-      });
-      if(!form.match('undefined')){
-        form = form.replaceAll('this', 'avatars[0]');
-        form = form.replaceAll('h', 'H');
-        formuleColorTest = evalFormuleColor(form);
-      }
+    if (isFormulaValid(ctrl.value)) {
+      // Formule correcte → on applique
+      let formule = replacesInFormuleColor(ctrl.value);
+      objGlo[formuleType][colorType] = formule;
+      Object.assign(histo, objGlo[formuleType]);
+    } else {
+      // Formule incorrecte → rollback
+      Object.assign(objGlo[formuleType], histo);
     }
-
-    if(!formuleColorTest){
-      Object.assign(objGlo.formuleColor, objGlo.formuleColorHisto);
-    }
-    else{
-      let formule = replacesInFormuleColor(objGlo.formuleColor[colorType]);
-      objGlo.formuleColor[colorType] = formule;
-      Object.assign(objGlo.formuleColorHisto, objGlo.formuleColor);
-    }
-  }
+ }
 }
 
 /**
@@ -166,10 +190,13 @@ function replacesInFormuleColor(colorElem) {
     { type: 'word', from: 'cy', to: '100*cos(this.y)' },
     { type: 'word', from: 'vx', to: '100*this.vit().x' },
     { type: 'word', from: 'vy', to: '100*this.vit().y' },
+    { type: 'word', from: 'ax', to: '100*this.ax' },
+    { type: 'word', from: 'ay', to: '100*this.ay' },
 
     // Les variables 'v' et 'r' seules (mot entier uniquement)
-    { type: 'word', from: 'v',  to: '100*this.vit().v' },
-    { type: 'word', from: 'r',  to: '100*this.r()' },
+    { type: 'word', from: 'v',  to: '100*this.speed' },
+    { type: 'word', from: 'a',  to: '100*this.accel' },
+    { type: 'word', from: 'r',  to: 'this.r()' },
     { type: 'word', from: 'z',  to: '360*z()' },
 
     // x / y : uniquement si ce ne sont PAS des accès membres (pas précédés de '.')
@@ -674,3 +701,7 @@ function sortNumeric(arr){ return arr.sort(function(a, b){return a-b;}); }
  * @memberof module:utils
  */
 const getRndChar = (min, max) => String.fromCharCode(parseInt(getRnd(min, max)));
+
+function applyToSelectedMods(prop){
+  getSelectedModifiers().forEach(mod => { mod.glo[prop] = activeGlo[prop]; } );
+}

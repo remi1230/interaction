@@ -1,8 +1,8 @@
 <!doctype html>
-<html lang="en">
+<html lang="fr">
 <head>
   <meta charset='utf-8'>
-  <title>interaction 1.0.0 | Documentation</title>
+  <title>interaction 1.0.0 | Documentation de ui.js</title>
   <meta name='viewport' content='width=device-width,initial-scale=1'>
   <link href='../assets/bass.css' rel='stylesheet'>
   <link href='../assets/style.css' rel='stylesheet'>
@@ -485,6 +485,26 @@
                   href='#testall'
                   class="">
                   testAll
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#paint'
+                  class="">
+                  paint
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#posavmod'
+                  class="">
+                  posAvMod
                   
                 </a>
                 
@@ -3998,7 +4018,132 @@ pour configurer le contrôle d'interface utilisateur correspondant. Par défaut,
 
   <p>Effectue un test global de l’application (avec ou sans modificateurs), en réinitialisant certains paramètres et déclenchant des raccourcis clavier.</p>
 
-    <div class='pre p1 fill-light mt0'>testAll(withMods: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>): void</div>
+    <div class='pre p1 fill-light mt0'>testAll(): void</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code>void</code>:
+        
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='paint'>
+      paint
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Déclenche une séquence de commandes pour préparer et lancer le mode "peinture".</p>
+
+    <div class='pre p1 fill-light mt0'>paint()</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Related</div>
+    
+      
+        keepBreak
+
+      
+    
+      
+        clear
+
+      
+    
+      
+        getSelectedModifiers
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='posavmod'>
+      posAvMod
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Switch entre un mode avec les avatars autour des modifers uniquement ou non.</p>
+
+    <div class='pre p1 fill-light mt0'>posAvMod(dispatch: any)</div>
   
   
 
@@ -4015,10 +4160,9 @@ pour configurer le contrôle d'interface utilisateur correspondant. Par défaut,
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>withMods</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>
+            <span class='code bold'>dispatch</span> <code class='quiet'>(any
             = <code>true</code>)</code>
-	    Indique si les modificateurs doivent être inclus dans le test.
-
+	    
           </div>
           
         </div>
@@ -4029,14 +4173,15 @@ pour configurer le contrôle d'interface utilisateur correspondant. Par défaut,
   
 
   
+
+  
+    <div class='py1 quiet mt1 prose-big'>Related</div>
     
-      <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code>void</code>:
-        
+      
+        updateGlo
+
       
     
-  
-
   
 
   

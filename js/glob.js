@@ -1,7 +1,9 @@
 //------------------ VARIABLES GLOBALES ----------------- //
 
 /**
- * Classe Glob : contient les paramètres de l'animation 
+ * @description contient les paramètres globaux de l'animation,
+ * avec possibilité de créer une instance pour chaque calque correspondant à une balise canvas.
+ * @memberof module:glob
  */
 class Glob {
     constructor() {
@@ -258,6 +260,9 @@ class Glob {
         this.formuleColor = { h: 'h', s: 's', l: 'l', a: 'a' };
         this.formuleColorHisto = { h: 'h', s: 's', l: 'l', a: 'a' };
         this.formuleColorTest = true;
+        this.formuleColorStroke = { h: 'h', s: 's', l: 'l', a: 'a' };
+        this.formuleColorHistoStroke = { h: 'h', s: 's', l: 'l', a: 'a' };
+        this.formuleColorTestStroke = true;
         this.selectCanvas = 0;
         this.num_params = 0;
         this.nb_moves = 0;

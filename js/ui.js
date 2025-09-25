@@ -647,6 +647,16 @@ function switchGrid(){
 }
 
 /**
+ * @description Les avatars sont déplacés régulièrement au hasard ou pas.
+ * @returns {void}
+ * @memberof module:ui
+ */
+function switchMoveOnAlea(){
+  activeGlo.moveOnAlea = !activeGlo.moveOnAlea;
+  getSelectedModifiers().forEach(mod => { mod.glo.moveOnAlea = activeGlo.moveOnAlea; } );
+}
+
+/**
  * @description Effectue un test global de l’application (avec ou sans modificateurs), en réinitialisant certains paramètres et déclenchant des raccourcis clavier.
  * @returns {void}
  * @memberof module:test
@@ -713,7 +723,8 @@ function posAvMod(dispatch = true){
  */
 function showInterface(numInterface){
   let interfacesLength = interfaces.length;
-  let numTxt           = numInterface + 1;
+
+  activeGlo.num_params = numInterface;
 
   for(let i = 0; i < interfacesLength; i++){
     let goInterface = getById('goInterface_' + i);
@@ -1489,4 +1500,14 @@ function drawCharOnInput(ctrl, char, endId){
   div.appendChild(txt);
 
   ctrl.parentElement.appendChild(div);
+}
+
+function alphaVarSize(obj, buttonCk = true){
+  obj.shortcut.alphaVarSize = !obj.shortcut.alphaVarSize;
+  obj.perm_var_size         = obj.shortcut.alphaVarSize;
+  obj.growDecrease          = obj.shortcut.alphaVarSize;
+  obj.alphaAbs              = !obj.alphaAbs;
+
+  if(obj.growDecrease){ obj.sizeLineSave = obj.params.line_size; }
+  else{ obj.params.line_size = obj.sizeLineSave; }
 }
