@@ -9,7 +9,7 @@ function drawGrid(step = activeGlo.params.gridStep){
   let h = structure.height;
   let c = {x: w/2, y: h/2};
 
-  ctxStructure.strokeStyle = activeGlo.canvasLoveBg.state ? (canvas.style.opacity > 0.77 ? '#fff' : '#0000cc') : '#0000cc';
+  ctxStructure.strokeStyle = activeGlo.theme.isDark() ? (canvas.style.opacity > 0.77 ? '#fff' : '#0000cc') : '#0000cc';
 
   step = w / step;
 
@@ -72,7 +72,7 @@ function drawEquiGrid(){
       let ptLeft  = point(c.x - (step*n + dec), c.y + j);
       let ptRight = point(c.x + (step*n + dec), c.y - j);
 
-      const gridColor = activeGlo.canvasLoveBg.state ? (canvas.style.opacity > 0.77 ? '#fff' : '#cc0000') : '#cc0000';
+      const gridColor = activeGlo.theme.isDark() ? (canvas.style.opacity > 0.77 ? '#fff' : '#cc0000') : '#cc0000';
 
       ctxStructure.beginPath();
       ctxStructure.polygone({pos: ptLeft, size: size, nb_edges: 6, color: gridColor});
@@ -99,9 +99,9 @@ function drawCircleGrid(step = activeGlo.params.circleGridStep){
   let c   = {x: w/2, y: h/2};
   let rep = activeGlo.params.circleRep;
 
-  const loveBg = activeGlo.canvasLoveBg.state;
+  const isDark = activeGlo.theme.isDark();
 
-  ctxStructure.strokeStyle = loveBg ? (canvas.style.opacity > 0.77 ? '#fff' : '#cc0000') : '#cc0000';
+  ctxStructure.strokeStyle = isDark ? (canvas.style.opacity > 0.77 ? '#fff' : '#cc0000') : '#cc0000';
 
   let sx = activeGlo.params.ellipse_x, sy = activeGlo.params.ellipse_y;
 
@@ -130,8 +130,8 @@ function drawCircleGrid(step = activeGlo.params.circleGridStep){
     rotateLn(first_ln, stepMark, c).forEach((mark, i) => {
       ctxStructure.lineWidth   = (i%2 == 0 && rep%2 == 0) || rep <= 3 ? 2 : 1;
       ctxStructure.strokeStyle = (i%2 == 0 && rep%2 == 0) || rep <= 3 ? 
-      (loveBg ? (canvas.style.opacity > 0.77 ? '#fff' : '#cc0000') : '#cc0000') : 
-      (loveBg ? (canvas.style.opacity > 0.77 ? '#fff' : '#cc0000') : '#cc0000');
+      (isDark ? (canvas.style.opacity > 0.77 ? '#fff' : '#cc0000') : '#cc0000') : 
+      (isDark ? (canvas.style.opacity > 0.77 ? '#fff' : '#cc0000') : '#cc0000');
       ctxStructure.line(mark);
     });
   }
@@ -147,7 +147,7 @@ function drawThridGrid(step = activeGlo.params.thirdGridStep){
   let w = structure.width;
   let h = structure.height;
 
-  ctxStructure.strokeStyle = activeGlo.canvasLoveBg.state ? (canvas.style.opacity > 0.77 ? '#fff' : '#15156eff') : '#15156eff';
+  ctxStructure.strokeStyle = activeGlo.theme.isDark() ? (canvas.style.opacity > 0.77 ? '#fff' : '#15156eff') : '#15156eff';
 
   let frac = activeGlo.params.thirdGridFrac;
 
@@ -184,7 +184,7 @@ function drawSpiralGrid(step = activeGlo.params.circleGridStep){
   let h   = structure.height;
   let c   = {x: w/2, y: h/2};
 
-  ctxStructure.strokeStyle = activeGlo.canvasLoveBg.state ? '#fff' : '#cc0000';
+  ctxStructure.strokeStyle = activeGlo.theme.isDark() ? '#fff' : '#cc0000';
 
   let sx = activeGlo.params.ellipse_x, sy = activeGlo.params.ellipse_y;
 

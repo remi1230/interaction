@@ -318,6 +318,22 @@ class Glob {
         this.thirdGridColor  = '#fc4e03';
         this.brushType  = 'manual';
         this.modPathType  = 'manual';
+        this.theme = {
+            dark: {
+                bg: "rgb(0, 0, 32)",
+            },
+            light: {
+                bg: "rgb(255, 255, 255)",
+            },
+            select: 'dark',
+            getBg: function(themeSelect = this.select){
+                return this[themeSelect].bg; 
+            },
+            switchBg: function(){
+                this.select = this.select === 'dark' ? 'light' : 'dark';
+            },
+            isDark: function(){ return this.select === 'dark'; },
+        };
     }
 }
 
@@ -415,8 +431,8 @@ let brushCanvasMouseUp     = false;
 let modPathCanvasMouseDown = false;
 let modPathCanvasMouseUp   = false;
 
-let ctxBrush             = brushCanvas.getContext('2d');
-let ctxModPath           = modPathCanvas.getContext('2d');
+let ctxBrush               = brushCanvas.getContext('2d');
+let ctxModPath             = modPathCanvas.getContext('2d');
 
 let mouse                  =  { click: {x: 0, y: 0} };
 let mouseCanvas            =  { x: 0, y: 0, first: true, form: false};

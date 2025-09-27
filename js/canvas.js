@@ -50,13 +50,13 @@ function addCanvas(start = false, duplicate = false, toImport = false){
   ctx    = get_ctx(newCanvas, true);
   canvas = newCanvas;
 
+  fix_dpi(newCanvas);
+
   gloStart.center = {x: canvas.width/2, y: canvas.height/2};
 
   giveFuncToCanvas(canvas, ctx);
 
   canvasContext.push(ctx);
-
-  fix_dpi(newCanvas);
 
   if(duplicate){
     glos.push(deepCopy(activeGlo));

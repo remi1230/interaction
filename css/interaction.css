@@ -65,7 +65,7 @@ button{
   height: 100%;
   grid-template-columns: repeat(6, 1fr);
   background-color: rgba(238, 238, 238, 0.5);
-  padding: 0px 0px 10px 5px;
+  padding: 0px 0px 0px 7px;
 }
 .labelImport{
   margin-right: 77px;
@@ -322,7 +322,7 @@ kbd.keys.on, kbd.keys.helpOn {
   flex-direction: column;
   justify-content: space-evenly;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
 }
 #toggleHelpTxt{
   border: 1px #ccc solid;
@@ -394,6 +394,7 @@ kbd.keys.on, kbd.keys.helpOn {
   display: flex;
   flex-direction: column;
   margin-top: 7px;
+  margin-right: 6px;
   gap: 8px;
   text-align: center;
 }

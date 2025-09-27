@@ -26,7 +26,7 @@ document.addEventListener("DOMContentLoaded", function() {
     createCheckboxesWithRange(activeGlo.colorFunctionLabels, 'colorCumulContainer', 'qMove', {event: 'onchange', func: 'checkColorFunctions(event)'});
     resizeUI();
     feedHelp();
-    switchBg();
+    canvasBg();
     if(!localStorage.getItem('glo')){ createAvatar({nb: activeGlo.params.nb, w: activeGlo.size}); }
     else{ restoreFlash(); }
     getById('brushFormType_0').checked = true;
@@ -250,7 +250,7 @@ getById('goInterFaceContainer').addEventListener('wheel', (e) => {
 });
 
 /**
- * @event click:helpDialog
+ * @event helpDialog.click
  * @description (sur `helpDialog`) Ferme le dialogue d’aide quand on clique dessus,
  * et inverse l’état de visibilité.
  * @memberof module:events
@@ -261,7 +261,7 @@ helpDialog.addEventListener('click', () => {
 });
 
 /**
- * @event click:brushDialog
+ * @event brushDialog.click
  * @description (sur `brushDialog`) Ferme le dialogue de la brosse, réinitialise
  * l’état de la souris (mousedown = false) et inverse la visibilité.
  * @memberof module:events
@@ -273,7 +273,7 @@ brushDialog.addEventListener('click', () => {
 });
 
 /**
- * @event click
+ * @event helpDialogGrid.click
  * @description (sur `helpDialogGrid`) Empêche la propagation des clics à la boîte
  * de dialogue parente, pour éviter une fermeture involontaire.
  * @param {MouseEvent} e
@@ -282,7 +282,7 @@ brushDialog.addEventListener('click', () => {
 helpDialogGrid.addEventListener('click', (e) => e.stopPropagation());
 
 /**
- * @event mousedown
+ * @event brushCanvas.mousedown
  * @description (sur `brushCanvas`) Active le dessin de la brosse :
  * - initialise les positions de clic (`mouseCanvasClick`, `mouseCanvasLastClick`),
  * - enregistre un point ou mouvement via `saveMoveOrPtOnBrushCanvas`,
@@ -305,7 +305,7 @@ brushCanvas.addEventListener('mousedown', e => {
 });
 
 /**
- * @event mousedown
+ * @event modPathCanvas.mousedown
  * @description (sur `modPathCanvas`) Démarre un tracé de chemin de modificateurs :
  * - active `modPathCanvasMouseDown`,
  * - enregistre la position courante (`mouseModPathCanvas`),
@@ -330,7 +330,7 @@ modPathCanvas.addEventListener('mousedown', e => {
 });
 
 /**
- * @event mouseup
+ * @event modPathCanvas.mouseup
  * @description (sur `modPathCanvas`) Termine un tracé de chemin de modificateurs :
  * - désactive `modPathCanvasMouseDown`,
  * - dessine un petit cercle rouge à la position du relâchement.
@@ -348,7 +348,7 @@ modPathCanvas.addEventListener('mouseup', _event => {
 });
 
 /**
- * @event mousemove
+ * @event modPathCanvas.mousemove
  * @description (sur `modPathCanvas`) En mode mousedown actif, trace des segments rouges
  * entre les positions successives de la souris et sauvegarde les mouvements.
  * @param {MouseEvent} e
@@ -367,7 +367,7 @@ modPathCanvas.addEventListener('mousemove', e => {
 });
 
 /**
- * @event close
+ * @event modPathDialog.close
  * @description (sur `modPathDialog`) À la fermeture du dialogue, sauvegarde
  * le dernier mouvement du chemin en cours (soit sur l’objet global, soit
  * sur le premier modificateur sélectionné).
@@ -378,7 +378,7 @@ modPathDialog.addEventListener("close", () => {
 });
 
 /**
- * @event change
+ * @event brushFormType_1.change
  * @description (sur `#brushFormType_1`) Active ou désactive le mode de dessin en ligne
  * pour la brosse (`mouseCanvasChangeToLine`).
  * @param {Event} _event
@@ -389,7 +389,7 @@ getById('brushFormType_1').addEventListener('change', _event => {
 });
 
 /**
- * @event mouseup
+ * @event brushCanvas.mouseup
  * @description (sur `brushCanvas`) Termine le dessin de la brosse, désactive
  * `brushCanvasMouseDown` et active `brushCanvasMouseUp`.
  * @param {MouseEvent} _event
@@ -401,7 +401,7 @@ brushCanvas.addEventListener('mouseup', _event => {
 } );
 
 /**
- * @event mousemove
+ * @event brushCanvas.mousemove
  * @description (sur `brushCanvas`) Met à jour la position de la souris.
  * Si la brosse est en mode manuel et mousedown actif :
  * - sauvegarde le mouvement via `saveMoveOrPtOnBrushCanvas`,
@@ -421,16 +421,16 @@ brushCanvas.addEventListener('mousemove', e => {
 //***********************************************************************************************//
 
 
-input_params.forEach(() => {
+input_params.forEach((input) => {
   /**
- * @event mouseover
+ * @event input_params.mouseover
  * @description (sur chaque input `.input_params`) Gère le focus visuel et logique :
  * tous les autres inputs sont désactivés (`dataset.focus = false`),
  * l’input survolé est activé et reçoit le focus.
  * @param {MouseEvent} e
  * @memberof module:events
  */
-  addEventListener('mouseover', (e) => {
+  input.addEventListener('mouseover', (e) => {
     let target = e.target;
     if(target.classList.contains('input_params')){
       input_params.forEach((input) => { input.dataset.focus = 'false'; });
@@ -438,27 +438,46 @@ input_params.forEach(() => {
     }
   });
   /**
- * @event mouseout
+ * @event input_params.mouseout
  * @description (sur chaque input `.input_params`) Supprime le flag `dataset.focus`
  * quand la souris sort de l’input.
  * @param {MouseEvent} e
  * @memberof module:events
  */
-  addEventListener('mouseout', (e) => {
+  input.addEventListener('mouseout', (e) => {
     if(e.target.classList.contains('input_params')){  e.target.dataset.focus = 'false'; }
+  });
+
+  /**
+ * @event input_params.mouseout
+ * @description (sur chaque input `.input_params`) Supprime le flag `dataset.focus`
+ * quand la souris sort de l’input.
+ * @param {MouseEvent} e
+ * @memberof module:events
+ */
+  input.addEventListener('wheel', (e) => {
+    if(e.target.classList.contains('input_params')){
+      const currval = parseFloat(e.target.value);
+      const step    = parseFloat(e.target.step) * -Math.sign(e.deltaY);
+
+      const newVal = currval + step;
+
+      e.target.dispatchEvent(new Event('input', { bubbles: true }));
+      e.target.value = newVal;
+    }
   });
 });
 //------------------ STOP WINDOW KEYS EVENTS ON INPUTS ----------------- //
  stopWindowEvents.forEach(ctrl => {
   /**
- * @event focus
+ * @event ctrl.focus
  * @description (sur chaque contrôle `stopWindowEvents`) Active le blocage
  * des raccourcis clavier globaux (`activeGlo.stopWindowEvents = true`).
  * @memberof module:events
  */
    ctrl.addEventListener('focus', () => { activeGlo.stopWindowEvents = true; });
    /**
- * @event blur
+ * @event ctrl.blur
  * @description (sur chaque contrôle `stopWindowEvents`) Désactive le blocage
  * des raccourcis clavier globaux (`activeGlo.stopWindowEvents = false`).
  * @memberof module:events
@@ -476,6 +495,11 @@ function aleaOnRightClick(obj_param){
   for(var p in obj_param){
     let param = getById(p);
     if(param){
+    /** 
+     * @event param.contextmenu
+     * @description Active/désactive le mode aléatoire d’un paramètre via un clic droit.
+     * @memberof module:events
+     */
       param.addEventListener('contextmenu', (e) => {
         e.stopPropagation();
         e.preventDefault();
@@ -500,6 +524,12 @@ function defineMinOrMax(obj_param){
   for(var p in obj_param){
     let param = getById(p);
     if(param){
+      /** 
+     * @event param.mouseup
+     * @description Définit une valeur minimale ou maximale pour un paramètre
+     * lorsqu’il est activé en mode aléatoire et cliqué.
+     * @memberof module:events
+     */
       param.addEventListener('mouseup', (e) => {
         let p = e.target.id;
         if(e.button == 0 && ((activeGlo.params_alea && activeGlo.params_alea[p]) || (activeGlo.global_alea && activeGlo.alea[p]))){

@@ -587,21 +587,37 @@ function showHideCtrl(ctrl_var){
 }
 
 /**
+ * @description Attribue la couleur de fond au canvas courant.
+ * @returns {void}
+ * @memberof module:ui
+ */
+function canvasBg(){
+  canvas.style.backgroundColor = activeGlo.theme.getBg();
+}
+
+/**
  * @description Bascule la couleur de fond du canvas entre la couleur sauvegardée et la couleur définie dans `activeGlo.canvasLoveBg`.
  * @returns {void}
  * @memberof module:ui
  */
 function switchBg(){
-  activeGlo.canvasLoveBg.state = !activeGlo.canvasLoveBg.state;
-  if(activeGlo.canvasLoveBg.state){
-    activeGlo.canvasLoveBg.save  = canvas.style.backgroundColor;
-    canvas.style.backgroundColor = activeGlo.canvasLoveBg.color;
-  }
-  else{
-    canvas.style.backgroundColor = activeGlo.canvasLoveBg.save;
-  }
+  activeGlo.theme.switchBg();
+  canvasBg();
 
-  document.getElementById('switchBgButton').textContent = !activeGlo.canvasLoveBg.state ? '☀️' : '🌙';
+  document.getElementById('switchBgButton').textContent = !activeGlo.theme.isDark() ? '☀️' : '🌙';
+}
+
+/**
+ * @description Switch entre le fond d'écran actuel et automatique.
+ * @returns {void}
+ * @memberof module:ui
+ */
+function switchAutoBg(){
+  activeGlo.updBgToAvColor = !activeGlo.updBgToAvColor;
+
+  if(!activeGlo.updBgToAvColor){
+    canvasBg();
+  }
 }
 
 /**

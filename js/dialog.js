@@ -1,7 +1,7 @@
 /**
  * @module dialog
  * @description Ce module gère l’ouverture, la fermeture et la construction
- * des boîtes de dialogue liées aux canvases (brosse, modificateurs, aide).
+ * des boîtes de dialogue liées aux canvas (brosse, modificateurs, aide).
  * Il fournit également des utilitaires pour la gestion des interactions souris
  * et la présentation de l’aide contextuelle.
  */

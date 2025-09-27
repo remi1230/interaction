@@ -159,7 +159,7 @@
                   <div>
                     <label for="alternatorSpeed">Alternator speed</label>
                     <input type="range" id="alternatorSpeed" name="alternatorSpeed" class='input_params' oninput="updateGlo(this); " ondblclick="updateScale(this, event)"
-                      min="0" max="400" value="100" step="1">
+                      min="1" max="400" value="100" step="1">
                   </div>
                   <div>
                     <label for="director_angle_upd">Directors angle update</label>
@@ -1099,8 +1099,8 @@
                   <div id="toggleHelp"><div id="toggleHelpTxt" onclick="toggleHelpDialog(); ">❔</div></div>
                   <div><div class="ui-button" id="switchPauseButton" onclick="switchPause(); ">▶️</div></div>
                   <div><div class="ui-button" onclick="downloadCanvas(); ">📸</div></div>
-                  <div><div class="ui-button" id="switchBgButton" onclick="switchBg(); ">☀️</div></div>
-                 <!-- <div><div class="ui-button" id="drawButton" onclick="paint(); ">🖌</div></div> -->
+                  <div><div class="ui-button" id="switchBgButton" onclick="switchBg(); ">🌙</div></div>
+                  <div><div class="ui-button" id="switchBgButton" onclick="switchAutoBg(); ">🎨</div></div>
                   <div><div class="ui-button" id="posAvModButton" onclick="posAvMod(); ">🎯</div></div>
                   <div><div class="ui-button" id="switchPersistButton" onclick="switchPersist(); ">🖐️</div></div>
                   <div><div class="ui-button" id="switchMoveOnAleaButton" onclick="switchMoveOnAlea(); ">🎲</div></div>

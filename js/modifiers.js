@@ -611,8 +611,8 @@ function makeModifierFunction(modifierType){
           if(this.brake == 0){ att /= 100; }
           attRot    = att / brake;
 
-          let alternatorSpeed = this.brake != 0 ? this.params.alternatorSpeed : parseInt(this.params.alternatorSpeed / 10);
-          if(zeroOneCycle(this.glo.nb_moves, alternatorSpeed)){
+          const alternatorSpeed = this.params.alternatorSpeed;
+          if(zeroOneCycle(parseInt(this.glo.nb_moves), alternatorSpeed)){
             this.alternAtt.state = false;
 
             if(!this.glo.alternatorInv){ this.alternRot.inv = 1; }
@@ -632,6 +632,7 @@ function makeModifierFunction(modifierType){
             av.modifiersValues.x += this.alternAtt.inv * att * (this.x - av.x) / brake;
             av.modifiersValues.y += this.alternAtt.inv * att * (this.y - av.y) / brake;
           }
+          this.glo.nb_moves+=0.00125;
         }
       };
     case 'director':

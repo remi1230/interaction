@@ -1780,6 +1780,7 @@ class Avatar {
 
     if(activeGlo.oneColor.state){ move = activeGlo.oneColor.color.h; sat = activeGlo.oneColor.color.s; tint = activeGlo.oneColor.color.l;  }
 
+    if(obj.color_white){ move = 0; sat = 0; tint = 100; satStroke = 0; tint_stroke = 100; }
     let roundMove = round(move, 2);
 
     let avatarColor = {
@@ -1791,7 +1792,7 @@ class Avatar {
       },
       fillStyle:{
         hue        : roundMove,
-        saturation : sat / 200,
+        saturation : sat ? sat / 200 : 0,
         light      : tint,
         alpha      : a, 
       }
