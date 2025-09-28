@@ -930,6 +930,24 @@ function posRectModifiers(cent = false, type = activeGlo.pos_modifiers, inv = ac
     x+=step_x;
   }
 }
+
+/**
+ * @description Sélectionne des avatars
+ * @param {number} nb - Nombre d'avatars à supprimer ('all' pour tout supprimer)
+ * @memberof module:avatars
+ */
+function selectHalfModifiers(){
+  let selectState = activeGlo.modifierSelectHalfState;
+
+  activeGlo.modifiers.forEach((mod, i) => {
+    mod.select = 
+      (selectState === 0 && i % 2 === 0) || 
+      (selectState === 1 && i % 2 === 1);
+  });
+
+  activeGlo.modifierSelectHalfState = (selectState + 1) % 3;
+}
+
 /**
  * @description Colle les modificateurs copiés
  * @memberof modifiers

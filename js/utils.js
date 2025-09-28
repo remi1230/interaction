@@ -2,6 +2,11 @@
  * @typedef {import('./avatar.js').Avatar} Avatar
  */
 
+/**
+ * @description Ajoute à l'input domElem les classes en paramètres.
+ * @param {HTMLInputElement} domElem 
+ * @param  {...string} args 
+ */
 function addClasses(domElem, ...args){
   if(domElem){
     args.forEach(arg => {
@@ -9,6 +14,11 @@ function addClasses(domElem, ...args){
     });
   }
 }
+/**
+ * @description Supprime pour l'input domElem les classes en paramètres.
+ * @param {HTMLInputElement} domElem 
+ * @param  {...string} args 
+ */
 function removeClasses(domElem, ...args){
   if(domElem){
     args.forEach(arg => {

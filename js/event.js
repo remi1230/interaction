@@ -507,6 +507,8 @@ function aleaOnRightClick(obj_param){
         let p = e.target.id;
         if(typeof(activeGlo.params_alea) == 'undefined'){ activeGlo.params_alea = {}; }
         activeGlo.params_alea[p] = !activeGlo.params_alea[p];
+
+        document.querySelector(`label[for="${param.id}"]`).style.color = activeGlo.params_alea[p] ? '#cc6666' : 'unset';
       });
     }
   }
@@ -556,7 +558,6 @@ window.addEventListener('resize', function () {
   resizeUI();
   /*if(activeGlo.clear){ allCanvas.forEach(canvas => { fix_dpi(canvas); }); }*/
 });
-
 
 /**
  * @event keydown
@@ -1004,10 +1005,6 @@ window.addEventListener("keydown", function (e) {
             /// , -- Une spirale négative tourne dans le sens inverse -- divers -- spiralOnlyInvrot ///
         		case ',':
               activeGlo.spiralOnlyInvrot = !activeGlo.spiralOnlyInvrot;
-        			break;
-            /// = -- Interface visible ou pas -- interface ///
-        		case '=':
-              showHideInterface();
         			break;
             /// ; -- Variation de taille des avatars -- avatar, taille -- perm_var_size ///
         		case ';':

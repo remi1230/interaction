@@ -279,6 +279,7 @@ class Glob {
         this.persp_cent_x = 0;
         this.persp_cent_y = 0;
         this.moveOnAleaIt = 0;
+        this.modifierSelectHalfState = 0;
         this.form = 'ellipse';
         this.forms = ['circle', 'square', 'line', 'bezier', 'poly', 'ellipse', 'alea_form', 'cloud', 'cross', 'brush'];
         this.colorCumulType = ['average', 'average_mul', 'average_div', 'average_mul_fact', 'average_div_fact', 'test'];
