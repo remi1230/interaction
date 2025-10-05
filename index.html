@@ -1,1202 +1,1429 @@
 <!DOCTYPE html>
 <html lang="fr">
-    <head>
-      <meta charset="UTF-8" />
-      <meta name="description" content="Interaction" />
-      <title>Interaction</title>
-      <link rel="icon" type="image/png" href="img/logo_interaction.png">
-      <link rel="stylesheet" href="css/interaction.css">
-      
-      <!-- <script src="dist/app.min.js" defer></script> -->
 
-      <script src="js/calcul.js" defer></script>
-      <script src="js/color.js" defer></script>
-      <script src="js/glob.js" defer></script>
-      <script src="js/mouse.js" defer></script>
-      <script src="js/avatar.js" defer></script>
-      <script src="js/avatars.js" defer></script>
-      <script src="js/canvas.js" defer></script>
-      <script src="js/modifiers.js" defer></script>
-      <script src="js/grids.js" defer></script>
-      <script src="js/img.js" defer></script>
-      <script src="js/ui.js" defer></script>
-      <script src="js/save.js" defer></script>
-      <script src="js/utils.js" defer></script>
-      <script src="js/animation.js" defer></script>
-      <script src="js/dialog.js" defer></script>
-      <script src="js/event.js" defer></script>
-      <script src="js/tests.js" defer></script>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="description" content="Interaction" />
+  <title>Interaction</title>
+  <link rel="icon" type="image/png" href="img/logo_interaction.png">
+  <link rel="stylesheet" href="css/interaction.css">
 
-    </head>
-    <body>
-      <div id="uiCanvas-container">
-        <div id="canvasContainer">
-          <canvas id='structure' class='canvas'></canvas>
-        </div>
-        <div id="ui-container">
-          <div id='ui' style="position: relative; ">
-            <div id="goInterFaceContainer"></div>
-            <div id="otherAndInterfacesContainer">
-              <div id="interfaces-container">
-                <!-- 1) interface_modifiers_1 -->
-                <div class='interface' id="interface_modifiers_1">
-                  <div class="titleInterface"><h3>Global</h3></div>
-                  <div>
-                    <label for="nb">Avatars</label>
-                    <input type="range" id="nb" name="nb" class='input_params' oninput="nbAvatars(); updateGlo(this); " ondblclick="updateScale(this, event)"
-                      min="0" max="4096" value="512" step="1" title="512" data-alea_min="64" data-alea_max="512">
-                  </div>
-                  <div>
-                    <label for="upd_size">Size</label>
-                    <input type="range" id="upd_size" name="upd_size" class='input_params' oninput="updateSize(this); updateGlo(this); " ondblclick="updateScale(this, event)"
-                      min="0" max="30" value="2" step=".1">
-                  </div>
-                  <div>
-                    <label for="line_size">Line size</label>
-                    <input type="range" id="line_size" name="line_size" class='input_params' oninput="updateGlo(this)" ondblclick="updateScale(this, event)"
-                      min=".01" max="40" value="0.37" step=".01">
-                  </div>
-                  <div>
-                    <label for="alpha_color">Min alpha color</label>
-                    <input type="range" id="alpha_color" name="alpha_color" class='input_params updModProp' data-modprop="alpha" oninput="changeModifiersProp(this, 'alpha'); updateGlo(this)" ondblclick="updateScale(this, event)"
-                      min="0.002" max="1" value=".1" step=".001">
-                  </div>
-                  <div>
-                    <label for="colorDec">Color dec</label>
-                    <input type="range" id="colorDec" name="colorDec" class='input_params updModProp' data-modprop="colorDec" oninput="changeModifiersProp(this, 'colorDec'); updateGlo(this);"
-                      min="0" max="360" value="0" step="1" data-playinput='true'>
-                  </div>
-                  <div>
-                    <label for="tint_color">Tint</label>
-                    <input type="range" id="tint_color" name="tint_color" class='input_params updModProp' data-modprop="tint" oninput="changeModifiersProp(this, 'tint'); updateGlo(this)" ondblclick="updateScale(this, event)"
-                      min="0" max="200" value="42" step="1" data-alea_min="20">
-                  </div>
-                  <div>
-                    <label for="saturation">Saturation</label>
-                    <input type="range" id="saturation" name="saturation" class='input_params updModProp' data-modprop="sat" oninput="changeModifiersProp(this, 'sat'); updateGlo(this)" ondblclick="updateScale(this, event)"
-                      min="0" max="200" value="33" step="1">
-                  </div>
-                  <div>
-                    <label for="colorStrokeDec">Color stroke dec</label>
-                    <input type="range" id="colorStrokeDec" name="colorStrokeDec" class='input_params updModProp' data-modprop="colorStrokeDec" oninput="changeModifiersProp(this, 'colorStrokeDec'); updateGlo(this);"
-                      min="0" max="360" value="0" step="1" data-playinput='true'>
-                  </div>
-                  <div>
-                    <label for="tint_stroke">Tint stroke</label>
-                    <input type="range" id="tint_stroke" name="tint_stroke" class='input_params updModProp' data-modprop="tint_stroke" oninput="changeModifiersProp(this, 'tint_stroke'); updateGlo(this);" ondblclick="updateScale(this, event)"
-                      min="-100" max="100" value="33" step="1" data-alea_min="50">
-                  </div>
-                  <div>
-                    <label for="satStroke">Sat stroke</label>
-                    <input type="range" id="satStroke" name="satStroke" class='input_params updModProp' data-modprop="satStroke" oninput="changeModifiersProp(this, 'satStroke'); updateGlo(this);" ondblclick="updateScale(this, event)"
-                      min="-100" max="100" value="77" step="1" data-alea_min="50">
-                  </div>
-                  <div>
-                    <label for="modifierPos">Modifiers type</label>
-                    <input type="range" id="modifierPos" name="modifierPos" class='input_params' oninput="updateGlo(this); activeGlo.pos_modifiers = activeGlo.modifierTypes[this.value]; "
-                      min="0" max="11" value="1" step="1" data-labels="modifierTypes">
-                  </div>
-                  <div>
-                    <label for="mod_force_upd">Modifiers force update</label>
-                    <input type="range" id="mod_force_upd" name="mod_force_upd" class='input_params' oninput="updateModifiersForce(this); updateGlo(this)" ondblclick="updateScale(this, event)"
-                      min="1" max="11" value="6" step=".1">
-                  </div>
-                  <div>
-                    <label for="brake_mod_upd">Modifiers brake update</label>
-                    <input type="range" id="brake_mod_upd" name="brake_mod_upd" class='input_params' oninput="updateModifiersForce(this, 'brake', false, -Infinity, Infinity, 0.0666); updateGlo(this)" ondblclick="updateScale(this, event)"
-                      min="1" max="11" value="6" step=".01">
-                  </div>
-                  <div>
-                    <label for="selModsByType">Select modifiers by type</label>
-                    <input type="range" id="selModsByType" name="selModsByType" class='input_params' oninput="updateGlo(this); modifier_select(false, this); "
-                      min="0" max="11" value="0" step="1" data-labels="selModsByType">
-                  </div>
-                  <div>
-                    <label for="turnModifiers">Turn modifiers</label>
-                    <input type="range" id="turnModifiers" name="turnModifiers" class='input_params' oninput="updateGlo(this); turnModifiers(this); "
-                      min="0" max="11" value="0" step="1" data-labels="modifierTypes">
-                  </div>
-                  <div>
-                    <label for="rotModifiersMax">Rot modifiers max</label>
-                    <input type="range" id="rotModifiersMax" name="rotModifiersMax" class='input_params radUnit updModProp' data-modprop="rotMax" oninput="updateGlo(this); changeModifiersProp(this, 'rotMax');" ondblclick="updateScale(this, event)"
-                      min="0" max="45" value="0" step=".01">
-                  </div>
-                  <div>
-                    <label for="limSpeedMin">Lim speed min</label>
-                    <input type="range" id="limSpeedMin" name="limSpeedMin" class='input_params' oninput="updateGlo(this)" ondblclick="updateScale(this, event)"
-                      min="0" max="20" value="2" step=".01">
-                  </div>
-                  <div>
-                    <label for="limSpeedMax">Lim speed max</label>
-                    <input type="range" id="limSpeedMax" name="limSpeedMax" class='input_params' oninput="updateGlo(this)" ondblclick="updateScale(this, event)"
-                      min="0" max="20" value="2" step=".01">
-                  </div>
-                  <div>
-                    <label for="rot_spi_upd">Spiralors rot update</label>
-                    <input type="range" id="rot_spi_upd" name="rot_spi_upd" class='input_params' oninput="updateModifiersForce(this, 'rot_spi'); updateGlo(this)" ondblclick="updateScale(this, event)"
-                      min="1" max="11" value="6" step=".01">
-                  </div>
+  <!-- <script src="dist/app.min.js" defer></script> -->
+
+  <script src="js/glob.js" defer></script>
+  <script src="js/calcul.js" defer></script>
+  <script src="js/color.js" defer></script>
+  <script src="js/mouse.js" defer></script>
+  <script src="js/avatar.js" defer></script>
+  <script src="js/avatars.js" defer></script>
+  <script src="js/canvas.js" defer></script>
+  <script src="js/modifiers.js" defer></script>
+  <script src="js/grids.js" defer></script>
+  <script src="js/img.js" defer></script>
+  <script src="js/ui.js" defer></script>
+  <script src="js/save.js" defer></script>
+  <script src="js/utils.js" defer></script>
+  <script src="js/animation.js" defer></script>
+  <script src="js/dialog.js" defer></script>
+  <script src="js/event.js" defer></script>
+  <script src="js/tests.js" defer></script>
+
+</head>
+
+<body>
+  <div id="uiCanvas-container">
+    <div id="canvasContainer">
+      <canvas id='structure' class='canvas'></canvas>
+    </div>
+    <div id="ui-container">
+      <div id='ui' style="position: relative; ">
+        <div id="goInterFaceContainer"></div>
+        <div id="otherAndInterfacesContainer">
+          <div id="interfaces-container">
+            <!-- 1) interface_modifiers_1 -->
+            <div class='interface' id="interface_modifiers_1">
+              <div class="titleInterface">
+                <h3>Global</h3>
+              </div>
+              <div>
+                <label for="nb">Avatars</label>
+                <input type="range" id="nb" name="nb" class='input_params' oninput="nbAvatars(); updateGlo(this); "
+                  ondblclick="updateScale(this, event)" min="0" max="4096" value="512" step="1" title="512"
+                  data-alea_min="64" data-alea_max="512">
+              </div>
+              <div>
+                <label for="upd_size">Size</label>
+                <input type="range" id="upd_size" name="upd_size" class='input_params'
+                  oninput="updateSize(this); updateGlo(this); " ondblclick="updateScale(this, event)" min="0" max="30"
+                  value="2" step=".1">
+              </div>
+              <div>
+                <label for="line_size">Line size</label>
+                <input type="range" id="line_size" name="line_size" class='input_params' oninput="updateGlo(this)"
+                  ondblclick="updateScale(this, event)" min=".01" max="40" value="0.37" step=".01">
+              </div>
+              <div>
+                <label for="alpha_color">Min alpha color</label>
+                <input type="range" id="alpha_color" name="alpha_color" class='input_params updModProp'
+                  data-modprop="alpha" oninput="changeModifiersProp(this, 'alpha'); updateGlo(this)"
+                  ondblclick="updateScale(this, event)" min="0.002" max="1" value=".1" step=".001">
+              </div>
+              <div>
+                <label for="colorDec">Color dec</label>
+                <input type="range" id="colorDec" name="colorDec" class='input_params updModProp'
+                  data-modprop="colorDec" oninput="changeModifiersProp(this, 'colorDec'); updateGlo(this);" min="0"
+                  max="360" value="0" step="1" data-playinput='true'>
+              </div>
+              <div>
+                <label for="tint_color">Tint</label>
+                <input type="range" id="tint_color" name="tint_color" class='input_params updModProp'
+                  data-modprop="tint" oninput="changeModifiersProp(this, 'tint'); updateGlo(this)"
+                  ondblclick="updateScale(this, event)" min="0" max="200" value="42" step="1" data-alea_min="20">
+              </div>
+              <div>
+                <label for="saturation">Saturation</label>
+                <input type="range" id="saturation" name="saturation" class='input_params updModProp' data-modprop="sat"
+                  oninput="changeModifiersProp(this, 'sat'); updateGlo(this)" ondblclick="updateScale(this, event)"
+                  min="0" max="200" value="33" step="1">
+              </div>
+              <div>
+                <label for="colorStrokeDec">Color stroke dec</label>
+                <input type="range" id="colorStrokeDec" name="colorStrokeDec" class='input_params updModProp'
+                  data-modprop="colorStrokeDec" oninput="changeModifiersProp(this, 'colorStrokeDec'); updateGlo(this);"
+                  min="0" max="360" value="0" step="1" data-playinput='true'>
+              </div>
+              <div>
+                <label for="tint_stroke">Tint stroke</label>
+                <input type="range" id="tint_stroke" name="tint_stroke" class='input_params updModProp'
+                  data-modprop="tint_stroke" oninput="changeModifiersProp(this, 'tint_stroke'); updateGlo(this);"
+                  ondblclick="updateScale(this, event)" min="-100" max="100" value="33" step="1" data-alea_min="50">
+              </div>
+              <div>
+                <label for="satStroke">Sat stroke</label>
+                <input type="range" id="satStroke" name="satStroke" class='input_params updModProp'
+                  data-modprop="satStroke" oninput="changeModifiersProp(this, 'satStroke'); updateGlo(this);"
+                  ondblclick="updateScale(this, event)" min="-100" max="100" value="77" step="1" data-alea_min="50">
+              </div>
+              <div>
+                <label for="modifierPos">Modifiers type</label>
+                <input type="range" id="modifierPos" name="modifierPos" class='input_params'
+                  oninput="updateGlo(this); activeGlo.pos_modifiers = activeGlo.modifierTypes[this.value]; " min="0"
+                  max="11" value="1" step="1" data-labels="modifierTypes">
+              </div>
+              <div>
+                <label for="mod_force_upd">Modifiers force update</label>
+                <input type="range" id="mod_force_upd" name="mod_force_upd" class='input_params'
+                  oninput="updateModifiersForce(this); updateGlo(this)" ondblclick="updateScale(this, event)" min="1"
+                  max="11" value="6" step=".1">
+              </div>
+              <div>
+                <label for="brake_mod_upd">Modifiers brake update</label>
+                <input type="range" id="brake_mod_upd" name="brake_mod_upd" class='input_params'
+                  oninput="updateModifiersForce(this, 'brake', false, -Infinity, Infinity, 0.0666); updateGlo(this)"
+                  ondblclick="updateScale(this, event)" min="1" max="11" value="6" step=".01">
+              </div>
+              <div>
+                <label for="selModsByType">Select modifiers by type</label>
+                <input type="range" id="selModsByType" name="selModsByType" class='input_params'
+                  oninput="updateGlo(this); modifier_select(false, this); " min="0" max="11" value="0" step="1"
+                  data-labels="selModsByType">
+              </div>
+              <div>
+                <label for="turnModifiers">Turn modifiers</label>
+                <input type="range" id="turnModifiers" name="turnModifiers" class='input_params'
+                  oninput="updateGlo(this); turnModifiers(this); " min="0" max="11" value="0" step="1"
+                  data-labels="modifierTypes">
+              </div>
+              <div>
+                <label for="rotModifiersMax">Rot modifiers max</label>
+                <input type="range" id="rotModifiersMax" name="rotModifiersMax" class='input_params radUnit updModProp'
+                  data-modprop="rotMax" oninput="updateGlo(this); changeModifiersProp(this, 'rotMax');"
+                  ondblclick="updateScale(this, event)" min="0" max="45" value="0" step=".01">
+              </div>
+              <div>
+                <label for="limSpeedMin">Lim speed min</label>
+                <input type="range" id="limSpeedMin" name="limSpeedMin" class='input_params' oninput="updateGlo(this)"
+                  ondblclick="updateScale(this, event)" min="0" max="20" value="2" step=".01">
+              </div>
+              <div>
+                <label for="limSpeedMax">Lim speed max</label>
+                <input type="range" id="limSpeedMax" name="limSpeedMax" class='input_params' oninput="updateGlo(this)"
+                  ondblclick="updateScale(this, event)" min="0" max="20" value="2" step=".01">
+              </div>
+              <div>
+                <label for="rot_spi_upd">Spiralors rot update</label>
+                <input type="range" id="rot_spi_upd" name="rot_spi_upd" class='input_params'
+                  oninput="updateModifiersForce(this, 'rot_spi'); updateGlo(this)" ondblclick="updateScale(this, event)"
+                  min="1" max="11" value="6" step=".01">
+              </div>
+            </div>
+
+            <!-- 2) interface_modifiers_2 -->
+            <div style='display: none; ' class='interface' id="interface_modifiers_2">
+              <div class="titleInterface">
+                <h3>Modifiers</h3>
+              </div>
+              <div>
+                <label for="nb_modifiers">Nb modifiers</label>
+                <input type="range" id="nb_modifiers" name="nb_modifiers" class='input_params'
+                  oninput="updateGlo(this); " ondblclick="updateScale(this, event)" min="1" max="32" value="12"
+                  step="1">
+              </div>
+              <div>
+                <label for="polyNbEdges">Poly mod nb edges</label>
+                <input type="range" id="polyNbEdges" name="polyNbEdges" class='input_params updModProp'
+                  data-modprop="nbEdges" oninput="updateGlo(this); changeModifiersProp(this, 'nbEdges'); "
+                  ondblclick="updateScale(this, event)" min="3" max="12" value="3" step="1">
+              </div>
+              <div>
+                <label for="rotCircleModifiers">Circle modifiers angle</label>
+                <input type="range" id="rotCircleModifiers" name="rotCircleModifiers" class='input_params radUnit'
+                  oninput="updateGlo(this); " ondblclick="updateScale(this, event)" min="-180" max="180" value="0"
+                  step="1">
+              </div>
+              <div>
+                <label for="alternatorSpeed">Alternator speed</label>
+                <input type="range" id="alternatorSpeed" name="alternatorSpeed" class='input_params'
+                  oninput="updateGlo(this); " ondblclick="updateScale(this, event)" min="1" max="400" value="100"
+                  step="1">
+              </div>
+              <div>
+                <label for="director_angle_upd">Directors angle update</label>
+                <input type="range" id="director_angle_upd" name="director_angle_upd" class='input_params radUnit'
+                  oninput="updateGlo(this); " ondblclick="updateScale(this, event)" min="0" max="360" value="0"
+                  step="1">
+              </div>
+              <div>
+                <label for="director_angle">Directors angle</label>
+                <input type="range" id="director_angle" name="director_angle" class='input_params radUnit'
+                  oninput="updateGlo(this); " ondblclick="updateScale(this, event)" min="0" max="360" value="0"
+                  step="1">
+              </div>
+              <div>
+                <label for="weightMods">Weight mods</label>
+                <input type="range" id="weightMods" name="weightMods" class='input_params updModProp'
+                  data-modprop="weight" oninput="changeModifiersProp(this, 'weight'); updateGlo(this); "
+                  ondblclick="updateScale(this, event)" min="0" max="12" value="1" step="0.1">
+              </div>
+              <div>
+                <label for="dblAngleUpd">Magnet angle upd</label>
+                <input type="range" id="dblAngleUpd" name="dblAngleUpd" class='input_params radUnit'
+                  oninput="updModAngle(this); updateGlo(this); " ondblclick="updateScale(this, event)" min="0" max="360"
+                  value="180" step="1">
+              </div>
+              <div>
+                <label for="dblModDist">Magnet poles dist</label>
+                <input type="range" id="dblModDist" name="dblModDist" class='input_params' oninput="updateGlo(this); "
+                  ondblclick="updateScale(this, event)" min="0" max="100" value="15" step="1">
+              </div>
+              <div>
+                <label for="angleEllipseMod">Ellipse angle mod</label>
+                <input type="range" id="angleEllipseMod" name="angleEllipseMod" class='input_params radUnit'
+                  oninput="updateGlo(this); " ondblclick="updateScale(this, event)" min="-90" max="90" value="0"
+                  step="1">
+              </div>
+              <div>
+                <label for="posModsNbEdges">Pos mods nb edges</label>
+                <input type="range" id="posModsNbEdges" name="posModsNbEdges" class='input_params'
+                  oninput="updateGlo(this); " ondblclick="updateScale(this, event)" min="3" max="12" value="3" step="1">
+              </div>
+              <div>
+                <label for="ell_x_mod_upd">Ellipse x modifiers update</label>
+                <input type="range" id="ell_x_mod_upd" name="ell_x_mod_upd" class='input_params'
+                  oninput="updateModifiersForce(this, 'ellipse', 'x'); updateGlo(this)"
+                  ondblclick="updateScale(this, event)" min="1" max="11" value="6" step=".1">
+              </div>
+              <div>
+                <label for="ell_y_mod_upd">Ellipse y modifiers update</label>
+                <input type="range" id="ell_y_mod_upd" name="ell_y_mod_upd" class='input_params'
+                  oninput="updateModifiersForce(this, 'ellipse', 'y'); updateGlo(this)"
+                  ondblclick="updateScale(this, event)" min="1" max="11" value="6" step=".1">
+              </div>
+              <div>
+                <label for="secondMoveIt">Second Move hz</label>
+                <input type="range" id="secondMoveIt" name="secondMoveIt" class='input_params'
+                  oninput="updateGlo(this); " ondblclick="updateScale(this, event)" min=".1" max="20" value="1"
+                  step=".1">
+              </div>
+              <div>
+                <label for="secondMoveRange">Second Move amp</label>
+                <input type="range" id="secondMoveRange" name="secondMoveRange" class='input_params'
+                  oninput="updateGlo(this)" ondblclick="updateScale(this, event)" min=".1" max="20" value="1" step=".1">
+              </div>
+              <div>
+                <label for="angleEllipse">Ellipse angle</label>
+                <input type="range" id="angleEllipse" name="angleEllipse" class='input_params radUnit'
+                  oninput="replaceAvOnEllipse(this); updateGlo(this); " ondblclick="updateScale(this, event)" min="-90"
+                  max="90" value="0" step="1">
+              </div>
+              <div>
+                <label for="formModType">Pos mods by form</label>
+                <input type="range" id="formModType" name="formModType" class='input_params' oninput="updateGlo(this); "
+                  min="0" max="4" value="1" step="1" data-labels="formModTypes">
+              </div>
+              <div>
+                <label for="lim_attract">Modifiers affecting limit</label>
+                <input type="range" id="lim_attract" name="lim_attract" class='input_params updModProp'
+                  data-modprop="lim_attract" oninput="updateGlo(this); changeModifiersProp(this, 'lim_attract'); "
+                  ondblclick="updateScale(this, event);" min="0" max="50" value="0" step="1">
+              </div>
+              <div>
+                <label for="distNearDrawMods">Dist draw mods</label>
+                <input type="range" id="distNearDrawMods" name="distNearDrawMods" class='input_params'
+                  oninput="updateGlo(this); " ondblclick="updateScale(this, event)" min="0" max="40" value="20"
+                  step=".01">
+              </div>
+              <div>
+                <label for="distNearClearMods">Dist clear mods</label>
+                <input type="range" id="distNearClearMods" name="distNearClearMods" class='input_params'
+                  oninput="updateGlo(this); " ondblclick="updateScale(this, event)" min="0" max="10" value="6"
+                  step=".01">
+              </div>
+            </div>
+
+            <!-- 3) interface_rotate_1 -->
+            <div class='interface' id="interface_rotate_1" style='display: none; '>
+              <div class="titleInterface">
+                <h3>Rotation</h3>
+              </div>
+              <div>
+                <label for="rotate_angle">Rotate angle</label>
+                <input type="range" id="rotate_angle" name="rotate_angle" class='input_params radUnit'
+                  oninput="updateGlo(this); " ondblclick="updateScale(this, event)" min="-180" max="180" value="0"
+                  step=".01">
+              </div>
+              <div>
+                <label for="spiral_angle">Spiral angle</label>
+                <input type="range" id="spiral_angle" name="spiral_angle" class='input_params radUnit'
+                  oninput="updateGlo(this); " ondblclick="updateScale(this, event)" min="-180" max="180" value="0"
+                  step="1">
+              </div>
+              <div>
+                <label for="spiral_exp">Spiral exposant</label>
+                <input type="range" id="spiral_exp" name="spiral_exp" class='input_params' oninput="updateGlo(this)"
+                  ondblclick="updateScale(this, event)" min="0" max="10" value="1" step=".01">
+              </div>
+              <div>
+                <label for="trirotate_angle">Rot in poly angle</label>
+                <input type="range" id="trirotate_angle" name="trirotate_angle" class='input_params radUnit'
+                  oninput="updateGlo(this); " ondblclick="updateScale(this, event)" min="-180" max="180" value="0"
+                  step="1">
+              </div>
+              <div>
+                <label for="trirotate_angle2">Rot in poly angle 2</label>
+                <input type="range" id="trirotate_angle2" name="trirotate_angle2" class='input_params radUnit'
+                  oninput="updateGlo(this); " ondblclick="updateScale(this, event)" min="-180" max="180" value="0"
+                  step="1">
+              </div>
+              <div>
+                <label for="rotPoly_angle">Rotate poly av angle</label>
+                <input type="range" id="rotPoly_angle" name="rotPoly_angle" class='input_params radUnit'
+                  oninput="updateGlo(this); " ondblclick="updateScale(this, event)" min="-180" max="180" value="0"
+                  step="1">
+              </div>
+              <div>
+                <label for="polyRotAngle">Rot rot in poly angle</label>
+                <input type="range" id="polyRotAngle" name="polyRotAngle" class='input_params radUnit'
+                  oninput="updateGlo(this); " ondblclick="updateScale(this, event)" min="0" max="60" value="0" step="1">
+              </div>
+              <div>
+                <label for="polyRotAngle2">Rot rot in poly angle 2</label>
+                <input type="range" id="polyRotAngle2" name="polyRotAngle2" class='input_params radUnit'
+                  oninput="updateGlo(this); " ondblclick="updateScale(this, event)" min="0" max="60" value="0" step="1">
+              </div>
+              <div>
+                <label for="rotPosPolyAv">Rot pos poly av</label>
+                <input type="range" id="rotPosPolyAv" name="rotPosPolyAv" class='input_params radUnit'
+                  oninput="updateGlo(this); " ondblclick="updateScale(this, event)" min="0" max="60" value="0" step="1">
+              </div>
+              <div>
+                <label for="spiral_speed">Spiral speed</label>
+                <input type="range" id="spiral_speed" name="spiral_speed" class='input_params'
+                  oninput="updateGlo(this);" ondblclick="updateScale(this, event)" min="1" max="40" value="10" step="1">
+              </div>
+              <div>
+                <label for="spiral_force">Spiral force</label>
+                <input type="range" id="spiral_force" name="spiral_force" class='input_params'
+                  oninput="updateGlo(this); " ondblclick="updateScale(this, event)" min="1" max="1.1" value="1"
+                  step=".001">
+              </div>
+              <div>
+                <label for="polyRotNbEdges2">Poly rot nb edges 2</label>
+                <input type="range" id="polyRotNbEdges2" name="polyRotNbEdges2" class='input_params'
+                  oninput="updateGlo(this); updMaxAngleToNbEdges('polyRotAngle', this.value); "
+                  ondblclick="updateScale(this, event)" min="3" max="12" value="3" step="1">
+              </div>
+              <div>
+                <label for="ellipse_x">Ellipse X</label>
+                <input type="range" id="ellipse_x" name="ellipse_x" class='input_params' oninput="updateGlo(this)"
+                  ondblclick="updateScale(this, event)" min="1" max="10" value="1" step=".1">
+              </div>
+              <div>
+                <label for="ellipse_y">Ellipse Y</label>
+                <input type="range" id="ellipse_y" name="ellipse_y" class='input_params' oninput="updateGlo(this)"
+                  ondblclick="updateScale(this, event)" min="1" max="10" value="1" step=".1">
+              </div>
+              <div>
+                <label for="dev_angle">Dev angle</label>
+                <input type="range" id="dev_angle" name="dev_angle" class='input_params radUnit'
+                  oninput="updateGlo(this); " ondblclick="updateScale(this, event)" min="-180" max="180" value="0"
+                  step="1">
+              </div>
+              <div>
+                <label for="modifiers_angle">Rotate modifiers angle</label>
+                <input type="range" id="modifiers_angle" name="modifiers_angle" class='input_params radUnit'
+                  oninput="updateGlo(this); " ondblclick="updateScale(this, event)" min="-180" max="180" value="0"
+                  step="1">
+              </div>
+              <div>
+                <label for="polyRotNbEdges">Poly rot nb edges</label>
+                <input type="range" id="polyRotNbEdges" name="polyRotNbEdges" class='input_params'
+                  oninput="updateGlo(this); updMaxAngleToNbEdges('polyRotAngle', this.value); "
+                  ondblclick="updateScale(this, event)" min="3" max="12" value="3" step="1">
+              </div>
+              <div>
+                <label for="modPolyRotAngle">Poly mod rot angle</label>
+                <input type="range" id="modPolyRotAngle" name="modPolyRotAngle" class='input_params radUnit'
+                  oninput="updModAngle(this, 'modPolyRotAngle'); updateGlo(this); "
+                  ondblclick="updateScale(this, event)" min="0" max="60" value="0" step="1">
+              </div>
+              <div>
+                <label for="asyncTime">Async modifier time</label>
+                <input type="range" id="asyncTime" name="asyncTime" class='input_params' oninput="updateGlo(this); "
+                  ondblclick="updateScale(this, event)" min="1" max="200" value="1" step="1">
+              </div>
+            </div>
+
+            <!-- 5) interface_colors_1 -->
+            <div style='display: none; ' class='interface' id="interface_colors_1">
+              <div class="titleInterface">
+                <h3>Color</h3>
+              </div>
+              <div>
+                <label for="varColDistModifs">Var color by modifiers</label>
+                <input type="range" id="varColDistModifs" name="varColDistModifs" class='input_params'
+                  oninput="updateGlo(this)" ondblclick="updateScale(this, event)" min="0.1" max="20" value="2"
+                  step=".1">
+              </div>
+              <div>
+                <label for="varColByNum">Var color by num</label>
+                <input type="range" id="varColByNum" name="varColByNum" class='input_params' oninput="updateGlo(this)"
+                  ondblclick="updateScale(this, event)" min=".01" max="2" value="1" step=".01">
+              </div>
+              <div>
+                <label for="varMoveCol">Var move color</label>
+                <input type="range" id="varMoveCol" name="varMoveCol" class='input_params' oninput="updateGlo(this);"
+                  ondblclick="updateScale(this, event)" min="0.01" max="10" value="1" step=".01">
+              </div>
+              <div>
+                <label for="var_center_col">Var center color</label>
+                <input type="range" id="var_center_col" name="var_center_col" class='input_params'
+                  oninput="updateGlo(this)" ondblclick="updateScale(this, event)" min="0.1" max="4" value="1" step=".1">
+              </div>
+              <div>
+                <label for="var_tint">Tint image</label>
+                <input type="range" id="var_tint" name="var_tint" class='input_params'
+                  oninput="updateTint(this); updateGlo(this);" ondblclick="updateScale(this, event)" min="0" max="4"
+                  value="2" step=".01">
+              </div>
+              <div>
+                <label for="arcStartAngle">Arc start angle</label>
+                <input type="range" id="arcStartAngle" name="arcStartAngle" class='input_params radUnit'
+                  oninput="updateGlo(this)" ondblclick="updateScale(this, event)" min="0" max="360" value="0" step="1">
+              </div>
+              <div>
+                <label for="arcEndAngle">Arc end angle</label>
+                <input type="range" id="arcEndAngle" name="arcEndAngle" class='input_params radUnit'
+                  oninput="updateGlo(this)" ondblclick="updateScale(this, event)" min="0" max="360" value="360"
+                  step="1">
+              </div>
+              <div>
+                <label for="arcRotAngle">Arc rot angle</label>
+                <input type="range" id="arcRotAngle" name="arcRotAngle" class='input_params radUnit'
+                  oninput="updateGlo(this);" ondblclick="updateScale(this, event)" min="0" max="360" value="0" step="1">
+              </div>
+              <div>
+                <label for="var_tint_r">Tint image red</label>
+                <input type="range" id="var_tint_r" name="var_tint_r" class='input_params'
+                  oninput="updateTint(this, 'r'); updateGlo(this);" ondblclick="updateScale(this, event)" min="0"
+                  max="1" value=".5" step=".01">
+              </div>
+              <div>
+                <label for="var_tint_g">Tint image green</label>
+                <input type="range" id="var_tint_g" name="var_tint_g" class='input_params'
+                  oninput="updateTint(this, 'g'); updateGlo(this);" ondblclick="updateScale(this, event)" min="0"
+                  max="1" value=".5" step=".01">
+              </div>
+              <div>
+                <label for="var_tint_b">Tint image blue</label>
+                <input type="range" id="var_tint_b" name="var_tint_b" class='input_params'
+                  oninput="updateTint(this, 'b'); updateGlo(this);" ondblclick="updateScale(this, event)" min="0"
+                  max="1" value=".5" step=".01">
+              </div>
+              <div>
+                <label for="var_alpha_img">Image alpha</label>
+                <input type="range" id="var_alpha_img" name="var_alpha_img" class='input_params'
+                  oninput="updateTint(this, 'a'); updateGlo(this);" ondblclick="updateScale(this, event)" min="0"
+                  max="1" value=".5" step=".01">
+              </div>
+              <div>
+                <label for="dirColorCoeff">Dir color coeff</label>
+                <input type="range" id="dirColorCoeff" name="dirColorCoeff" class='input_params'
+                  oninput="updateGlo(this)" ondblclick="updateScale(this, event)" min="0.1" max="20" value="1"
+                  step=".1">
+              </div>
+              <div>
+                <label for="color_angle">Color angle img</label>
+                <input type="range" id="color_angle" name="color_angle" class='input_params radUnit'
+                  oninput="ColorOffsetImg(this); updateGlo(this); " ondblclick="updateScale(this, event)" min="0"
+                  max="360" value="0" step="1">
+              </div>
+              <div>
+                <label for="rotColorX">Rot color X</label>
+                <input type="range" id="rotColorX" name="rotColorX" class='input_params'
+                  oninput="rotateColor(0.1,0.1,0.05); " ondblclick="updateScale(this, event)" min="0" max="1" value=".5"
+                  step=".01">
+              </div>
+              <div>
+                <label for="rotColorY">Rot color Y</label>
+                <input type="range" id="rotColorY" name="rotColorY" class='input_params'
+                  oninput="rotateColor(0.05,0.1,0.1); " ondblclick="updateScale(this, event)" min="0" max="1" value=".5"
+                  step=".01">
+              </div>
+              <div>
+                <label for="rotColorZ">Rot color Z</label>
+                <input type="range" id="rotColorZ" name="rotColorZ" class='input_params radUnit'
+                  oninput="rotateColor(0.1,0.05,0.1); " ondblclick="updateScale(this, event)" min="0" max="1" value=".5"
+                  step=".01">
+              </div>
+            </div>
+
+            <!-- 6) interface_colors_2 -->
+            <div style='display: none; ' class='interface' id="interface_colors_2">
+              <div class="titleInterface">
+                <h3>Color - suit</h3>
+              </div>
+              <div>
+                <label for="shell_img">Shell image</label>
+                <input type="range" id="shell_img" name="shell_img" class='input_params radUnit'
+                  oninput="updShell(this); updateGlo(this); " ondblclick="updateScale(this, event)" min="1" max="11"
+                  value="6" step=".1">
+              </div>
+              <div>
+                <label for="nearColorPow">near pow color</label>
+                <input type="range" id="nearColorPow" name="nearColorPow" class='input_params updModProp'
+                  data-modprop="powColor" oninput="updateGlo(this); changeModifiersProp(this, 'powColor');"
+                  ondblclick="updateScale(this, event)" min="0" max="2" value="0.62" step=".01">
+              </div>
+              <div>
+                <label for="alternColorSpeed">Altern color speed</label>
+                <input type="range" id="alternColorSpeed" name="alternColorSpeed" class='input_params'
+                  oninput="updateGlo(this); " ondblclick="updateScale(this, event)" min="0" max="400" value="100"
+                  step="1">
+              </div>
+              <div>
+                <label for="alternColorVal">Altern color val</label>
+                <input type="range" id="alternColorVal" name="alternColorVal" class='input_params'
+                  oninput="updateGlo(this);" ondblclick="updateScale(this, event)" min="-360" max="360" value="180"
+                  step="1">
+              </div>
+              <div>
+                <label for="varOneColMod">Var one col mod</label>
+                <input type="range" id="varOneColMod" name="varOneColMod" class='input_params updModProp'
+                  data-modprop="varOneColMod" oninput="updateGlo(this); changeModifiersProp(this, 'varOneColMod');"
+                  ondblclick="updateScale(this, event)" min="0.1" max="20" value="2" step=".1">
+              </div>
+              <div>
+                <label for="lightByCenter">Light by center</label>
+                <input type="range" id="lightByCenter" name="lightByCenter" class='input_params'
+                  oninput="updateGlo(this); " ondblclick="updateScale(this, event)" min="-10" max="10" value="0"
+                  step="0.1">
+              </div>
+              <div>
+                <label for="lightByDistMod">Ligth by dist mod pow</label>
+                <input type="range" id="lightByDistMod" name="lightByDistMod" class='input_params'
+                  oninput="updateGlo(this); " ondblclick="updateScale(this, event)" min="-1.01" max="1.01" value="0"
+                  step=".01">
+              </div>
+              <div>
+                <label for="lightByDistModCoeff">Ligth by dist mod coeff</label>
+                <input type="range" id="lightByDistModCoeff" name="lightByDistModCoeff" class='input_params'
+                  oninput="updateGlo(this); " ondblclick="updateScale(this, event)" min="0.01" max="10" value="0.5"
+                  step=".01">
+              </div>
+              <div>
+                <label for="satByDistModCoeff">Sat by dist mod coeff</label>
+                <input type="range" id="satByDistModCoeff" name="satByDistModCoeff" class='input_params'
+                  oninput="updateGlo(this);" ondblclick="updateScale(this, event)" min="0.01" max="10" value="0.5"
+                  step=".01">
+              </div>
+              <div>
+                <label for="satByDistMod">Sat by dist mod pow</label>
+                <input type="range" id="satByDistMod" name="satByDistMod" class='input_params'
+                  oninput="updateGlo(this);" ondblclick="updateScale(this, event)" min="-1.01" max="1.01" value="0"
+                  step=".01">
+              </div>
+              <div>
+                <label for="satImg">Saturation img</label>
+                <input type="range" id="satImg" name="satImg" class='input_params'
+                  oninput="updateSaturation(this); updateGlo(this)" ondblclick="updateScale(this, event)" min="0"
+                  max="4" value="2" step=".01">
+              </div>
+              <div>
+                <label for="colorFunction">Color function</label>
+                <input type="range" id="colorFunction" name="colorFunction" class='input_params updModProp'
+                  data-modprop="colorFunction"
+                  oninput="activeGlo.colorFunction = activeGlo.colorFunctionLabels[this.value]; updateGlo(this); changeModifiersProp(this, 'colorFunction', activeGlo.colorFunctionLabels[this.value]); "
+                  min="0" max="4" value="0" step="1" data-labels="colorFunctionLabels">
+              </div>
+              <div>
+                <label for="colorCumulType">Color cumul type</label>
+                <input type="range" id="colorCumulType" name="colorCumulType" class='input_params'
+                  oninput="updateGlo(this); " min="0" max="5" value="0" step="1" data-labels="colorCumulType">
+              </div>
+              <div>
+                <label for="greyColor">Grey color</label>
+                <input type="range" id="greyColor" name="greyColor" class='input_params'
+                  oninput="greyColor(this); updateGlo(this)" ondblclick="updateScale(this, event)" min="0" max="6"
+                  value="3" step=".1">
+              </div>
+              <div>
+                <div id="colorCumulContainer">Cumul colors functions</div>
+                <div></div>
+                <div></div>
+              </div>
+            </div>
+
+            <!-- 4) interface_rotate_2 -->
+            <div style='display: none; ' id="interface_rotate_2" class='interface'>
+              <div class="titleInterface">
+                <h3>Avatars</h3>
+              </div>
+              <div>
+                <label for="dirAngle">Dir angle</label>
+                <input type="range" id="dirAngle" name="dirAngle" class='input_params radUnit'
+                  oninput="updateGlo(this); " min="0" max="360" value="0" step="1">
+              </div>
+              <div>
+                <label for="dirForce">Dir force</label>
+                <input type="range" id="dirForce" name="dirForce" class='input_params' oninput="updateGlo(this); "
+                  ondblclick="updateScale(this, event)" min="-300" max="300" value="0" step="1">
+              </div>
+              <div>
+                <label for="attractForce">Attract force</label>
+                <input type="range" id="attractForce" name="attractForce" class='input_params'
+                  oninput="updateGlo(this); " ondblclick="updateScale(this, event)" min="-300" max="300" value="0"
+                  step="1">
+              </div>
+              <div>
+                <label for="alternTintSpeed">Altern tint speed</label>
+                <input type="range" id="alternTintSpeed" name="alternTintSpeed" class='input_params'
+                  oninput="updateGlo(this); " ondblclick="updateScale(this, event)" min="0" max="400" value="100"
+                  step="1">
+              </div>
+              <div>
+                <label for="alternSatSpeed">Altern sat speed</label>
+                <input type="range" id="alternSatSpeed" name="alternSatSpeed" class='input_params'
+                  oninput="updateGlo(this); " ondblclick="updateScale(this, event)" min="0" max="400" value="100"
+                  step="1">
+              </div>
+              <div>
+                <label for="avToFollowDist">Av to follow dist</label>
+                <input type="range" id="avToFollowDist" name="avToFollowDist" class='input_params'
+                  oninput="updateGlo(this); " ondblclick="updateScale(this, event)" min="0" max="100" value="10"
+                  step="1">
+              </div>
+              <div>
+                <label for="avToFollowTAvs">Av to follow %</label>
+                <input type="range" id="avToFollowTAvs" name="avToFollowTAvs" class='input_params'
+                  oninput="updateGlo(this); followAvatar(); " min="0" max="100" value="10" step="1">
+              </div>
+              <div>
+                <label for="avToFollowColorH">Av to follow var H</label>
+                <input type="range" id="avToFollowColorH" name="avToFollowColorH" class='input_params'
+                  oninput="updateGlo(this); " min="0" max="360" value="10" step="1">
+              </div>
+              <div>
+                <label for="avToFollowColorS">Av to follow var S</label>
+                <input type="range" id="avToFollowColorS" name="avToFollowColorS" class='input_params'
+                  oninput="updateGlo(this); " min="0" max="360" value="10" step="1">
+              </div>
+              <div>
+                <label for="avToFollowColorL">Av to follow var L</label>
+                <input type="range" id="avToFollowColorL" name="avToFollowColorL" class='input_params'
+                  oninput="updateGlo(this); " min="0" max="360" value="10" step="1">
+              </div>
+              <div>
+                <label for="avToFollowColorStrokeH">Av to follow var stroke H</label>
+                <input type="range" id="avToFollowColorStrokeH" name="avToFollowColorStrokeH" class='input_params'
+                  oninput="updateGlo(this); " min="0" max="360" value="10" step="1">
+              </div>
+              <div>
+                <label for="avToFollowColorStrokeS">Av to follow var stroke S</label>
+                <input type="range" id="avToFollowColorStrokeS" name="avToFollowColorStrokeS" class='input_params'
+                  oninput="updateGlo(this); " min="0" max="360" value="10" step="1">
+              </div>
+              <div>
+                <label for="avToFollowColorStrokeL">Av to follow var stroke L</label>
+                <input type="range" id="avToFollowColorStrokeL" name="avToFollowColorStrokeL" class='input_params'
+                  oninput="updateGlo(this); " min="0" max="360" value="10" step="1">
+              </div>
+              <div>
+                <label for="deviatorAngle">deviator Angle</label>
+                <input type="range" id="deviatorAngle" name="deviatorAngle" class='input_params radUnit'
+                  oninput="updateGlo(this); " min="0" max="360" value="5" step="1">
+              </div>
+              <div>
+                <label for="formVarLevel">Form var level</label>
+                <input type="range" id="formVarLevel" name="formVarLevel" class='input_params'
+                  oninput="updateGlo(this); " ondblclick="updateScale(this, event)" min="0" max="100" value="1"
+                  step="1">
+              </div>
+              <div>
+                <label for="weightDistMinMod">Weight dist min mod</label>
+                <input type="range" id="weightDistMinMod" name="weightDistMinMod" class='input_params'
+                  oninput="updateGlo(this); " min="1" max="10" value="1" step="0.1">
+              </div>
+              <div>
+                <label for="avToOriginOffset">Av to origin offset</label>
+                <input type="range" id="avToOriginOffset" name="avToOriginOffset" class='input_params'
+                  oninput="updateGlo(this); " min="0" max="10" value="0" step="1">
+              </div>
+            </div>
+
+            <!-- 7) interface_avForm_1 (flattened groups) -->
+            <div class='interface' id="interface_avForm_1" style='display: none; '>
+              <div class="titleInterface">
+                <h3>Tools</h3>
+              </div>
+              <div>
+                <label for="avatars_form">Avatars form</label>
+                <input type="range" id="avatars_form" name="avatars_form" class='input_params'
+                  oninput="updateGlo(this); updateForm(this.value); " min="0" max="8" value="5" step="1"
+                  data-labels="forms">
+              </div>
+              <div>
+                <label for="lim_line">Lim line</label>
+                <input type="range" id="lim_line" name="lim_line" class='input_params' oninput="updateGlo(this)"
+                  ondblclick="updateScale(this, event)" min="0" max="100" value="32" step="1">
+              </div>
+              <div>
+                <label for="tail_memory">Tail memory</label>
+                <input type="range" id="tail_memory" name="tail_memory" class='input_params' oninput="updateGlo(this)"
+                  ondblclick="updateScale(this, event)" min="1" max="200" value="20" step="1">
+              </div>
+
+              <div>
+                <label for="level_var_size">Level var size</label>
+                <input type="range" id="level_var_size" name="level_var_size" class='input_params'
+                  oninput="updateGlo(this)" ondblclick="updateScale(this, event)" min="1" max="10" value="1" step=".1">
+              </div>
+              <div>
+                <label for="level_var_s_size">Level var start size</label>
+                <input type="range" id="level_var_s_size" name="level_var_s_size" class='input_params'
+                  oninput="updateGlo(this); alea_size(); " ondblclick="updateScale(this, event)" min="1" max="10"
+                  value="1" step=".1">
+              </div>
+              <div>
+                <label for="nb_edges">Nb edges</label>
+                <input type="range" id="nb_edges" name="nb_edges" class='input_params' oninput="updateGlo(this)"
+                  ondblclick="updateScale(this, event)" min="3" max="12" value="0" step="1">
+              </div>
+
+              <div>
+                <label for="circle_size">Circle size</label>
+                <input type="range" id="circle_size" name="circle_size" class='input_params' oninput="updateGlo(this)"
+                  ondblclick="updateScale(this, event)" onmouseover="activeGlo.showCircle = true"
+                  onmouseout="activeGlo.showCircle = false" min="0" max="2" value=".212" step=".001">
+              </div>
+              <div>
+                <label for="nb_circles">Nb circles</label>
+                <input type="range" id="nb_circles" name="nb_circles" class='input_params' oninput="updateGlo(this)"
+                  ondblclick="updateScale(this, event)" min="1" max="36" value="1" step="1">
+              </div>
+              <div>
+                <label for="oval_size">Oval size</label>
+                <input type="range" id="oval_size" name="oval_size" class='input_params' oninput="updateGlo(this); "
+                  ondblclick="updateScale(this, event)" min="0" max="2" value=".5" step=".01">
+              </div>
+
+              <div>
+                <label for="coeffDimSizeCenter">Coeff dim size center</label>
+                <input type="range" id="coeffDimSizeCenter" name="coeffDimSizeCenter" class='input_params'
+                  oninput="updateGlo(this); " ondblclick="updateScale(this, event)" min="-10" max="10" value="1"
+                  step=".01">
+              </div>
+              <div>
+                <label for="nb_points_cloud">Nb points in cloud form</label>
+                <input type="range" id="nb_points_cloud" name="nb_points_cloud" class='input_params'
+                  oninput="updateGlo(this)" ondblclick="updateScale(this, event)" min="1" max="100" value="4" step="1">
+              </div>
+              <div>
+                <label for="sz_points_cloud">Sz points in cloud form</label>
+                <input type="range" id="sz_points_cloud" name="sz_points_cloud" class='input_params'
+                  oninput="updateGlo(this)" ondblclick="updateScale(this, event)" min="1" max="100" value="1" step="1">
+              </div>
+
+              <div>
+                <label for="polyAvNbEdges">Poly av nb edges</label>
+                <input type="range" id="polyAvNbEdges" name="polyAvNbEdges" class='input_params'
+                  oninput="updateGlo(this); " ondblclick="updateScale(this, event)" min="3" max="12" value="3" step="1">
+              </div>
+              <div>
+                <label for="div_line">Div line</label>
+                <input type="range" id="div_line" name="div_line" class='input_params' oninput="updateGlo(this)"
+                  ondblclick="updateScale(this, event)" min="1" max="10" value="1" step=".1">
+              </div>
+              <div>
+                <label for="rAleaPosMin">Rayon alea pos min</label>
+                <input type="range" id="rAleaPosMin" name="rAleaPosMin" class='input_params' oninput="updateGlo(this)"
+                  ondblclick="updateScale(this, event)" min="0" max="2" value="0" step=".001">
+              </div>
+              <div style='display: none; '>
+                <label for="spiralAv">Spiral pos av</label>
+                <input type="range" id="spiralAv" name="spiralAv" class='input_params' oninput="updateGlo(this)"
+                  ondblclick="updateScale(this, event)" min="1" max="1.1" value="1" step=".001">
+              </div>
+
+              <div>
+                <label for="speed_alea_pos">Speed alea pos</label>
+                <input type="range" id="speed_alea_pos" name="speed_alea_pos" class='input_params inverse_dir'
+                  oninput="updateGlo(this)" ondblclick="updateScale(this, event)" min="3" max="100" value="50" step="1">
+              </div>
+              <div>
+                <label for="keep_dir">Speed alea</label>
+                <input type="range" id="keep_dir" name="keep_dir" class='input_params inverse_dir'
+                  oninput="updateGlo(this)" ondblclick="updateScale(this, event)" min="1" max="100" value="50" step="1">
+              </div>
+              <div>
+                <label for="rAleaPos">Rayon alea pos</label>
+                <input type="range" id="rAleaPos" name="rAleaPos" class='input_params' oninput="updateGlo(this)"
+                  ondblclick="updateScale(this, event)" min=".001" max="2" value="1.125" step=".001">
+              </div>
+            </div>
+
+            <!-- 8) interface_structure_1 (flattened) -->
+            <div style='display: none; ' id="interface_structure_1" class='interface'>
+              <div class="titleInterface">
+                <h3>Grid</h3>
+              </div>
+              <div>
+                <label for="areneOpacity">Arene opacity</label>
+                <input type="range" id="areneOpacity" name="areneOpacity" class='input_params'
+                  oninput="updateGlo(this); canvas.style.opacity = this.value; " min="0.01" max="1" value="1"
+                  step=".01">
+              </div>
+              <div>
+                <label for="structureOpacity">Structure opacity</label>
+                <input type="range" id="structureOpacity" name="structureOpacity" class='input_params'
+                  oninput="updateGlo(this); structure.style.opacity = this.value; " min="0.01" max="1" value="1"
+                  step=".01">
+              </div>
+              <div>
+                <label for="gridStep">Rectangular grid step</label>
+                <input type="range" id="gridStep" name="gridStep" class='input_params' oninput="updateGlo(this); "
+                  ondblclick="updateScale(this, event)" min="1" max="300" value="96" step="1">
+              </div>
+              <div>
+                <label for="gridEquiStep">Equi grid step</label>
+                <input type="range" id="gridEquiStep" name="gridEquiStep" class='input_params'
+                  oninput="updateGlo(this); " ondblclick="updateScale(this, event)" min="2" max="200" value="20"
+                  step="2">
+              </div>
+
+              <div>
+                <label for="circleGridStep">Circle grid step</label>
+                <input type="range" id="circleGridStep" name="circleGridStep" class='input_params'
+                  oninput="updateGlo(this); " ondblclick="updateScale(this, event)" min="1" max="100" value="24"
+                  step="1">
+              </div>
+              <div>
+                <label for="circleRep">Circle grid marks</label>
+                <input type="range" id="circleRep" name="circleRep" class='input_params' oninput="updateGlo(this);"
+                  ondblclick="updateScale(this, event)" min="0" max="36" value="4" step="1">
+              </div>
+
+              <div>
+                <label for="thirdGridStep">Third grid step</label>
+                <input type="range" id="thirdGridStep" name="thirdGridStep" class='input_params'
+                  oninput="updateGlo(this); " ondblclick="updateScale(this, event)" min="1" max="5" value="2" step="1">
+              </div>
+              <div>
+                <label for="thirdGridFrac">Third grid frac</label>
+                <input type="range" id="thirdGridFrac" name="thirdGridFrac" class='input_params'
+                  oninput="updateGlo(this); " ondblclick="updateScale(this, event)" min="1" max="12" value="3" step="1">
+              </div>
+
+              <div>
+                <label for="ctxComposition">Canvas composition</label>
+                <input type="range" id="ctxComposition" name="ctxComposition" class='input_params'
+                  oninput="updateGlo(this); ctx.globalCompositeOperation = activeGlo.ctxCompositions[activeGlo.params.ctxComposition]; "
+                  min="0" max="3" value="0" step="1" data-labels="ctxCompositions">
+              </div>
+
+              <div>
+                <label for="selectCanvas">Selected canvas</label>
+                <input type="range" id="selectCanvas" name="selectCanvas" class='input_params'
+                  oninput="updateGlo(this); selectCanvas(this.value); " min="0" max="0" value="0" step="1"
+                  data-labels="selectCanvas">
+              </div>
+              <div style="margin-top: 32px; text-align: center; ">Canvas operations :</div>
+              <div id="canvasOperationButtonContainer">
+                <div>
+                  <button id="addCanvas" class="canvasOperationButton" onclick="addCanvas()">Add</button>
                 </div>
-
-                <!-- 2) interface_modifiers_2 -->
-                <div style='display: none; ' class='interface' id="interface_modifiers_2">
-                  <div class="titleInterface"><h3>Modifiers</h3></div>
-                  <div>
-                    <label for="nb_modifiers">Nb modifiers</label>
-                    <input type="range" id="nb_modifiers" name="nb_modifiers" class='input_params' oninput="updateGlo(this); " ondblclick="updateScale(this, event)"
-                      min="1" max="32" value="12" step="1">
-                  </div>
-                  <div>
-                    <label for="polyNbEdges">Poly mod nb edges</label>
-                    <input type="range" id="polyNbEdges" name="polyNbEdges" class='input_params updModProp' data-modprop="nbEdges" oninput="updateGlo(this); changeModifiersProp(this, 'nbEdges'); " ondblclick="updateScale(this, event)"
-                      min="3" max="12" value="3" step="1">
-                  </div>
-                  <div>
-                    <label for="rotCircleModifiers">Circle modifiers angle</label>
-                    <input type="range" id="rotCircleModifiers" name="rotCircleModifiers" class='input_params radUnit' oninput="updateGlo(this); " ondblclick="updateScale(this, event)"
-                      min="-180" max="180" value="0" step="1">
-                  </div>
-                  <div>
-                    <label for="alternatorSpeed">Alternator speed</label>
-                    <input type="range" id="alternatorSpeed" name="alternatorSpeed" class='input_params' oninput="updateGlo(this); " ondblclick="updateScale(this, event)"
-                      min="1" max="400" value="100" step="1">
-                  </div>
-                  <div>
-                    <label for="director_angle_upd">Directors angle update</label>
-                    <input type="range" id="director_angle_upd" name="director_angle_upd" class='input_params radUnit' oninput="updateGlo(this); " ondblclick="updateScale(this, event)"
-                      min="0" max="360" value="0" step="1">
-                  </div>
-                  <div>
-                    <label for="director_angle">Directors angle</label>
-                    <input type="range" id="director_angle" name="director_angle" class='input_params radUnit' oninput="updateGlo(this); " ondblclick="updateScale(this, event)"
-                      min="0" max="360" value="0" step="1">
-                  </div>
-                  <div>
-                    <label for="weightMods">Weight mods</label>
-                    <input type="range" id="weightMods" name="weightMods" class='input_params updModProp' data-modprop="weight" oninput="changeModifiersProp(this, 'weight'); updateGlo(this); " ondblclick="updateScale(this, event)"
-                      min="0" max="12" value="1" step="0.1">
-                  </div>
-                  <div>
-                    <label for="dblAngleUpd">Magnet angle upd</label>
-                    <input type="range" id="dblAngleUpd" name="dblAngleUpd" class='input_params radUnit' oninput="updModAngle(this); updateGlo(this); " ondblclick="updateScale(this, event)"
-                      min="0" max="360" value="180" step="1">
-                  </div>
-                  <div>
-                    <label for="dblModDist">Magnet poles dist</label>
-                    <input type="range" id="dblModDist" name="dblModDist" class='input_params' oninput="updateGlo(this); " ondblclick="updateScale(this, event)"
-                      min="0" max="100" value="15" step="1">
-                  </div>
-                  <div>
-                    <label for="angleEllipseMod">Ellipse angle mod</label>
-                    <input type="range" id="angleEllipseMod" name="angleEllipseMod" class='input_params radUnit' oninput="updateGlo(this); " ondblclick="updateScale(this, event)"
-                      min="-90" max="90" value="0" step="1">
-                  </div>
-                  <div>
-                    <label for="posModsNbEdges">Pos mods nb edges</label>
-                    <input type="range" id="posModsNbEdges" name="posModsNbEdges" class='input_params' oninput="updateGlo(this); " ondblclick="updateScale(this, event)"
-                      min="3" max="12" value="3" step="1">
-                  </div>
-                  <div>
-                    <label for="ell_x_mod_upd">Ellipse x modifiers update</label>
-                    <input type="range" id="ell_x_mod_upd" name="ell_x_mod_upd" class='input_params'
-                      oninput="updateModifiersForce(this, 'ellipse', 'x'); updateGlo(this)" ondblclick="updateScale(this, event)"
-                      min="1" max="11" value="6" step=".1">
-                  </div>
-                  <div>
-                    <label for="ell_y_mod_upd">Ellipse y modifiers update</label>
-                    <input type="range" id="ell_y_mod_upd" name="ell_y_mod_upd" class='input_params'
-                      oninput="updateModifiersForce(this, 'ellipse', 'y'); updateGlo(this)" ondblclick="updateScale(this, event)"
-                      min="1" max="11" value="6" step=".1">
-                  </div>
-                  <div>
-                    <label for="secondMoveIt">Second Move hz</label>
-                    <input type="range" id="secondMoveIt" name="secondMoveIt" class='input_params' oninput="updateGlo(this); " ondblclick="updateScale(this, event)"
-                      min=".1" max="20" value="1" step=".1">
-                  </div>
-                  <div>
-                    <label for="secondMoveRange">Second Move amp</label>
-                    <input type="range" id="secondMoveRange" name="secondMoveRange" class='input_params' oninput="updateGlo(this)" ondblclick="updateScale(this, event)"
-                      min=".1" max="20" value="1" step=".1">
-                  </div>
-                  <div>
-                    <label for="angleEllipse">Ellipse angle</label>
-                    <input type="range" id="angleEllipse" name="angleEllipse" class='input_params radUnit' oninput="replaceAvOnEllipse(this); updateGlo(this); " ondblclick="updateScale(this, event)"
-                      min="-90" max="90" value="0" step="1">
-                  </div>
-                  <div>
-                    <label for="formModType">Pos mods by form</label>
-                    <input type="range" id="formModType" name="formModType" class='input_params' oninput="updateGlo(this); "
-                      min="0" max="4" value="1" step="1" data-labels="formModTypes">
-                  </div>
-                  <div>
-                    <label for="lim_attract">Modifiers affecting limit</label>
-                    <input type="range" id="lim_attract" name="lim_attract" class='input_params updModProp' data-modprop="lim_attract" oninput="updateGlo(this); changeModifiersProp(this, 'lim_attract'); " ondblclick="updateScale(this, event);"
-                      min="0" max="50" value="0" step="1">
-                  </div>
-                  <div>
-                    <label for="distNearDrawMods">Dist draw mods</label>
-                    <input type="range" id="distNearDrawMods" name="distNearDrawMods" class='input_params' oninput="updateGlo(this); " ondblclick="updateScale(this, event)"
-                      min="0" max="40" value="20" step=".01">
-                  </div>
-                  <div>
-                    <label for="distNearClearMods">Dist clear mods</label>
-                    <input type="range" id="distNearClearMods" name="distNearClearMods" class='input_params' oninput="updateGlo(this); " ondblclick="updateScale(this, event)"
-                      min="0" max="10" value="6" step=".01">
-                  </div>
+                <div>
+                  <button id="duplicateCanvas" class="canvasOperationButton"
+                    onclick="addCanvas(false, true)">Duplicate</button>
                 </div>
-
-                <!-- 3) interface_rotate_1 -->
-                <div class='interface' id="interface_rotate_1" style='display: none; '>
-                  <div class="titleInterface"><h3>Rotation</h3></div>
-                  <div>
-                    <label for="rotate_angle">Rotate angle</label>
-                    <input type="range" id="rotate_angle" name="rotate_angle" class='input_params radUnit' oninput="updateGlo(this); " ondblclick="updateScale(this, event)"
-                      min="-180" max="180" value="0" step=".01">
-                  </div>
-                  <div>
-                    <label for="spiral_angle">Spiral angle</label>
-                    <input type="range" id="spiral_angle" name="spiral_angle" class='input_params radUnit' oninput="updateGlo(this); " ondblclick="updateScale(this, event)"
-                      min="-180" max="180" value="0" step="1">
-                  </div>
-                  <div>
-                    <label for="spiral_exp">Spiral exposant</label>
-                    <input type="range" id="spiral_exp" name="spiral_exp" class='input_params' oninput="updateGlo(this)" ondblclick="updateScale(this, event)"
-                      min="0" max="10" value="1" step=".01">
-                  </div>
-                  <div>
-                    <label for="trirotate_angle">Rot in poly angle</label>
-                    <input type="range" id="trirotate_angle" name="trirotate_angle" class='input_params radUnit' oninput="updateGlo(this); " ondblclick="updateScale(this, event)"
-                      min="-180" max="180" value="0" step="1">
-                  </div>
-                  <div>
-                    <label for="trirotate_angle2">Rot in poly angle 2</label>
-                    <input type="range" id="trirotate_angle2" name="trirotate_angle2" class='input_params radUnit' oninput="updateGlo(this); " ondblclick="updateScale(this, event)"
-                      min="-180" max="180" value="0" step="1">
-                  </div>
-                  <div>
-                    <label for="rotPoly_angle">Rotate poly av angle</label>
-                    <input type="range" id="rotPoly_angle" name="rotPoly_angle" class='input_params radUnit' oninput="updateGlo(this); " ondblclick="updateScale(this, event)"
-                      min="-180" max="180" value="0" step="1">
-                  </div>
-                  <div>
-                    <label for="polyRotAngle">Rot rot in poly angle</label>
-                    <input type="range" id="polyRotAngle" name="polyRotAngle" class='input_params radUnit' oninput="updateGlo(this); " ondblclick="updateScale(this, event)"
-                      min="0" max="60" value="0" step="1">
-                  </div>
-                  <div>
-                    <label for="polyRotAngle2">Rot rot in poly angle 2</label>
-                    <input type="range" id="polyRotAngle2" name="polyRotAngle2" class='input_params radUnit' oninput="updateGlo(this); " ondblclick="updateScale(this, event)"
-                      min="0" max="60" value="0" step="1">
-                  </div>
-                  <div>
-                    <label for="rotPosPolyAv">Rot pos poly av</label>
-                    <input type="range" id="rotPosPolyAv" name="rotPosPolyAv" class='input_params radUnit' oninput="updateGlo(this); " ondblclick="updateScale(this, event)"
-                      min="0" max="60" value="0" step="1">
-                  </div>
-                  <div>
-                    <label for="spiral_speed">Spiral speed</label>
-                    <input type="range" id="spiral_speed" name="spiral_speed" class='input_params' oninput="updateGlo(this);" ondblclick="updateScale(this, event)"
-                      min="1" max="40" value="10" step="1">
-                  </div>
-                  <div>
-                    <label for="spiral_force">Spiral force</label>
-                    <input type="range" id="spiral_force" name="spiral_force" class='input_params' oninput="updateGlo(this); " ondblclick="updateScale(this, event)"
-                      min="1" max="1.1" value="1" step=".001">
-                  </div>
-                  <div>
-                    <label for="polyRotNbEdges2">Poly rot nb edges 2</label>
-                    <input type="range" id="polyRotNbEdges2" name="polyRotNbEdges2" class='input_params' oninput="updateGlo(this); updMaxAngleToNbEdges('polyRotAngle', this.value); " ondblclick="updateScale(this, event)"
-                      min="3" max="12" value="3" step="1">
-                  </div>
-                  <div>
-                    <label for="ellipse_x">Ellipse X</label>
-                    <input type="range" id="ellipse_x" name="ellipse_x" class='input_params' oninput="updateGlo(this)" ondblclick="updateScale(this, event)"
-                      min="1" max="10" value="1" step=".1">
-                  </div>
-                  <div>
-                    <label for="ellipse_y">Ellipse Y</label>
-                    <input type="range" id="ellipse_y" name="ellipse_y" class='input_params' oninput="updateGlo(this)" ondblclick="updateScale(this, event)"
-                      min="1" max="10" value="1" step=".1">
-                  </div>
-                  <div>
-                    <label for="dev_angle">Dev angle</label>
-                    <input type="range" id="dev_angle" name="dev_angle" class='input_params radUnit' oninput="updateGlo(this); " ondblclick="updateScale(this, event)"
-                      min="-180" max="180" value="0" step="1">
-                  </div>
-                  <div>
-                    <label for="modifiers_angle">Rotate modifiers angle</label>
-                    <input type="range" id="modifiers_angle" name="modifiers_angle" class='input_params radUnit' oninput="updateGlo(this); " ondblclick="updateScale(this, event)"
-                      min="-180" max="180" value="0" step="1">
-                  </div>
-                  <div>
-                    <label for="polyRotNbEdges">Poly rot nb edges</label>
-                    <input type="range" id="polyRotNbEdges" name="polyRotNbEdges" class='input_params' oninput="updateGlo(this); updMaxAngleToNbEdges('polyRotAngle', this.value); " ondblclick="updateScale(this, event)"
-                      min="3" max="12" value="3" step="1">
-                  </div>
-                  <div>
-                    <label for="modPolyRotAngle">Poly mod rot angle</label>
-                    <input type="range" id="modPolyRotAngle" name="modPolyRotAngle" class='input_params radUnit' oninput="updModAngle(this, 'modPolyRotAngle'); updateGlo(this); " ondblclick="updateScale(this, event)"
-                      min="0" max="60" value="0" step="1">
-                  </div>
-                  <div>
-                    <label for="asyncTime">Async modifier time</label>
-                    <input type="range" id="asyncTime" name="asyncTime" class='input_params' oninput="updateGlo(this); " ondblclick="updateScale(this, event)"
-                      min="1" max="200" value="1" step="1">
-                  </div>
+                <div>
+                  <button id="deleteCanvas" class="canvasOperationButton" onclick="deleteCanvas()">Delete</button>
                 </div>
+              </div>
+            </div>
 
-                <!-- 5) interface_colors_1 -->
-                <div style='display: none; ' class='interface' id="interface_colors_1">
-                  <div class="titleInterface"><h3>Color</h3></div>
-                  <div>
-                    <label for="var_center_col">Var center color</label>
-                    <input type="range" id="var_center_col" name="var_center_col" class='input_params' oninput="updateGlo(this)" ondblclick="updateScale(this, event)"
-                      min="0.1" max="4" value="1" step=".1">
-                  </div>
-                  <div>
-                    <label for="var_tint">Tint image</label>
-                    <input type="range" id="var_tint" name="var_tint" class='input_params' oninput="updateTint(this); updateGlo(this);" ondblclick="updateScale(this, event)"
-                      min="0" max="4" value="2" step=".01">
-                  </div>
-                  <div>
-                    <label for="arcStartAngle">Arc start angle</label>
-                    <input type="range" id="arcStartAngle" name="arcStartAngle" class='input_params radUnit' oninput="updateGlo(this)" ondblclick="updateScale(this, event)"
-                      min="0" max="360" value="0" step="1">
-                  </div>
-                  <div>
-                    <label for="arcEndAngle">Arc end angle</label>
-                    <input type="range" id="arcEndAngle" name="arcEndAngle" class='input_params radUnit' oninput="updateGlo(this)" ondblclick="updateScale(this, event)"
-                      min="0" max="360" value="360" step="1">
-                  </div>
-                  <div>
-                    <label for="arcRotAngle">Arc rot angle</label>
-                    <input type="range" id="arcRotAngle" name="arcRotAngle" class='input_params radUnit' oninput="updateGlo(this);" ondblclick="updateScale(this, event)"
-                      min="0" max="360" value="0" step="1">
-                  </div>
-                  <div>
-                    <label for="var_tint_r">Tint image red</label>
-                    <input type="range" id="var_tint_r" name="var_tint_r" class='input_params' oninput="updateTint(this, 'r'); updateGlo(this);" ondblclick="updateScale(this, event)"
-                      min="0" max="1" value=".5" step=".01">
-                  </div>
-                  <div>
-                    <label for="var_tint_g">Tint image green</label>
-                    <input type="range" id="var_tint_g" name="var_tint_g" class='input_params' oninput="updateTint(this, 'g'); updateGlo(this);" ondblclick="updateScale(this, event)"
-                      min="0" max="1" value=".5" step=".01">
-                  </div>
-                  <div>
-                    <label for="var_tint_b">Tint image blue</label>
-                    <input type="range" id="var_tint_b" name="var_tint_b" class='input_params' oninput="updateTint(this, 'b'); updateGlo(this);" ondblclick="updateScale(this, event)"
-                      min="0" max="1" value=".5" step=".01">
-                  </div>
-                  <div>
-                    <label for="var_alpha_img">Image alpha</label>
-                    <input type="range" id="var_alpha_img" name="var_alpha_img" class='input_params' oninput="updateTint(this, 'a'); updateGlo(this);" ondblclick="updateScale(this, event)"
-                      min="0" max="1" value=".5" step=".01">
-                  </div>
-                  <div>
-                    <label for="dirColorCoeff">Dir color coeff</label>
-                    <input type="range" id="dirColorCoeff" name="dirColorCoeff" class='input_params' oninput="updateGlo(this)" ondblclick="updateScale(this, event)"
-                      min="0.1" max="20" value="1" step=".1">
-                  </div>
-                  <div>
-                    <label for="color_angle">Color angle img</label>
-                    <input type="range" id="color_angle" name="color_angle" class='input_params radUnit' oninput="ColorOffsetImg(this); updateGlo(this); " ondblclick="updateScale(this, event)"
-                      min="0" max="360" value="0" step="1">
-                  </div>
-                  <div>
-                    <label for="rotColorX">Rot color X</label>
-                    <input type="range" id="rotColorX" name="rotColorX" class='input_params' oninput="rotateColor(0.1,0.1,0.05); " ondblclick="updateScale(this, event)"
-                      min="0" max="1" value=".5" step=".01">
-                  </div>
-                  <div>
-                    <label for="rotColorY">Rot color Y</label>
-                    <input type="range" id="rotColorY" name="rotColorY" class='input_params' oninput="rotateColor(0.05,0.1,0.1); " ondblclick="updateScale(this, event)"
-                      min="0" max="1" value=".5" step=".01">
-                  </div>
-                  <div>
-                    <label for="rotColorZ">Rot color Z</label>
-                    <input type="range" id="rotColorZ" name="rotColorZ" class='input_params radUnit' oninput="rotateColor(0.1,0.05,0.1); " ondblclick="updateScale(this, event)"
-                      min="0" max="1" value=".5" step=".01">
-                  </div>
-                </div>
+            <!-- 9) interface_avatar_1 (flattened) -->
+            <div style='display: none; ' id="interface_avatar_1" class='interface'>
+              <div class="titleInterface">
+                <h3>Travel</h3>
+              </div>
+              <div>
+                <label for="resist">Resistance</label>
+                <input type="range" id="resist" name="resist" class='input_params' oninput="updateGlo(this)"
+                  ondblclick="updateScale(this, event)" min="0" max="100" value="0" step=".01">
+              </div>
+              <div>
+                <label for="brake_pow">Brake pow</label>
+                <input type="range" id="brake_pow" name="brake_pow" class='input_params' oninput="updateGlo(this)"
+                  ondblclick="updateScale(this, event)" min="0" max="4" value="2.12" step=".01">
+              </div>
+              <div>
+                <label for="attract">Attraction</label>
+                <input type="range" id="attract" name="attract" class='input_params' oninput="updateGlo(this)"
+                  ondblclick="updateScale(this, event)" min="-300" max="300" value="0" step="1">
+              </div>
 
-                <!-- 6) interface_colors_2 -->
-                <div style='display: none; ' class='interface' id="interface_colors_2">
-                  <div class="titleInterface"><h3>Color - suit</h3></div>
-                  <div>
-                    <label for="shell_img">Shell image</label>
-                    <input type="range" id="shell_img" name="shell_img" class='input_params radUnit' oninput="updShell(this); updateGlo(this); " ondblclick="updateScale(this, event)"
-                      min="1" max="11" value="6" step=".1">
-                  </div>
-                  <div>
-                    <label for="varColDistModifs">Var color by modifiers</label>
-                    <input type="range" id="varColDistModifs" name="varColDistModifs" class='input_params' oninput="updateGlo(this)" ondblclick="updateScale(this, event)"
-                      min="0.1" max="20" value="2" step=".1">
-                  </div>
-                  <div>
-                    <label for="nearColorPow">near pow color</label>
-                    <input type="range" id="nearColorPow" name="nearColorPow" class='input_params updModProp' data-modprop="powColor" oninput="updateGlo(this); changeModifiersProp(this, 'powColor');" ondblclick="updateScale(this, event)"
-                      min="0" max="2" value="0.62" step=".01">
-                  </div>
-                  <div>
-                    <label for="alternColorSpeed">Altern color speed</label>
-                    <input type="range" id="alternColorSpeed" name="alternColorSpeed" class='input_params' oninput="updateGlo(this); " ondblclick="updateScale(this, event)"
-                      min="0" max="400" value="100" step="1">
-                  </div>
-                  <div>
-                    <label for="alternColorVal">Altern color val</label>
-                    <input type="range" id="alternColorVal" name="alternColorVal" class='input_params' oninput="updateGlo(this);" ondblclick="updateScale(this, event)"
-                      min="-360" max="360" value="180" step="1">
-                  </div>
-                  <div>
-                    <label for="varOneColMod">Var one col mod</label>
-                    <input type="range" id="varOneColMod" name="varOneColMod" class='input_params updModProp' data-modprop="varOneColMod" oninput="updateGlo(this); changeModifiersProp(this, 'varOneColMod');" ondblclick="updateScale(this, event)"
-                      min="0.1" max="20" value="2" step=".1">
-                  </div>
-                  <div>
-                    <label for="lightByCenter">Light by center</label>
-                    <input type="range" id="lightByCenter" name="lightByCenter" class='input_params' oninput="updateGlo(this); " ondblclick="updateScale(this, event)"
-                      min="-10" max="10" value="0" step="0.1">
-                  </div>
-                  <div>
-                    <label for="lightByDistMod">Ligth by dist mod pow</label>
-                    <input type="range" id="lightByDistMod" name="lightByDistMod" class='input_params' oninput="updateGlo(this); " ondblclick="updateScale(this, event)"
-                      min="-1.01" max="1.01" value="0" step=".01">
-                  </div>
-                  <div>
-                    <label for="lightByDistModCoeff">Ligth by dist mod coeff</label>
-                    <input type="range" id="lightByDistModCoeff" name="lightByDistModCoeff" class='input_params' oninput="updateGlo(this); " ondblclick="updateScale(this, event)"
-                      min="0.01" max="10" value="0.5" step=".01">
-                  </div>
-                  <div>
-                    <label for="satByDistModCoeff">Sat by dist mod coeff</label>
-                    <input type="range" id="satByDistModCoeff" name="satByDistModCoeff" class='input_params' oninput="updateGlo(this);" ondblclick="updateScale(this, event)"
-                      min="0.01" max="10" value="0.5" step=".01">
-                  </div>
-                  <div>
-                    <label for="varMoveCol">Var move color</label>
-                    <input type="range" id="varMoveCol" name="varMoveCol" class='input_params' oninput="updateGlo(this);" ondblclick="updateScale(this, event)"
-                      min="0.01" max="10" value="1" step=".01">
-                  </div>
-                  <div>
-                    <label for="satByDistMod">Sat by dist mod pow</label>
-                    <input type="range" id="satByDistMod" name="satByDistMod" class='input_params' oninput="updateGlo(this);" ondblclick="updateScale(this, event)"
-                      min="-1.01" max="1.01" value="0" step=".01">
-                  </div>
-                  <div>
-                    <label for="satImg">Saturation img</label>
-                    <input type="range" id="satImg" name="satImg" class='input_params' oninput="updateSaturation(this); updateGlo(this)" ondblclick="updateScale(this, event)"
-                      min="0" max="4" value="2" step=".01">
-                  </div>
-                  <div>
-                    <label for="colorFunction">Color function</label>
-                    <input type="range" id="colorFunction" name="colorFunction" class='input_params updModProp' data-modprop="colorFunction" oninput="activeGlo.colorFunction = activeGlo.colorFunctionLabels[this.value]; updateGlo(this); changeModifiersProp(this, 'colorFunction', activeGlo.colorFunctionLabels[this.value]); "
-                      min="0" max="3" value="0" step="1" data-labels="colorFunctionLabels">
-                  </div>
-                  <div>
-                    <label for="colorCumulType">Color cumul type</label>
-                    <input type="range" id="colorCumulType" name="colorCumulType" class='input_params' oninput="updateGlo(this); "
-                      min="0" max="5" value="0" step="1" data-labels="colorCumulType">
-                  </div>
-                  <div>
-                    <label for="greyColor">Grey color</label>
-                    <input type="range" id="greyColor" name="greyColor" class='input_params' oninput="greyColor(this); updateGlo(this)" ondblclick="updateScale(this, event)"
-                      min="0" max="6" value="3" step=".1">
-                  </div>
-                  <div>
-                    <div id="colorCumulContainer">Cumul colors functions</div>
-                    <div></div>
-                    <div></div>
-                  </div>
-                </div>
+              <div>
+                <label for="radius_attract">Attraction radius</label>
+                <input type="range" id="radius_attract" name="radius_attract" class='input_params'
+                  oninput="updateGlo(this); " ondblclick="updateScale(this, event)" min="0" max="256" value="0" step="1"
+                  data-playinput='true'>
+              </div>
+              <div>
+                <label for="chaos_dist">Chaos distance</label>
+                <input type="range" id="chaos_dist" name="chaos_dist" class='input_params' oninput="updateGlo(this)"
+                  ondblclick="updateScale(this, event)" min="0" max="10" value="2" step=".1">
+              </div>
+              <div>
+                <label for="chaos_force">Chaos force</label>
+                <input type="range" id="chaos_force" name="chaos_force" class='input_params' oninput="updateGlo(this)"
+                  ondblclick="updateScale(this, event)" min="0" max="20" value="8" step=".1">
+              </div>
 
-                <!-- 4) interface_rotate_2 -->
-                <div style='display: none; ' id="interface_rotate_2" class='interface'>
-                  <div class="titleInterface"><h3>Avatars</h3></div>
-                  <div>
-                    <label for="dirAngle">Dir angle</label>
-                    <input type="range" id="dirAngle" name="dirAngle" class='input_params radUnit' oninput="updateGlo(this); "
-                      min="0" max="360" value="0" step="1">
-                  </div>
-                  <div>
-                    <label for="dirForce">Dir force</label>
-                    <input type="range" id="dirForce" name="dirForce" class='input_params' oninput="updateGlo(this); " ondblclick="updateScale(this, event)"
-                      min="-300" max="300" value="0" step="1">
-                  </div>
-                  <div>
-                    <label for="attractForce">Attract force</label>
-                    <input type="range" id="attractForce" name="attractForce" class='input_params' oninput="updateGlo(this); " ondblclick="updateScale(this, event)"
-                      min="-300" max="300" value="0" step="1">
-                  </div>
-                  <div>
-                    <label for="alternTintSpeed">Altern tint speed</label>
-                    <input type="range" id="alternTintSpeed" name="alternTintSpeed" class='input_params' oninput="updateGlo(this); " ondblclick="updateScale(this, event)"
-                      min="0" max="400" value="100" step="1">
-                  </div>
-                  <div>
-                    <label for="alternSatSpeed">Altern sat speed</label>
-                    <input type="range" id="alternSatSpeed" name="alternSatSpeed" class='input_params' oninput="updateGlo(this); " ondblclick="updateScale(this, event)"
-                      min="0" max="400" value="100" step="1">
-                  </div>
-                  <div>
-                    <label for="avToFollowDist">Av to follow dist</label>
-                    <input type="range" id="avToFollowDist" name="avToFollowDist" class='input_params' oninput="updateGlo(this); " ondblclick="updateScale(this, event)"
-                      min="0" max="100" value="10" step="1">
-                  </div>
-                  <div>
-                    <label for="avToFollowTAvs">Av to follow %</label>
-                    <input type="range" id="avToFollowTAvs" name="avToFollowTAvs" class='input_params' oninput="updateGlo(this); followAvatar(); "
-                      min="0" max="100" value="10" step="1">
-                  </div>
-                  <div>
-                    <label for="avToFollowColorH">Av to follow var H</label>
-                    <input type="range" id="avToFollowColorH" name="avToFollowColorH" class='input_params' oninput="updateGlo(this); "
-                      min="0" max="360" value="10" step="1">
-                  </div>
-                  <div>
-                    <label for="avToFollowColorS">Av to follow var S</label>
-                    <input type="range" id="avToFollowColorS" name="avToFollowColorS" class='input_params' oninput="updateGlo(this); "
-                      min="0" max="360" value="10" step="1">
-                  </div>
-                  <div>
-                    <label for="avToFollowColorL">Av to follow var L</label>
-                    <input type="range" id="avToFollowColorL" name="avToFollowColorL" class='input_params' oninput="updateGlo(this); "
-                      min="0" max="360" value="10" step="1">
-                  </div>
-                  <div>
-                    <label for="avToFollowColorStrokeH">Av to follow var stroke H</label>
-                    <input type="range" id="avToFollowColorStrokeH" name="avToFollowColorStrokeH" class='input_params' oninput="updateGlo(this); "
-                      min="0" max="360" value="10" step="1">
-                  </div>
-                  <div>
-                    <label for="avToFollowColorStrokeS">Av to follow var stroke S</label>
-                    <input type="range" id="avToFollowColorStrokeS" name="avToFollowColorStrokeS" class='input_params' oninput="updateGlo(this); "
-                      min="0" max="360" value="10" step="1">
-                  </div>
-                  <div>
-                    <label for="avToFollowColorStrokeL">Av to follow var stroke L</label>
-                    <input type="range" id="avToFollowColorStrokeL" name="avToFollowColorStrokeL" class='input_params' oninput="updateGlo(this); "
-                      min="0" max="360" value="10" step="1">
-                  </div>
-                  <div>
-                    <label for="deviatorAngle">deviator Angle</label>
-                    <input type="range" id="deviatorAngle" name="deviatorAngle" class='input_params radUnit' oninput="updateGlo(this); "
-                      min="0" max="360" value="5" step="1">
-                  </div>
-                  <div>
-                    <label for="formVarLevel">Form var level</label>
-                    <input type="range" id="formVarLevel" name="formVarLevel" class='input_params' oninput="updateGlo(this); " ondblclick="updateScale(this, event)"
-                      min="0" max="100" value="1" step="1">
-                  </div>
-                  <div>
-                    <label for="weightDistMinMod">Weight dist min mod</label>
-                    <input type="range" id="weightDistMinMod" name="weightDistMinMod" class='input_params' oninput="updateGlo(this); "
-                      min="1" max="10" value="1" step="0.1">
-                  </div>
-                </div>
+              <div>
+                <label for="follow_force_x">Follow force X</label>
+                <input type="range" id="follow_force_x" name="follow_force_x" class='input_params'
+                  oninput="updateGlo(this)" ondblclick="updateScale(this, event)" min="0.9" max="1.1" value="1"
+                  step=".001">
+              </div>
+              <div>
+                <label for="follow_force_y">Follow force Y</label>
+                <input type="range" id="follow_force_y" name="follow_force_y" class='input_params'
+                  oninput="updateGlo(this)" ondblclick="updateScale(this, event)" min="0.9" max="1.1" value="1"
+                  step=".001">
+              </div>
+              <div>
+                <label for="same_dir">Follow distance</label>
+                <input type="range" id="same_dir" name="same_dir" class='input_params' oninput="updateGlo(this)"
+                  ondblclick="updateScale(this, event)" min="0" max="10" value="0" step=".1">
+              </div>
 
-                <!-- 7) interface_avForm_1 (flattened groups) -->
-                <div class='interface' id="interface_avForm_1" style='display: none; '>
-                  <div class="titleInterface"><h3>Tools</h3></div>
-                  <div>
-                    <label for="avatars_form">Avatars form</label>
-                    <input type="range" id="avatars_form" name="avatars_form" class='input_params' oninput="updateGlo(this); updateForm(this.value); "
-                      min="0" max="8" value="5" step="1" data-labels="forms">
-                  </div>
-                  <div>
-                    <label for="lim_line">Lim line</label>
-                    <input type="range" id="lim_line" name="lim_line" class='input_params' oninput="updateGlo(this)" ondblclick="updateScale(this, event)"
-                      min="0" max="100" value="32" step="1">
-                  </div>
-                  <div>
-                    <label for="tail_memory">Tail memory</label>
-                    <input type="range" id="tail_memory" name="tail_memory" class='input_params' oninput="updateGlo(this)" ondblclick="updateScale(this, event)"
-                      min="1" max="200" value="20" step="1">
-                  </div>
+              <div>
+                <label for="modsDevForce">Mods dev force</label>
+                <input type="range" id="modsDevForce" name="modsDevForce" class='input_params' oninput="updateGlo(this)"
+                  ondblclick="updateScale(this, event)" min="-2" max="2" value="0" step=".01">
+              </div>
+              <div>
+                <label for="modsDevDir">Mods dev dir</label>
+                <input type="range" id="modsDevDir" name="modsDevDir" class='input_params radUnit'
+                  oninput="updateGlo(this)" ondblclick="updateScale(this, event)" min="0" max="360" value="90"
+                  step=".01">
+              </div>
+              <div>
+                <label for="nears_calc">Nears calcul</label>
+                <input type="range" id="nears_calc" name="nears_calc" class='input_params' oninput="updateGlo(this)"
+                  ondblclick="updateScale(this, event)" min="1" max="100" value="60" step="1">
+              </div>
 
-                  <div>
-                    <label for="level_var_size">Level var size</label>
-                    <input type="range" id="level_var_size" name="level_var_size" class='input_params' oninput="updateGlo(this)" ondblclick="updateScale(this, event)"
-                      min="1" max="10" value="1" step=".1">
-                  </div>
-                  <div>
-                    <label for="level_var_s_size">Level var start size</label>
-                    <input type="range" id="level_var_s_size" name="level_var_s_size" class='input_params' oninput="updateGlo(this); alea_size(); " ondblclick="updateScale(this, event)"
-                      min="1" max="10" value="1" step=".1">
-                  </div>
-                  <div>
-                    <label for="nb_edges">Nb edges</label>
-                    <input type="range" id="nb_edges" name="nb_edges" class='input_params' oninput="updateGlo(this)" ondblclick="updateScale(this, event)"
-                      min="3" max="12" value="0" step="1">
-                  </div>
+              <div>
+                <label for="minAngleMod">Min Angle mod</label>
+                <input type="range" id="minAngleMod" name="minAngleMod" class='input_params radUnit'
+                  oninput="updateGlo(this)" ondblclick="updateScale(this, event)" min="0" max="360" value="0" step="1">
+              </div>
+              <div>
+                <label for="breakAdd">Break add</label>
+                <input type="range" id="breakAdd" name="breakAdd" class='input_params' oninput="updateGlo(this)"
+                  ondblclick="updateScale(this, event)" min="0" max="1000" value="1" step=".01">
+              </div>
+              <div>
+                <label for="orbite_angle">Orbite angle</label>
+                <input type="range" id="orbite_angle" name="orbite_angle" class='input_params radUnit'
+                  oninput="updateGlo(this); " ondblclick="updateScale(this, event)" min="-180" max="180" value="0"
+                  step=".01">
+              </div>
 
-                  <div>
-                    <label for="circle_size">Circle size</label>
-                    <input type="range" id="circle_size" name="circle_size" class='input_params'
-                      oninput="updateGlo(this)" ondblclick="updateScale(this, event)" onmouseover="activeGlo.showCircle = true" onmouseout="activeGlo.showCircle = false"
-                      min="0" max="2" value=".212" step=".001">
-                  </div>
-                  <div>
-                    <label for="nb_circles">Nb circles</label>
-                    <input type="range" id="nb_circles" name="nb_circles" class='input_params' oninput="updateGlo(this)" ondblclick="updateScale(this, event)"
-                      min="1" max="36" value="1" step="1">
-                  </div>
-                  <div>
-                    <label for="oval_size">Oval size</label>
-                    <input type="range" id="oval_size" name="oval_size" class='input_params' oninput="updateGlo(this); " ondblclick="updateScale(this, event)"
-                      min="0" max="2" value=".5" step=".01">
-                  </div>
+              <div>
+                <label for="maxAngleMod">Max Angle mod</label>
+                <input type="range" id="maxAngleMod" name="maxAngleMod" class='input_params radUnit'
+                  oninput="updateGlo(this)" ondblclick="updateScale(this, event)" min="0" max="360" value="360"
+                  step="1">
+              </div>
+              <div>
+                <label for="out_dir">Expulse distance</label>
+                <input type="range" id="out_dir" name="out_dir" class='input_params' oninput="updateGlo(this)"
+                  ondblclick="updateScale(this, event)" min="0" max="10" value="0" step=".1">
+              </div>
+              <div>
+                <label for="out_force">Out force</label>
+                <input type="range" id="out_force" name="out_force" class='input_params' oninput="updateGlo(this)"
+                  ondblclick="updateScale(this, event)" min="-100" max="100" value="1" step=".01">
+              </div>
+            </div>
 
-                  <div>
-                    <label for="coeffDimSizeCenter">Coeff dim size center</label>
-                    <input type="range" id="coeffDimSizeCenter" name="coeffDimSizeCenter" class='input_params' oninput="updateGlo(this); " ondblclick="updateScale(this, event)"
-                      min="-10" max="10" value="1" step=".01">
-                  </div>
-                  <div>
-                    <label for="nb_points_cloud">Nb points in cloud form</label>
-                    <input type="range" id="nb_points_cloud" name="nb_points_cloud" class='input_params' oninput="updateGlo(this)" ondblclick="updateScale(this, event)"
-                      min="1" max="100" value="4" step="1">
-                  </div>
-                  <div>
-                    <label for="sz_points_cloud">Sz points in cloud form</label>
-                    <input type="range" id="sz_points_cloud" name="sz_points_cloud" class='input_params' oninput="updateGlo(this)" ondblclick="updateScale(this, event)"
-                      min="1" max="100" value="1" step="1">
-                  </div>
+            <!-- 10) interface_various_1 (flattened) -->
+            <div style='display: none; ' id="interface_various_1" class='interface'>
+              <div class="titleInterface">
+                <h3>Travel- suit</h3>
+              </div>
+              <div>
+                <label for="inv_g_force">Inv g force</label>
+                <input type="range" id="inv_g_force" name="inv_g_force" class='input_params' oninput="updateGlo(this); "
+                  ondblclick="updateScale(this, event)" min="1" max="100" value="50" step="1">
+              </div>
+              <div>
+                <label for="crossPointsLim">Cross points lim</label>
+                <input type="range" id="crossPointsLim" name="crossPointLim" class='input_params'
+                  oninput="updateGlo(this)" ondblclick="updateScale(this, event)" min=".01" max="2" value=".01"
+                  step=".01">
+              </div>
+              <div>
+                <label for="gSpeed">G speed</label>
+                <input type="range" id="gSpeed" name="gSpeed" class='input_params' oninput="updateGlo(this)"
+                  ondblclick="updateScale(this, event)" min="0" max="2" value="1" step=".01">
+              </div>
 
-                  <div>
-                    <label for="polyAvNbEdges">Poly av nb edges</label>
-                    <input type="range" id="polyAvNbEdges" name="polyAvNbEdges" class='input_params' oninput="updateGlo(this); " ondblclick="updateScale(this, event)"
-                      min="3" max="12" value="3" step="1">
-                  </div>
-                  <div>
-                    <label for="div_line">Div line</label>
-                    <input type="range" id="div_line" name="div_line" class='input_params' oninput="updateGlo(this)" ondblclick="updateScale(this, event)"
-                      min="1" max="10" value="1" step=".1">
-                  </div>
-                  <div>
-                    <label for="rAleaPosMin">Rayon alea pos min</label>
-                    <input type="range" id="rAleaPosMin" name="rAleaPosMin" class='input_params' oninput="updateGlo(this)" ondblclick="updateScale(this, event)"
-                      min="0" max="2" value="0" step=".001">
-                  </div>
-                  <div style='display: none; '>
-                    <label for="spiralAv">Spiral pos av</label>
-                    <input type="range" id="spiralAv" name="spiralAv" class='input_params' oninput="updateGlo(this)" ondblclick="updateScale(this, event)"
-                      min="1" max="1.1" value="1" step=".001">
-                  </div>
+              <div>
+                <label for="growDecreaseCoeff">Grow decrease coeff</label>
+                <input type="range" id="growDecreaseCoeff" name="growDecreaseCoeff" class='input_params'
+                  oninput="updateGlo(this)" ondblclick="updateScale(this, event)" min="0" max="2" value=".02"
+                  step=".01">
+              </div>
+              <div>
+                <label for="growLineDecreaseCoeff">Grow line decrease coeff</label>
+                <input type="range" id="growLineDecreaseCoeff" name="growLineDecreaseCoeff" class='input_params'
+                  oninput="updateGlo(this)" ondblclick="updateScale(this, event)" min="0" max="2" value=".05"
+                  step=".01">
+              </div>
+              <div>
+                <label for="growDecrease">Grow decrease form</label>
+                <input type="range" id="growDecrease" name="growDecrease" class='input_params' oninput="updateGlo(this)"
+                  ondblclick="updateScale(this, event)" min="1" max="400" value="50" step="1">
+              </div>
+              <!-- --- ex-bloc 1 (aplati) --- -->
+              <div>
+                <label for="speedRndDraw">Speed altern draw</label>
+                <input type="range" id="speedRndDraw" name="speedRndDraw" class="input_params" oninput="updateGlo(this)"
+                  ondblclick="updateScale(this, event)" min="2" max="200" value="5" step="1">
+              </div>
+              <div>
+                <label for="dblAvDist">Dbl av dist</label>
+                <input type="range" id="dblAvDist" name="dblAvDist" class="input_params" oninput="updateGlo(this)"
+                  ondblclick="updateScale(this, event)" min="0.1" max="20" value="2" step=".1">
+              </div>
+              <div>
+                <label for="sizeDirCoeff">Size dir coeff</label>
+                <input type="range" id="sizeDirCoeff" name="sizeDirCoeff" class="input_params" oninput="updateGlo(this)"
+                  ondblclick="updateScale(this, event)" min="-30" max="30" value="15" step=".01">
+              </div>
 
-                  <div>
-                    <label for="speed_alea_pos">Speed alea pos</label>
-                    <input type="range" id="speed_alea_pos" name="speed_alea_pos" class='input_params inverse_dir' oninput="updateGlo(this)" ondblclick="updateScale(this, event)"
-                      min="3" max="100" value="50" step="1">
-                  </div>
-                  <div>
-                    <label for="keep_dir">Speed alea</label>
-                    <input type="range" id="keep_dir" name="keep_dir" class='input_params inverse_dir' oninput="updateGlo(this)" ondblclick="updateScale(this, event)"
-                      min="1" max="100" value="50" step="1">
-                  </div>
-                  <div>
-                    <label for="rAleaPos">Rayon alea pos</label>
-                    <input type="range" id="rAleaPos" name="rAleaPos" class='input_params' oninput="updateGlo(this)" ondblclick="updateScale(this, event)"
-                      min=".001" max="2" value="1.125" step=".001">
-                  </div>
-                </div>
+              <!-- --- ex-bloc 2 (aplati) --- -->
+              <div>
+                <label for="alphaBySize">Alpha by size</label>
+                <input type="range" id="alphaBySize" name="alphaBySize" class="input_params" oninput="updateGlo(this)"
+                  ondblclick="updateScale(this, event)" min="0.1" max="20" value="2" step=".1">
+              </div>
+              <div>
+                <label for="powAlpha">Pow alpha</label>
+                <input type="range" id="powAlpha" name="powAlpha" class="input_params" oninput="updateGlo(this)"
+                  ondblclick="updateScale(this, event)" min="0.1" max="20" value="1" step=".1">
+              </div>
+              <div>
+                <label for="powColorAdd">Pow color add</label>
+                <input type="range" id="powColorAdd" name="powColorAdd" class="input_params" oninput="updateGlo(this)"
+                  ondblclick="updateScale(this, event)" min="0.1" max="20" value="1.8" step=".1">
+              </div>
 
-                <!-- 8) interface_structure_1 (flattened) -->
-                <div style='display: none; ' id="interface_structure_1" class='interface'>
-                  <div class="titleInterface"><h3>Grid</h3></div>
-                  <div>
-                    <label for="areneOpacity">Arene opacity</label>
-                    <input type="range" id="areneOpacity" name="areneOpacity" class='input_params' oninput="updateGlo(this); canvas.style.opacity = this.value; "
-                      min="0.01" max="1" value="1" step=".01">
-                  </div>
-                  <div>
-                    <label for="structureOpacity">Structure opacity</label>
-                    <input type="range" id="structureOpacity" name="structureOpacity" class='input_params' oninput="updateGlo(this); structure.style.opacity = this.value; "
-                      min="0.01" max="1" value="1" step=".01">
-                  </div>
-                  <div>
-                    <label for="gridStep">Rectangular grid step</label>
-                    <input type="range" id="gridStep" name="gridStep" class='input_params' oninput="updateGlo(this); " ondblclick="updateScale(this, event)"
-                      min="1" max="300" value="96" step="1">
-                  </div>
-                  <div>
-                    <label for="gridEquiStep">Equi grid step</label>
-                    <input type="range" id="gridEquiStep" name="gridEquiStep" class='input_params' oninput="updateGlo(this); " ondblclick="updateScale(this, event)"
-                      min="2" max="200" value="20" step="2">
-                  </div>
+              <!-- --- ex-bloc 3 (aplati) --- -->
+              <div>
+                <label for="changeCurve">Change curve</label>
+                <input type="range" id="changeCurve" name="changeCurve" class="input_params" oninput="updateGlo(this);"
+                  ondblclick="updateScale(this, event)" min="1" max="400" value="200" step="1">
+              </div>
+              <div>
+                <label for="rCurve">R curve</label>
+                <input type="range" id="rCurve" name="rCurve" class="input_params" oninput="updateGlo(this)"
+                  ondblclick="updateScale(this, event)" min="1" max="400" value="180" step="1">
+              </div>
+              <div>
+                <label for="curveAngle">Curve angle</label>
+                <input type="range" id="curveAngle" name="curveAngle" class="input_params radUnit"
+                  oninput="changeAvatarsProp(this.value, 'curveAngle', true); updateGlo(this)"
+                  ondblclick="updateScale(this, event)" min="0" max="2" value="1" step=".01">
+              </div>
 
-                  <div>
-                    <label for="circleGridStep">Circle grid step</label>
-                    <input type="range" id="circleGridStep" name="circleGridStep" class='input_params' oninput="updateGlo(this); " ondblclick="updateScale(this, event)"
-                      min="1" max="100" value="24" step="1">
-                  </div>
-                  <div>
-                    <label for="circleRep">Circle grid marks</label>
-                    <input type="range" id="circleRep" name="circleRep" class='input_params' oninput="updateGlo(this);" ondblclick="updateScale(this, event)"
-                      min="0" max="36" value="4" step="1">
-                  </div>
+              <!-- --- ex-bloc 4 (aplati) --- -->
+              <div>
+                <label for="aleaAttractLaps">Alea attract nb laps</label>
+                <input type="range" id="aleaAttractLaps" name="aleaAttractLaps" class="input_params"
+                  oninput="updateGlo(this);" ondblclick="updateScale(this, event);" min="1" max="100000" value="10000"
+                  step="1">
+              </div>
+              <div>
+                <label for="tailDec">Size of dec tail</label>
+                <input type="range" id="tailDec" name="tailDec" class="input_params"
+                  oninput="changeAvatarsProp(this.value, 'curveAngle', true); updateGlo(this)"
+                  ondblclick="updateScale(this, event)" min="0" max="2" value="0.5" step="0.01">
+              </div>
+              <div>
+                <label for="sizeToSearchBlank">Size to check blanks pixel</label>
+                <input type="range" id="sizeToSearchBlank" name="sizeToSearchBlank" class="input_params"
+                  oninput="changeAvatarsProp(this.value, 'curveAngle', true); updateGlo(this)"
+                  ondblclick="updateScale(this, event)" min="1" max="100" value="10" step="1">
+              </div>
 
-                  <div>
-                    <label for="thirdGridStep">Third grid step</label>
-                    <input type="range" id="thirdGridStep" name="thirdGridStep" class='input_params' oninput="updateGlo(this); " ondblclick="updateScale(this, event)"
-                      min="1" max="5" value="2" step="1">
-                  </div>
-                  <div>
-                    <label for="thirdGridFrac">Third grid frac</label>
-                    <input type="range" id="thirdGridFrac" name="thirdGridFrac" class='input_params' oninput="updateGlo(this); " ondblclick="updateScale(this, event)"
-                      min="1" max="12" value="3" step="1">
-                  </div>
+            </div>
 
-                  <div>
-                    <label for="ctxComposition">Canvas composition</label>
-                    <input type="range" id="ctxComposition" name="ctxComposition" class='input_params' oninput="updateGlo(this); ctx.globalCompositeOperation = activeGlo.ctxCompositions[activeGlo.params.ctxComposition]; "
-                      min="0" max="3" value="0" step="1" data-labels="ctxCompositions">
+            <!-- 11) interface_window_1 : labels au-dessus des inputs --- -->
+            <div style="display: none;" id="interface_window_1" class="interface">
+              <div class="">
+                <h3>Actions</h3>
+              </div>
+              <div id="actionsContainer">
+                <div>
+                  <div class="actionsTitleSection">
+                    <h4>Couleurs</h4>
                   </div>
-
-                  <div>
-                    <label for="selectCanvas">Selected canvas</label>
-                    <input type="range" id="selectCanvas" name="selectCanvas" class='input_params' oninput="updateGlo(this); selectCanvas(this.value); "
-                      min="0" max="0" value="0" step="1" data-labels="selectCanvas">
-                  </div>
-                  <div style="margin-top: 32px; text-align: center; ">Canvas operations :</div>
-                  <div id="canvasOperationButtonContainer">
-                    <div>
-                      <button id="addCanvas" class="canvasOperationButton" onclick="addCanvas()">Add</button>
+                  <div id="colorButtonsContainer">
+                    <label for="canvas_bg">Fond</label>
+                    <label for="modifiersColor">Modifiers</label>
+                    <label for="oneColor">One</label>
+                    <div class="">
+                      <input type="color" id="canvas_bg" name="canvas_bg" value="#ffffff" oninput="canvas_bg_upd(this)">
                     </div>
-                    <div>
-                      <button id="duplicateCanvas" class="canvasOperationButton" onclick="addCanvas(false, true)">Duplicate</button>
+                    <div class="">
+                      <input type="color" id="modifiersColor" name="modifiersColor" value="#008888"
+                        oninput="modifiersColor_upd(this);">
                     </div>
-                    <div>
-                      <button id="deleteCanvas" class="canvasOperationButton" onclick="deleteCanvas()">Delete</button>
+                    <div class="">
+                      <input type="color" id="oneColor" name="oneColor" value="#008888"
+                        oninput="activeGlo.oneColor.color = hexToHSL(this.value);">
                     </div>
                   </div>
                 </div>
 
-                <!-- 9) interface_avatar_1 (flattened) -->
-                <div style='display: none; ' id="interface_avatar_1" class='interface'>
-                  <div class="titleInterface"><h3>Travel</h3></div>
+                <div>
                   <div>
-                    <label for="resist">Resistance</label>
-                    <input type="range" id="resist" name="resist" class='input_params' oninput="updateGlo(this)" ondblclick="updateScale(this, event)"
-                      min="0" max="100" value="0" step=".01">
+                    <div class="actionsTitleSection">
+                      <h4>Import</h4>
+                    </div>
+                    <label for="import_json" class="labelImport">Import JSON</label>
+                    <input class="fileInput" type="file" accept="application/JSON" id="import_json" name="import_json"
+                      onChange="impt_json()">
                   </div>
-                  <div>
-                    <label for="brake_pow">Brake pow</label>
-                    <input type="range" id="brake_pow" name="brake_pow" class='input_params' oninput="updateGlo(this)" ondblclick="updateScale(this, event)"
-                      min="0" max="4" value="2.12" step=".01">
-                  </div>
-                  <div>
-                    <label for="attract">Attraction</label>
-                    <input type="range" id="attract" name="attract" class='input_params' oninput="updateGlo(this)" ondblclick="updateScale(this, event)"
-                      min="-300" max="300" value="0" step="1">
-                  </div>
-
-                  <div>
-                    <label for="radius_attract">Attraction radius</label>
-                    <input type="range" id="radius_attract" name="radius_attract" class='input_params' oninput="updateGlo(this); " ondblclick="updateScale(this, event)"
-                      min="0" max="256" value="0" step="1" data-playinput='true'>
-                  </div>
-                  <div>
-                    <label for="chaos_dist">Chaos distance</label>
-                    <input type="range" id="chaos_dist" name="chaos_dist" class='input_params' oninput="updateGlo(this)" ondblclick="updateScale(this, event)"
-                      min="0" max="10" value="2" step=".1">
-                  </div>
-                  <div>
-                    <label for="chaos_force">Chaos force</label>
-                    <input type="range" id="chaos_force" name="chaos_force" class='input_params' oninput="updateGlo(this)" ondblclick="updateScale(this, event)"
-                      min="0" max="20" value="8" step=".1">
-                  </div>
-
-                  <div>
-                    <label for="follow_force_x">Follow force X</label>
-                    <input type="range" id="follow_force_x" name="follow_force_x" class='input_params' oninput="updateGlo(this)" ondblclick="updateScale(this, event)"
-                      min="0.9" max="1.1" value="1" step=".001">
-                  </div>
-                  <div>
-                    <label for="follow_force_y">Follow force Y</label>
-                    <input type="range" id="follow_force_y" name="follow_force_y" class='input_params' oninput="updateGlo(this)" ondblclick="updateScale(this, event)"
-                      min="0.9" max="1.1" value="1" step=".001">
-                  </div>
-                  <div>
-                    <label for="same_dir">Follow distance</label>
-                    <input type="range" id="same_dir" name="same_dir" class='input_params' oninput="updateGlo(this)" ondblclick="updateScale(this, event)"
-                      min="0" max="10" value="0" step=".1">
-                  </div>
-
-                  <div>
-                    <label for="modsDevForce">Mods dev force</label>
-                    <input type="range" id="modsDevForce" name="modsDevForce" class='input_params' oninput="updateGlo(this)" ondblclick="updateScale(this, event)"
-                      min="-2" max="2" value="0" step=".01">
-                  </div>
-                  <div>
-                    <label for="modsDevDir">Mods dev dir</label>
-                    <input type="range" id="modsDevDir" name="modsDevDir" class='input_params radUnit' oninput="updateGlo(this)" ondblclick="updateScale(this, event)"
-                      min="0" max="360" value="90" step=".01">
-                  </div>
-                  <div>
-                    <label for="nears_calc">Nears calcul</label>
-                    <input type="range" id="nears_calc" name="nears_calc" class='input_params' oninput="updateGlo(this)" ondblclick="updateScale(this, event)"
-                      min="1" max="100" value="60" step="1">
-                  </div>
-
-                  <div>
-                    <label for="minAngleMod">Min Angle mod</label>
-                    <input type="range" id="minAngleMod" name="minAngleMod" class='input_params radUnit' oninput="updateGlo(this)" ondblclick="updateScale(this, event)"
-                      min="0" max="360" value="0" step="1">
-                  </div>
-                  <div>
-                    <label for="breakAdd">Break add</label>
-                    <input type="range" id="breakAdd" name="breakAdd" class='input_params' oninput="updateGlo(this)" ondblclick="updateScale(this, event)"
-                      min="0" max="1000" value="1" step=".01">
-                  </div>
-                  <div>
-                    <label for="orbite_angle">Orbite angle</label>
-                    <input type="range" id="orbite_angle" name="orbite_angle" class='input_params radUnit' oninput="updateGlo(this); " ondblclick="updateScale(this, event)"
-                      min="-180" max="180" value="0" step=".01">
-                  </div>
-
-                  <div>
-                    <label for="maxAngleMod">Max Angle mod</label>
-                    <input type="range" id="maxAngleMod" name="maxAngleMod" class='input_params radUnit' oninput="updateGlo(this)" ondblclick="updateScale(this, event)"
-                      min="0" max="360" value="360" step="1">
-                  </div>
-                  <div>
-                    <label for="out_dir">Expulse distance</label>
-                    <input type="range" id="out_dir" name="out_dir" class='input_params' oninput="updateGlo(this)" ondblclick="updateScale(this, event)"
-                      min="0" max="10" value="0" step=".1">
-                  </div>
-                  <div>
-                    <label for="out_force">Out force</label>
-                    <input type="range" id="out_force" name="out_force" class='input_params' oninput="updateGlo(this)" ondblclick="updateScale(this, event)"
-                      min="-100" max="100" value="1" step=".01">
+                  <div class="" style="margin-top: 10px;">
+                    <label for="import_image" class="labelImport">Import image</label>
+                    <input class="fileInput" type="file" accept="image/*" id="import_image" name="import_image"
+                      onChange="impt_image(event)">
                   </div>
                 </div>
 
-                <!-- 10) interface_various_1 (flattened) -->
-                <div style='display: none; ' id="interface_various_1" class='interface'>
-                  <div class="titleInterface"><h3>Travel- suit</h3></div>
-                  <div>
-                    <label for="inv_g_force">Inv g force</label>
-                    <input type="range" id="inv_g_force" name="inv_g_force" class='input_params' oninput="updateGlo(this); " ondblclick="updateScale(this, event)"
-                      min="1" max="100" value="50" step="1">
+                <div>
+                  <div class="actionsTitleSection">
+                    <h4>Export</h4>
                   </div>
-                  <div>
-                    <label for="crossPointsLim">Cross points lim</label>
-                    <input type="range" id="crossPointsLim" name="crossPointLim" class='input_params' oninput="updateGlo(this)" ondblclick="updateScale(this, event)"
-                      min=".01" max="2" value=".01" step=".01">
+                  <div id="actionsSaveSection">
+                    <button id="flash" name="flash" onclick="flash();">Flash</button>
+                    <button id="unflash" name="unflash" onclick="unflash();">Unflash</button>
+                    <input type="text" id="export_json" class="stopWindowEvents" name="export_json">
+                    <button id="exportButton" onclick="expt_json()">Expt JSON</button>
                   </div>
-                  <div>
-                    <label for="gSpeed">G speed</label>
-                    <input type="range" id="gSpeed" name="gSpeed" class='input_params' oninput="updateGlo(this)" ondblclick="updateScale(this, event)"
-                      min="0" max="2" value="1" step=".01">
+                </div>
+
+                <div>
+                  <!-- Table "Color formule" laissée telle quelle (pas de <label> associés aux <input>) -->
+                  <div style="margin-bottom: 3px; ">
+                    <h4 class="actionsTitleSection" style="margin: 0 0 5px; padding: 0; ">Formules</h4>
+                    <div class="flex-actionsTitleSection">Color formule<button id="switchAvFormulesButton"
+                        onclick="switchAvatarsFormules(); ">OFF</button></div>
+                    <div style="padding-left: 1rem; ">Fill</div>
+                    <table style="width: 80%; margin-bottom: 5px; ">
+                      <tbody>
+                        <tr>
+                          <td>H</td>
+                          <td><input style="width: 100%;" type="text" id="colorFormule_H"
+                              class="stopWindowEvents noLabel colorFormule" name="colorFormuleH" value="H"
+                              oninput="updFormuleColor(this, 'h'); updateGlo(this);"></td>
+                        </tr>
+                        <tr>
+                          <td>S</td>
+                          <td><input style="width: 100%;" type="text" id="colorFormule_S"
+                              class="stopWindowEvents noLabel colorFormule" name="colorFormuleS" value="S"
+                              oninput="updFormuleColor(this, 's'); updateGlo(this);"></td>
+                        </tr>
+                        <tr>
+                          <td>L</td>
+                          <td><input style="width: 100%;" type="text" id="colorFormule_L"
+                              class="stopWindowEvents noLabel colorFormule" name="colorFormuleL" value="L"
+                              oninput="updFormuleColor(this, 'l'); updateGlo(this);"></td>
+                        </tr>
+                        <tr>
+                          <td>A</td>
+                          <td><input style="width: 100%;" type="text" id="colorFormule_A"
+                              class="stopWindowEvents noLabel colorFormule" name="colorFormuleA" value="A"
+                              oninput="updFormuleColor(this, 'a'); updateGlo(this);"></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <div style="padding-left: 1rem; ">Stroke</div>
+                    <table style="width: 80%; margin-bottom: 10px; ">
+                      <tbody>
+                        <tr>
+                          <td>H</td>
+                          <td><input style="width: 100%;" type="text" id="colorFormuleStroke_H"
+                              class="stopWindowEvents noLabel colorFormule" name="colorFormuleStrokeH" value="H"
+                              oninput="updFormuleColor(this, 'h', 'formuleColorStroke', activeGlo.formuleColorHisto); updateGlo(this);">
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>S</td>
+                          <td><input style="width: 100%;" type="text" id="colorFormuleStroke_S"
+                              class="stopWindowEvents noLabel colorFormule" name="colorFormuleStrokeS" value="S"
+                              oninput="updFormuleColor(this, 's', 'formuleColorStroke', activeGlo.formuleColorHisto); updateGlo(this);">
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>L</td>
+                          <td><input style="width: 100%;" type="text" id="colorFormuleStroke_L"
+                              class="stopWindowEvents noLabel colorFormule" name="colorFormuleStrokeL" value="L"
+                              oninput="updFormuleColor(this, 'l', 'formuleColorStroke', activeGlo.formuleColorHisto); updateGlo(this);">
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>A</td>
+                          <td><input style="width: 100%;" type="text" id="colorFormuleStroke_A"
+                              class="stopWindowEvents noLabel colorFormule" name="colorFormuleStrokeA" value="A"
+                              oninput="updFormuleColor(this, 'a', 'formuleColorStroke', activeGlo.formuleColorHisto); updateGlo(this);">
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
                   </div>
 
                   <div>
-                    <label for="growDecreaseCoeff">Grow decrease coeff</label>
-                    <input type="range" id="growDecreaseCoeff" name="growDecreaseCoeff" class='input_params' oninput="updateGlo(this)" ondblclick="updateScale(this, event)"
-                      min="0" max="2" value=".02" step=".01">
-                  </div>
-                  <div>
-                    <label for="growLineDecreaseCoeff">Grow line decrease coeff</label>
-                    <input type="range" id="growLineDecreaseCoeff" name="growLineDecreaseCoeff" class='input_params' oninput="updateGlo(this)" ondblclick="updateScale(this, event)"
-                      min="0" max="2" value=".05" step=".01">
-                  </div>
-                  <div>
-                    <label for="growDecrease">Grow decrease form</label>
-                    <input type="range" id="growDecrease" name="growDecrease" class='input_params' oninput="updateGlo(this)" ondblclick="updateScale(this, event)"
-                      min="1" max="400" value="50" step="1">
-                  </div>
-                    <!-- --- ex-bloc 1 (aplati) --- -->
-                  <div>
-                    <label for="speedRndDraw">Speed altern draw</label>
-                    <input type="range" id="speedRndDraw" name="speedRndDraw" class="input_params" oninput="updateGlo(this)" ondblclick="updateScale(this, event)"
-                          min="2" max="200" value="5" step="1">
-                  </div>
-                  <div>
-                    <label for="dblAvDist">Dbl av dist</label>
-                    <input type="range" id="dblAvDist" name="dblAvDist" class="input_params" oninput="updateGlo(this)" ondblclick="updateScale(this, event)"
-                          min="0.1" max="20" value="2" step=".1">
-                  </div>
-                  <div>
-                    <label for="sizeDirCoeff">Size dir coeff</label>
-                    <input type="range" id="sizeDirCoeff" name="sizeDirCoeff" class="input_params" oninput="updateGlo(this)" ondblclick="updateScale(this, event)"
-                          min="-30" max="30" value="15" step=".01">
-                  </div>
-
-                  <!-- --- ex-bloc 2 (aplati) --- -->
-                  <div>
-                    <label for="alphaBySize">Alpha by size</label>
-                    <input type="range" id="alphaBySize" name="alphaBySize" class="input_params" oninput="updateGlo(this)" ondblclick="updateScale(this, event)"
-                          min="0.1" max="20" value="2" step=".1">
-                  </div>
-                  <div>
-                    <label for="powAlpha">Pow alpha</label>
-                    <input type="range" id="powAlpha" name="powAlpha" class="input_params" oninput="updateGlo(this)" ondblclick="updateScale(this, event)"
-                          min="0.1" max="20" value="1" step=".1">
-                  </div>
-                  <div>
-                    <label for="powColorAdd">Pow color add</label>
-                    <input type="range" id="powColorAdd" name="powColorAdd" class="input_params" oninput="updateGlo(this)" ondblclick="updateScale(this, event)"
-                          min="0.1" max="20" value="1.8" step=".1">
-                  </div>
-
-                  <!-- --- ex-bloc 3 (aplati) --- -->
-                  <div>
-                    <label for="changeCurve">Change curve</label>
-                    <input type="range" id="changeCurve" name="changeCurve" class="input_params" oninput="updateGlo(this);" ondblclick="updateScale(this, event)"
-                          min="1" max="400" value="200" step="1">
-                  </div>
-                  <div>
-                    <label for="rCurve">R curve</label>
-                    <input type="range" id="rCurve" name="rCurve" class="input_params" oninput="updateGlo(this)" ondblclick="updateScale(this, event)"
-                          min="1" max="400" value="180" step="1">
-                  </div>
-                  <div>
-                    <label for="curveAngle">Curve angle</label>
-                    <input type="range" id="curveAngle" name="curveAngle" class="input_params radUnit" oninput="changeAvatarsProp(this.value, 'curveAngle', true); updateGlo(this)" ondblclick="updateScale(this, event)"
-                          min="0" max="2" value="1" step=".01">
-                  </div>
-
-                  <!-- --- ex-bloc 4 (aplati) --- -->
-                  <div>
-                    <label for="aleaAttractLaps">Alea attract nb laps</label>
-                    <input type="range" id="aleaAttractLaps" name="aleaAttractLaps" class="input_params" oninput="updateGlo(this);" ondblclick="updateScale(this, event);"
-                          min="1" max="100000" value="10000" step="1">
-                  </div>
-                  <div>
-                    <label for="tailDec">Size of dec tail</label>
-                    <input type="range" id="tailDec" name="tailDec" class="input_params" oninput="changeAvatarsProp(this.value, 'curveAngle', true); updateGlo(this)" ondblclick="updateScale(this, event)"
-                          min="0" max="2" value="0.5" step="0.01">
-                  </div>
-                  <div>
-                    <label for="sizeToSearchBlank">Size to check blanks pixel</label>
-                    <input type="range" id="sizeToSearchBlank" name="sizeToSearchBlank" class="input_params" oninput="changeAvatarsProp(this.value, 'curveAngle', true); updateGlo(this)" ondblclick="updateScale(this, event)"
-                          min="1" max="100" value="10" step="1">
-                  </div>
-
-                    </div>
-
-                <!-- 11) interface_window_1 : labels au-dessus des inputs --- -->
-                <div style="display: none;" id="interface_window_1" class="interface">
-                  <div class=""><h3>Actions</h3></div>
-                  <div id="actionsContainer">
                     <div>
-                      <div class="actionsTitleSection"><h4>Couleurs</h4></div>
-                      <div id="colorButtonsContainer">
-                        <label for="canvas_bg">Fond</label>
-                        <label for="modifiersColor">Modifiers</label>
-                        <label for="oneColor">One</label>
-                        <div class="">
-                          <input type="color" id="canvas_bg" name="canvas_bg" value="#ffffff" oninput="canvas_bg_upd(this)">
-                        </div>
-                        <div class="">
-                          <input type="color" id="modifiersColor" name="modifiersColor" value="#008888" oninput="modifiersColor_upd(this);">
-                        </div>
-                        <div class="">
-                          <input type="color" id="oneColor" name="oneColor" value="#008888" oninput="activeGlo.oneColor.color = hexToHSL(this.value);">
-                        </div>
+                      <div>Formulator formule</div>
+                      <div style="margin-bottom: 5px;">
+                        <label for="formule_x">X</label>
+                        <input style="width: 80%;" type="text" id="formule_x" class="stopWindowEvents" name="formule_x"
+                          value="0" oninput="updFormuleModifiers(this, 'x')">
+                      </div>
+                      <div style="margin-bottom: 10px; ">
+                        <label for="formule_y">Y</label>
+                        <input style="width: 80%;" type="text" id="formule_y" class="stopWindowEvents" name="formule_y"
+                          value="0" oninput="updFormuleModifiers(this, 'y')">
+                      </div>
+
+                      <div style="margin-top: 5px;">Mods formule</div>
+                      <div style="margin-left: 12px;">
+                        <label for="mods_formule" style="display:block; margin-bottom:4px;">Expression</label>
+                        <input style="width: 82.5%;" type="text" id="mods_formule" class="stopWindowEvents noLabel"
+                          name="mods_formule" value="0" oninput="updateGlo(this); testModsFormule();">
                       </div>
                     </div>
+                  </div>
+                </div>
 
-                    <div>
-                      <div>
-                        <div class="actionsTitleSection"><h4>Import</h4></div>
-                        <label for="import_json" class="labelImport">Import JSON</label>
-                        <input class="fileInput" type="file" accept="application/JSON" id="import_json" name="import_json" onChange="impt_json()">
-                      </div>
-                      <div class="" style="margin-top: 10px;">
-                        <label for="import_image" class="labelImport">Import image</label>
-                        <input class="fileInput" type="file" accept="image/*" id="import_image" name="import_image" onChange="impt_image(event)">
-                      </div>
-                    </div>
+              </div>
+            </div>
+          </div>
 
-                    <div>
-                      <div class="actionsTitleSection"><h4>Export</h4></div>
-                      <div id="actionsSaveSection">
-                        <button id="flash" name="flash" onclick="flash();">Flash</button>
-                        <button id="unflash" name="unflash" onclick="unflash();">Unflash</button>
-                        <input type="text" id="export_json" class="stopWindowEvents" name="export_json">
-                        <button id="exportButton" onclick="expt_json()">Expt JSON</button>
-                      </div>
-                    </div>
-                  
-                    <div>
-                      <!-- Table "Color formule" laissée telle quelle (pas de <label> associés aux <input>) -->
-                    <div style="margin-bottom: 3px; ">
-                      <h4 class="actionsTitleSection" style="margin: 0 0 5px; padding: 0; ">Formules</h4>
-                      <div class="flex-actionsTitleSection">Color formule<button id="switchAvFormulesButton" onclick="switchAvatarsFormules(); ">OFF</button></div>
-                      <div style="padding-left: 1rem; ">Fill</div>
-                      <table style="width: 80%; margin-bottom: 5px; ">
-                        <tbody>
-                          <tr>
-                            <td>H</td>
-                            <td><input style="width: 100%;" type="text" id="colorFormule_H" class="stopWindowEvents noLabel colorFormule" name="colorFormuleH" value="H" oninput="updFormuleColor(this, 'h'); updateGlo(this);"></td>
-                          </tr>
-                          <tr>
-                            <td>S</td>
-                            <td><input style="width: 100%;" type="text" id="colorFormule_S" class="stopWindowEvents noLabel colorFormule" name="colorFormuleS" value="S" oninput="updFormuleColor(this, 's'); updateGlo(this);"></td>
-                          </tr>
-                          <tr>
-                            <td>L</td>
-                            <td><input style="width: 100%;" type="text" id="colorFormule_L" class="stopWindowEvents noLabel colorFormule" name="colorFormuleL" value="L" oninput="updFormuleColor(this, 'l'); updateGlo(this);"></td>
-                          </tr>
-                          <tr>
-                            <td>A</td>
-                            <td><input style="width: 100%;" type="text" id="colorFormule_A" class="stopWindowEvents noLabel colorFormule" name="colorFormuleA" value="A" oninput="updFormuleColor(this, 'a'); updateGlo(this);"></td>
-                          </tr>
-                        </tbody>
-                      </table>
-                      <div style="padding-left: 1rem; ">Stroke</div>
-                      <table style="width: 80%; margin-bottom: 10px; ">
-                        <tbody>
-                          <tr>
-                            <td>H</td>
-                            <td><input style="width: 100%;" type="text" id="colorFormuleStroke_H" class="stopWindowEvents noLabel colorFormule" name="colorFormuleStrokeH" value="H" oninput="updFormuleColor(this, 'h', 'formuleColorStroke', activeGlo.formuleColorHisto); updateGlo(this);"></td>
-                          </tr>
-                          <tr>
-                            <td>S</td>
-                            <td><input style="width: 100%;" type="text" id="colorFormuleStroke_S" class="stopWindowEvents noLabel colorFormule" name="colorFormuleStrokeS" value="S" oninput="updFormuleColor(this, 's', 'formuleColorStroke', activeGlo.formuleColorHisto); updateGlo(this);"></td>
-                          </tr>
-                          <tr>
-                            <td>L</td>
-                            <td><input style="width: 100%;" type="text" id="colorFormuleStroke_L" class="stopWindowEvents noLabel colorFormule" name="colorFormuleStrokeL" value="L" oninput="updFormuleColor(this, 'l', 'formuleColorStroke', activeGlo.formuleColorHisto); updateGlo(this);"></td>
-                          </tr>
-                          <tr>
-                            <td>A</td>
-                            <td><input style="width: 100%;" type="text" id="colorFormuleStroke_A" class="stopWindowEvents noLabel colorFormule" name="colorFormuleStrokeA" value="A" oninput="updFormuleColor(this, 'a', 'formuleColorStroke', activeGlo.formuleColorHisto); updateGlo(this);"></td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </div>
-
-                    <div>
-                      <div>
-                        <div>Formulator formule</div>
-                        <div style="margin-bottom: 5px;">
-                          <label for="formule_x">X</label>
-                          <input style="width: 80%;" type="text" id="formule_x" class="stopWindowEvents" name="formule_x" value="0" oninput="updFormuleModifiers(this, 'x')">
-                        </div>
-                        <div style="margin-bottom: 10px; ">
-                          <label for="formule_y">Y</label>
-                          <input style="width: 80%;" type="text" id="formule_y" class="stopWindowEvents" name="formule_y" value="0" oninput="updFormuleModifiers(this, 'y')">
-                        </div>
-
-                        <div style="margin-top: 5px;">Mods formule</div>
-                        <div style="margin-left: 12px;">
-                          <label for="mods_formule" style="display:block; margin-bottom:4px;">Expression</label>
-                          <input style="width: 82.5%;" type="text" id="mods_formule" class="stopWindowEvents noLabel" name="mods_formule" value="0" oninput="updateGlo(this); testModsFormule();">
-                        </div>
-                      </div>
-                    </div>
-                    </div>
-                    
+          <div id="othersInterfaceContainer">
+            <div id="buttonsUI">
+              <div id="toggleHelp">
+                <div id="toggleHelpTxt" onclick="toggleHelpDialog(); ">❔</div>
+              </div>
+              <div>
+                <div class="ui-button" id="switchPauseButton" onclick="switchPause(); ">▶️</div>
+              </div>
+              <div>
+                <div class="ui-button" onclick="downloadCanvas(); ">📸</div>
+              </div>
+              <div>
+                <div class="ui-button" id="switchBgButton" onclick="switchBg(); ">🌙</div>
+              </div>
+              <div>
+                <div class="ui-button" id="switchBgButton" onclick="switchAutoBg(); ">🎨</div>
+              </div>
+              <div>
+                <div class="ui-button" id="posAvModButton" onclick="posAvMod(); ">🎯</div>
+              </div>
+              <div>
+                <div class="ui-button" id="switchPersistButton" onclick="switchPersist(); ">🖐️</div>
+              </div>
+              <div>
+                <div class="ui-button" id="switchMoveOnAleaButton" onclick="switchMoveOnAlea(); ">🎲</div>
+              </div>
+              <div>
+                <div class="ui-button" onclick="testAll(); ">🧪</div>
+              </div>
+              <div>
+                <div class="ui-button" id="selectHalfModifiersButton" onclick="selectHalfModifiers(); ">Ⓢ</div>
+              </div>
+              <div>
+                <div class="ui-button text-xs" style="padding: 5px 0 5px; "
+                  onclick="activeGlo.positiveForce = !activeGlo.positiveForce; ">➕ ➖</div>
+              </div>
+              <div id="switchStrokeIcon" class="fillAndStrokeRound ui-button" onclick="switchSroke(); "></div>
+              <div>
+                <div class="ui-button" onclick="invColors(); ">
+                  <div class="invColorButtonsContainer">
+                    <div class="redSquare"></div>
+                    <div class="blueSquare"></div>
                   </div>
                 </div>
               </div>
-
-              <div id="othersInterfaceContainer">
-                <div id="buttonsUI">  
-                  <div id="toggleHelp"><div id="toggleHelpTxt" onclick="toggleHelpDialog(); ">❔</div></div>
-                  <div><div class="ui-button" id="switchPauseButton" onclick="switchPause(); ">▶️</div></div>
-                  <div><div class="ui-button" onclick="downloadCanvas(); ">📸</div></div>
-                  <div><div class="ui-button" id="switchBgButton" onclick="switchBg(); ">🌙</div></div>
-                  <div><div class="ui-button" id="switchBgButton" onclick="switchAutoBg(); ">🎨</div></div>
-                  <div><div class="ui-button" id="posAvModButton" onclick="posAvMod(); ">🎯</div></div>
-                  <div><div class="ui-button" id="switchPersistButton" onclick="switchPersist(); ">🖐️</div></div>
-                  <div><div class="ui-button" id="switchMoveOnAleaButton" onclick="switchMoveOnAlea(); ">🎲</div></div>
-                  <div><div class="ui-button" onclick="testAll(); ">🧪</div></div>
-                  <div><div class="ui-button" onclick="selectHalfModifiers(); ">Ⓢ</div></div>
-                  <div><div class="ui-button text-xs" style="padding: 5px 0 5px; " onclick="activeGlo.positiveForce = !activeGlo.positiveForce; ">➕ ➖</div></div>
-                  <div id="switchStrokeIcon" class="fillAndStrokeRound ui-button" onclick="switchSroke(); "></div>
-                  <div><div class="ui-button" onclick="invColors(); ">
-                    <div class="invColorButtonsContainer"><div class="redSquare"></div><div class="blueSquare"></div></div>
-                  </div></div>
-                  <div><div class="ui-button" onclick="invTint(); ">
-                    <div class="invColorButtonsContainer"><div class="blackSquare"></div><div class="whiteSquare"></div></div>
-                  </div></div>
-                  <div><div class="ui-button" onclick="invSaturation(); ">
-                    <div class="invColorButtonsContainer"><div class="graySquare"></div><div class="redSquare"></div></div>
-                  </div></div>
-                  <div><div class="ui-button" onclick="sharp(); ">🔎</div></div>
-                  <div><div class="ui-button" onclick="deleteAllModifiers(); ">✕</div></div>
-                  <div><div class="ui-button" onclick="razParams(); ">
-                    <div id="razParamsButton">RAZ</div>
-                  </div></div>
-                  <div><div class="ui-button" onclick="location.reload(); ">🔄</div></div>
-                  <div><div class="ui-button" onclick="switchGrid(); " style="color: brown; font-size: 24px; ">🅶</div></div>
-                  <div><div id="switchModifiersVisibilityIcon" class="ui-button" onclick="switchModifiersVisibility(); ">👁️‍🗨️</div></div>
+              <div>
+                <div class="ui-button" onclick="invTint(); ">
+                  <div class="invColorButtonsContainer">
+                    <div class="blackSquare"></div>
+                    <div class="whiteSquare"></div>
+                  </div>
                 </div>
+              </div>
+              <div>
+                <div class="ui-button" onclick="invSaturation(); ">
+                  <div class="invColorButtonsContainer">
+                    <div class="graySquare"></div>
+                    <div class="redSquare"></div>
+                  </div>
+                </div>
+              </div>
+              <div>
+                <div class="ui-button" onclick="sharp(); ">✦</div>
+              </div>
+              <div>
+                <div class="ui-button" onclick="blurIt(); ">≈</div>
+              </div>
+              <div>
+                <div class="ui-button" onclick="deleteAllModifiers(); ">✕</div>
+              </div>
+              <div>
+                <div class="ui-button" onclick="razParams(); ">
+                  <div id="razParamsButton">RAZ</div>
+                </div>
+              </div>
+              <div>
+                <div class="ui-button" onclick="location.reload(); ">🔄</div>
+              </div>
+              <div>
+                <div class="ui-button" onclick="switchGrid(); " style="color: brown; font-size: 24px; ">🅶</div>
+              </div>
+              <div>
+                <div id="switchModifiersVisibilityIcon" class="ui-button" onclick="switchModifiersVisibility(); ">
+                  👁️‍🗨️</div>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <div id="dialogContainer">
-        <dialog id="helpDialog" class="help-dialog" aria-modal="true">
-          <div class="help-dialog__inner" role="document" onclick="event.stopPropagation();">
-            
-            <!-- Header / Filtres : NE défile pas -->
-            <header id="ui-helpDialog" class="help-dialog__header">
-              <div class="header-grid">
-                <div id="searchAndOnTuchContainer">
-                  <div>
-                    <label for="searchInHelp">🔍</label>
-                    <input type="text" id="searchInHelp" name="searchInHelp" class="stopWindowEvents"
-                          oninput="constructHelpDialog(false);" />
-                  </div>
-                  <div class="centered">
-                    <kbd id="helpTuch_On" class="keys" onclick="toggleHelpOnTuch(this);" style="cursor:pointer;">ON</kbd>
-                  </div>
-                </div>
-                <div style="justify-self: center; ">
-                  <h2>Les touches de raccourcis</h2>
-                </div>
-                <div style="justify-self: end; ">
-                  <label for="helpDialogOpacity">Opacité</label>
-                  <input type="range" id="helpDialogOpacity" name="helpDialogOpacity" class="input_help"
-                        min="0.1" max="1" step=".01" value="1"
-                        oninput="helpDialogOpacityChange(event);" />
-                </div>
-              </div>
-              <div id="HelpTags"></div>
-            </header>
+    </div>
+  </div>
+  <div id="dialogContainer">
+    <dialog id="helpDialog" class="help-dialog" aria-modal="true">
+      <div class="help-dialog__inner" role="document" onclick="event.stopPropagation();">
 
-            <!-- Contenu : DÉFILE ici -->
-            <div id="helpDialogScroll" class="help-dialog__scroll">
-              <div id="helpDialogGrid"></div>
-              <hr class="lineSep">
-              <div id="helpOnControlContainer">
-                <h2>Les contôles</h2>
+        <!-- Header / Filtres : NE défile pas -->
+        <header id="ui-helpDialog" class="help-dialog__header">
+          <div class="header-grid">
+            <div id="searchAndOnTuchContainer">
+              <div>
+                <label for="searchInHelp">🔍</label>
+                <input type="text" id="searchInHelp" name="searchInHelp" class="stopWindowEvents"
+                  oninput="constructHelpDialog(false);" />
+              </div>
+              <div class="centered">
+                <kbd id="helpTuch_On" class="keys" onclick="toggleHelpOnTuch(this);" style="cursor:pointer;">ON</kbd>
               </div>
             </div>
-          </div>
-        </dialog>
-        <dialog id="brushDialog" style="width: 50%; height: 70%; position: absolute; top: 130px; padding-bottom: 23px; border: none; border-radius: 5px; overflow: hidden; ">
-          <canvas id="brushCanvas" style="width: 99%; height: 95%; border: 1px #cccccc solid; " onclick="event.stopPropagation(); "></canvas>
-          <div id="brushInterface" onclick="event.stopPropagation(); " style="display: grid; grid-template-columns: 50% 50%; ">
-            <div>
-              <label class="radio-inline">
-                <input type="radio" id="brushFormType_0" name="brushFormType" onclick="activeGlo.brushType = this.value; " value="manual">Manual
-              </label>
-              <label class="radio-inline">
-                <input type="radio" id="brushFormType_1" name="brushFormType" onclick="activeGlo.brushType = this.value; " value="line">Line
-              </label>
-              <label class="radio-inline">
-                <input type="radio" id="brushFormType_2" name="brushFormType" onclick="activeGlo.brushType = this.value; " value="circle">Circle
-              </label>
-              <label class="radio-inline">
-                <input type="radio" id="brushFormType_3" name="brushFormType" onclick="activeGlo.brushType = this.value; " value="square">Square
-              </label>
+            <div style="justify-self: center; ">
+              <h2>Les touches de raccourcis</h2>
             </div>
-            <div>
-              <label for="brushSize" class="radio-inline">Size</label>
-              <input type="range" id="brushSize" name="brushSize" class='input_params' value="10" oninput="updateGlo(this)" ondblclick="updateScale(this, event)">
+            <div style="justify-self: end; ">
+              <label for="helpDialogOpacity">Opacité</label>
+              <input type="range" id="helpDialogOpacity" name="helpDialogOpacity" class="input_help" min="0.1" max="1"
+                step=".01" value="1" oninput="helpDialogOpacityChange(event);" />
             </div>
           </div>
-        </dialog>
-        <dialog id="modPathDialog" style="width: 50%; height: 70%; position: absolute; top: 130px; border: none; border-radius: 5px; overflow: hidden; ">
-          <canvas id="modPathCanvas" style="width: 99%; height: 100%; border: 1px #cccccc solid; " onclick="event.stopPropagation(); "></canvas>
-        </dialog>
+          <div id="HelpTags"></div>
+        </header>
+
+        <!-- Contenu : DÉFILE ici -->
+        <div id="helpDialogScroll" class="help-dialog__scroll">
+          <div id="helpDialogGrid"></div>
+          <hr class="lineSep">
+          <div id="helpOnControlContainer">
+            <h2>Les contôles</h2>
+          </div>
+        </div>
       </div>
-    </body>
+    </dialog>
+    <dialog id="brushDialog"
+      style="width: 50%; height: 70%; position: absolute; top: 130px; padding-bottom: 23px; border: none; border-radius: 5px; overflow: hidden; ">
+      <canvas id="brushCanvas" style="width: 99%; height: 95%; border: 1px #cccccc solid; "
+        onclick="event.stopPropagation(); "></canvas>
+      <div id="brushInterface" onclick="event.stopPropagation(); "
+        style="display: grid; grid-template-columns: 50% 50%; ">
+        <div>
+          <label class="radio-inline">
+            <input type="radio" id="brushFormType_0" name="brushFormType" onclick="activeGlo.brushType = this.value; "
+              value="manual">Manual
+          </label>
+          <label class="radio-inline">
+            <input type="radio" id="brushFormType_1" name="brushFormType" onclick="activeGlo.brushType = this.value; "
+              value="line">Line
+          </label>
+          <label class="radio-inline">
+            <input type="radio" id="brushFormType_2" name="brushFormType" onclick="activeGlo.brushType = this.value; "
+              value="circle">Circle
+          </label>
+          <label class="radio-inline">
+            <input type="radio" id="brushFormType_3" name="brushFormType" onclick="activeGlo.brushType = this.value; "
+              value="square">Square
+          </label>
+        </div>
+        <div>
+          <label for="brushSize" class="radio-inline">Size</label>
+          <input type="range" id="brushSize" name="brushSize" class='input_params' value="10" oninput="updateGlo(this)"
+            ondblclick="updateScale(this, event)">
+        </div>
+      </div>
+    </dialog>
+    <dialog id="modPathDialog"
+      style="width: 50%; height: 70%; position: absolute; top: 130px; border: none; border-radius: 5px; overflow: hidden; ">
+      <canvas id="modPathCanvas" style="width: 99%; height: 100%; border: 1px #cccccc solid; "
+        onclick="event.stopPropagation(); "></canvas>
+    </dialog>
+  </div>
+</body>
+
 </html>

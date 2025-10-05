@@ -387,6 +387,9 @@ kbd.keys.on, kbd.keys.helpOn {
 #switchAvFormulesButton{
   font-size: 10px;
 }
+#selectHalfModifiersButton{
+  font-size: 18px;
+}
 #helpOnControlContainer{
   text-align: center;
 }

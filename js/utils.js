@@ -4,11 +4,11 @@
 
 /**
  * @description Ajoute à l'input domElem les classes en paramètres.
- * @param {HTMLInputElement} domElem 
- * @param  {...string} args 
+ * @param {HTMLInputElement} domElem
+ * @param  {...string} args
  */
-function addClasses(domElem, ...args){
-  if(domElem){
+function addClasses(domElem, ...args) {
+  if (domElem) {
     args.forEach(arg => {
       domElem.classList.add(arg);
     });
@@ -16,11 +16,11 @@ function addClasses(domElem, ...args){
 }
 /**
  * @description Supprime pour l'input domElem les classes en paramètres.
- * @param {HTMLInputElement} domElem 
- * @param  {...string} args 
+ * @param {HTMLInputElement} domElem
+ * @param  {...string} args
  */
-function removeClasses(domElem, ...args){
-  if(domElem){
+function removeClasses(domElem, ...args) {
+  if (domElem) {
     args.forEach(arg => {
       domElem.classList.remove(arg);
     });
@@ -34,10 +34,10 @@ function removeClasses(domElem, ...args){
  * @param {number} iter - Le nombre d'itérations restantes
  * @memberof module:utils
  */
-function deleteRecurse(obj, prop, iter){
+function deleteRecurse(obj, prop, iter) {
   obj.glo.modifiers.forEach(subMod => {
-    if(iter > 0){ deleteRecurse(subMod, prop, iter-1); }
-    else{
+    if (iter > 0) { deleteRecurse(subMod, prop, iter - 1); }
+    else {
       delete subMod[prop];
     }
   });
@@ -47,7 +47,7 @@ function isFormulaValid(formula) {
   try {
     // Nettoyage
     let s = String(formula).trim();
-    
+
     // Vérifier caractères autorisés
     if (/[^0-9+\-*/()., HSLADszcxyvra]/i.test(s)) {
       return false;
@@ -67,7 +67,7 @@ function isFormulaValid(formula) {
     if (bal !== 0) return false;
 
     // Essayer un eval de test sécurisé
-    const testEnv = {H:1,S:1,L:1,A:1,D:1,sz:1,cx:1,cy:1,vx:1,vy:1,ax:1,ay:1,v:1,r:1,x:1,y:1,z:1,a:1};
+    const testEnv = { H: 1, S: 1, L: 1, A: 1, D: 1, sz: 1, cx: 1, cy: 1, vx: 1, vy: 1, ax: 1, ay: 1, v: 1, r: 1, x: 1, y: 1, z: 1, a: 1 };
     const expr = s.replace(/\b(H|S|L|A|D|sz|cx|cy|vx|vy|ax|ay|v|r|x|y|z|a)\b/g, m => testEnv[m]);
     // eslint-disable-next-line no-new-func
     const val = Function('"use strict";return (' + expr + ')')();
@@ -83,11 +83,11 @@ function isFormulaValid(formula) {
  * @param {string} colorType - Le type de couleur à mettre à jour
  * @memberof module:utils
  */
-function updFormuleColor(ctrl, colorType, formuleType = 'formuleColor', histo = activeGlo.formuleColorHisto){
-  if(!activeGlo.modifiers.length){ updateColor(activeGlo); }
-  else{ getSelectedModifiers().forEach(mod => { updateColor(mod.glo); }); }
+function updFormuleColor(ctrl, colorType, formuleType = 'formuleColor', histo = activeGlo.formuleColorHisto) {
+  if (!activeGlo.modifiers.length) { updateColor(activeGlo); }
+  else { getSelectedModifiers().forEach(mod => { updateColor(mod.glo); }); }
 
-  function updateColor(objGlo){
+  function updateColor(objGlo) {
     objGlo[formuleType][colorType] = ctrl.value;
 
     if (isFormulaValid(ctrl.value)) {
@@ -99,7 +99,7 @@ function updFormuleColor(ctrl, colorType, formuleType = 'formuleColor', histo = 
       // Formule incorrecte → rollback
       Object.assign(objGlo[formuleType], histo);
     }
- }
+  }
 }
 
 /**
@@ -109,16 +109,16 @@ function updFormuleColor(ctrl, colorType, formuleType = 'formuleColor', histo = 
  * @param {Boolean} cumulation - Si vrai, les autres propriétés sont mises à false
  * @memberof module:calcul
  */
-function switchObjBools(obj = {}, propToUpd = '', cumulation = true){
+function switchObjBools(obj = {}, propToUpd = '', cumulation = true) {
   if (!obj[propToUpd]) { obj[propToUpd] = false; }
 
   obj[propToUpd] = !obj[propToUpd];
 
-  if(!cumulation){
+  if (!cumulation) {
     for (let prop in obj) {
-        if (typeof (obj[prop]) != 'function' && propToUpd != prop && obj[propToUpd]) {
-            obj[prop] = false;
-        }
+      if (typeof (obj[prop]) != 'function' && propToUpd != prop && obj[propToUpd]) {
+        obj[prop] = false;
+      }
     }
   }
 }
@@ -128,11 +128,11 @@ function switchObjBools(obj = {}, propToUpd = '', cumulation = true){
  * @param {string} expression - L'expression JavaScript à tester.
  * @returns {*} Soit le résultat de l'exécution, soit 'nok'
  */
-function evalNoError(expression){
-  try{
+function evalNoError(expression) {
+  try {
     return eval(expression);
   }
-  catch(e){
+  catch (e) {
     return 'nok';
   }
 }
@@ -142,12 +142,12 @@ function evalNoError(expression){
  * @param {string} expression - L'expression JavaScript à tester.
  * @returns {boolean} - `true` si l'évaluation réussit, `false` si une erreur est levée.
  */
-function evalFormuleColor(expression){
-  try{
+function evalFormuleColor(expression) {
+  try {
     eval(expression);
     return true;
   }
-  catch(e){
+  catch (e) {
     return false;
   }
 }
@@ -189,12 +189,12 @@ function applyReplacements(input, rules) {
 function replacesInFormuleColor(colorElem) {
   const rules = [
     // Normalisations simples (mots entiers)
-    { type: 'word', from: 'H',  to: 'h' },
-    { type: 'word', from: 'S',  to: 's' },
-    { type: 'word', from: 'L',  to: 'l' },
+    { type: 'word', from: 'H', to: 'h' },
+    { type: 'word', from: 'S', to: 's' },
+    { type: 'word', from: 'L', to: 'l' },
 
     // Tokens multi-lettres d'abord (pour éviter que 'v' touche 'vx', etc.)
-    { type: 'word', from: 'D',  to: 'this.distMinModifiers' },
+    { type: 'word', from: 'D', to: 'this.distMinModifiers' },
     { type: 'word', from: 'sz', to: 'this.sizeCalc.s' },
     { type: 'word', from: 'cx', to: '100*cos(this.x)' },
     { type: 'word', from: 'cy', to: '100*cos(this.y)' },
@@ -204,10 +204,10 @@ function replacesInFormuleColor(colorElem) {
     { type: 'word', from: 'ay', to: '100*this.ay' },
 
     // Les variables 'v' et 'r' seules (mot entier uniquement)
-    { type: 'word', from: 'v',  to: '100*this.speed' },
-    { type: 'word', from: 'a',  to: '100*this.accel' },
-    { type: 'word', from: 'r',  to: 'this.r()' },
-    { type: 'word', from: 'z',  to: '360*z()' },
+    { type: 'word', from: 'v', to: '100*this.speed' },
+    { type: 'word', from: 'a', to: '100*this.accel' },
+    { type: 'word', from: 'r', to: 'this.r()' },
+    { type: 'word', from: 'z', to: '360*z()' },
 
     // x / y : uniquement si ce ne sont PAS des accès membres (pas précédés de '.')
     // et en tant que mots entiers pour éviter 'cx', 'vx', etc.
@@ -215,7 +215,7 @@ function replacesInFormuleColor(colorElem) {
     { type: 'regex', re: /(?<!\.)\by\b/g, to: 'this.y' },
 
     // En dernier, 'A' (mot entier)
-    { type: 'word', from: 'A',  to: 'a' },
+    { type: 'word', from: 'A', to: 'a' },
   ];
 
   return applyReplacements(colorElem, rules);
@@ -231,9 +231,9 @@ function replacesInFormuleColor(colorElem) {
  * @returns {number} - Le résultat de l'évaluation de la formule, ou NaN si l'évaluation échoue.
  * @memberof module:utils
  */
-function testFormule(formule){
+function testFormule(formule) {
   let formule_test = formule.replaceAll('x', 1);
-  formule_test     = formule_test.replaceAll('y', 1);
+  formule_test = formule_test.replaceAll('y', 1);
   return parseFloat(evalNoError(formule_test));
 }
 
@@ -246,9 +246,9 @@ function testFormule(formule){
  * @returns {void}
  * @memberof module:utils
  */
-function glo_params(style = 'gravity'){
+function glo_params(style = 'gravity') {
   let params;
-  switch(style){
+  switch (style) {
     case 'gravity':
       params = {
         keep_dir: 0,
@@ -282,20 +282,20 @@ function glo_params(style = 'gravity'){
         max_color: 500,
         tint_color: 32,
       };
-      activeGlo.bg_black                 = true;
-      activeGlo.numLineCap               = 1;
-      activeGlo.alphaAbs                 = true;
-      activeGlo.tail                     = false;
-      activeGlo.collid_bord              = false;
+      activeGlo.bg_black = true;
+      activeGlo.numLineCap = 1;
+      activeGlo.alphaAbs = true;
+      activeGlo.tail = false;
+      activeGlo.collid_bord = false;
       canvas.style.backgroundColor = '#000';
-      activeGlo.form                     = 'ellipse';
+      activeGlo.form = 'ellipse';
       break;
   }
 
   Object.entries(params).forEach(([key, val]) => {
     activeGlo.params[key] = val;
     var ctrl = getById(key);
-    if(val > ctrl.max){ ctrl.max = val; }
+    if (val > ctrl.max) { ctrl.max = val; }
     ctrl.value = val;
   });
 
@@ -312,7 +312,7 @@ function glo_params(style = 'gravity'){
  * @returns {void}
  * @memberof module:utils
  */
-function takeShot(){
+function takeShot() {
   gloSave = deepCopy(activeGlo);
 }
 
@@ -325,17 +325,17 @@ function takeShot(){
  * @returns {void}
  * @memberof module:utils
  */
-function goToShot(){
-  if(gloSave){
+function goToShot() {
+  if (gloSave) {
     activeGlo = deepCopy(gloSave);
-    let upd_size     = getById('upd_size');
+    let upd_size = getById('upd_size');
     let upd_size_val = upd_size.value;
     params_interface(false);
     let nb = activeGlo.params.nb;
     deleteAvatar(avatars.length);
     activeGlo.params.nb = nb;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    if(activeGlo.backgroundColor){ canvas.style.backgroundColor = activeGlo.backgroundColor; }
+    if (activeGlo.backgroundColor) { canvas.style.backgroundColor = activeGlo.backgroundColor; }
     createAvatar();
     upd_size.dataset.last_value = upd_size_val;
     updateSize(upd_size);
@@ -353,7 +353,7 @@ function goToShot(){
  * @returns {void}
  * @memberof module:utils
  */
-function fillStyleAccordToBg(canvasVar, ctxVar){
+function fillStyleAccordToBg(canvasVar, ctxVar) {
   ctxVar.fillStyle = objRgb_to_strRgb(updateColorToBack(strRgb_to_objRgb(canvasVar.style.backgroundColor)));
 }
 
@@ -368,8 +368,8 @@ function fillStyleAccordToBg(canvasVar, ctxVar){
  * @memberof module:utils
  */
 function switchHyperAlea() {
-  if(activeGlo.hyperAlea){ avatars.forEach(av => { av.glo = deepCopy(activeGlo, 'modifiers', 'inputToSlideWithMouse'); }); }
-  else{ avatars.forEach(av => { delete av.glo; }); }
+  if (activeGlo.hyperAlea) { avatars.forEach(av => { av.glo = deepCopy(activeGlo, 'modifiers', 'inputToSlideWithMouse'); }); }
+  else { avatars.forEach(av => { delete av.glo; }); }
 }
 
 /**
@@ -382,14 +382,14 @@ function switchHyperAlea() {
  * @returns {void}
  * @memberof module:utils
  */
-function alea_size(){
-  if(activeGlo.alea_size){
+function alea_size() {
+  if (activeGlo.alea_size) {
     let lvss = activeGlo.params.level_var_s_size;
     avatars.forEach(avatar => {
-      avatar.size = rnd() > 0.9 ? activeGlo.size * getRandomIntInclusive(1,3) * lvss : activeGlo.size * rnd() / lvss;
+      avatar.size = rnd() > 0.9 ? activeGlo.size * getRandomIntInclusive(1, 3) * lvss : activeGlo.size * rnd() / lvss;
     });
   }
-  else{
+  else {
     avatars.forEach(avatar => { avatar.size = activeGlo.size; });
   }
 }
@@ -405,10 +405,10 @@ function alea_size(){
  * @returns {void}
  * @memberof module:utils
  */
-function updMaxAngleToNbEdges(idAngle, nbEdges){
+function updMaxAngleToNbEdges(idAngle, nbEdges) {
   let ctrl = getById(idAngle);
   ctrl.value = 0;
-  ctrl.max   = 180 / nbEdges;
+  ctrl.max = 180 / nbEdges;
 
   let ev = new Event('input', {
     bubbles: true,
@@ -427,7 +427,7 @@ function updMaxAngleToNbEdges(idAngle, nbEdges){
  * @returns {{x: number, y: number}} Un objet contenant les coordonnées x et y du point aléatoire.
  * @memberof module:utils
  */
-function getRandomPoint(coeff){ return {x: canvas.width * (coeff * rnd() + (1-coeff)/2), y: canvas.height * (coeff * rnd() + (1-coeff)/2)}; }
+function getRandomPoint(coeff) { return { x: canvas.width * (coeff * rnd() + (1 - coeff) / 2), y: canvas.height * (coeff * rnd() + (1 - coeff) / 2) }; }
 
 
 /**
@@ -440,39 +440,42 @@ function getRandomPoint(coeff){ return {x: canvas.width * (coeff * rnd() + (1-co
  * @returns {{x: number, y: number}} Un point aléatoire {x, y} à l'intérieur du cercle spécifié.
  * @memberof module:utils
  */
-function getRandomPointInCircle(coeff, byMod = activeGlo.modifiers.length ? activeGlo.randomPointByMod : false, byAv = activeGlo.followAvatar, avToFollow = false){
-  let center  = activeGlo.center;
+function getRandomPointInCircle(coeff, byMod = activeGlo.modifiers.length ? activeGlo.randomPointByMod : false, fromPoint = false, avToFollow = false) {
+  let center = activeGlo.center;
   let minDist = activeGlo.params.rAleaPosMin;
 
-  if(byMod){
+  if (byMod) {
     let mod = activeGlo.modifiers[parseInt(rnd() * activeGlo.modifiers.length)];
-    center  = {x: mod.x, y: mod.y};
-    coeff   = mod.params.rAleaPos;
+    center = { x: mod.x, y: mod.y };
+    coeff = mod.params.rAleaPos;
     minDist = mod.params.rAleaPosMin;
   }
+  else if (fromPoint) {
+    center = { x: fromPoint.x, y: fromPoint.y };
+  }
 
-  if(avToFollow){
-    center  = {x: avToFollow.x, y: avToFollow.y};
+  if (avToFollow) {
+    center = { x: avToFollow.x, y: avToFollow.y };
   }
 
   let r = !avToFollow ? coeff * h(canvas.width, canvas.height) / 2 : coeff * activeGlo.params.avToFollowDist;
 
-  function calculTrigo(lim, it){
-    let angle  = rnd() * two_pi;
+  function calculTrigo(lim, it) {
+    let angle = rnd() * two_pi;
     let cAngle = cos(angle);
     let sAngle = sin(angle);
 
-    if((abs(cAngle) > lim && abs(sAngle) > lim) || n > it){ return {c: cAngle, s: sAngle}; }
+    if ((abs(cAngle) > lim && abs(sAngle) > lim) || n > it) { return { c: cAngle, s: sAngle }; }
 
     n++;
     return calculTrigo(lim, it);
   }
 
-  let n   = 0;
+  let n = 0;
   let lim = 0.5;
   let tri = calculTrigo(lim, 2);
 
-  return {x: center.x + ((rnd() * (1 - minDist) + minDist) * r * tri.c), y: center.y + ((rnd() * (1 - minDist) + minDist) * r * tri.s)};
+  return { x: center.x + ((rnd() * (1 - minDist) + minDist) * r * tri.c), y: center.y + ((rnd() * (1 - minDist) + minDist) * r * tri.s) };
 }
 
 
@@ -489,12 +492,12 @@ function getRandomPointInCircle(coeff, byMod = activeGlo.modifiers.length ? acti
  */
 function keepBreak(func, param = null) {
   var simple_pause = activeGlo.break;
-  var total_pause  = activeGlo.totalBreak;
-  if(simple_pause){ activeGlo.break = false; }
-  if(total_pause) { activeGlo.totalBreak = false; }
+  var total_pause = activeGlo.totalBreak;
+  if (simple_pause) { activeGlo.break = false; }
+  if (total_pause) { activeGlo.totalBreak = false; }
   func(param);
-  if(simple_pause){ activeGlo.simple_pause_tmp = true; }
-  if(total_pause){ activeGlo.total_pause_tmp = true; }
+  if (simple_pause) { activeGlo.simple_pause_tmp = true; }
+  if (total_pause) { activeGlo.total_pause_tmp = true; }
 
   return false;
 }
@@ -505,8 +508,8 @@ function keepBreak(func, param = null) {
  * @param {number} val - La valeur à vérifier. Si 0, la réinitialisation est effectuée.
  * @memberof module:utils
  */
-function razRotDone(val){
-  if(val == 0){
+function razRotDone(val) {
+  if (val == 0) {
     avatars.forEach(av => {
       av.numsMod = [];
     });
@@ -532,15 +535,15 @@ function razRotDone(val){
  *   - {number} y - La coordonnée y (sera mise à jour).
  * @memberof module:utils
  */
-function replaceAvOnEllipse(ctrl){
+function replaceAvOnEllipse(ctrl) {
   let last_val = parseFloat(ctrl.last_vals[ctrl.last_vals.length - 1] * rad);
-  let val      = parseFloat(ctrl.value * rad);
+  let val = parseFloat(ctrl.value * rad);
 
   let angle = val - last_val;
 
   avatars.forEach(av => {
     let cent = av.center ? av.center : canvas.getCenter();
-    let pt = av.rotateCalc(angle, cent, {x:1,y:1}, 1);
+    let pt = av.rotateCalc(angle, cent, { x: 1, y: 1 }, 1);
 
     delete av.firstRotDone;
 
@@ -550,49 +553,49 @@ function replaceAvOnEllipse(ctrl){
 }
 
 /**
- * @description 
+ * @description
  * Transforme la représentation sous forme de chaîne de chaque valeur de propriété dans l'objet `f`
  * Applique diverses substitutions pour convertir des notations mathématiques personnalisées en expressions JavaScript valides.
  * @param {Object} f - L'objet dont les propriétés sont à transformer
  * @memberof module:utils
  */
-function reg(f){
-  for(var prop in f){
-  f[prop] = f[prop].toString();
-  f[prop] = f[prop].replace(/\s/g,"");
-  f[prop] = f[prop].replace(/cxdy|cydx/g,"cos(x/y)");
-  f[prop] = f[prop].replace(/cxfy|cyfx/g,"cos(xy)");
-  f[prop] = f[prop].replace(/sxdy|sydx/g,"sin(x/y)");
-  f[prop] = f[prop].replace(/sxfy|syfx/g,"sin(x*y)");
-  f[prop] = f[prop].replace(/cxpy|cypx/g,"cos(x+y)");
-  f[prop] = f[prop].replace(/cxmy/g,"cos(x-y)");
-  f[prop] = f[prop].replace(/cymx/g,"cos(y-x)");
-  f[prop] = f[prop].replace(/sxpy|sypx/g,"sin(x+y)");
-  f[prop] = f[prop].replace(/sxmy/g,"sin(x-y)");
-  f[prop] = f[prop].replace(/symx/g,"sin(y-x)");
-  f[prop] = f[prop].replace(/cx/g,"cos(x)");
-  f[prop] = f[prop].replace(/cy/g,"cos(y)");
-  f[prop] = f[prop].replace(/sx/g,"sin(x)");
-  f[prop] = f[prop].replace(/sy/g,"sin(y)");
-  f[prop] = f[prop].replace(/²/g,"**2");
-  f[prop] = f[prop].replace(/xx([^,%*+-/)])/g, 'xx*$1');
-  f[prop] = f[prop].replace(/yy([^,%*+-/)])/g, 'yy*$1');
-  f[prop] = f[prop].replace(/x([^,%*+-/)])/g, 'x*$1');
-  f[prop] = f[prop].replace(/y([^,%*+-/)])/g, 'y*$1');
-  f[prop] = f[prop].replace(/x([^,%*+-/NP)])/g, 'x*$1');
-  f[prop] = f[prop].replace(/y([^,%*+-/NP)])/g, 'y*$1');
-  f[prop] = f[prop].replace(/PI([^,%*+-/)])/g, 'PI*$1');
+function reg(f) {
+  for (var prop in f) {
+    f[prop] = f[prop].toString();
+    f[prop] = f[prop].replace(/\s/g, "");
+    f[prop] = f[prop].replace(/cxdy|cydx/g, "cos(x/y)");
+    f[prop] = f[prop].replace(/cxfy|cyfx/g, "cos(xy)");
+    f[prop] = f[prop].replace(/sxdy|sydx/g, "sin(x/y)");
+    f[prop] = f[prop].replace(/sxfy|syfx/g, "sin(x*y)");
+    f[prop] = f[prop].replace(/cxpy|cypx/g, "cos(x+y)");
+    f[prop] = f[prop].replace(/cxmy/g, "cos(x-y)");
+    f[prop] = f[prop].replace(/cymx/g, "cos(y-x)");
+    f[prop] = f[prop].replace(/sxpy|sypx/g, "sin(x+y)");
+    f[prop] = f[prop].replace(/sxmy/g, "sin(x-y)");
+    f[prop] = f[prop].replace(/symx/g, "sin(y-x)");
+    f[prop] = f[prop].replace(/cx/g, "cos(x)");
+    f[prop] = f[prop].replace(/cy/g, "cos(y)");
+    f[prop] = f[prop].replace(/sx/g, "sin(x)");
+    f[prop] = f[prop].replace(/sy/g, "sin(y)");
+    f[prop] = f[prop].replace(/²/g, "**2");
+    f[prop] = f[prop].replace(/xx([^,%*+-/)])/g, 'xx*$1');
+    f[prop] = f[prop].replace(/yy([^,%*+-/)])/g, 'yy*$1');
+    f[prop] = f[prop].replace(/x([^,%*+-/)])/g, 'x*$1');
+    f[prop] = f[prop].replace(/y([^,%*+-/)])/g, 'y*$1');
+    f[prop] = f[prop].replace(/x([^,%*+-/NP)])/g, 'x*$1');
+    f[prop] = f[prop].replace(/y([^,%*+-/NP)])/g, 'y*$1');
+    f[prop] = f[prop].replace(/PI([^,%*+-/)])/g, 'PI*$1');
 
-  f[prop] = f[prop].replace(/\)([^,%*+-/)'])/g, ')*$1');
-  f[prop] = f[prop].replace(/(\d+)([^,%*+-/.\d)])/g, '$1*$2');
+    f[prop] = f[prop].replace(/\)([^,%*+-/)'])/g, ')*$1');
+    f[prop] = f[prop].replace(/(\d+)([^,%*+-/.\d)])/g, '$1*$2');
 
-  f[prop] = f[prop].replace(/x\*_mod/g,"x_mod");
-  f[prop] = f[prop].replace(/y\*_mod/g,"y_mod");
-  f[prop] = f[prop].replace(/sin\*/g,"sin");
-  f[prop] = f[prop].replace(/tan\*/g,"tan");
-  f[prop] = f[prop].replace(/sign\*/g,"sign");
-  f[prop] = f[prop].replace(/logten\*/g,"logten");
-  f[prop] = f[prop].replace(/hy\*pot/g,"hypot");
+    f[prop] = f[prop].replace(/x\*_mod/g, "x_mod");
+    f[prop] = f[prop].replace(/y\*_mod/g, "y_mod");
+    f[prop] = f[prop].replace(/sin\*/g, "sin");
+    f[prop] = f[prop].replace(/tan\*/g, "tan");
+    f[prop] = f[prop].replace(/sign\*/g, "sign");
+    f[prop] = f[prop].replace(/logten\*/g, "logten");
+    f[prop] = f[prop].replace(/hy\*pot/g, "hypot");
   }
 }
 
@@ -605,10 +608,10 @@ function reg(f){
  * @returns {Promise<WebAssembly.Instance>} Une promesse résolue avec l’instance WebAssembly.
  * @memberof module:utils
  */
-async function importWasm(path){
-  const res      = await fetch(path);
+async function importWasm(path) {
+  const res = await fetch(path);
   const rawBytes = await res.arrayBuffer();
-  const module   = await WebAssembly.compile(rawBytes);
+  const module = await WebAssembly.compile(rawBytes);
 
   return new WebAssembly.Instance(module);
 }
@@ -619,9 +622,9 @@ async function importWasm(path){
  * @returns {Promise<void>}
  * @memberof module:utils
  */
-async function init(path){
+async function init(path) {
   const calcInstance = await importWasm(path);
-  calculator = {add: null};
+  calculator = { add: null };
   calculator.add = calcInstance.exports._Z6cosSinf;
 }
 
@@ -649,42 +652,42 @@ const deepCopy = (inObject, ...propNoCopy) => {
   return outObject;
 };
 const mergeDeep = (target, source, isMergingArrays = false, propNoCopy = []) => {
-    target = ((obj) => {
-        let cloneObj;
-        try {
-            cloneObj = JSON.parse(JSON.stringify(obj));
-        } catch(err) {
-            cloneObj = Object.assign({}, obj);
+  target = ((obj) => {
+    let cloneObj;
+    try {
+      cloneObj = JSON.parse(JSON.stringify(obj));
+    } catch (err) {
+      cloneObj = Object.assign({}, obj);
+    }
+    return cloneObj;
+  })(target);
+
+  const isObject = (obj) => obj && typeof obj === "object";
+
+  if (!isObject(target) || !isObject(source))
+    return source;
+
+  Object.keys(source).forEach(key => {
+    if (propNoCopy.indexOf(key) === -1) {
+      const targetValue = target[key];
+      const sourceValue = source[key];
+
+      if (Array.isArray(targetValue) && Array.isArray(sourceValue))
+        if (isMergingArrays) {
+          target[key] = targetValue.map((x, i) => sourceValue.length <= i ? x : mergeDeep(x, sourceValue[i], isMergingArrays));
+          if (sourceValue.length > targetValue.length)
+            target[key] = target[key].concat(sourceValue.slice(targetValue.length));
+        } else {
+          target[key] = targetValue.concat(sourceValue);
         }
-        return cloneObj;
-    })(target);
+      else if (isObject(targetValue) && isObject(sourceValue))
+        target[key] = mergeDeep(Object.assign({}, targetValue), sourceValue, isMergingArrays);
+      else if (typeof (targetValue) == 'undefined')
+        target[key] = sourceValue;
+    }
+  });
 
-    const isObject = (obj) => obj && typeof obj === "object";
-
-    if (!isObject(target) || !isObject(source))
-        return source;
-
-    Object.keys(source).forEach(key => {
-      if(propNoCopy.indexOf(key) === -1){
-          const targetValue = target[key];
-          const sourceValue = source[key];
-
-          if (Array.isArray(targetValue) && Array.isArray(sourceValue))
-              if (isMergingArrays) {
-                  target[key] = targetValue.map((x, i) => sourceValue.length <= i ? x : mergeDeep(x, sourceValue[i], isMergingArrays));
-                  if (sourceValue.length > targetValue.length)
-                      target[key] = target[key].concat(sourceValue.slice(targetValue.length));
-              } else {
-                  target[key] = targetValue.concat(sourceValue);
-              }
-          else if (isObject(targetValue) && isObject(sourceValue))
-              target[key] = mergeDeep(Object.assign({}, targetValue), sourceValue, isMergingArrays);
-          else if(typeof(targetValue) == 'undefined')
-              target[key] = sourceValue;
-        }
-    });
-
-    return target;
+  return target;
 };
 
 /**
@@ -701,7 +704,7 @@ const removeAccents = str => str.normalize('NFD').replace(/[\u0300-\u036f]/g, ''
  * @returns {number[]} - Le tableau trié
  * @memberof module:utils
  */
-function sortNumeric(arr){ return arr.sort(function(a, b){return a-b;}); }
+function sortNumeric(arr) { return arr.sort(function (a, b) { return a - b; }); }
 
 /**
  * Génère un caractère aléatoire entre deux valeurs Unicode
@@ -712,6 +715,6 @@ function sortNumeric(arr){ return arr.sort(function(a, b){return a-b;}); }
  */
 const getRndChar = (min, max) => String.fromCharCode(parseInt(getRnd(min, max)));
 
-function applyToSelectedMods(prop){
-  getSelectedModifiers().forEach(mod => { mod.glo[prop] = activeGlo[prop]; } );
+function applyToSelectedMods(prop) {
+  getSelectedModifiers().forEach(mod => { mod.glo[prop] = activeGlo[prop]; });
 }
